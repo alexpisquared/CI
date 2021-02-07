@@ -5,8 +5,22 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:AnimatedUML"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
+        Title="MainWindow" Height="450" Width="800" Background="#4444">
+  <Grid>
+    <Grid.RowDefinitions>
+      <RowDefinition Height="Auto"/>
+      <RowDefinition Height="*"/>
+      <RowDefinition Height="Auto"/>
+    </Grid.RowDefinitions>
 
-    </Grid>
+    <Viewbox>
+    </Viewbox>
+      <local:TakeOneUserControl Margin="10 0" Grid.Row="1"/>
+
+    <StackPanel Grid.Row="2" HorizontalAlignment="Right" Margin="10" Orientation="Horizontal">
+      <Button Content="E_xit" IsCancel="True" IsDefault="True" Click="onCLose" />
+    </StackPanel>
+
+
+  </Grid>
 </Window>
