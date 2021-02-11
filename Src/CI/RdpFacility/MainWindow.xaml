@@ -1,0 +1,31 @@
+﻿<Window x:Class="RdpFacility.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:RdpFacility"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="150" Width="150" Loaded="onLoaded" >
+
+  <Window.Resources>
+    <Style TargetType="Button">
+      <Setter Property="Margin" Value="10" />
+    </Style>
+  </Window.Resources>
+
+  <Viewbox Margin="0 0 0 0">
+    <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+      <CheckBox  Margin="10" x:Name="checkBox" Content="The Switch" HorizontalAlignment="Center" Checked="onStrt" Unchecked="onStop" />
+      <TextBlock Margin="10" x:Name="tbkBig"      Text="Since ..."  HorizontalAlignment="Center" />
+      <TextBlock Margin="10" x:Name="tbkLog"      Text="Log"        HorizontalAlignment="Center" FontSize="1" />
+      <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center" Visibility="Collapsed">
+        <Button    Margin="10" x:Name="buttonStart"   Content="Start" Click="onStrt" Visibility="Collapsed" />
+        <Button    Margin="10" x:Name="buttonStop"    Content="Stop"  Click="onStop" Visibility="Collapsed" />
+        <Button    Margin="10" x:Name="buttonMove"    Content="Move"  Click="onMove"  />
+        <!--
+        -->
+      </StackPanel>
+      <Button    Margin="10" x:Name="buttonExit"    Content="X"     Click="onExit"  IsCancel="True" />
+    </StackPanel>
+  </Viewbox>
+</Window>
