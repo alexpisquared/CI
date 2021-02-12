@@ -1,0 +1,16 @@
+﻿<Window x:Class="EventLogger.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:EventLogger"
+        mc:Ignorable="d"
+        Title="Event Logger - Is it sandboxed?" Height="150" Width="800">
+  <Grid>
+    <Viewbox>
+      <TextBlock x:Name="t1" Text="1234"/>
+    </Viewbox>
+    <Button Content="_Mark" IsDefault="True" Click="onMark" VerticalAlignment="Bottom" HorizontalAlignment="Center" Margin="5" />
+    <Button Content="E_xit" IsCancel="True" Click="onExit" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="5" />
+  </Grid>
+</Window>

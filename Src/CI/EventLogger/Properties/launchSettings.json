@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "EventLogger": {
+      "commandName": "Project",
+      "commandLineArgs": "000 111 222"
+    }
+  }
+}

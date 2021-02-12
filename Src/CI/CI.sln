@@ -5,7 +5,9 @@ VisualStudioVersion = 16.0.30804.86
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AnimatedUML", "AnimatedUML\AnimatedUML.csproj", "{A4918C1E-BEA4-4830-AA15-6C1E2DC09301}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RdpFacility", "RdpFacility\RdpFacility.csproj", "{EC1232AB-0108-46B9-B3AE-5248E5DDB056}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RdpFacility", "RdpFacility\RdpFacility.csproj", "{EC1232AB-0108-46B9-B3AE-5248E5DDB056}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EventLogger", "EventLogger\EventLogger.csproj", "{6D50F279-4CD8-4502-BE87-4EF037C2510E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{EC1232AB-0108-46B9-B3AE-5248E5DDB056}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EC1232AB-0108-46B9-B3AE-5248E5DDB056}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EC1232AB-0108-46B9-B3AE-5248E5DDB056}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6D50F279-4CD8-4502-BE87-4EF037C2510E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6D50F279-4CD8-4502-BE87-4EF037C2510E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6D50F279-4CD8-4502-BE87-4EF037C2510E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6D50F279-4CD8-4502-BE87-4EF037C2510E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
