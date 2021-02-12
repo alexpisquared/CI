@@ -6,4 +6,8 @@
     <UseWPF>true</UseWPF>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Compile Include="..\RdpFacility\Win32.cs" Link="Win32.cs" />
+  </ItemGroup>
+
 </Project>

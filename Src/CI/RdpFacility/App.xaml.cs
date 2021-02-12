@@ -8,10 +8,9 @@ using System.Windows;
 
 namespace RdpFacility
 {
-  /// <summary>
-  /// Interaction logic for App.xaml
-  /// </summary>
   public partial class App : Application
   {
+    public const string TextLog = @"C:\temp\EventLog.txt";
+    public static DateTime Started = DateTime.Now;
   }
 }

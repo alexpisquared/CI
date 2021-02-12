@@ -11,12 +11,13 @@ namespace EventLogger
 {
   public partial class App : Application
   {
-    public const string _textLog = @"C:\temp\EventLog.txt";
+    public const string TextLog = @"C:\temp\EventLog.txt";
+    public static DateTime Started = DateTime.Now;
     protected override void OnStartup(StartupEventArgs e)
     {
       base.OnStartup(e);
 
-      File.AppendAllText(_textLog, $"\n{DateTime.Now:yyyy-MM-dd HH:mm:ss}  {string.Join(' ', Environment.GetCommandLineArgs())}\n");
+      //File.AppendAllText(_textLog, $"\n{_started:yyyy-MM-dd HH:mm:ss}  {string.Join(' ', Environment.GetCommandLineArgs())}\n");
     }
   }
 }
