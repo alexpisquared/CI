@@ -17,9 +17,9 @@ namespace RdpFacility
     int _dx = 50, _dy = 50;
 #else
     const int _periodSec = 60, _till = 20, _dbgDelayMs = 0;
-    int _dx = 1, _dy = 1;
+    int _dx = 10, _dy = 10;
 #endif
-    readonly Insomniac _dr = new Insomniac();
+    readonly Insomniac _insomniac = new Insomniac();
     DateTime _onSince;
 
     public RdpHelpMainWindow() { InitializeComponent(); SystemSounds.Hand.Play(); }
@@ -62,23 +62,24 @@ namespace RdpFacility
     async void onStop(object s, RoutedEventArgs e) => await setDR(false);
     async void onMark(object z, RoutedEventArgs e) { var s = $"{DateTime.Now:HH:mm:ss} {(DateTime.Now - App.Started):hh\\:mm\\:ss}  Mark "; tbkLog.Text += s; await File.AppendAllTextAsync(App.TextLog, s); }
     async void onExit(object s, RoutedEventArgs e) { await File.AppendAllTextAsync(App.TextLog, $"{DateTime.Now:HH:mm:ss} {(DateTime.Now - App.Started):hh\\:mm\\:ss}  onExit()\t"); Close(); }
-    protected override async void OnClosed(EventArgs e) { await File.AppendAllTextAsync(App.TextLog, $"{DateTime.Now:HH:mm:ss} {(DateTime.Now - App.Started):hh\\:mm\\:ss}  OnClosed  \t"); base.OnClosed(e); SystemSounds.Hand.Play(); }
+    protected override async void OnClosed(EventArgs e) { await File.AppendAllTextAsync(App.TextLog, $"{DateTime.Now:HH:mm:ss} {(DateTime.Now - App.Started):hh\\:mm\\:ss}  OnClosed\t"); await setDR(false); base.OnClosed(e); SystemSounds.Hand.Play(); }
 
     async Task setDR(bool isOn)
     {
       if (isOn)
       {
-        _dr.RequestActive();
+        _insomniac.RequestActive();
         tbkLog.Text = $"{DateTime.Now:HH:mm:ss}\r";
       }
       else
       {
-        _dr.RequestRelease();
+        _insomniac.RequestRelease();
       }
+
 
       tbkBig.Text = isOn ? $"On {(_onSince = DateTime.Now):HH:mm} ÷ {_till}:00" : $"Was On for {(DateTime.Now - _onSince):hh\\:mm}";
       Title = isOn ? $"{(_onSince = DateTime.Now):HH:mm:ss} ···" : $"Off";
-      await Task.Yield();
+      await File.AppendAllTextAsync(App.TextLog, $"{tbkBig.Text}\t");
     }
   }
 }
