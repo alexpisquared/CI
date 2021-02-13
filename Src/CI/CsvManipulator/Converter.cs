@@ -43,20 +43,20 @@ namespace CsvManipulator
 
         rv = ($"Rows * Cols: {linesIn.Count,7} * {colCnt}\n");
         linesIn.Skip(_ignoreHeaderColumnName ? 1 : 0).ToList().ForEach(kvp =>
-           {
-             var c = 0;
+        {
+          var c = 0;
           //rv+=($"Cols: {((IDictionary<string, object>)kvp).Values.Count,7}\n");
           foreach (var cell in ((IDictionary<string, object>)kvp).Values)
-             {
-               rv += ($"  '{cell}',");
+          {
+            rv += ($"  '{cell}',");
 
-               if (!string.IsNullOrEmpty(cell?.ToString()))
-                 nonempties[c] = true;
+            if (!string.IsNullOrEmpty(cell?.ToString()))
+              nonempties[c] = true;
 
-               c++;
-             }
-             rv += ($"\n");
-           });
+            c++;
+          }
+          rv += ($"\n");
+        });
 
         nonempties.ToList().ForEach(r => rv += (r ? "#" : "·"));
         return rv;

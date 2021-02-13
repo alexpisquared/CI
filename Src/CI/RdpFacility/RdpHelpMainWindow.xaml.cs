@@ -53,7 +53,7 @@ namespace RdpFacility
 
     async void onLoaded(object s, RoutedEventArgs e)
     {
-      tbkMin.Text = $"ITA so far  {_idleTimeoutAnalizer.MinTimeoutMin:N3} min";
+      tbkMin.Text = $"ITA so far  {_idleTimeoutAnalizer.MinTimeoutMin:N3} min  {(_idleTimeoutAnalizer.ModeRO?"(ro)":"(RW)")}";
       await File.AppendAllTextAsync(App.TextLog, $"\n{App.Started:yyyy-MM-dd HH:mm:ss}  {string.Join(' ', Environment.GetCommandLineArgs().Skip(1))}\t");
       await Task.Delay(_dbgDelayMs);
       checkBox.IsChecked = true;

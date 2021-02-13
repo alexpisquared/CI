@@ -9,7 +9,7 @@ namespace RdpFacility
 {
   public class IdleTimeoutAnalizer
   {
-    const string _fileName = @"IdleTimeoutAnalizer.json";
+    const string _fileName = @"C:\temp\IdleTimeoutAnalizer.json";
     readonly bool _ready = false;
 
     public static IdleTimeoutAnalizer LoadMe(DateTimeOffset started)
@@ -46,6 +46,7 @@ namespace RdpFacility
     public double MinTimeoutMin { get; set; }
     [JsonIgnore]    public DateTimeOffset ThisStart { get; set; }
     [JsonIgnore] public TimeSpan MinTimeout { get; set; }
+    public bool ModeRO { get=> Environment.GetCommandLineArgs().Last().Contains("DevDbg");  }
 
     void reCalc()
     {
@@ -65,7 +66,7 @@ namespace RdpFacility
     }
     void saveMe()
     {
-      if (Environment.GetCommandLineArgs().Last().Contains("DevDbg"))
+      if (ModeRO)
         return;
 
       MinTimeoutMin = MinTimeout.TotalMinutes;
