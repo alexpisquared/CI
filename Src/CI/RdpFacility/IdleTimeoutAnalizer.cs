@@ -12,9 +12,10 @@ namespace RdpFacility
     const string _fileName = @"C:\temp\IdleTimeoutAnalizer.json";
     readonly bool _ready = false;
 
-    public static IdleTimeoutAnalizer LoadMe(DateTimeOffset started)
+    public static (IdleTimeoutAnalizer ita, string report) LoadMe(DateTimeOffset started)
     {
       IdleTimeoutAnalizer ita;
+      string report = "";
       if (File.Exists(_fileName))
       {
         try
@@ -24,9 +25,9 @@ namespace RdpFacility
           ita.MinTimeout = TimeSpan.FromMinutes(ita.MinTimeoutMin);
           ita.ThisStart = started;
           ita.reCalc();
-          return ita;
+          return (ita, report);
         }
-        catch { }
+        catch(Exception ex) { report = ex.Message; }
       }
 
       ita = new IdleTimeoutAnalizer
@@ -38,15 +39,15 @@ namespace RdpFacility
 
       ita.reCalc();
 
-      return ita;
+      return (ita, report);
     }
 
 
     public DateTimeOffset LastClose { get; set; }
     public double MinTimeoutMin { get; set; }
-    [JsonIgnore]    public DateTimeOffset ThisStart { get; set; }
+    [JsonIgnore] public DateTimeOffset ThisStart { get; set; }
     [JsonIgnore] public TimeSpan MinTimeout { get; set; }
-    public bool ModeRO { get=> Environment.GetCommandLineArgs().Last().Contains("DevDbg");  }
+    [JsonIgnore] public bool ModeRO { get => Environment.GetCommandLineArgs().Last().Contains("DevDbg"); }
 
     void reCalc()
     {

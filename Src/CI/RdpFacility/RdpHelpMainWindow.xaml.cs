@@ -12,7 +12,7 @@ namespace RdpFacility
 {
   public partial class RdpHelpMainWindow : Window
   {
-    IdleTimeoutAnalizer _idleTimeoutAnalizer = IdleTimeoutAnalizer.LoadMe(App.Started);
+    readonly IdleTimeoutAnalizer _idleTimeoutAnalizer;
 #if DEBUG
     const int _periodSec = 1, _till = 20, _dbgDelayMs = 2500;
     int _dx = 50, _dy = 50;
@@ -23,7 +23,15 @@ namespace RdpFacility
     readonly Insomniac _insomniac = new Insomniac();
     DateTimeOffset _onSince;
 
-    public RdpHelpMainWindow() { InitializeComponent(); SystemSounds.Hand.Play(); }
+    public RdpHelpMainWindow()
+    {
+      InitializeComponent();
+      var rv = IdleTimeoutAnalizer.LoadMe(App.Started);
+      _idleTimeoutAnalizer = rv.ita;
+      tbkMin.Text = rv.report;
+
+      SystemSounds.Hand.Play();
+    }
     async Task onTick()
     {
       if (DateTimeOffset.Now.Hour >= _till && checkBox.IsChecked == true)
@@ -53,7 +61,7 @@ namespace RdpFacility
 
     async void onLoaded(object s, RoutedEventArgs e)
     {
-      tbkMin.Text = $"ITA so far  {_idleTimeoutAnalizer.MinTimeoutMin:N3} min  {(_idleTimeoutAnalizer.ModeRO?"(ro)":"(RW)")}";
+      tbkMin.Text += $"ITA so far  {_idleTimeoutAnalizer.MinTimeoutMin:N3} min  {(_idleTimeoutAnalizer.ModeRO ? "(ro)" : "(RW)")}";
       await File.AppendAllTextAsync(App.TextLog, $"\n{App.Started:yyyy-MM-dd HH:mm:ss}  {string.Join(' ', Environment.GetCommandLineArgs().Skip(1))}\t");
       await Task.Delay(_dbgDelayMs);
       checkBox.IsChecked = true;
@@ -67,8 +75,8 @@ namespace RdpFacility
     protected override async void OnClosed(EventArgs e)
     {
       await File.AppendAllTextAsync(App.TextLog, $"{DateTimeOffset.Now:HH:mm:ss} {(DateTimeOffset.Now - App.Started):hh\\:mm\\:ss}  OnClosed\t");
-      await setDR(false); 
-      base.OnClosed(e); 
+      await setDR(false);
+      base.OnClosed(e);
       SystemSounds.Hand.Play();
       _idleTimeoutAnalizer.SaveLastClose();
     }
