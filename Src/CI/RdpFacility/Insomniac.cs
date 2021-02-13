@@ -9,12 +9,12 @@ namespace RdpFacility
     internal void RequestActive()
     {
       SetThreadExecutionState(EXECUTION_STATE.ES_DISPLAY_REQUIRED | EXECUTION_STATE.ES_CONTINUOUS);
-      Debug.WriteLine($"** On  since {DateTime.Now:HH:mm}");
+      Debug.WriteLine($"** On  since {DateTimeOffset.Now:HH:mm}");
     }
     internal void RequestRelease()
     {
       SetThreadExecutionState(EXECUTION_STATE.ES_CONTINUOUS);
-      Debug.WriteLine($"** Off since {DateTime.Now:HH:mm}");
+      Debug.WriteLine($"** Off since {DateTimeOffset.Now:HH:mm}");
     }
 
 

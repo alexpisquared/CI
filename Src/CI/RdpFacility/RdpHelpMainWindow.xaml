@@ -2,6 +2,9 @@
         Title="RDP Support" Height="150" Width="320" Loaded="onLoaded" Background="#8ce">
 
   <Window.Resources>
+    <Style TargetType="TextBlock">
+      <Setter Property="Margin" Value="15 5" />
+    </Style>
     <Style TargetType="Button">
       <Setter Property="Margin" Value="15 5" />
       <Setter Property="Background"  Value="Transparent" />
@@ -11,8 +14,9 @@
 
   <Viewbox Margin="0 0 0 0">
     <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
-      <TextBlock Margin="10" x:Name="tbkBig"      Text="Since ..."    HorizontalAlignment="Center" />
-      <TextBlock Margin="10" x:Name="tbkLog"      Text="Log"          HorizontalAlignment="Center" FontSize="1" />
+      <TextBlock x:Name="tbkBig"      Text="Since ..."    HorizontalAlignment="Center" />
+      <TextBlock x:Name="tbkMin"      Text="Since ..."    HorizontalAlignment="Center" Foreground="#d40" />
+      <TextBlock x:Name="tbkLog"      Text="Log"          HorizontalAlignment="Center" FontSize="1" />
       <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center" Visibility="Visible">
         <CheckBox  Margin="10" x:Name="checkBox" Content="_Insomniac" Checked="onStrt" Unchecked="onStop" />
         <Button   Content="_Mark" Click="onMark" IsDefault="True" />

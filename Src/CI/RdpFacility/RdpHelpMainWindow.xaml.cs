@@ -12,6 +12,7 @@ namespace RdpFacility
 {
   public partial class RdpHelpMainWindow : Window
   {
+    IdleTimeoutAnalizer _idleTimeoutAnalizer = IdleTimeoutAnalizer.LoadMe(App.Started);
 #if DEBUG
     const int _periodSec = 1, _till = 20, _dbgDelayMs = 2500;
     int _dx = 50, _dy = 50;
@@ -20,12 +21,12 @@ namespace RdpFacility
     int _dx = 10, _dy = 10;
 #endif
     readonly Insomniac _insomniac = new Insomniac();
-    DateTime _onSince;
+    DateTimeOffset _onSince;
 
     public RdpHelpMainWindow() { InitializeComponent(); SystemSounds.Hand.Play(); }
     async Task onTick()
     {
-      if (DateTime.Now.Hour >= _till && checkBox.IsChecked == true)
+      if (DateTimeOffset.Now.Hour >= _till && checkBox.IsChecked == true)
         await setDR(false);
 
       try
@@ -52,24 +53,32 @@ namespace RdpFacility
 
     async void onLoaded(object s, RoutedEventArgs e)
     {
+      tbkMin.Text = $"ITA so far  {_idleTimeoutAnalizer.MinTimeoutMin:N3} min";
       await File.AppendAllTextAsync(App.TextLog, $"\n{App.Started:yyyy-MM-dd HH:mm:ss}  {string.Join(' ', Environment.GetCommandLineArgs().Skip(1))}\t");
       await Task.Delay(_dbgDelayMs);
       checkBox.IsChecked = true;
-      _ = new DispatcherTimer(TimeSpan.FromSeconds(_periodSec), DispatcherPriority.Normal, new EventHandler((s, e) => onTick()), Dispatcher.CurrentDispatcher);
+      _ = new DispatcherTimer(TimeSpan.FromSeconds(_periodSec), DispatcherPriority.Normal, new EventHandler(async (s, e) => await onTick()), Dispatcher.CurrentDispatcher); //tu:
       SystemSounds.Exclamation.Play();
     }
     async void onStrt(object s, RoutedEventArgs e) => await setDR(true);
     async void onStop(object s, RoutedEventArgs e) => await setDR(false);
-    async void onMark(object z, RoutedEventArgs e) { var s = $"{DateTime.Now:HH:mm:ss} {(DateTime.Now - App.Started):hh\\:mm\\:ss}  Mark "; tbkLog.Text += s; await File.AppendAllTextAsync(App.TextLog, s); }
-    async void onExit(object s, RoutedEventArgs e) { await File.AppendAllTextAsync(App.TextLog, $"{DateTime.Now:HH:mm:ss} {(DateTime.Now - App.Started):hh\\:mm\\:ss}  onExit()\t"); Close(); }
-    protected override async void OnClosed(EventArgs e) { await File.AppendAllTextAsync(App.TextLog, $"{DateTime.Now:HH:mm:ss} {(DateTime.Now - App.Started):hh\\:mm\\:ss}  OnClosed\t"); await setDR(false); base.OnClosed(e); SystemSounds.Hand.Play(); }
+    async void onMark(object z, RoutedEventArgs e) { var s = $"{DateTimeOffset.Now:HH:mm:ss} {(DateTimeOffset.Now - App.Started):hh\\:mm\\:ss}  Mark "; tbkLog.Text += s; await File.AppendAllTextAsync(App.TextLog, s); }
+    async void onExit(object s, RoutedEventArgs e) { await File.AppendAllTextAsync(App.TextLog, $"{DateTimeOffset.Now:HH:mm:ss} {(DateTimeOffset.Now - App.Started):hh\\:mm\\:ss}  onExit()\t"); Close(); }
+    protected override async void OnClosed(EventArgs e)
+    {
+      await File.AppendAllTextAsync(App.TextLog, $"{DateTimeOffset.Now:HH:mm:ss} {(DateTimeOffset.Now - App.Started):hh\\:mm\\:ss}  OnClosed\t");
+      await setDR(false); 
+      base.OnClosed(e); 
+      SystemSounds.Hand.Play();
+      _idleTimeoutAnalizer.SaveLastClose();
+    }
 
     async Task setDR(bool isOn)
     {
       if (isOn)
       {
         _insomniac.RequestActive();
-        tbkLog.Text = $"{DateTime.Now:HH:mm:ss}\r";
+        tbkLog.Text = $"{DateTimeOffset.Now:HH:mm:ss}\r";
       }
       else
       {
@@ -77,8 +86,8 @@ namespace RdpFacility
       }
 
 
-      tbkBig.Text = isOn ? $"On {(_onSince = DateTime.Now):HH:mm} ÷ {_till}:00" : $"Was On for {(DateTime.Now - _onSince):hh\\:mm}";
-      Title = isOn ? $"{(_onSince = DateTime.Now):HH:mm:ss} ···" : $"Off";
+      tbkBig.Text = isOn ? $"On {(_onSince = DateTimeOffset.Now):HH:mm} ÷ {_till}:00" : $"Was On for {(DateTimeOffset.Now - _onSince):hh\\:mm\\:ss}";
+      Title = isOn ? $"{(_onSince = DateTimeOffset.Now):HH:mm:ss} ···" : $"Off";
       await File.AppendAllTextAsync(App.TextLog, $"{tbkBig.Text}\t");
     }
   }

@@ -7,7 +7,6 @@ using System.Dynamic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Windows;
 
 namespace CsvManipulator
 {
@@ -15,10 +14,12 @@ namespace CsvManipulator
   {
     readonly string _filename;
     readonly List<CsvLine> _linesIn = new List<CsvLine>();
+    readonly bool _ignoreHeaderColumnName = true; // for rare case scenario could be false.
 
     public Converter(string filename) => _filename = filename;
-    public void CleanEmptyRowsColumns()
+    public string CleanEmptyRowsColumns()
     {
+      var rv = "haha";
       try
       {
         //checkColumns();
@@ -37,28 +38,30 @@ namespace CsvManipulator
         var linesIn = csv.GetRecords<dynamic>().ToList();
         var kvp = linesIn.FirstOrDefault();
         var colCnt = ((IDictionary<string, object>)kvp).Values.Count;
-        bool[] nonempties = new bool[colCnt];
-        
+        var nonempties = new bool[colCnt];
 
-        Debug.WriteLine($"Rows * Cols: {linesIn.Count,7} * {colCnt}");
-        linesIn.ToList().ForEach(kvp =>
-        {
-          var c = 0;
-          //Debug.WriteLine($"Cols: {((IDictionary<string, object>)kvp).Values.Count,7}");
+
+        rv = ($"Rows * Cols: {linesIn.Count,7} * {colCnt}\n");
+        linesIn.Skip(_ignoreHeaderColumnName ? 1 : 0).ToList().ForEach(kvp =>
+           {
+             var c = 0;
+          //rv+=($"Cols: {((IDictionary<string, object>)kvp).Values.Count,7}\n");
           foreach (var cell in ((IDictionary<string, object>)kvp).Values)
-          {
-            Debug.Write($"  '{cell}',");
+             {
+               rv += ($"  '{cell}',");
 
-            if (!string.IsNullOrEmpty(cell?.ToString()))
-              nonempties[c] = true;
-            c++;
-          }
-          Debug.WriteLine($"");          
-        });
+               if (!string.IsNullOrEmpty(cell?.ToString()))
+                 nonempties[c] = true;
 
-        nonempties.ToList().ForEach(r => Debug.Write(r ? "#" : "·"));
+               c++;
+             }
+             rv += ($"\n");
+           });
+
+        nonempties.ToList().ForEach(r => rv += (r ? "#" : "·"));
+        return rv;
       }
-      catch (Exception ex) { Debug.WriteLine(ex); throw; }
+      catch (Exception ex) { rv += (ex); throw; }
 
       //printTopLines();
     }

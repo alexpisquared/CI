@@ -12,7 +12,7 @@ namespace EventLogger
   public partial class App : Application
   {
     public const string TextLog = @"C:\temp\EventLog.txt";
-    public static DateTime Started = DateTime.Now;
+    public static DateTimeOffset Started = DateTimeOffset.Now;
     protected override void OnStartup(StartupEventArgs e)
     {
       base.OnStartup(e);

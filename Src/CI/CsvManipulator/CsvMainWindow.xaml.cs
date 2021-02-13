@@ -23,11 +23,16 @@ namespace CsvManipulator
     {
       InitializeComponent();
 
-      var jj = new Converter(@"C:\temp\CI.csv");
-      jj.CleanEmptyRowsColumns();
+
+      Loaded += onLoaded;
     }
 
-    void onExit(object s, RoutedEventArgs e) { Close(); }
+    void onLoaded(object sender, RoutedEventArgs e)
+    {
+      var converter = new Converter(@"C:\temp\CI.csv");
+      tbkReport.Text = converter.CleanEmptyRowsColumns();
+    }
 
+    void onExit(object s, RoutedEventArgs e) { Close(); Close(); }
   }
 }
