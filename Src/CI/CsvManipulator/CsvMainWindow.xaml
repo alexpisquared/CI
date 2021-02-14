@@ -5,11 +5,11 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CsvManipulator"
         mc:Ignorable="d"
-        Title="X" Height="265" Width="680">
+        Title="■" Height="365" Width="880">
   <Grid>
     <Viewbox>
       <TextBlock x:Name="tbkReport" Text="afasfdhskldhjs" FontFamily="Jetbrains Mono" />
     </Viewbox>
-    <Button   Content="_X"    Click="onExit"  IsCancel="True" VerticalAlignment="Bottom" HorizontalAlignment="Right" />
+    <Button Content="_X" Click="onExit"  IsCancel="True" VerticalAlignment="Top" HorizontalAlignment="Right" Background="Transparent" BorderBrush="Transparent" />
   </Grid>
 </Window>

@@ -1,6 +1,4 @@
-﻿using System.Text.Json;
-using System.Text.Json.Serialization;
-using CsvHelper;
+﻿using CsvHelper;
 using CsvHelper.Configuration;
 using System;
 using System.Collections.Generic;
@@ -27,7 +25,7 @@ namespace CsvManipulator
 
     public string CleanEmptyRowsColumns()
     {
-      var report = "haha";
+      var report = "";
       try
       {
         //checkColumns();
@@ -43,63 +41,80 @@ namespace CsvManipulator
 
         using var reader = new StreamReader(_filename0);
         using var csv = new CsvReader(reader, config);
-        var linesIn = csv.GetRecords<dynamic>().ToList();
-        var kvp = linesIn.FirstOrDefault();
-        var colCnt = ((IDictionary<string, object>)kvp).Values.Count;
-        var nonempties = new bool[colCnt];
+        var allCsvRecords = csv.GetRecords<dynamic>().ToList();
+        var columnCount = ((IDictionary<string, object>)allCsvRecords.FirstOrDefault()).Values.Count;
 
+        var nonEmptyRows = allCsvRecords.Skip(_ignoreHeaderColumnName ? 1 : 0).ToList().Where(kvp => ((ExpandoObject)kvp).Any(v => !string.IsNullOrEmpty(v.Value?.ToString())));
+        report += ($"Rows * Cols: {nonEmptyRows.Count(),7} / {allCsvRecords.Count(),-7} * {columnCount}\n");
 
-        report = ($"Rows * Cols: {linesIn.Count,7} * {colCnt}\n");
-        linesIn.Skip(_ignoreHeaderColumnName ? 1 : 0).ToList().ForEach(kvp =>
-        {
-          var c = 0;
-          //rv+=($"Cols: {((IDictionary<string, object>)kvp).Values.Count,7}\n");
-          foreach (var cell in ((IDictionary<string, object>)kvp).Values)
-          {
-            report += ($"  '{cell}',");
+        var ecrv = findEmptyColumns(columnCount, nonEmptyRows);
+        report += ecrv.report;
 
-            if (!string.IsNullOrEmpty(cell?.ToString()))
-              nonempties[c] = true;
+        report += ($"Empty columns:  ");
+        ecrv.ec.ToList().ForEach(r => report += (r ? "#" : "·"));
+        report += ($"\n");
 
-            c++;
-          }
-          report += ($"\n");
-        });
-
-        nonempties.ToList().ForEach(r => report += (r ? "#" : "·"));        report += ($"\n");
-
-
-        var linesOu = new List<dynamic>();
-
-        linesIn.ToList().ForEach(kvp =>
-        {
-          var csvItem = new ExpandoObject() as IDictionary<string, object>;
-
-          var c = 0;
-          foreach (var column in kvp)
-          {
-            if (nonempties[c++])
-            {
-              csvItem.Add(column.Key, column.Value);
-              report += ($"  '{column.Value}',");
-            }
-          }
-
-          linesOu.Add(csvItem);
-          report += ($"\n");
-        });
+        var ourv = removeEmptyColumns(nonEmptyRows, ecrv);
+        report += ourv.report;
 
         using (var writer = new StreamWriter(_filename2))
         {
           using var csv3 = new CsvWriter(writer, config);
-          csv3.WriteRecords(linesOu);
+          csv3.WriteRecords(ourv.ou);
+        }
+      }
+      catch (Exception ex) { report += (ex); }
+
+      return report;
+      //printTopLines();
+    }
+
+    static (List<dynamic> ou, string report) removeEmptyColumns(IEnumerable<dynamic> nonEmptyRows, (bool[] ec, string report) emptyColumns)
+    {
+      var report = "";
+      var outCsvRecords = new List<dynamic>();
+
+      nonEmptyRows.ToList().ForEach(kvp =>
+      {
+        var outCsvRecord = new ExpandoObject() as IDictionary<string, object>;
+
+        var c = 0;
+        foreach (var column in kvp)
+        {
+          if (emptyColumns.ec[c++])
+          {
+            outCsvRecord.Add(column.Key, column.Value);
+            report += ($"  '{column.Value}'\t");
+          }
         }
 
-        return report;
-      }
-      catch (Exception ex) { report += (ex); throw; }
+        outCsvRecords.Add(outCsvRecord);
+        report += ($"\n");
+      });
 
-      //printTopLines();
+      return (outCsvRecords, report); ;
+    }
+
+    (bool[] ec, string report) findEmptyColumns(int colCnt, IEnumerable<dynamic> rows)
+    {
+      var report = "";
+      var nonemptyColumns = new bool[colCnt];
+      rows.Skip(_ignoreHeaderColumnName ? 1 : 0).ToList().ForEach(kvp =>
+      {
+        var c = 0;
+        foreach (var cell in ((IDictionary<string, object>)kvp).Values)
+        {
+          report += ($"  '{cell}'\t");
+
+          if (!string.IsNullOrEmpty(cell?.ToString()))
+            nonemptyColumns[c] = true;
+
+          c++;
+        }
+        report += ($"\n");
+      });
+
+      return (nonemptyColumns, report);
     }
 
     void checkColumns()
