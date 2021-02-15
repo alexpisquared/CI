@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RdpFacility", "RdpFacility\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EventLogger", "EventLogger\EventLogger.csproj", "{6D50F279-4CD8-4502-BE87-4EF037C2510E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CsvManipulator", "CsvManipulator\CsvManipulator.csproj", "{7E4BDAD5-F1F6-46CB-81E6-F1EFA27D36FC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CsvManipulator", "CsvManipulator\CsvManipulator.csproj", "{7E4BDAD5-F1F6-46CB-81E6-F1EFA27D36FC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

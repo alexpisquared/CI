@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AsLink;
+using System;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -69,14 +70,23 @@ namespace RdpFacility
       await Task.Delay(_dbgDelayMs);
       _ = new DispatcherTimer(TimeSpan.FromSeconds(_periodSec), DispatcherPriority.Normal, new EventHandler(async (s, e) => await onTick()), Dispatcher.CurrentDispatcher); //tu:
       SystemSounds.Exclamation.Play();
+
+      if (!_idleTimeoutAnalizer.ModeRO) EvLogHelper.LogScrSvrBgn(4 * 60);
     }
-    void onAuOn(object s, RoutedEventArgs e) => _idleTimeoutAnalizer.IsAudible = true;
-    void onAuOf(object s, RoutedEventArgs e) => _idleTimeoutAnalizer.IsAudible = false;
-    void onRset(object s, RoutedEventArgs e) => _idleTimeoutAnalizer.MinTimeoutMin = 100;
+    void onAuOn(object s, RoutedEventArgs e) { _idleTimeoutAnalizer.IsAudible = true; _idleTimeoutAnalizer.SaveLastClose(); }
+    void onAuOf(object s, RoutedEventArgs e) { _idleTimeoutAnalizer.IsAudible = false; _idleTimeoutAnalizer.SaveLastClose(); }
+    void onRset(object s, RoutedEventArgs e) { _idleTimeoutAnalizer.MinTimeoutMin = 100; tbkMin.Text = $"ITA so far  {_idleTimeoutAnalizer.MinTimeoutMin:N1} min  {(_idleTimeoutAnalizer.ModeRO ? "(ro)" : "(RW)")}"; _idleTimeoutAnalizer.SaveLastClose(); }
     async void onStrt(object s, RoutedEventArgs e) => await setDR(true);
     async void onStop(object s, RoutedEventArgs e) => await setDR(false);
     async void onMark(object z, RoutedEventArgs e) { var s = $"{DateTimeOffset.Now:HH:mm:ss} {(DateTimeOffset.Now - App.Started):hh\\:mm\\:ss}  Mark "; tbkLog.Text += s; await File.AppendAllTextAsync(App.TextLog, s); }
-    async void onExit(object s, RoutedEventArgs e) { await File.AppendAllTextAsync(App.TextLog, $"{DateTimeOffset.Now:HH:mm:ss} {(DateTimeOffset.Now - App.Started):hh\\:mm\\:ss}  onExit()\t"); Close(); }
+    async void onExit(object s, RoutedEventArgs e)
+    {
+      if (!_idleTimeoutAnalizer.ModeRO)
+        EvLogHelper.LogScrSvrEnd(App.Started.DateTime.AddSeconds(-4 * 60), 4 * 60, "Escape pressed");
+
+
+      await File.AppendAllTextAsync(App.TextLog, $"{DateTimeOffset.Now:HH:mm:ss} {(DateTimeOffset.Now - App.Started):hh\\:mm\\:ss}  onExit()\t"); Close();
+    }
     protected override async void OnClosed(EventArgs e)
     {
       await File.AppendAllTextAsync(App.TextLog, $"{DateTimeOffset.Now:HH:mm:ss} {(DateTimeOffset.Now - App.Started):hh\\:mm\\:ss}  OnClosed\t");
@@ -100,8 +110,8 @@ namespace RdpFacility
         _insomniac.RequestRelease();
       }
 
-      tbkBig.Text = isOn ? 
-        $"ON  {(_onSince = DateTimeOffset.Now):HH:mm} ÷ {_till}:00" : 
+      tbkBig.Text = isOn ?
+        $"ON  {(_onSince = DateTimeOffset.Now):HH:mm} ÷ {_till}:00" :
         $"OFF  (was ON for {(DateTimeOffset.Now - _onSince):hh\\:mm\\:ss})";
       Title = isOn ? $"{(_onSince = DateTimeOffset.Now):HH:mm:ss} ···" : $"Off";
       await File.AppendAllTextAsync(App.TextLog, $"{tbkBig.Text}\t");
