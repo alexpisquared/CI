@@ -9,13 +9,15 @@ namespace RdpFacility
 {
   public class IdleTimeoutAnalizer
   {
-    const string _fileName = @"C:\temp\IdleTimeoutAnalizer.json";
+    static readonly string _fileName;
     readonly bool _ready = false;
+
+    static IdleTimeoutAnalizer() => _fileName = @$"RdpFacility.IdleTimeoutAnalizer.{Environment.MachineName}.json";
 
     public static (IdleTimeoutAnalizer ita, string report) LoadMe(DateTimeOffset started)
     {
       IdleTimeoutAnalizer ita;
-      string report = "";
+      var report = "";
       if (File.Exists(_fileName))
       {
         try
@@ -27,7 +29,7 @@ namespace RdpFacility
           ita.reCalc();
           return (ita, report);
         }
-        catch(Exception ex) { report = ex.Message; }
+        catch (Exception ex) { report = ex.Message; }
       }
 
       ita = new IdleTimeoutAnalizer
@@ -47,7 +49,10 @@ namespace RdpFacility
     public double MinTimeoutMin { get; set; }
     [JsonIgnore] public DateTimeOffset ThisStart { get; set; }
     [JsonIgnore] public TimeSpan MinTimeout { get; set; }
-    [JsonIgnore] public bool ModeRO { get => Environment.GetCommandLineArgs().Last().Contains("DevDbg"); }
+    [JsonIgnore] public bool ModeRO => Environment.GetCommandLineArgs().Count() <= 1 || Environment.GetCommandLineArgs().Last().Contains("DevDbg");
+
+    public bool? IsAudible { get; set; }
+    public bool? IsInsomnia { get; set; }
 
     void reCalc()
     {
