@@ -10,7 +10,7 @@ namespace RdpFacility
   {
     public bool IsAudible { get; set; }
     public bool IsInsomnia { get; set; }
-
+    public bool IsMousing { get; set; }
 
     static readonly string _stgFile;
     static AppSettings() => _stgFile = @$"RdpFacility.{Environment.MachineName}.stg.json";

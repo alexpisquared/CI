@@ -6,6 +6,7 @@ using System.Linq;
 using System.Media;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Threading;
 
@@ -50,6 +51,12 @@ namespace RdpFacility
       if (DateTimeOffset.Now.Hour >= _till && chkInso.IsChecked == true)
         await setDR(false, false);
 
+      if (_appSettings.IsMousing)
+        togglePosition();
+    }
+
+    private void togglePosition()
+    {
       try
       {
         Mouse.Capture(this);
@@ -71,11 +78,11 @@ namespace RdpFacility
         _dy = -_dy;
       }
     }
-    void onAuOn(object s, RoutedEventArgs e) { _appSettings.IsAudible = true; _appSettings.Store(); }
-    void onAuOf(object s, RoutedEventArgs e) { _appSettings.IsAudible = false; _appSettings.Store(); }
+
+    void onAuOn(object s, RoutedEventArgs e) { _appSettings.IsAudible = ((CheckBox)s).IsChecked == true; _appSettings.Store(); }
+    void onDaOn(object s, RoutedEventArgs e) { _appSettings.IsMousing = ((CheckBox)s).IsChecked == true; _appSettings.Store(); }
     void onRset(object s, RoutedEventArgs e) { _idleTimeoutAnalizer.MinTimeoutMin = 100; tbkMin.Text = $"ITA so far  {_idleTimeoutAnalizer.MinTimeoutMin:N1} min  {(_idleTimeoutAnalizer.ModeRO ? "(ro)" : "(RW)")}"; _idleTimeoutAnalizer.SaveLastClose(); }
-    async void onStrt(object s, RoutedEventArgs e) => await setDR(true);
-    async void onStop(object s, RoutedEventArgs e) => await setDR(false);
+    async void onStrt(object s, RoutedEventArgs e) => await setDR(((CheckBox)s).IsChecked == true);
     async void onMark(object z, RoutedEventArgs e) { var s = $"{DateTimeOffset.Now:HH:mm:ss} {(DateTimeOffset.Now - App.Started):hh\\:mm\\:ss}  Mark "; tbkLog.Text += s; await File.AppendAllTextAsync(App.TextLog, s); }
     async void onExit(object s, RoutedEventArgs e)
     {
