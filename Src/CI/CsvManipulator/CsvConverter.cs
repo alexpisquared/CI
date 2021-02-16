@@ -7,16 +7,17 @@ using System.Dynamic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace CsvManipulator
 {
-  public class Converter
+  public class CsvConverter : ICsvConverter
   {
     readonly string _filename0, _filename2;
     readonly List<CsvLine> _linesIn = new List<CsvLine>();
     readonly bool _ignoreHeaderColumnName = true; // for rare case scenario could be false.
 
-    public Converter(string filename)
+    public CsvConverter(string filename)
     {
       _filename0 = filename;
       var ext = Path.GetExtension(filename);
@@ -28,8 +29,6 @@ namespace CsvManipulator
       var report = "";
       try
       {
-        //checkColumns();
-
         var config = new CsvConfiguration(CultureInfo.InvariantCulture)
         {
           HasHeaderRecord = false, // !!! otherwise must have unique non-empty column names
@@ -40,28 +39,27 @@ namespace CsvManipulator
         };
 
         using var reader = new StreamReader(_filename0);
-        using var csv = new CsvReader(reader, config);
-        var allCsvRecords = csv.GetRecords<dynamic>().ToList();
-        var columnCount = ((IDictionary<string, object>)allCsvRecords.FirstOrDefault()).Values.Count;
+        using var csvrdr = new CsvReader(reader, config);
+        var allCsvRecords = csvrdr.GetRecords<dynamic>().ToList();
+        var allCsvHeaders = ((IDictionary<string, object>)allCsvRecords.FirstOrDefault()).Values;
+        var columnCount = allCsvHeaders.Count;
 
         var nonEmptyRows = allCsvRecords.Skip(_ignoreHeaderColumnName ? 1 : 0).ToList().Where(kvp => ((ExpandoObject)kvp).Any(v => !string.IsNullOrEmpty(v.Value?.ToString())));
-        report += ($"Rows * Cols: {nonEmptyRows.Count(),7} / {allCsvRecords.Count(),-7} * {columnCount}\n");
+        report += ($"Rows * Cols: {nonEmptyRows.Count(),7} / {allCsvRecords.Count,-7} * {columnCount}\n");
 
         var ecrv = findEmptyColumns(columnCount, nonEmptyRows);
-        report += ecrv.report;
+        report += ecrv.tnr;
 
         report += ($"Empty columns:  ");
-        ecrv.ec.ToList().ForEach(r => report += (r ? "#" : "·"));
+        ecrv.ecf.ToList().ForEach(r => report += (r ? "#" : "·"));
         report += ($"\n");
 
         var ourv = removeEmptyColumns(nonEmptyRows, ecrv);
         report += ourv.report;
 
-        using (var writer = new StreamWriter(_filename2))
-        {
-          using var csv3 = new CsvWriter(writer, config);
-          csv3.WriteRecords(ourv.ou);
-        }
+        using var writer = new StreamWriter(_filename2);
+        using var csv3 = new CsvWriter(writer, config);
+        csv3.WriteRecords(ourv.ou);
       }
       catch (Exception ex) { report += (ex); }
 
@@ -95,46 +93,41 @@ namespace CsvManipulator
       return (outCsvRecords, report); ;
     }
 
-    (bool[] ec, string report) findEmptyColumns(int colCnt, IEnumerable<dynamic> rows)
+    static (bool[] ecf, string tnr) findEmptyColumns(int colCnt, IEnumerable<dynamic> rows, int topCount = 3)
     {
-      var report = "";
-      var nonemptyColumns = new bool[colCnt];
-      rows.Skip(_ignoreHeaderColumnName ? 1 : 0).ToList().ForEach(kvp =>
+      var topNrowsReport = "";
+      var emptyColumnFlags = new bool[colCnt];
+      rows.Take(topCount).ToList().ForEach(kvp =>
       {
         var c = 0;
-        foreach (var cell in ((IDictionary<string, object>)kvp).Values)
+        ((IDictionary<string, object>)kvp).Values.ToList().ForEach(cell =>
         {
-          report += ($"  '{cell}'\t");
+          topNrowsReport += ($"  '{cell}'\t");
 
           if (!string.IsNullOrEmpty(cell?.ToString()))
-            nonemptyColumns[c] = true;
+            emptyColumnFlags[c] = true;
 
           c++;
-        }
-        report += ($"\n");
+        });
+        topNrowsReport += ($"\n");
       });
 
-      return (nonemptyColumns, report);
+      topNrowsReport += ($"  ... + {rows.Count() - topCount} rows more.\n");
+
+      return (emptyColumnFlags, topNrowsReport);
     }
 
-    void checkColumns()
-    {
-      using var reader1 = new StreamReader(_filename0);
-      var firstLine = reader1.ReadLine() ?? "";
-
-      dynamic eo = new ExpandoObject();
-      var csvDynaObj = (IDictionary<string, object>)eo;
-      foreach (var column in firstLine.Split(',', StringSplitOptions.RemoveEmptyEntries))
-      {
-        csvDynaObj.Add(column, "");
-      }
-
-    }
 
     void printTopLines(int top = 4)
     {
       Debug.WriteLine($" - Import done: {_linesIn.Count} lines imported!  Showing the 1st {top} rows:");
       _linesIn.Take(top).ToList().ForEach(l => Debug.WriteLine(l));
+    }
+
+    public async Task<string> GetFileStats()
+    {
+      await Task.Delay(333);
+      return "Under COnstruction...";
     }
   }
 }

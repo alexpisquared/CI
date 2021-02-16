@@ -1,38 +1,106 @@
-﻿using CsvHelper;
-using CsvHelper.Configuration;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System;
+using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace CsvManipulator
 {
   public partial class CsvMainWindow : Window
   {
-    public CsvMainWindow()
+    public CsvMainWindow() => InitializeComponent();
+
+    ICsvConverter _converter;
+    int _jobMode = 0;
+
+    void onExit(object s, RoutedEventArgs e) { Close(); App.Current.Shutdown(); }
+    async void onLoaded(object s, RoutedEventArgs e)
     {
-      InitializeComponent();
-
-
-      Loaded += onLoaded;
+#if DEBUG
+      await prepare(@"C:\temp\CI.csv");
+      await convert();
+#endif
+      await Task.Yield();
     }
-
-    void onLoaded(object sender, RoutedEventArgs e)
+    async void onDrop(object s, DragEventArgs e)
     {
-      var converter = new Converter(@"C:\temp\CI.csv");
-      tbkReport.Text = converter.CleanEmptyRowsColumns();
-    }
+      string filenameIPresume;
 
-    void onExit(object s, RoutedEventArgs e) { Close(); Close(); }
+      if (e.Data.GetDataPresent(DataFormats.StringFormat))
+      {
+        filenameIPresume = (string)e.Data.GetData(DataFormats.StringFormat);
+        goto OK;
+      }
+
+      if (!e.Data.GetDataPresent(DataFormats.FileDrop))
+      {
+        tbxInfo.Text = $"Must a file which is dropped.";
+        return;
+      }
+
+      var fileNames = e.Data.GetData(DataFormats.FileDrop, true) as string[];
+      if (fileNames?.Length < 1)
+      {
+        tbxInfo.Text = $"{fileNames?.Length / 1024.0} kb is not enough.";
+        return;
+      }
+
+      filenameIPresume = fileNames[0];
+
+      OK:
+      if (!File.Exists(filenameIPresume))
+      {
+        tbxInfo.Text = $"{filenameIPresume}\n\n\t appears to be unavailable";
+        return;
+      }
+
+      if (System.IO.Path.GetExtension(filenameIPresume).ToLower() != ".csv")
+      {
+        tbxInfo.Text = $"{filenameIPresume}\n\n\t is not good\n\n\t\t must be a CSV-file";
+        return;
+      }
+
+      await prepare(filenameIPresume);
+    }
+    async void onConvert(object s, RoutedEventArgs e) => await convert();
+    void onMouseLeft(object s, System.Windows.Input.MouseButtonEventArgs e) => DragMove();
+    void onSetCsvToJson(object s, RoutedEventArgs e) { e.Handled = true; setUI(0); }
+    void onSetGrouperBy(object s, RoutedEventArgs e) { e.Handled = true; setUI(1); }
+
+    void setUI(int jobMode)
+    {
+      if (_jobMode == jobMode || mnuBth == null || mnuRow == null || mnuCol == null) return;
+
+      _jobMode = jobMode;
+      mnuBth.IsChecked = !(mnuCol.IsChecked = jobMode == 0);
+    }
+    async Task prepare(string filenameIPresume)
+    {
+      tbxDrop.Visibility = Visibility.Collapsed;
+
+      _converter =
+        _jobMode == 0 ? new CsvConverter(filenameIPresume) :
+        _jobMode == 1 ? new CsvConverter(filenameIPresume) :
+                   /**/ new CsvConverter(filenameIPresume);
+
+      tbxInfo.Text = await _converter.GetFileStats();
+      buttonD.Visibility = Visibility.Visible;
+    }
+    async Task convert()
+    {
+      imgTarget.Visibility =
+      mnuPanel.Visibility =
+      buttonD.Visibility = Visibility.Hidden;
+
+      for (var i = 0; i < 3; i++)
+      {
+        tbxInfo.Text = $"Converting now ...\r\n\n\n\t\t So far so good ... "; await Task.Delay(125);
+        tbxInfo.Text = $"Converting now ...\r\n\n\n\t\t So far so good .. ."; await Task.Delay(125);
+        tbxInfo.Text = $"Converting now ...\r\n\n\n\t\t So far so good . .."; await Task.Delay(125);
+        tbxInfo.Text = $"Converting now ...\r\n\n\n\t\t So far so good  ..."; await Task.Delay(250);
+      }
+
+      tbxInfo.Text = _converter.CleanEmptyRowsColumns();
+    }
   }
 }

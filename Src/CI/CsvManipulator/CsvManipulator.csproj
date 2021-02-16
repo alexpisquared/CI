@@ -7,7 +7,15 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Resources\target.png" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="CsvHelper" Version="22.1.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Resources\target.png" />
   </ItemGroup>
 
 </Project>
