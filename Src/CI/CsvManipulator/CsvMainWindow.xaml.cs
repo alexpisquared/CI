@@ -17,7 +17,10 @@ namespace CsvManipulator
     async void onLoaded(object s, RoutedEventArgs e)
     {
 #if DEBUG
-      await prepare(@"C:\temp\CI.csv");
+      await prepare(
+        @"C:\Users\alex.pigida\Downloads\BBSSecurities202102121_test_withcomma.csv"
+        //@"C:\temp\CI.csv"
+        );
       await convert();
 #endif
       await Task.Yield();

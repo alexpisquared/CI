@@ -47,6 +47,12 @@ namespace CsvManipulator
         var nonEmptyRows = allCsvRecords.Skip(_ignoreHeaderColumnName ? 1 : 0).ToList().Where(kvp => ((ExpandoObject)kvp).Any(v => !string.IsNullOrEmpty(v.Value?.ToString())));
         report += ($"Rows * Cols: {nonEmptyRows.Count(),7} / {allCsvRecords.Count,-7} * {columnCount}\n");
 
+        foreach (var item in allCsvHeaders)
+        {
+          report += $"  {item}\t";
+        }
+        report += ($"\n");
+
         var ecrv = findEmptyColumns(columnCount, nonEmptyRows);
         report += ecrv.tnr;
 
@@ -112,7 +118,7 @@ namespace CsvManipulator
         topNrowsReport += ($"\n");
       });
 
-      topNrowsReport += ($"  ... + {rows.Count() - topCount} rows more.\n");
+      topNrowsReport += ($"  ... + {rows.Count() - topCount} more rows.\n\n");
 
       return (emptyColumnFlags, topNrowsReport);
     }

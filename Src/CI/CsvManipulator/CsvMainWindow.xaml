@@ -22,9 +22,7 @@
   <Border CornerRadius="6" Background="#f8f8f8" BorderBrush="#06d" BorderThickness="2" MouseLeftButtonDown="onMouseLeft">
     <Grid Margin="10" >
       <Grid.ColumnDefinitions>
-        <ColumnDefinition Width="*"/>
-        <ColumnDefinition Width="*"/>
-        <ColumnDefinition Width="*"/>
+        <ColumnDefinition/>
       </Grid.ColumnDefinitions>
       <Grid.RowDefinitions>
         <RowDefinition Height="75" />
@@ -32,8 +30,10 @@
         <RowDefinition Height="75" />
       </Grid.RowDefinitions>
 
-      <TextBlock x:Name="tbxHead" Margin="24,-135,0,0" Text="CSV de-Emptifier" FontSize="26" Foreground="#906d" RenderTransformOrigin="0.5,0.5" Grid.RowSpan="3" 
-                 HorizontalAlignment="Left" Width="373" Height="442" VerticalAlignment="Top" Grid.ColumnSpan="2">
+      <Border CornerRadius="5 0 0 5" Background="#ccc" Grid.RowSpan="3" Width="40" HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="-10" />
+
+      <TextBlock x:Name="tbxHead" Margin="24,-135,0,0" Text="CSV de-Emptifier" FontSize="26" Foreground="#906d" RenderTransformOrigin="0.5,0.5" Grid.RowSpan="2" 
+                 HorizontalAlignment="Left" Width="373" Height="442" VerticalAlignment="Top">
         <TextBlock.RenderTransform>
           <TransformGroup>
             <RotateTransform Angle="-90"/>
@@ -41,23 +41,23 @@
         </TextBlock.RenderTransform>
       </TextBlock>
 
-      <Viewbox Grid.RowSpan="3" Grid.ColumnSpan="3" Margin="42" >
+      <Viewbox Grid.RowSpan="3" Margin="42,42,42,42" >
         <TextBlock x:Name="tbxDrop" Text="Drop CSV file here &#10;&#10;&#10;                      somewhere" FontWeight="DemiBold" Foreground="#ccc"/>
       </Viewbox>
 
-      <Image Grid.RowSpan="3" Grid.ColumnSpan="3" Margin="-120" Opacity=".1" Source="/Resources/target.png" RenderTransformOrigin="0.5,0.5" x:Name="imgTarget" />
+      <Image Grid.RowSpan="3" Margin="-120,-120,-120,-120" Opacity=".1" Source="/Resources/target.png" RenderTransformOrigin="0.5,0.5" x:Name="imgTarget" />
 
-      <Viewbox Grid.Row="1" Grid.ColumnSpan="3" >
-        <Border CornerRadius="6" BorderBrush="#8cf" MouseLeftButtonDown="onMouseLeft" Margin="40 0 5 0">
+      <Viewbox Grid.Row="1" >
+        <Border CornerRadius="6" BorderBrush="#8cf" MouseLeftButtonDown="onMouseLeft" Margin="50 0 5 0">
           <TextBlock x:Name="tbxInfo" Text=" " TextWrapping="Wrap" FontSize="16" Foreground="#06d" HorizontalAlignment="Center" VerticalAlignment="Center" />
         </Border>
       </Viewbox>
 
-      <StackPanel Margin="10" Grid.Row="2" Grid.ColumnSpan="3" Orientation="Horizontal" HorizontalAlignment="Center" >
+      <StackPanel Margin="0,10,0,10" Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center" >
         <Button Margin="10" x:Name="buttonD" Height="32" Width="64" Content="_Convert" IsDefault="True" Click="onConvert" Visibility="Hidden" />
       </StackPanel>
 
-      <Viewbox Grid.ColumnSpan="3" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="42 0" Height="40" x:Name="mnuPanel" >
+      <Viewbox HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,0,42,0" Height="40" x:Name="mnuPanel" >
         <Menu Background="Transparent">
           <Label Content="Remove empty:" Foreground="#06d" />
           <RadioButton Content="Rows   " Checked="onSetCsvToJson" x:Name="mnuRow" />
@@ -66,7 +66,7 @@
         </Menu>
       </Viewbox>
 
-      <Button Grid.Column="2" Height="38" Width="41" Content="X" IsCancel="True"  Click="onExit" VerticalAlignment="Top" HorizontalAlignment="Right"  
+      <Button Height="38" Width="41" Content="X" IsCancel="True"  Click="onExit" VerticalAlignment="Top" HorizontalAlignment="Right"  
               Foreground="#d00" FontSize="26" FontWeight="Bold" Background="Transparent" BorderBrush="Transparent" Margin="0,-6,-7,0" />
 
     </Grid>

@@ -49,7 +49,7 @@ namespace RdpFacility
     public double MinTimeoutMin { get; set; }
     [JsonIgnore] public DateTimeOffset ThisStart { get; set; }
     [JsonIgnore] public TimeSpan MinTimeout { get; set; }
-    [JsonIgnore] public bool ModeRO => Environment.GetCommandLineArgs().Count() <= 1 || Environment.GetCommandLineArgs().Last().Contains("DevDbg");
+    [JsonIgnore] public bool ModeRO => Environment.GetCommandLineArgs().Length <= 1 || Environment.GetCommandLineArgs().Last().Contains("DevDbg");
 
     void reCalc()
     {
