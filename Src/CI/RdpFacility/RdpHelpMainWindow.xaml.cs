@@ -17,7 +17,7 @@ namespace RdpFacility
     readonly IdleTimeoutAnalizer _idleTimeoutAnalizer;
     readonly AppSettings _appSettings = AppSettings.Create();
 #if DEBUG
-    const int _periodSec = 1, _till = 20, _dbgDelayMs = 500;
+    const int _periodSec = 5, _till = 20, _dbgDelayMs = 500;
     int _dx = 1, _dy = 1;
 #else
     const int _periodSec = 60, _till = 20, _dbgDelayMs = 0;
@@ -25,6 +25,7 @@ namespace RdpFacility
 #endif
     readonly Insomniac _insomniac = new Insomniac();
     DateTimeOffset _onSince;
+    bool _isLoaded = false;
 
     public RdpHelpMainWindow()
     {
@@ -33,11 +34,12 @@ namespace RdpFacility
       _idleTimeoutAnalizer = ita;
       tbkMin.Text = report;
       chkAdbl.IsChecked = _appSettings.IsAudible;
-      chkInso.IsChecked = _appSettings.IsInsomnia;
+      chkInso.IsChecked = _appSettings.IsInsmnia;
+      chkPosn.IsChecked = _appSettings.IsPosning;
     }
     async void onLoaded(object s, RoutedEventArgs e)
     {
-      await setDR(_appSettings.IsInsomnia == true, false);
+      await setDR(_appSettings.IsInsmnia == true, false);
       tbkMin.Text += $"ITA so far  {_idleTimeoutAnalizer.MinTimeoutMin:N1} min  {(_idleTimeoutAnalizer.ModeRO ? "(ro)" : "(RW)")}";
       await File.AppendAllTextAsync(App.TextLog, $"\n{App.Started:yyyy-MM-dd HH:mm:ss}  {string.Join(' ', Environment.GetCommandLineArgs().Skip(1))}\t");
       await Task.Delay(_dbgDelayMs);
@@ -45,13 +47,15 @@ namespace RdpFacility
       if (_appSettings.IsAudible == true) SystemSounds.Exclamation.Play();
 
       if (!_idleTimeoutAnalizer.ModeRO) EvLogHelper.LogScrSvrBgn(4 * 60);
+    
+      _isLoaded = true;
     }
     async Task onTick()
     {
       if (DateTimeOffset.Now.Hour >= _till && chkInso.IsChecked == true)
         await setDR(false, false);
 
-      if (_appSettings.IsMousing)
+      if (_appSettings.IsPosning)
         togglePosition();
     }
 
@@ -79,16 +83,15 @@ namespace RdpFacility
       }
     }
 
-    void onAuOn(object s, RoutedEventArgs e) { _appSettings.IsAudible = ((CheckBox)s).IsChecked == true; _appSettings.Store(); }
-    void onDaOn(object s, RoutedEventArgs e) { _appSettings.IsMousing = ((CheckBox)s).IsChecked == true; _appSettings.Store(); }
+    async void onAuOn(object s, RoutedEventArgs e) { _appSettings.IsAudible = ((CheckBox)s).IsChecked == true; if (_isLoaded) await _appSettings.StoreAsync(); }
+    async void onDaOn(object s, RoutedEventArgs e) { _appSettings.IsPosning = ((CheckBox)s).IsChecked == true; if (_isLoaded) await _appSettings.StoreAsync(); }
+    async void onStrt(object s, RoutedEventArgs e) { _appSettings.IsInsmnia = ((CheckBox)s).IsChecked == true; if (_isLoaded) await _appSettings.StoreAsync(); await setDR(((CheckBox)s).IsChecked == true); }
     void onRset(object s, RoutedEventArgs e) { _idleTimeoutAnalizer.MinTimeoutMin = 100; tbkMin.Text = $"ITA so far  {_idleTimeoutAnalizer.MinTimeoutMin:N1} min  {(_idleTimeoutAnalizer.ModeRO ? "(ro)" : "(RW)")}"; _idleTimeoutAnalizer.SaveLastClose(); }
-    async void onStrt(object s, RoutedEventArgs e) => await setDR(((CheckBox)s).IsChecked == true);
     async void onMark(object z, RoutedEventArgs e) { var s = $"{DateTimeOffset.Now:HH:mm:ss} {(DateTimeOffset.Now - App.Started):hh\\:mm\\:ss}  Mark "; tbkLog.Text += s; await File.AppendAllTextAsync(App.TextLog, s); }
     async void onExit(object s, RoutedEventArgs e)
     {
       if (!_idleTimeoutAnalizer.ModeRO)
         EvLogHelper.LogScrSvrEnd(App.Started.DateTime.AddSeconds(-4 * 60), 4 * 60, "Escape pressed");
-
 
       await File.AppendAllTextAsync(App.TextLog, $"{DateTimeOffset.Now:HH:mm:ss} {(DateTimeOffset.Now - App.Started):hh\\:mm\\:ss}  onExit()\t"); Close();
     }
@@ -103,8 +106,6 @@ namespace RdpFacility
 
     async Task setDR(bool isOn, bool preserveForLAter = true)
     {
-      if (preserveForLAter) _appSettings.IsInsomnia = isOn;
-
       if (isOn)
       {
         _insomniac.RequestActive();
