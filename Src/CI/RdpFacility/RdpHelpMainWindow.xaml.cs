@@ -14,7 +14,7 @@ namespace RdpFacility
   public partial class RdpHelpMainWindow : Window
   {
     readonly IdleTimeoutAnalizer _idleTimeoutAnalizer;
-    readonly AppSettings _AppSettings = AppSettings.Create();
+    readonly AppSettings _appSettings = AppSettings.Create();
 #if DEBUG
     const int _periodSec = 1, _till = 20, _dbgDelayMs = 500;
     int _dx = 1, _dy = 1;
@@ -31,10 +31,19 @@ namespace RdpFacility
       var (ita, report) = IdleTimeoutAnalizer.Create(App.Started);
       _idleTimeoutAnalizer = ita;
       tbkMin.Text = report;
-      chkAdbl.IsChecked = _AppSettings.IsAudible;
-      chkInso.IsChecked = _AppSettings.IsInsomnia;
+      chkAdbl.IsChecked = _appSettings.IsAudible;
+      chkInso.IsChecked = _appSettings.IsInsomnia;
+    }
+    async void onLoaded(object s, RoutedEventArgs e)
+    {
+      await setDR(_appSettings.IsInsomnia == true, false);
+      tbkMin.Text += $"ITA so far  {_idleTimeoutAnalizer.MinTimeoutMin:N1} min  {(_idleTimeoutAnalizer.ModeRO ? "(ro)" : "(RW)")}";
+      await File.AppendAllTextAsync(App.TextLog, $"\n{App.Started:yyyy-MM-dd HH:mm:ss}  {string.Join(' ', Environment.GetCommandLineArgs().Skip(1))}\t");
+      await Task.Delay(_dbgDelayMs);
+      _ = new DispatcherTimer(TimeSpan.FromSeconds(_periodSec), DispatcherPriority.Normal, new EventHandler(async (s, e) => await onTick()), Dispatcher.CurrentDispatcher); //tu:
+      if (_appSettings.IsAudible == true) SystemSounds.Exclamation.Play();
 
-      SystemSounds.Hand.Play();
+      if (!_idleTimeoutAnalizer.ModeRO) EvLogHelper.LogScrSvrBgn(4 * 60);
     }
     async Task onTick()
     {
@@ -53,7 +62,7 @@ namespace RdpFacility
 
         tbkLog.Text += $"{pointToScreen}  ";
         Debug.WriteLine($"** XY: {pointToWindow,12}  \t {pointToScreen,12} \t {newPointToWin.x,6:N0}-{newPointToWin.y,-6:N0}\t");
-        if (_AppSettings.IsAudible == true) SystemSounds.Asterisk.Play();
+        if (_appSettings.IsAudible == true) SystemSounds.Asterisk.Play();
       }
       finally
       {
@@ -62,20 +71,8 @@ namespace RdpFacility
         _dy = -_dy;
       }
     }
-
-    async void onLoaded(object s, RoutedEventArgs e)
-    {
-      await setDR(_AppSettings.IsInsomnia == true, false);
-      tbkMin.Text += $"ITA so far  {_idleTimeoutAnalizer.MinTimeoutMin:N1} min  {(_idleTimeoutAnalizer.ModeRO ? "(ro)" : "(RW)")}";
-      await File.AppendAllTextAsync(App.TextLog, $"\n{App.Started:yyyy-MM-dd HH:mm:ss}  {string.Join(' ', Environment.GetCommandLineArgs().Skip(1))}\t");
-      await Task.Delay(_dbgDelayMs);
-      _ = new DispatcherTimer(TimeSpan.FromSeconds(_periodSec), DispatcherPriority.Normal, new EventHandler(async (s, e) => await onTick()), Dispatcher.CurrentDispatcher); //tu:
-      SystemSounds.Exclamation.Play();
-
-      if (!_idleTimeoutAnalizer.ModeRO) EvLogHelper.LogScrSvrBgn(4 * 60);
-    }
-    void onAuOn(object s, RoutedEventArgs e) { _AppSettings.IsAudible = true; _AppSettings.Store(); }
-    void onAuOf(object s, RoutedEventArgs e) { _AppSettings.IsAudible = false; _AppSettings.Store(); }
+    void onAuOn(object s, RoutedEventArgs e) { _appSettings.IsAudible = true; _appSettings.Store(); }
+    void onAuOf(object s, RoutedEventArgs e) { _appSettings.IsAudible = false; _appSettings.Store(); }
     void onRset(object s, RoutedEventArgs e) { _idleTimeoutAnalizer.MinTimeoutMin = 100; tbkMin.Text = $"ITA so far  {_idleTimeoutAnalizer.MinTimeoutMin:N1} min  {(_idleTimeoutAnalizer.ModeRO ? "(ro)" : "(RW)")}"; _idleTimeoutAnalizer.SaveLastClose(); }
     async void onStrt(object s, RoutedEventArgs e) => await setDR(true);
     async void onStop(object s, RoutedEventArgs e) => await setDR(false);
@@ -93,13 +90,13 @@ namespace RdpFacility
       await File.AppendAllTextAsync(App.TextLog, $"{DateTimeOffset.Now:HH:mm:ss} {(DateTimeOffset.Now - App.Started):hh\\:mm\\:ss}  OnClosed\t");
       _insomniac.RequestRelease();
       base.OnClosed(e);
-      if (_AppSettings.IsAudible == true) SystemSounds.Hand.Play();
+      if (_appSettings.IsAudible == true) SystemSounds.Hand.Play();
       _idleTimeoutAnalizer.SaveLastClose();
     }
 
     async Task setDR(bool isOn, bool preserveForLAter = true)
     {
-      if (preserveForLAter) _AppSettings.IsInsomnia = isOn;
+      if (preserveForLAter) _appSettings.IsInsomnia = isOn;
 
       if (isOn)
       {
