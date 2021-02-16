@@ -1,8 +1,5 @@
-﻿<Window x:Class="CsvManipulator.CsvMainWindow" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d" xmlns:local="clr-namespace:CsvManipulator"
-        Title="■ ■ ■ " Height="420" Width="700" AllowDrop="True" Drop="onDrop" Loaded="onLoaded"
-        AllowsTransparency="True" WindowStyle="None" Background="Transparent" ResizeMode="CanResizeWithGrip">
-
+﻿<Window x:Class="CsvManipulator.CsvMainWindow" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d" xmlns:local="clr-namespace:CsvManipulator"
+        Title="■ ■ ■ " Height="420" Width="700" AllowDrop="True" Drop="onDrop" Loaded="onLoaded" AllowsTransparency="True" WindowStyle="None" Background="Transparent" ResizeMode="CanResizeWithGrip">
   <Window.Resources>
     <Style TargetType="RadioButton">
       <Setter Property="Margin"       Value="5" />
@@ -22,8 +19,7 @@
       <Setter Property="Foreground"  Value="#ff0" />
     </Style>
   </Window.Resources>
-
-  <Border CornerRadius="6" Background="#f8f8f8" BorderBrush="#8cf" MouseLeftButtonDown="onMouseLeft">
+  <Border CornerRadius="6" Background="#f8f8f8" BorderBrush="#06d" BorderThickness="2" MouseLeftButtonDown="onMouseLeft">
     <Grid Margin="10" >
       <Grid.ColumnDefinitions>
         <ColumnDefinition Width="*"/>
