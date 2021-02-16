@@ -9,7 +9,7 @@ namespace RdpFacility
     public static readonly string TextLog; // = @"C:\temp\EventLog.txt";
     public static DateTimeOffset Started;  // lazy 
 
-    static App() => TextLog = @$"RdpFacility.Log.{Environment.MachineName}.txt";
+    static App() => TextLog = @$"RdpFacility.{Environment.MachineName}.Log.txt";
     protected override void OnStartup(StartupEventArgs e)
     {
       Started = DateTimeOffset.Now; // the soonest self awareness.

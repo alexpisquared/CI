@@ -9,20 +9,20 @@ namespace RdpFacility
 {
   public class IdleTimeoutAnalizer
   {
-    static readonly string _fileName;
+    static readonly string _itaFile;
     readonly bool _ready = false;
 
-    static IdleTimeoutAnalizer() => _fileName = @$"RdpFacility.IdleTimeoutAnalizer.{Environment.MachineName}.json";
+    static IdleTimeoutAnalizer() => _itaFile= @$"RdpFacility.{Environment.MachineName}.ita.json";
 
-    public static (IdleTimeoutAnalizer ita, string report) LoadMe(DateTimeOffset started)
+    public static (IdleTimeoutAnalizer ita, string report) Create(DateTimeOffset started)
     {
       IdleTimeoutAnalizer ita;
       var report = "";
-      if (File.Exists(_fileName))
+      if (File.Exists(_itaFile))
       {
         try
         {
-          var jsonString = File.ReadAllText(_fileName);
+          var jsonString = File.ReadAllText(_itaFile);
           ita = JsonSerializer.Deserialize<IdleTimeoutAnalizer>(jsonString);
           ita.MinTimeout = TimeSpan.FromMinutes(ita.MinTimeoutMin);
           ita.ThisStart = started;
@@ -51,9 +51,6 @@ namespace RdpFacility
     [JsonIgnore] public TimeSpan MinTimeout { get; set; }
     [JsonIgnore] public bool ModeRO => Environment.GetCommandLineArgs().Count() <= 1 || Environment.GetCommandLineArgs().Last().Contains("DevDbg");
 
-    public bool? IsAudible { get; set; }
-    public bool? IsInsomnia { get; set; }
-
     void reCalc()
     {
       var thisTimeout = ThisStart - LastClose;
@@ -67,7 +64,7 @@ namespace RdpFacility
 
     async Task saveMeAsync()
     {
-      using var createStream = File.Create(_fileName);
+      using var createStream = File.Create(_itaFile);
       await JsonSerializer.SerializeAsync(createStream, this);
     }
     void saveMe()
@@ -77,7 +74,7 @@ namespace RdpFacility
 
       MinTimeoutMin = MinTimeout.TotalMinutes;
       var jsonString = JsonSerializer.Serialize(this);
-      File.WriteAllText(_fileName, jsonString);
+      File.WriteAllText(_itaFile, jsonString);
     }
 
     internal void SaveLastClose()
