@@ -11,6 +11,7 @@ namespace RdpFacility
     public bool IsAudible { get; set; }
     public bool IsInsmnia { get; set; }
     public bool IsPosning { get; set; }
+    public double PeriodSec { get; set; } = 210;
 
     static readonly string _stgFile;
     static AppSettings() => _stgFile = @$"RdpFacility.{Environment.MachineName}.stg.json";

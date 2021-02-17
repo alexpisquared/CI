@@ -45,7 +45,7 @@ namespace CsvManipulator
 
       if (!e.Data.GetDataPresent(DataFormats.FileDrop))
       {
-        tbxInfo.Text = $"Must a file which is dropped.";
+        tbxInfo.Text = $"Must be an existing file.";
         return;
       }
 
@@ -94,7 +94,7 @@ namespace CsvManipulator
         _jobMode == 1 ? new CsvConverter(filenameIPresume) :
                    /**/ new CsvConverter(filenameIPresume);
 
-      tbxInfo.Text = await _converter.GetFileStats();
+      tbxInfB.Text = await _converter.GetFileStats();
       buttonD.Visibility = Visibility.Visible;
     }
     async Task convert()
@@ -111,7 +111,8 @@ namespace CsvManipulator
         tbxInfo.Text = $"Converting now ...\r\n\n\n\t\t So far so good  ..."; await Task.Delay(_delayMs * 2);
       }
 
-      tbxInfo.Text = _converter.CleanEmptyRowsColumns();
+      tbxInfo.Text = "";
+      tbxInfA.Text = await _converter.CleanEmptyRowsColumns();
     }
   }
 }

@@ -3,7 +3,7 @@
 
   <Window.Resources>
     <Style TargetType="CheckBox">
-      <Setter Property="Margin" Value="5" />
+      <Setter Property="Margin" Value="10" />
       <Setter Property="Foreground" Value="#ff0" />
     </Style>
     <Style TargetType="Label">
@@ -24,9 +24,9 @@
       <Label Content="Min" x:Name="tbkMin"      HorizontalAlignment="Center" Foreground="#d60" />
       <Label Content="Log" x:Name="tbkLog"      HorizontalAlignment="Center" Foreground="#0a0" FontSize="3" MaxWidth="500" />
       <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center" Visibility="Visible">
-        <CheckBox  x:Name="chkAdbl" Content="_Audio" Checked="onAuOn" Unchecked="onAuOn" />
-        <CheckBox  x:Name="chkPosn" Content="_Dance" Checked="onDaOn" Unchecked="onDaOn" />
-        <CheckBox  x:Name="chkInso" Content="_Insom" Checked="onStrt" Unchecked="onStrt" />
+        <CheckBox Content="_A" Checked="onAudible" Unchecked="onAudible" x:Name="chkAdbl" ToolTip="Audible"/>
+        <CheckBox Content="_P" Checked="onInsmnia" Unchecked="onInsmnia" x:Name="chkPosn" ToolTip="Insmnia"/>
+        <CheckBox Content="_I" Checked="onPosning" Unchecked="onPosning" x:Name="chkInso" ToolTip="Posning"/>
         <Button   Content="_Rset" Click="onRset"  />
         <Button   Content="_Mark" Click="onMark" IsDefault="True" />
         <Button   Content="  x  " Click="onExit"  IsCancel="True" />

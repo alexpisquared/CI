@@ -17,6 +17,8 @@ namespace CsvManipulator
     readonly List<CsvLine> _linesIn = new List<CsvLine>();
     readonly bool _ignoreHeaderColumnName = false; // for rare case scenario could be false.
     const int _topN = 3;
+    CsvConfiguration _config;
+    List<dynamic> _allCsvRecords;
 
     public CsvConverter(string filename)
     {
@@ -27,15 +29,11 @@ namespace CsvManipulator
 
     public async Task<string> GetFileStats()
     {
-      await Task.Delay(333);
-      return "Under COnstruction...";
-    }
-    public string CleanEmptyRowsColumns()
-    {
+      await Task.Delay(33);
       var report = "";
       try
       {
-        var config = new CsvConfiguration(CultureInfo.InvariantCulture)
+        _config = new CsvConfiguration(CultureInfo.InvariantCulture)
         {
           HasHeaderRecord = false, // !!! otherwise must have unique non-empty column names
           //HeaderValidated = null,
@@ -45,14 +43,23 @@ namespace CsvManipulator
         };
 
         using var reader = new StreamReader(_filename0);
-        using var csvrdr = new CsvReader(reader, config);
-        var allCsvRecords = csvrdr.GetRecords<dynamic>().ToList();
-        report += DumpTopRows(allCsvRecords);
+        using var csvrdr = new CsvReader(reader, _config);
+        _allCsvRecords = csvrdr.GetRecords<dynamic>().ToList();
+        report += DumpTopRows("BEFORE", _allCsvRecords);
+      }
+      catch (Exception ex) { report += (ex); }
 
-        var allCsvHeaders = ((IDictionary<string, object>)allCsvRecords.FirstOrDefault()).Values;
+      return report;
+    }
+    public async Task<string> CleanEmptyRowsColumns()
+    {
+      var report = "";
+      try
+      {
+        var allCsvHeaders = ((IDictionary<string, object>)_allCsvRecords.FirstOrDefault()).Values;
         var columnCount = allCsvHeaders.Count;
 
-        var nonEmptyRows = allCsvRecords.Skip(_ignoreHeaderColumnName ? 1 : 0).ToList().Where(kvp => ((ExpandoObject)kvp).Any(v => !string.IsNullOrEmpty(v.Value?.ToString())));
+        var nonEmptyRows = _allCsvRecords.Skip(_ignoreHeaderColumnName ? 1 : 0).ToList().Where(kvp => ((ExpandoObject)kvp).Any(v => !string.IsNullOrEmpty(v.Value?.ToString())));
 
         //allCsvHeaders.ToList().ForEach(header => report += $"  {header}\t"); report += ($"\n");
 
@@ -61,20 +68,21 @@ namespace CsvManipulator
         //report += ($"Empty columns:  ");        ecrv.ecf.ToList().ForEach(r => report += (r ? "#" : "·"));        report += ($"\n");
 
         var ourv = removeEmptyColumns(nonEmptyRows, ecrv);
-        report += DumpTopRows(ourv);
+        report += DumpTopRows("AFTER", ourv);
 
         using var writer = new StreamWriter(_filename2);
-        using var csv3 = new CsvWriter(writer, config);
+        using var csv3 = new CsvWriter(writer, _config);
         csv3.WriteRecords(ourv);
       }
       catch (Exception ex) { report += (ex); }
+      await Task.Delay(33);
 
       return report;
     }
 
-    static string DumpTopRows(List<dynamic> allCsvRecords, int topCount = _topN)
+    static string DumpTopRows(string note, List<dynamic> allCsvRecords, int topCount = _topN)
     {
-      var report = $"Top {_topN} from total {allCsvRecords.Count:N0} rows: \n";
+      var report = $"{note}   Top {_topN} from total {allCsvRecords.Count:N0} rows: \n";
 
       allCsvRecords.Take(topCount).ToList().ForEach(row =>
       {

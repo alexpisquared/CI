@@ -47,10 +47,15 @@
 
       <Image Grid.RowSpan="3" Margin="-120,-120,-120,-120" Opacity=".1" Source="/Resources/target.png" RenderTransformOrigin="0.5,0.5" x:Name="imgTarget" />
 
-      <Viewbox Grid.Row="1" >
-        <Border CornerRadius="6" BorderBrush="#8cf" MouseLeftButtonDown="onMouseLeft" Margin="50 0 5 0">
-          <TextBlock x:Name="tbxInfo" Text=" " TextWrapping="Wrap" FontSize="16" Foreground="#06d" HorizontalAlignment="Center" VerticalAlignment="Center" />
-        </Border>
+      <Viewbox Grid.Row="1" Margin="50 0 5 0">
+        <StackPanel>
+          <TextBlock x:Name="tbxInfB" Text="" TextWrapping="Wrap" FontSize="16" Foreground="#06d" HorizontalAlignment="Center" VerticalAlignment="Center" />
+          <TextBlock x:Name="tbxInfA" Text="" TextWrapping="Wrap" FontSize="16" Foreground="#0a6" HorizontalAlignment="Center" VerticalAlignment="Center" />
+        </StackPanel>
+      </Viewbox>
+      
+      <Viewbox Grid.Row="1" Margin="50 0 5 0">
+        <TextBlock x:Name="tbxInfo" Text="" TextWrapping="Wrap" FontSize="16" Foreground="#d60" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="0 15" Background="#eee" />
       </Viewbox>
 
       <StackPanel Margin="0,10,0,10" Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center" >

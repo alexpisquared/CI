@@ -5,6 +5,6 @@ namespace CsvManipulator
   public interface ICsvConverter
   {
     Task<string> GetFileStats();
-    string CleanEmptyRowsColumns();
+    Task<string> CleanEmptyRowsColumns();
   }
 }

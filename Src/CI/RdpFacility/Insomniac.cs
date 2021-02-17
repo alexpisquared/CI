@@ -1,20 +1,24 @@
 ﻿using System;
-using System.Diagnostics;
+using System.IO;
 using System.Runtime.InteropServices;
 
 namespace RdpFacility
 {
   internal class Insomniac
   {
+    bool _isOn = false;
     internal void RequestActive()
     {
+      _isOn = true;
       SetThreadExecutionState(EXECUTION_STATE.ES_DISPLAY_REQUIRED | EXECUTION_STATE.ES_CONTINUOUS);
-      Debug.WriteLine($"** On  since {DateTimeOffset.Now:HH:mm}");
+      File.AppendAllText(App.TextLog, $"{DateTimeOffset.Now:HH:mm:ss} {(DateTimeOffset.Now - App.Started):hh\\:mm\\:ss}  Dr - On \n");
     }
     internal void RequestRelease()
     {
+      if (!_isOn) return;
+
       SetThreadExecutionState(EXECUTION_STATE.ES_CONTINUOUS);
-      Debug.WriteLine($"** Off since {DateTimeOffset.Now:HH:mm}");
+      File.AppendAllText(App.TextLog, $"{DateTimeOffset.Now:HH:mm:ss} {(DateTimeOffset.Now - App.Started):hh\\:mm\\:ss}  Dr - Off \n");
     }
 
 

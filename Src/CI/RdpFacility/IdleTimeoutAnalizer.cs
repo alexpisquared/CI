@@ -47,6 +47,7 @@ namespace RdpFacility
 
     public DateTimeOffset LastClose { get; set; }
     public double MinTimeoutMin { get; set; }
+    public bool SkipLoggingOnSelf{ get; set; }
     [JsonIgnore] public DateTimeOffset ThisStart { get; set; }
     [JsonIgnore] public TimeSpan MinTimeout { get; set; }
     [JsonIgnore] public bool RanByTaskScheduler => Environment.GetCommandLineArgs().Any(r => r.Contains("Task"));
