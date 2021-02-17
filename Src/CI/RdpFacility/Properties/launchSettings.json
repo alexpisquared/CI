@@ -1,8 +1,7 @@
 {
   "profiles": {
     "RdpFacility": {
-      "commandName": "Project",
-      "commandLineArgs": "use DevDbg as last to skip updating non-TaskScheduler launches - DevDbWW"
+      "commandName": "Project"
     }
   }
 }

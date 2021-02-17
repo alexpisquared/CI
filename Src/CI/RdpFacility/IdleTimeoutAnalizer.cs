@@ -49,7 +49,7 @@ namespace RdpFacility
     public double MinTimeoutMin { get; set; }
     [JsonIgnore] public DateTimeOffset ThisStart { get; set; }
     [JsonIgnore] public TimeSpan MinTimeout { get; set; }
-    [JsonIgnore] public bool ModeRO => Environment.GetCommandLineArgs().Length <= 1 || Environment.GetCommandLineArgs().Last().Contains("DevDbg");
+    [JsonIgnore] public bool RanByTaskScheduler => Environment.GetCommandLineArgs().Any(r => r.Contains("Task"));
 
     void reCalc()
     {
@@ -58,7 +58,7 @@ namespace RdpFacility
       {
         MinTimeout = thisTimeout;
         LastClose = DateTimeOffset.Now;
-        saveMe();
+        updateMeasureIfByTaskSchduler();
       }
     }
 
@@ -67,9 +67,9 @@ namespace RdpFacility
       using var createStream = File.Create(_itaFile);
       await JsonSerializer.SerializeAsync(createStream, this);
     }
-    void saveMe()
+    void updateMeasureIfByTaskSchduler()
     {
-      if (ModeRO)
+      if (!RanByTaskScheduler)
         return;
 
       MinTimeoutMin = MinTimeout.TotalMinutes;
@@ -80,7 +80,7 @@ namespace RdpFacility
     internal void SaveLastClose()
     {
       LastClose = DateTimeOffset.Now;
-      saveMe();
+      updateMeasureIfByTaskSchduler();
     }
   }
 }

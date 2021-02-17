@@ -8,6 +8,12 @@ namespace CsvManipulator
 {
   public partial class CsvMainWindow : Window
   {
+#if DEBUG
+    const int _delayMs = 5, _repeat = 3;
+#else
+    const int _delayMs = 125, _repeat = 6;
+#endif
+
     public CsvMainWindow() => InitializeComponent();
 
     ICsvConverter _converter;
@@ -17,10 +23,12 @@ namespace CsvManipulator
     async void onLoaded(object s, RoutedEventArgs e)
     {
 #if DEBUG
-      await prepare(
-        @"C:\Users\alex.pigida\Downloads\BBSSecurities202102121_test_withcomma.csv"
-        //@"C:\temp\CI.csv"
-        );
+      if(Environment.MachineName == "RAZER1")
+      {
+        Top = 1700; Left = 1100;
+      }
+
+      await prepare(Environment.MachineName == "RAZER1" ? @"C:\temp\CI.csv" : @"C:\Users\alex.pigida\Downloads\BBSSecurities202102121_test_withcomma.csv");
       await convert();
 #endif
       await Task.Yield();
@@ -97,10 +105,10 @@ namespace CsvManipulator
 
       for (var i = 0; i < 3; i++)
       {
-        tbxInfo.Text = $"Converting now ...\r\n\n\n\t\t So far so good ... "; await Task.Delay(125);
-        tbxInfo.Text = $"Converting now ...\r\n\n\n\t\t So far so good .. ."; await Task.Delay(125);
-        tbxInfo.Text = $"Converting now ...\r\n\n\n\t\t So far so good . .."; await Task.Delay(125);
-        tbxInfo.Text = $"Converting now ...\r\n\n\n\t\t So far so good  ..."; await Task.Delay(250);
+        tbxInfo.Text = $"Converting now ...\r\n\n\n\t\t So far so good ... "; await Task.Delay(_delayMs);
+        tbxInfo.Text = $"Converting now ...\r\n\n\n\t\t So far so good .. ."; await Task.Delay(_delayMs);
+        tbxInfo.Text = $"Converting now ...\r\n\n\n\t\t So far so good . .."; await Task.Delay(_delayMs);
+        tbxInfo.Text = $"Converting now ...\r\n\n\n\t\t So far so good  ..."; await Task.Delay(_delayMs * 2);
       }
 
       tbxInfo.Text = _converter.CleanEmptyRowsColumns();

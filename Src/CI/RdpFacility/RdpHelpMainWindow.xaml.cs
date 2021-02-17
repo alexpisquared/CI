@@ -32,7 +32,7 @@ namespace RdpFacility
       InitializeComponent();
       var (ita, report) = IdleTimeoutAnalizer.Create(App.Started);
       _idleTimeoutAnalizer = ita;
-      tbkMin.Text = report;
+      tbkMin.Content = report;
       chkAdbl.IsChecked = _appSettings.IsAudible;
       chkInso.IsChecked = _appSettings.IsInsmnia;
       chkPosn.IsChecked = _appSettings.IsPosning;
@@ -40,13 +40,13 @@ namespace RdpFacility
     async void onLoaded(object s, RoutedEventArgs e)
     {
       await setDR(_appSettings.IsInsmnia == true, false);
-      tbkMin.Text += $"ITA so far  {_idleTimeoutAnalizer.MinTimeoutMin:N1} min  {(_idleTimeoutAnalizer.ModeRO ? "(ro)" : "(RW)")}";
-      await File.AppendAllTextAsync(App.TextLog, $"\n{App.Started:yyyy-MM-dd HH:mm:ss}  {string.Join(' ', Environment.GetCommandLineArgs().Skip(1))}  {(_idleTimeoutAnalizer.ModeRO ? "ro" : "RW")}  \t");
+      tbkMin.Content += $"ITA so far  {_idleTimeoutAnalizer.MinTimeoutMin:N1} min  {(_idleTimeoutAnalizer.RanByTaskScheduler ? "(byTS)" : "(!byTS)")}";
+      await File.AppendAllTextAsync(App.TextLog, $"\n{App.Started:yyyy-MM-dd HH:mm:ss}  {string.Join(' ', Environment.GetCommandLineArgs().Skip(1))}  {(_idleTimeoutAnalizer.RanByTaskScheduler ? "byTS" : "!byTS")}  \t");
       await Task.Delay(_dbgDelayMs);
       _ = new DispatcherTimer(TimeSpan.FromSeconds(_periodSec), DispatcherPriority.Normal, new EventHandler(async (s, e) => await onTick()), Dispatcher.CurrentDispatcher); //tu:
       if (_appSettings.IsAudible == true) SystemSounds.Exclamation.Play();
 
-      if (!_idleTimeoutAnalizer.ModeRO) EvLogHelper.LogScrSvrBgn(4 * 60);
+      if (_idleTimeoutAnalizer.RanByTaskScheduler) EvLogHelper.LogScrSvrBgn(4 * 60, "RDP Facility - OnLoaded()  Idle Timeout ");
 
       _isLoaded = true;
     }
@@ -71,7 +71,7 @@ namespace RdpFacility
         Win32.ClientToScreen(Process.GetCurrentProcess().MainWindowHandle, ref newPointToWin);
         Win32.SetCursorPos(newPointToWin.x, newPointToWin.y);
 
-        tbkLog.Text += $"{pointToScreen}  ";
+        tbkLog.Content += $"{pointToScreen}  ";
         Debug.WriteLine($"** XY: {pointToWindow,12}  \t {pointToScreen,12} \t {newPointToWin.x,6:N0}-{newPointToWin.y,-6:N0}\t");
         if (_appSettings.IsAudible == true) SystemSounds.Asterisk.Play();
       }
@@ -86,18 +86,12 @@ namespace RdpFacility
     async void onAuOn(object s, RoutedEventArgs e) { _appSettings.IsAudible = ((CheckBox)s).IsChecked == true; if (_isLoaded) await _appSettings.StoreAsync(); }
     async void onDaOn(object s, RoutedEventArgs e) { _appSettings.IsPosning = ((CheckBox)s).IsChecked == true; if (_isLoaded) await _appSettings.StoreAsync(); }
     async void onStrt(object s, RoutedEventArgs e) { _appSettings.IsInsmnia = ((CheckBox)s).IsChecked == true; if (_isLoaded) await _appSettings.StoreAsync(); await setDR(((CheckBox)s).IsChecked == true); }
-    void onRset(object s, RoutedEventArgs e) { _idleTimeoutAnalizer.MinTimeoutMin = 100; tbkMin.Text = $"ITA so far  {_idleTimeoutAnalizer.MinTimeoutMin:N1} min  {(_idleTimeoutAnalizer.ModeRO ? "(ro)" : "(RW)")}"; _idleTimeoutAnalizer.SaveLastClose(); }
-    async void onMark(object z, RoutedEventArgs e) { var s = $"{DateTimeOffset.Now:HH:mm:ss} {(DateTimeOffset.Now - App.Started):hh\\:mm\\:ss}  Mark     \t"; tbkLog.Text += s; await File.AppendAllTextAsync(App.TextLog, s); }
-    async void onExit(object s, RoutedEventArgs e)
-    {
-      if (!_idleTimeoutAnalizer.ModeRO)
-        EvLogHelper.LogScrSvrEnd(App.Started.DateTime.AddSeconds(-4 * 60), 4 * 60, "RDP Facility - Escape pressed");
-
-      await File.AppendAllTextAsync(App.TextLog, $"{DateTimeOffset.Now:HH:mm:ss} {(DateTimeOffset.Now - App.Started):hh\\:mm\\:ss}  onExit()   \t"); Close();
-    }
+    void onRset(object s, RoutedEventArgs e) { _idleTimeoutAnalizer.MinTimeoutMin = 100; tbkMin.Content = $"ITA so far  {_idleTimeoutAnalizer.MinTimeoutMin:N1} min  {(_idleTimeoutAnalizer.RanByTaskScheduler ? "(ro)" : "(RW)")}"; _idleTimeoutAnalizer.SaveLastClose(); }
+    async void onMark(object z, RoutedEventArgs e) { var s = $"{DateTimeOffset.Now:HH:mm:ss} {(DateTimeOffset.Now - App.Started):hh\\:mm\\:ss}  Mark     \t"; tbkLog.Content += s; await File.AppendAllTextAsync(App.TextLog, s); }
+    async void onExit(object s, RoutedEventArgs e)    {      await File.AppendAllTextAsync(App.TextLog, $"{DateTimeOffset.Now:HH:mm:ss} {(DateTimeOffset.Now - App.Started):hh\\:mm\\:ss}  onExit() by Escape.  \t"); Close();    }
     protected override async void OnClosed(EventArgs e)
     {
-      if (!_idleTimeoutAnalizer.ModeRO)
+      if (_idleTimeoutAnalizer.RanByTaskScheduler)
         EvLogHelper.LogScrSvrEnd(App.Started.DateTime.AddSeconds(-4 * 60), 4 * 60, "RDP Facility - OnClosed()");
 
       await File.AppendAllTextAsync(App.TextLog, $"{DateTimeOffset.Now:HH:mm:ss} {(DateTimeOffset.Now - App.Started):hh\\:mm\\:ss}  OnClosed   \t");
@@ -112,18 +106,18 @@ namespace RdpFacility
       if (isOn)
       {
         _insomniac.RequestActive();
-        tbkLog.Text = $"{DateTimeOffset.Now:HH:mm:ss}\r";
+        tbkLog.Content = $"{DateTimeOffset.Now:HH:mm:ss}\r";
       }
       else
       {
         _insomniac.RequestRelease();
       }
 
-      tbkBig.Text = isOn ?
+      tbkBig.Content = isOn ?
         $"ON  {(_onSince = DateTimeOffset.Now):HH:mm} ÷ {_till}:00" :
         $"OFF  (was ON for {(DateTimeOffset.Now - _onSince):hh\\:mm\\:ss})";
       Title = isOn ? $"{(_onSince = DateTimeOffset.Now):HH:mm:ss} ···" : $"Off";
-      await File.AppendAllTextAsync(App.TextLog, $"{tbkBig.Text}    \t");
+      await File.AppendAllTextAsync(App.TextLog, $"{tbkBig.Content}    \t");
     }
   }
 }

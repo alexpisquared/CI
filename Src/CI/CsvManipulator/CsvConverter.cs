@@ -15,7 +15,8 @@ namespace CsvManipulator
   {
     readonly string _filename0, _filename2;
     readonly List<CsvLine> _linesIn = new List<CsvLine>();
-    readonly bool _ignoreHeaderColumnName = true; // for rare case scenario could be false.
+    readonly bool _ignoreHeaderColumnName = false; // for rare case scenario could be false.
+    const int _topN = 3;
 
     public CsvConverter(string filename)
     {
@@ -24,6 +25,11 @@ namespace CsvManipulator
       _filename2 = filename.Replace(ext, $".~{ext}");
     }
 
+    public async Task<string> GetFileStats()
+    {
+      await Task.Delay(333);
+      return "Under COnstruction...";
+    }
     public string CleanEmptyRowsColumns()
     {
       var report = "";
@@ -41,41 +47,46 @@ namespace CsvManipulator
         using var reader = new StreamReader(_filename0);
         using var csvrdr = new CsvReader(reader, config);
         var allCsvRecords = csvrdr.GetRecords<dynamic>().ToList();
+        report += DumpTopRows(allCsvRecords);
+
         var allCsvHeaders = ((IDictionary<string, object>)allCsvRecords.FirstOrDefault()).Values;
         var columnCount = allCsvHeaders.Count;
 
         var nonEmptyRows = allCsvRecords.Skip(_ignoreHeaderColumnName ? 1 : 0).ToList().Where(kvp => ((ExpandoObject)kvp).Any(v => !string.IsNullOrEmpty(v.Value?.ToString())));
-        report += ($"Rows * Cols: {nonEmptyRows.Count(),7} / {allCsvRecords.Count,-7} * {columnCount}\n");
 
-        foreach (var item in allCsvHeaders)
-        {
-          report += $"  {item}\t";
-        }
-        report += ($"\n");
+        //allCsvHeaders.ToList().ForEach(header => report += $"  {header}\t"); report += ($"\n");
 
-        var ecrv = findEmptyColumns(columnCount, nonEmptyRows);
-        report += ecrv.tnr;
+        var ecrv = findEmptyColumnsTemplate(columnCount, nonEmptyRows);
 
-        report += ($"Empty columns:  ");
-        ecrv.ecf.ToList().ForEach(r => report += (r ? "#" : "·"));
-        report += ($"\n");
+        //report += ($"Empty columns:  ");        ecrv.ecf.ToList().ForEach(r => report += (r ? "#" : "·"));        report += ($"\n");
 
         var ourv = removeEmptyColumns(nonEmptyRows, ecrv);
-        report += ourv.report;
+        report += DumpTopRows(ourv);
 
         using var writer = new StreamWriter(_filename2);
         using var csv3 = new CsvWriter(writer, config);
-        csv3.WriteRecords(ourv.ou);
+        csv3.WriteRecords(ourv);
       }
       catch (Exception ex) { report += (ex); }
 
       return report;
-      //printTopLines();
     }
 
-    static (List<dynamic> ou, string report) removeEmptyColumns(IEnumerable<dynamic> nonEmptyRows, (bool[] ec, string report) emptyColumns)
+    static string DumpTopRows(List<dynamic> allCsvRecords, int topCount = _topN)
     {
-      var report = "";
+      var report = $"Top {_topN} from total {allCsvRecords.Count:N0} rows: \n";
+
+      allCsvRecords.Take(topCount).ToList().ForEach(row =>
+      {
+        ((IDictionary<string, object>)row).Values.ToList().ForEach(cell => report += ($"  '{cell}'\t"));
+        report += $"\n";
+      });
+
+      return report + $"  ... + {allCsvRecords.Count() - topCount} more rows.\n\n";
+    }
+
+    static List<dynamic> removeEmptyColumns(IEnumerable<dynamic> nonEmptyRows, bool[] emptyColumns)
+    {
       var outCsvRecords = new List<dynamic>();
 
       nonEmptyRows.ToList().ForEach(kvp =>
@@ -85,55 +96,33 @@ namespace CsvManipulator
         var c = 0;
         foreach (var column in kvp)
         {
-          if (emptyColumns.ec[c++])
+          if (emptyColumns[c++])
           {
             outCsvRecord.Add(column.Key, column.Value);
-            report += ($"  '{column.Value}'\t");
           }
         }
 
         outCsvRecords.Add(outCsvRecord);
-        report += ($"\n");
       });
 
-      return (outCsvRecords, report); ;
+      return outCsvRecords;
     }
-
-    static (bool[] ecf, string tnr) findEmptyColumns(int colCnt, IEnumerable<dynamic> rows, int topCount = 3)
+    static bool[] findEmptyColumnsTemplate(int colCnt, IEnumerable<dynamic> rows, int topCount = _topN)
     {
-      var topNrowsReport = "";
       var emptyColumnFlags = new bool[colCnt];
-      rows.Take(topCount).ToList().ForEach(kvp =>
+      rows.Take(topCount).ToList().ForEach(row =>
       {
         var c = 0;
-        ((IDictionary<string, object>)kvp).Values.ToList().ForEach(cell =>
+        ((IDictionary<string, object>)row).Values.ToList().ForEach(cell =>
         {
-          topNrowsReport += ($"  '{cell}'\t");
-
           if (!string.IsNullOrEmpty(cell?.ToString()))
             emptyColumnFlags[c] = true;
 
           c++;
         });
-        topNrowsReport += ($"\n");
       });
 
-      topNrowsReport += ($"  ... + {rows.Count() - topCount} more rows.\n\n");
-
-      return (emptyColumnFlags, topNrowsReport);
-    }
-
-
-    void printTopLines(int top = 4)
-    {
-      Debug.WriteLine($" - Import done: {_linesIn.Count} lines imported!  Showing the 1st {top} rows:");
-      _linesIn.Take(top).ToList().ForEach(l => Debug.WriteLine(l));
-    }
-
-    public async Task<string> GetFileStats()
-    {
-      await Task.Delay(333);
-      return "Under COnstruction...";
+      return emptyColumnFlags;
     }
   }
 }
