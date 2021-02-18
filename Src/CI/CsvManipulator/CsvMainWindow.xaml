@@ -49,8 +49,8 @@
 
       <Viewbox Grid.Row="1" Margin="50 0 5 0">
         <StackPanel>
-          <TextBlock x:Name="tbxInfB" Text="" TextWrapping="Wrap" FontSize="16" Foreground="#06d" HorizontalAlignment="Center" VerticalAlignment="Center" />
-          <TextBlock x:Name="tbxInfA" Text="" TextWrapping="Wrap" FontSize="16" Foreground="#0a6" HorizontalAlignment="Center" VerticalAlignment="Center" />
+          <TextBlock x:Name="tbxInfB" Text="" TextWrapping="Wrap" FontSize="16" Foreground="#06d" HorizontalAlignment="Left" />
+          <TextBlock x:Name="tbxInfA" Text="" TextWrapping="Wrap" FontSize="16" Foreground="#0a6" HorizontalAlignment="Left" />
         </StackPanel>
       </Viewbox>
       

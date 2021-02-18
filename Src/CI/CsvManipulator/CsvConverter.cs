@@ -63,9 +63,9 @@ namespace CsvManipulator
 
         //allCsvHeaders.ToList().ForEach(header => report += $"  {header}\t"); report += ($"\n");
 
-        var ecrv = findEmptyColumnsTemplate(columnCount, nonEmptyRows);
+        var ecrv = findEmptyColumnsTemplate(columnCount, nonEmptyRows.Skip(1));
 
-        //report += ($"Empty columns:  ");        ecrv.ecf.ToList().ForEach(r => report += (r ? "#" : "·"));        report += ($"\n");
+        report += ($"Empty columns:  "); ecrv.ToList().ForEach(r => report += (r ? "#" : "·")); report += ($"\n");
 
         var ourv = removeEmptyColumns(nonEmptyRows, ecrv);
         report += DumpTopRows("AFTER", ourv);

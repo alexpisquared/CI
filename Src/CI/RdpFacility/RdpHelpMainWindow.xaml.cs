@@ -14,7 +14,6 @@ namespace RdpFacility
 {
   public partial class RdpHelpMainWindow : Window
   {
-    const string _ver = "v1517";
     readonly IdleTimeoutAnalizer _idleTimeoutAnalizer;
     readonly AppSettings _appset = AppSettings.Create();
     readonly Insomniac _insomniac = new Insomniac();
@@ -48,7 +47,8 @@ namespace RdpFacility
     }
     async void onLoaded(object s, RoutedEventArgs e)
     {
-      await File.AppendAllTextAsync(App.TextLog, $"{App.Started:yyyy-MM-dd}\n{App.Started:HH:mm:ss} {(DateTimeOffset.Now - App.Started):hh\\:mm\\:ss}  {(_idleTimeoutAnalizer.RanByTaskScheduler ? " byTS" : "!byTS")}  ·  {_ver}  ·  args:'{string.Join(' ', Environment.GetCommandLineArgs().Skip(1))}'  \n");
+      var v = new FileInfo(Environment.GetCommandLineArgs()[0]).LastWriteTime;
+      await File.AppendAllTextAsync(App.TextLog, $"{App.Started:yyyy-MM-dd}\n{App.Started:HH:mm:ss} {(DateTimeOffset.Now - App.Started):hh\\:mm\\:ss}  {(_idleTimeoutAnalizer.RanByTaskScheduler ? "+byTS" : "!byTS")}  ·  {v:M.d.H.m}  ·  args:'{string.Join(' ', Environment.GetCommandLineArgs().Skip(1))}'  \n");
       setInsomniac(_appset.IsInsmnia);
       if (_idleTimeoutAnalizer.RanByTaskScheduler)
       {
@@ -57,7 +57,7 @@ namespace RdpFacility
         togglePosition();
       }
       tbkMin.Content += $"ITA so far  {_idleTimeoutAnalizer.MinTimeoutMin:N1} min  {(_idleTimeoutAnalizer.RanByTaskScheduler ? "(byTS)" : "(!byTS)")}";
-      tbkBig.Content = Title = $"DiReq: {(_appset.IsInsmnia ? "ON" : "Off")} @ {DateTimeOffset.Now:HH:mm:ss}  ·  {_ver}";
+      tbkBig.Content = Title = $"DiReq: {(_appset.IsInsmnia ? "ON" : "Off")} @ {DateTimeOffset.Now:HH:mm:ss}  ·  {v:M.d.H.m}";
       await Task.Delay(_dbgDelayMs);
       _ = new DispatcherTimer(TimeSpan.FromSeconds(_appset.PeriodSec), DispatcherPriority.Normal, new EventHandler(async (s, e) => await onTick()), Dispatcher.CurrentDispatcher); //tu:
       if (_appset.IsAudible == true) SystemSounds.Exclamation.Play();
