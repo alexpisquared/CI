@@ -2,7 +2,7 @@
   "profiles": {
     "RdpFacility": {
       "commandName": "Project",
-      "workingDirectory": "l"
+      "commandLineArgs": "DevDbg"
     }
   }
 }

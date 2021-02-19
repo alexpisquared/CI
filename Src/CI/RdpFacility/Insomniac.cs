@@ -7,18 +7,18 @@ namespace RdpFacility
   internal class Insomniac
   {
     bool _isOn = false;
-    internal void RequestActive()
+    internal void RequestActive(string crlf)
     {
       _isOn = true;
       SetThreadExecutionState(EXECUTION_STATE.ES_DISPLAY_REQUIRED | EXECUTION_STATE.ES_CONTINUOUS);
-      File.AppendAllText(App.TextLog, $"{DateTimeOffset.Now:HH:mm:ss} {(DateTimeOffset.Now - App.Started):hh\\:mm\\:ss}  Dr - On \n");
+      File.AppendAllText(App.TextLog, $"{DateTimeOffset.Now:HH:mm:ss} {(DateTimeOffset.Now - App.Started):hh\\:mm\\:ss}  Dr - On {crlf}");
     }
-    internal void RequestRelease()
+    internal void RequestRelease(string crlf)
     {
       if (!_isOn) return;
 
       SetThreadExecutionState(EXECUTION_STATE.ES_CONTINUOUS);
-      File.AppendAllText(App.TextLog, $"{DateTimeOffset.Now:HH:mm:ss} {(DateTimeOffset.Now - App.Started):hh\\:mm\\:ss}  Dr - Off \n");
+      File.AppendAllText(App.TextLog, $"{DateTimeOffset.Now:HH:mm:ss} {(DateTimeOffset.Now - App.Started):hh\\:mm\\:ss}  Dr - Off {crlf}");
     }
 
 

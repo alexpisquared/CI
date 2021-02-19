@@ -73,7 +73,7 @@ namespace RMSClient.Model
 
             modelBuilder.Entity<Request>(entity =>
             {
-                entity.HasNoKey();
+                //..jshdgfdjsg 1/2 entity.HasNoKey(); 
 
                 entity.ToTable("Request");
 

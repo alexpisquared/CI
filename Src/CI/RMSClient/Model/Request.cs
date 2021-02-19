@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 #nullable disable
 
@@ -7,6 +8,7 @@ namespace RMSClient.Model
 {
     public partial class Request
     {
+        [Key] //..jshdgfdjsg 1/2 
         public int RequestId { get; set; }
         public int? CreatorId { get; set; }
         public int? ClientRequestId { get; set; }
