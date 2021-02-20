@@ -21,7 +21,7 @@ namespace RMSClient
     {
       InitializeComponent();//DataContext = this;
 
-      dt1.SelectedDate = DateTimeOffset.Now.Date.AddYears(-1);
+      dt1.SelectedDate = DateTimeOffset.Now.Date.AddYears(-100);
       dt2.SelectedDate = DateTimeOffset.Now.Date;
 
       categoryViewSource = (CollectionViewSource)FindResource(nameof(categoryViewSource));
