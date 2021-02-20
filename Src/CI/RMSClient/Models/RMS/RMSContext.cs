@@ -23,6 +23,7 @@ namespace RMSClient.Models.RMS
         public virtual DbSet<RequestHistory> RequestHistories { get; set; }
         public virtual DbSet<RequestType> RequestTypes { get; set; }
         public virtual DbSet<Response> Responses { get; set; }
+        public virtual DbSet<RmsDboRequestBrDboAccountView> RmsDboRequestBrDboAccountViews { get; set; }
         public virtual DbSet<Source> Sources { get; set; }
         public virtual DbSet<Status> Statuses { get; set; }
         public virtual DbSet<SubType> SubTypes { get; set; }
@@ -238,6 +239,100 @@ namespace RMSClient.Models.RMS
                 entity.Property(e => e.RespId).HasColumnName("RespID");
 
                 entity.Property(e => e.RespText)
+                    .HasMaxLength(128)
+                    .IsUnicode(false);
+            });
+
+            modelBuilder.Entity<RmsDboRequestBrDboAccountView>(entity =>
+            {
+                entity.HasNoKey();
+
+                entity.ToView("RMS_dbo_Request_BR_dbo_Account_view");
+
+                entity.Property(e => e.Account)
+                    .IsRequired()
+                    .HasMaxLength(11)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.AccountId).HasColumnName("account_id");
+
+                entity.Property(e => e.AccountNum)
+                    .IsRequired()
+                    .HasMaxLength(9)
+                    .IsUnicode(false)
+                    .IsFixedLength(true);
+
+                entity.Property(e => e.Action)
+                    .HasMaxLength(15)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.AdpAcountNumber)
+                    .IsRequired()
+                    .HasMaxLength(11)
+                    .IsUnicode(false)
+                    .IsFixedLength(true);
+
+                entity.Property(e => e.CompoundFreq)
+                    .HasMaxLength(1)
+                    .IsUnicode(false)
+                    .IsFixedLength(true);
+
+                entity.Property(e => e.CreationDate).HasColumnType("datetime");
+
+                entity.Property(e => e.CurrencyCode)
+                    .HasMaxLength(3)
+                    .IsUnicode(false)
+                    .IsFixedLength(true);
+
+                entity.Property(e => e.Cusip)
+                    .HasMaxLength(10)
+                    .IsUnicode(false)
+                    .HasColumnName("CUSIP");
+
+                entity.Property(e => e.OrderId).HasColumnName("orderID");
+
+                entity.Property(e => e.OtherInfo)
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.PaymentFreq)
+                    .HasMaxLength(1)
+                    .IsUnicode(false)
+                    .IsFixedLength(true);
+
+                entity.Property(e => e.Rate)
+                    .HasMaxLength(20)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.SecAdpnumber)
+                    .HasMaxLength(7)
+                    .IsUnicode(false)
+                    .HasColumnName("SecADPNumber")
+                    .IsFixedLength(true);
+
+                entity.Property(e => e.Status)
+                    .HasMaxLength(20)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Subtype)
+                    .HasMaxLength(20)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Symbol)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Term)
+                    .HasMaxLength(20)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Type)
+                    .HasMaxLength(20)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.UserId).HasColumnName("UserID");
+
+                entity.Property(e => e.UserName)
                     .HasMaxLength(128)
                     .IsUnicode(false);
             });

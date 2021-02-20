@@ -12,12 +12,13 @@ using System.Windows.Input;
 
 namespace RMSClient
 {
-  public partial class RmsClientMainWindow : Window
+  public partial class RmsClientMainWindow0 : Window
   {
-    readonly RMSContext _dbRMS = new RMSContext();
+    readonly BRContext _dbBR = new BRContext();
+    readonly RMSContext _dbRM = new RMSContext();
     readonly CollectionViewSource categoryViewSource;
 
-    public RmsClientMainWindow()
+    public RmsClientMainWindow0()
     {
       InitializeComponent();//DataContext = this;
 
@@ -34,7 +35,7 @@ namespace RMSClient
     }
 
     const double _defaultZoomV = 1.25;
-    public static readonly DependencyProperty ZVProperty = DependencyProperty.Register("ZV", typeof(double), typeof(RmsClientMainWindow), new PropertyMetadata(_defaultZoomV)); public double ZV { get => (double)GetValue(ZVProperty); set => SetValue(ZVProperty, value); }
+    public static readonly DependencyProperty ZVProperty = DependencyProperty.Register("ZV", typeof(double), typeof(RmsClientMainWindow0), new PropertyMetadata(_defaultZoomV)); public double ZV { get => (double)GetValue(ZVProperty); set => SetValue(ZVProperty, value); }
 
     async void Window_Loaded(object sender, RoutedEventArgs e) => await find(); //_db.Database.EnsureCreated();
 
@@ -46,12 +47,16 @@ namespace RMSClient
         var sw = Stopwatch.StartNew();
 
 #if DIRECT
-        var fullrv = _dbRM.RmsDboRequestBrDboAccountViews.Where(r => dt1.SelectedDate <= r.CreationDate && r.CreationDate <= dt2.SelectedDate);
+        var fullrv = _dbRM.Requests.Where(r => dt1.SelectedDate <= r.CreationDate && r.CreationDate <= dt2.SelectedDate);
         report = $"Top {Math.Min(top, fullrv.Count())} rows out of {fullrv.Count()} matches found in ";
         DataContext = await fullrv.Take(top).ToListAsync();
 #else
-        await _dbRMS.RmsDboRequestBrDboAccountViews.Where(r => dt1.SelectedDate <= r.CreationDate && r.CreationDate <= dt2.SelectedDate).LoadAsync();
-        var fullrv = _dbRMS.RmsDboRequestBrDboAccountViews.Local.ToObservableCollection().Where(r => dt1.SelectedDate <= r.CreationDate && r.CreationDate <= dt2.SelectedDate);
+        await _dbRM.Requests.Where(r => dt1.SelectedDate <= r.CreationDate && r.CreationDate <= dt2.SelectedDate).LoadAsync();
+        await _dbRM.RequestTypes.LoadAsync();
+        await _dbRM.SubTypes.LoadAsync();
+        await _dbRM.Sources.LoadAsync();
+        await _dbRM.Statuses.LoadAsync();
+        var fullrv = _dbRM.Requests.Local.ToObservableCollection().Where(r => dt1.SelectedDate <= r.CreationDate && r.CreationDate <= dt2.SelectedDate);
 
         categoryViewSource.Source = fullrv;
         var report = $"Top {Math.Min(top, fullrv.Count())} rows out of {fullrv.Count()} matches found in ";
@@ -78,8 +83,8 @@ namespace RMSClient
 
     protected override void OnClosing(CancelEventArgs e)
     {
-      _dbRMS.Dispose();
-      _dbRMS.Dispose();
+      _dbRM.Dispose();
+      _dbRM.Dispose();
       base.OnClosing(e);
     }
   }
