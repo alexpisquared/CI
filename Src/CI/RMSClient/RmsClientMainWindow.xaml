@@ -57,10 +57,9 @@
     </StackPanel>
 
     <!--<DataGrid Grid.Row="1" x:Name="dg0" AutoGenerateColumns="True" ItemsSource="{Binding}" Background="#eee"               AlternatingRowBackground="#1000" CanUserAddRows="False" CanUserDeleteRows="False" GridLinesVisibility="None" HeadersVisibility="Column" SelectionMode="Single" BorderThickness="0" />-->
-    <DataGrid Grid.Row="1" x:Name="dg1" AutoGenerateColumns="False" ItemsSource="{Binding}" Background="#eee"
+    <DataGrid Grid.Row="1" x:Name="dg1" AutoGenerateColumns="False" ItemsSource="{Binding Source={StaticResource categoryViewSource}}" Background="#eee"
               AlternatingRowBackground="#f0f8ff" CanUserAddRows="False" CanUserDeleteRows="False" GridLinesVisibility="None" HeadersVisibility="Column" SelectionMode="Single" BorderThickness="0" >
       <DataGrid.Columns>
-
         <DataGridTextColumn Header="Order ID"	                Binding="{Binding RequestId}"													/>
 
         <DataGridTextColumn Header="Account"	                Binding="{Binding RequestId}"													/>
@@ -70,10 +69,10 @@
         <DataGridTextColumn Header="ClientRequestId"	        Binding="{Binding ClientRequestId}"													/>
         <DataGridTextColumn Header="SourceId"	                Binding="{Binding SourceId}"													/>
         <DataGridTextColumn Header="AccountId"	              Binding="{Binding AccountId}"													/>-->
-        <DataGridTextColumn Header="Type"	                  Binding="{Binding TypeId}"													/>
-        <DataGridTextColumn Header="Subtype"	              Binding="{Binding SubTypeId}"													/>
+        <DataGridTextColumn Header="Type"	                  Binding="{Binding Type.Name}"													/>
+        <DataGridTextColumn Header="Subtype"	              Binding="{Binding SubType.Name}"													/>
         <DataGridTextColumn Header="Action"	                Binding="{Binding ActionId}"													/>
-        <DataGridTextColumn Header="Status"	                Binding="{Binding StatusId}"													/>
+        <DataGridTextColumn Header="Status"	                Binding="{Binding Status.Name}"													/>
         <DataGridTextColumn Header="Created"	            Binding="{Binding CreationDate, StringFormat='{}{0:yyyy-MM-dd HH\\:mm\\:ss}'}"													/>
         <DataGridTextColumn Header="ADP Number"	            Binding="{Binding SecADPNumber}"													/>
         <DataGridTextColumn Header="CUSIP"	                  Binding="{Binding CUSIP}"													/>

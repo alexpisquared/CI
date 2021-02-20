@@ -9,7 +9,11 @@
   ..installed all 3 straight from the Nuget manager.
 
   Scaffold-DbContext "Server=.\sqlexpress;Database=OneBase;Trusted_Connection=True;" Microsoft.EntityFrameworkCore.SqlServer -OutputDir Model
+  Scaffold-DbContext "Server=.\sqlexpress;Database=RMS;Trusted_Connection=True;" Microsoft.EntityFrameworkCore.SqlServer -OutputDir Models\RMS
+  Scaffold-DbContext "Server=.\sqlexpress;Database=BR;Trusted_Connection=True;" Microsoft.EntityFrameworkCore.SqlServer -OutputDir Models\BR
+  
   Scaffold-DbContext "Server=mtdevsqldb;Database=RMS;Trusted_Connection=True;" Microsoft.EntityFrameworkCore.SqlServer -OutputDir Model
+  
   nogo:
   Scaffold-DbContext "Data Source=BBSQL2;Initial Catalog=RMS;Integrated Security=True" Microsoft.EntityFrameworkCore.SqlServer -OutputDir Model
 
