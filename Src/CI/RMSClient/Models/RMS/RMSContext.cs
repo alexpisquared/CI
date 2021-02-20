@@ -245,9 +245,9 @@ namespace RMSClient.Models.RMS
 
             modelBuilder.Entity<RmsDboRequestBrDboAccountView>(entity =>
             {
-                entity.HasNoKey();
+              //tu: patch vw-no-kwy 1/2 entity.HasNoKey();
 
-                entity.ToView("RMS_dbo_Request_BR_dbo_Account_view");
+              entity.ToView("RMS_dbo_Request_BR_dbo_Account_view");
 
                 entity.Property(e => e.Account)
                     .IsRequired()
