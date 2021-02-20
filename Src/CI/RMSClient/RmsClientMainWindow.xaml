@@ -51,10 +51,10 @@
         <ComboBoxItem Content="Outstanding" IsSelected="True" />
       </ComboBox>
 
-      <Label Content="_Account" />
-      <TextBox Text="xxxxxxxxx" />
+      <Label Content="_Account" Target="{Binding ElementName=tbxAccount}" />
+      <TextBox x:Name="tbxAccount" Text="xxxxxxxxx" />
 
-      <CheckBox Content="_Dividend Reinvest" />
+      <CheckBox x:Name="cnkDirein" Content="_Dividend Reinvest" />
 
       <Label Content="_Start date" />
       <DatePicker x:Name="dt1"/>

@@ -42,22 +42,23 @@ namespace RMSClient
     {
       try
       {
+        tbxAccount.Focus();
         const int top = 12;
         var sw = Stopwatch.StartNew();
+        var acnt = string.IsNullOrEmpty(tbxAccount.Text) || tbxAccount.Text == "xxxxxxxxx" ? null : tbxAccount.Text;
 
 #if DIRECT
         var fullrv = _dbRM.RmsDboRequestBrDboAccountViews.Where(r => dt1.SelectedDate <= r.CreationDate && r.CreationDate <= dt2.SelectedDate);
-        report = $"Top {Math.Min(top, fullrv.Count())} rows out of {fullrv.Count()} matches found in ";
+        var report = $"Top {Math.Min(top, fullrv.Count())} rows out of {fullrv.Count()} matches found in ";
         DataContext = await fullrv.Take(top).ToListAsync();
 #else
-        await _dbRMS.RmsDboRequestBrDboAccountViews.Where(r => dt1.SelectedDate <= r.CreationDate && r.CreationDate <= dt2.SelectedDate).LoadAsync();
-        var fullrv = _dbRMS.RmsDboRequestBrDboAccountViews.Local.ToObservableCollection().Where(r => dt1.SelectedDate <= r.CreationDate && r.CreationDate <= dt2.SelectedDate);
-
-        categoryViewSource.Source = fullrv;
-        var report = $"Top {Math.Min(top, fullrv.Count())} rows out of {fullrv.Count()} matches found in ";
+        await _dbRMS.RmsDboRequestBrDboAccountViews                             /**/.Where(r => dt1.SelectedDate <= r.CreationDate && r.CreationDate <= dt2.SelectedDate && (acnt == null || r.AdpAcountNumber.Contains(acnt)) && (cnkDirein.IsChecked != true || r.OtherInfo.Contains("einv"))).LoadAsync();
+        var l = _dbRMS.RmsDboRequestBrDboAccountViews.Local.ToObservableCollection().Where(r => dt1.SelectedDate <= r.CreationDate && r.CreationDate <= dt2.SelectedDate && (acnt == null || r.AdpAcountNumber.Contains(acnt)) && (cnkDirein.IsChecked != true || r.OtherInfo.Contains("einv")));
+        categoryViewSource.Source = l;
+        var report = $"Top {Math.Min(top, l.Count())} rows out of {l.Count()} matches found in ";
 #endif
 
-        Title = $"RMS Client - {report} {sw.Elapsed.TotalSeconds:N2} sec.";
+        Title = $"RMS Client ({Environment.UserName}) - {report} {sw.Elapsed.TotalSeconds:N2} sec.";
         Debug.WriteLine(sw.Elapsed);
         vb1.Visibility = Visibility.Collapsed;
       }
