@@ -19,6 +19,10 @@
       <Setter Property="Margin" Value="0 0 10 0" />
       <Setter Property="VerticalAlignment" Value="Center" />
     </Style>
+    <Style TargetType="CheckBox">
+      <Setter Property="VerticalAlignment" Value="Center" />
+      <Setter Property="Margin" Value="15 0 10 0" />
+    </Style>
     <Style TargetType="Label">
       <Setter Property="Margin" Value="15 0 0 0" />
     </Style>
@@ -65,28 +69,28 @@
     <DataGrid Grid.Row="1" x:Name="dg1" AutoGenerateColumns="False" ItemsSource="{Binding Source={StaticResource categoryViewSource}}" Background="#eee"
               AlternatingRowBackground="#f0f8ff" CanUserAddRows="False" CanUserDeleteRows="False" GridLinesVisibility="None" HeadersVisibility="Column" SelectionMode="Single" BorderThickness="0" >
       <DataGrid.Columns>
-        <DataGridTextColumn Header="Order ID"	                Binding="{Binding RequestId}"													/>
+        <DataGridTextColumn Header="Order ID"	                Binding="{Binding OrderId}"													/>
 
-        <DataGridTextColumn Header="Account"	                Binding="{Binding RequestId}"													/>
-        <DataGridTextColumn Header="ADP Account"	            Binding="{Binding RequestId}"													/>
+        <DataGridTextColumn Header="Account"	                Binding="{Binding Account}"													/>
+        <DataGridTextColumn Header="ADP Account"	            Binding="{Binding AdpAcountNumber}"													/>
         <!--
         <DataGridTextColumn Header="CreatorId"	              Binding="{Binding CreatorId}"													/>
         <DataGridTextColumn Header="ClientRequestId"	        Binding="{Binding ClientRequestId}"													/>
         <DataGridTextColumn Header="SourceId"	                Binding="{Binding SourceId}"													/>
         <DataGridTextColumn Header="AccountId"	              Binding="{Binding AccountId}"													/>-->
-        <DataGridTextColumn Header="Type"	                  Binding="{Binding Type.Name}"													/>
-        <DataGridTextColumn Header="Subtype"	              Binding="{Binding SubType.Name}"													/>
-        <DataGridTextColumn Header="Action"	                Binding="{Binding Action.Name}"													/>
-        <DataGridTextColumn Header="Status"	                Binding="{Binding Status.Name}"													/>
+        <DataGridTextColumn Header="Type"	                  Binding="{Binding Type}"													/>
+        <DataGridTextColumn Header="Subtype"	              Binding="{Binding Subtype}"													/>
+        <DataGridTextColumn Header="Action"	                Binding="{Binding Action}"													/>
+        <DataGridTextColumn Header="Status"	                Binding="{Binding Status}"													/>
         <DataGridTextColumn Header="Created"	            Binding="{Binding CreationDate, StringFormat='{}{0:yyyy-MM-dd HH\\:mm\\:ss}'}"													/>
-        <DataGridTextColumn Header="ADP Number"	            Binding="{Binding SecADPNumber}"													/>
-        <DataGridTextColumn Header="CUSIP"	                  Binding="{Binding CUSIP}"													/>
+        <DataGridTextColumn Header="ADP Number"	            Binding="{Binding SecAdpnumber}"													/>
+        <DataGridTextColumn Header="CUSIP"	                  Binding="{Binding Cusip}"													/>
         <DataGridTextColumn Header="Symbol"	                  Binding="{Binding Symbol}"													/>
         <DataGridTextColumn Header="Currency"	            Binding="{Binding CurrencyCode}"													/>
         <DataGridTextColumn Header="Quantity"	                Binding="{Binding Quantity}"													/>
         <DataGridTextColumn Header="Done Qty"	                Binding="{Binding DoneQty}"													/>
         <DataGridTextColumn Header="Price"	                  Binding="{Binding Price}"													/>
-        <DataGridTextColumn Header="User"	                  Binding="{Binding UserId}"													/>        
+        <DataGridTextColumn Header="User"	                  Binding="{Binding UserName}"													/>        
         <!--
         <DataGridTextColumn Header="BBSNote"	                Binding="{Binding BBSNote}"													/>
         <DataGridTextColumn Header="UpdateDate"	              Binding="{Binding UpdateDate}"													/>
