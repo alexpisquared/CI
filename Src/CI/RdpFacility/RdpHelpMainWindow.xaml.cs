@@ -26,8 +26,8 @@ namespace RdpFacility
 #endif
     bool _isLoaded = false;
 
-    public string prefix => $"{DateTimeOffset.Now:HH:mm:ss} {DateTimeOffset.Now - App.Started:hh\\:mm\\:ss}  a{(_appset.IsAudible ? "++" : "--")} p{(_appset.IsPosning ? "++" : "--")} i{(_appset.IsInsmnia ? "++" : "--")}  ";
-    public string crlf => $"";
+    string prefix => $"{DateTimeOffset.Now:HH:mm:ss} {DateTimeOffset.Now - App.Started:hh\\:mm\\:ss}  {(_appset.IsAudible ? "A" : "a")}{(_appset.IsPosning ? "P" : "p")}{(_appset.IsInsmnia ? "I" : "i")}  ";
+    string _crlf = $" ";
 
     public RdpHelpMainWindow()
     {
@@ -51,9 +51,9 @@ namespace RdpFacility
     async void onLoaded(object s, RoutedEventArgs e)
     {
       var v = new FileInfo(Environment.GetCommandLineArgs()[0]).LastWriteTime;
-      await File.AppendAllTextAsync(App.TextLog, $"{App.Started:yyyy-MM-dd}{crlf}{prefix}{(_idleTimeoutAnalizer.RanByTaskScheduler ? "+byTS" : "!byTS")}  ·  {v:M.d.H.m}  ·  args:'{string.Join(' ', Environment.GetCommandLineArgs().Skip(1))}'  {crlf}");
+      await File.AppendAllTextAsync(App.TextLog, $"{App.Started:yyyy-MM-dd}{_crlf}{prefix}{(_idleTimeoutAnalizer.RanByTaskScheduler ? "+byTS" : "!byTS")}  ·  {v:M.d.H.m}  ·  args:'{string.Join(' ', Environment.GetCommandLineArgs().Skip(1))}'  {_crlf}");
       if (_appset.IsInsmnia)
-        _insomniac.RequestActive(crlf);
+        _insomniac.RequestActive(_crlf);
 
       if (_idleTimeoutAnalizer.RanByTaskScheduler)
       {
@@ -84,7 +84,7 @@ namespace RdpFacility
       if (_appset.IsPosning)
         togglePosition("onTick");
       else
-        await File.AppendAllTextAsync(App.TextLog, $"{prefix}onTick  {crlf}");
+        await File.AppendAllTextAsync(App.TextLog, $"{prefix}onTick  {_crlf}");
     }
 
     void togglePosition(string msg)
@@ -104,28 +104,28 @@ namespace RdpFacility
         Debug.WriteLine($"** XY: {pointToWindow,12}  \t {pointToScreen,12} \t {newPointToWin.x,6:N0}-{newPointToWin.y,-6:N0}\t");
         if (_appset.IsAudible == true) SystemSounds.Asterisk.Play();
       }
-      catch (Exception ex) { File.AppendAllTextAsync(App.TextLog, $"{prefix}togglePosition  Exceptoin: {ex.Message}{crlf}"); }
+      catch (Exception ex) { File.AppendAllTextAsync(App.TextLog, $"{prefix}togglePosition  Exceptoin: {ex.Message}{_crlf}"); }
       finally
       {
         Mouse.Capture(null);
         _dx = -_dx;
         _dy = -_dy;
-        File.AppendAllTextAsync(App.TextLog, $"{prefix}togglePosition({msg}).{crlf}");
+        File.AppendAllTextAsync(App.TextLog, $"{prefix}togglePosition({msg}).{_crlf}");
       }
     }
 
     async void onAudible(object s, RoutedEventArgs e) { _appset.IsAudible = ((CheckBox)s).IsChecked == true; if (_isLoaded) { await _appset.StoreAsync(); } }
     async void onInsmnia(object s, RoutedEventArgs e) { _appset.IsPosning = ((CheckBox)s).IsChecked == true; if (_isLoaded) { await _appset.StoreAsync(); } }
-    async void onPosning(object s, RoutedEventArgs e) { _appset.IsInsmnia = ((CheckBox)s).IsChecked == true; if (_isLoaded) { await _appset.StoreAsync(); if (((CheckBox)s).IsChecked == true) _insomniac.RequestActive(crlf); else _insomniac.RequestRelease(crlf); } }
+    async void onPosning(object s, RoutedEventArgs e) { _appset.IsInsmnia = ((CheckBox)s).IsChecked == true; if (_isLoaded) { await _appset.StoreAsync(); if (((CheckBox)s).IsChecked == true) _insomniac.RequestActive(_crlf); else _insomniac.RequestRelease(_crlf); } }
     void onRset(object s, RoutedEventArgs e) { _idleTimeoutAnalizer.MinTimeoutMin = 100; tbkMin.Content = $"ITA so far  {_idleTimeoutAnalizer.MinTimeoutMin:N1} min  {(_idleTimeoutAnalizer.RanByTaskScheduler ? "(ro)" : "(RW)")}"; _idleTimeoutAnalizer.SaveLastCloseAndAnalyzeIfMarkable(); }
-    async void onMark(object z, RoutedEventArgs e) { var s = $"{prefix}Mark     \t"; tbkLog.Content += s; await File.AppendAllTextAsync(App.TextLog, $"{s}{crlf}"); }
-    async void onExit(object s, RoutedEventArgs e) { await File.AppendAllTextAsync(App.TextLog, $"{prefix}onExit() by Escape.  {crlf}"); Close(); }
+    async void onMark(object z, RoutedEventArgs e) { var s = $"{prefix}Mark     \t"; tbkLog.Content += s; await File.AppendAllTextAsync(App.TextLog, $"{s}{_crlf}"); }
+    async void onExit(object s, RoutedEventArgs e) { await File.AppendAllTextAsync(App.TextLog, $"{prefix}onExit() by Escape.  {_crlf}"); Close(); }
     protected override async void OnClosed(EventArgs e)
     {
       if (_idleTimeoutAnalizer.RanByTaskScheduler && !_idleTimeoutAnalizer.SkipLoggingOnSelf)
         EvLogHelper.LogScrSvrEnd(App.Started.DateTime.AddSeconds(-4 * 60), 4 * 60, $"RDP Facility - OnClosed()  {DateTimeOffset.Now - App.Started:hh\\:mm\\:ss}");
 
-      _insomniac.RequestRelease(crlf);
+      _insomniac.RequestRelease(_crlf);
       await File.AppendAllTextAsync(App.TextLog, $"{prefix}OnClosed   {DateTimeOffset.Now - App.Started:hh\\:mm\\:ss}\n");
       base.OnClosed(e);
       if (_appset.IsAudible == true) SystemSounds.Hand.Play();
