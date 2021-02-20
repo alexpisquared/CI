@@ -172,6 +172,11 @@ namespace RMSClient.Models.RMS
                     .WithMany(p => p.Requests)
                     .HasForeignKey(d => new { d.TypeId, d.SubTypeId })
                     .HasConstraintName("FK_Request_SubType");
+
+                entity.HasOne(d => d.Action)
+                    .WithMany(p => p.Requests)
+                    .HasForeignKey(d => new { d.TypeId, d.SubTypeId, d.ActionId })
+                    .HasConstraintName("FK_Request_Action");
             });
 
             modelBuilder.Entity<RequestHistory>(entity =>

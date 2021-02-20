@@ -39,6 +39,7 @@ namespace RMSClient.Models.RMS
         public string Term { get; set; }
         public string Rate { get; set; }
 
+        public virtual Action Action { get; set; }
         public virtual Source Source { get; set; }
         public virtual Status Status { get; set; }
         public virtual SubType SubType { get; set; }
