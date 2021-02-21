@@ -59,12 +59,15 @@ namespace RMSClient
 #else
         await _dbRMS.RmsDboRequestBrDboAccountViews                             /**/.Where(r => dt1.SelectedDate <= r.CreationDate && r.CreationDate <= dt2.SelectedDate && (acnt == null || r.AdpAcountNumber.Contains(acnt)) && (cnkDirein.IsChecked != true || (r.OtherInfo != null && r.OtherInfo.Contains("einv")))).LoadAsync();
         var l = _dbRMS.RmsDboRequestBrDboAccountViews.Local.ToObservableCollection().Where(r => dt1.SelectedDate <= r.CreationDate && r.CreationDate <= dt2.SelectedDate && (acnt == null || r.AdpAcountNumber.Contains(acnt)) && (cnkDirein.IsChecked != true || (r.OtherInfo != null && r.OtherInfo.Contains("einv"))));
-        categoryViewSource.Source = l;
-        var report = $"Top {Math.Min(top, l.Count())} rows out of {l.Count()} matches found in ";
+        categoryViewSource.Source = l.Take(top);
+        var report = top == l.Count() ?
+          $"Total {l.Count()} matches found in " :
+          $"Top {Math.Min(top, l.Count())} rows out of {l.Count()} matches found in ";
 #endif
 
         Title = $"RMS Client ({Environment.UserName}) - {report} {sw.Elapsed.TotalSeconds:N2} sec.";
         Debug.WriteLine(sw.Elapsed);
+        await Task.Delay(250);
       }
       catch (Exception ex) { Clipboard.SetText(ex.Message); MessageBox.Show($"{ex.Message}", "Exception", MessageBoxButton.OK, MessageBoxImage.Error); }
       finally

@@ -55,14 +55,17 @@
       <!--<Setter Property="Background"  Value="Transparent" />
       <Setter Property="BorderBrush" Value="Transparent" />-->
     </Style>
-    <Style x:Key="RightAlignStyle"	TargetType="{x:Type TextBlock}">
+    <Style x:Key="RightAlignStyle"   TargetType="{x:Type TextBlock}">
       <Setter Property="TextAlignment" Value="Right"	/>
     </Style>
-    <Style x:Key="CenterAlignStyle"	TargetType="{x:Type TextBlock}">
+    <Style x:Key="CenterAlignStyle"  TargetType="{x:Type TextBlock}">
       <Setter Property="TextAlignment" Value="Center" />
     </Style>
-    <Style x:Key="CenterAlignChkBox"	TargetType="{x:Type CheckBox}">
+    <Style x:Key="CenterAlignChkBox" TargetType="{x:Type CheckBox}">
       <Setter Property="HorizontalAlignment" Value="Center" />
+    </Style>
+    <Style x:Key="DarkOrangeStyle"   TargetType="{x:Type TextBlock}">
+      <Setter Property="Foreground"  Value="DarkOrange" />
     </Style>
   </Window.Resources>
   <Grid >
@@ -94,12 +97,12 @@
       <Label Content="_Account" Target="{Binding ElementName=tbxAccount}" />
       <TextBox x:Name="tbxAccount" Text="xxxxxxxxx" />
 
-      <CheckBox x:Name="cnkDirein" Content="_Dividend Reinvest" Checked="onDiRein" Unchecked="onDiRein" />
-
       <Label Content="_Start date" />
       <DatePicker x:Name="dt1" SelectedDateChanged="onDateCh"/>
       <Label Content="_End date" />
       <DatePicker x:Name="dt2" SelectedDateChanged="onDateCh" />
+
+      <CheckBox x:Name="cnkDirein" Content="_Dividend Reinvest" Checked="onDiRein" Unchecked="onDiRein" Foreground="DarkOrange"/>
 
       <Button Content="_Find" Click="onFind" IsDefault="True" x:Name="btnFind"/>
       <Button Click="onExit" IsCancel="True" Opacity="0" />
@@ -153,7 +156,7 @@
           <DataGridTextColumn Header="PaymentFreq"	    Binding="{Binding PaymentFreq}"						/>
           <DataGridTextColumn Header="Term"	            Binding="{Binding Term}"									/>
           <DataGridTextColumn Header="Rate"	            Binding="{Binding Rate}"									/>
-          <DataGridTextColumn Header="OtherInfo"	      Binding="{Binding OtherInfo}"	Width="*"		/>
+          <DataGridTextColumn Header="Other Info"	      Binding="{Binding OtherInfo}"	Width="*"		ElementStyle="{StaticResource DarkOrangeStyle}"													/>
         </DataGrid.Columns>
       </DataGrid>
     </Grid>
