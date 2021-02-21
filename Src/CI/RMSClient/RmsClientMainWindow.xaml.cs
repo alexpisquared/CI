@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using RMSClient.Models.BR;
 using RMSClient.Models.RMS;
 using System;
 using System.ComponentModel;
@@ -7,6 +6,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
 
@@ -16,6 +16,7 @@ namespace RMSClient
   {
     readonly RMSContext _dbRMS = new RMSContext();
     readonly CollectionViewSource categoryViewSource;
+    bool _loaded = false;
 
     public RmsClientMainWindow()
     {
@@ -35,10 +36,14 @@ namespace RMSClient
 
     public static readonly DependencyProperty ZVaProperty = DependencyProperty.Register("ZVa", typeof(double), typeof(RmsClientMainWindow), new PropertyMetadata(1.25)); public double ZVa { get => (double)GetValue(ZVaProperty); set => SetValue(ZVaProperty, value); }
 
-    async void Window_Loaded(object sender, RoutedEventArgs e) => await find(); //_db.Database.EnsureCreated();
+    async void onLoaded(object sender, RoutedEventArgs e) { _loaded = true; await find(); } //_db.Database.EnsureCreated();
+    async void onDiRein(object sender, RoutedEventArgs e) => await find();
+    async void onDateCh(object sender, SelectionChangedEventArgs e) => await find();
 
     async Task find()
     {
+      if (!_loaded) return;
+
       try
       {
         btnFind.Focus();
@@ -87,5 +92,6 @@ namespace RMSClient
       _dbRMS.Dispose();
       base.OnClosing(e);
     }
+
   }
 }
