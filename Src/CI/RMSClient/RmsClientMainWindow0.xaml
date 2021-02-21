@@ -32,7 +32,7 @@
   </Window.Resources>
   <Grid >
     <Grid.LayoutTransform>
-      <ScaleTransform ScaleX="{Binding ZV, ElementName=wnd, FallbackValue=1}" ScaleY="{Binding ZV, ElementName=wnd, FallbackValue=1}" />
+      <ScaleTransform ScaleX="{Binding ZVa, ElementName=wnd, FallbackValue=1}" ScaleY="{Binding ZVa, ElementName=wnd, FallbackValue=1}" />
     </Grid.LayoutTransform>
     <Grid.RowDefinitions>
       <RowDefinition Height="Auto"/>
