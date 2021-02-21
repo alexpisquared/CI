@@ -26,7 +26,7 @@ namespace RdpFacility
 #endif
     bool _isLoaded = false;
 
-    string prefix => $"{DateTimeOffset.Now:HH:mm:ss} {DateTimeOffset.Now - App.Started:hh\\:mm\\:ss}  {(_appset.IsAudible ? "A" : "a")}{(_appset.IsPosning ? "P" : "p")}{(_appset.IsInsmnia ? "I" : "i")}  ";
+    string prefix => $"{DateTimeOffset.Now:HH:mm:ss}+{DateTimeOffset.Now - App.Started:hh\\:mm\\:ss}  {(_appset.IsAudible ? "A" : "a")}{(_appset.IsPosning ? "P" : "p")}{(_appset.IsInsmnia ? "I" : "i")}  ";
     string _crlf = $" ";
 
     public RdpHelpMainWindow()
@@ -51,7 +51,7 @@ namespace RdpFacility
     async void onLoaded(object s, RoutedEventArgs e)
     {
       var v = new FileInfo(Environment.GetCommandLineArgs()[0]).LastWriteTime;
-      await File.AppendAllTextAsync(App.TextLog, $"{App.Started:yyyy-MM-dd}{_crlf}{prefix}{(_idleTimeoutAnalizer.RanByTaskScheduler ? "+byTS" : "!byTS")}  ·  {v:M.d.H.m}  ·  args:'{string.Join(' ', Environment.GetCommandLineArgs().Skip(1))}'  {_crlf}");
+      await File.AppendAllTextAsync(App.TextLog, $"{App.Started:yyyy-MM-dd}{_crlf}{prefix}{(_idleTimeoutAnalizer.RanByTaskScheduler ? "+byTS" : "!byTS")} · {v:M.d.H.m} · args:{string.Join(' ', Environment.GetCommandLineArgs().Skip(1)),-12}  {_crlf}");
       if (_appset.IsInsmnia)
         _insomniac.RequestActive(_crlf);
 
@@ -62,7 +62,7 @@ namespace RdpFacility
         togglePosition("onLoaded");
       }
       tbkMin.Content += $"ITA so far  {_idleTimeoutAnalizer.MinTimeoutMin:N1} min  {(_idleTimeoutAnalizer.RanByTaskScheduler ? "(byTS)" : "(!byTS)")}";
-      tbkBig.Content = Title = $"DiReq: {(_appset.IsInsmnia ? "ON" : "Off")} @ {DateTimeOffset.Now:HH:mm:ss}  ·  {v:M.d.H.m}";
+      tbkBig.Content = Title = $"DiReq: {(_appset.IsInsmnia ? "ON" : "Off")} @ {DateTimeOffset.Now:HH:mm:ss} · {v:M.d.H.m}";
       await Task.Delay(_dbgDelayMs);
       _ = new DispatcherTimer(TimeSpan.FromSeconds(_appset.PeriodSec), DispatcherPriority.Normal, new EventHandler(async (s, e) => await onTick()), Dispatcher.CurrentDispatcher); //tu:
       if (_appset.IsAudible == true) SystemSounds.Exclamation.Play();
@@ -84,7 +84,7 @@ namespace RdpFacility
       if (_appset.IsPosning)
         togglePosition("onTick");
       else
-        await File.AppendAllTextAsync(App.TextLog, $"{prefix}onTick  {_crlf}");
+        await File.AppendAllTextAsync(App.TextLog, $"■"); // {prefix}onTick  {_crlf}");
     }
 
     void togglePosition(string msg)
@@ -110,7 +110,7 @@ namespace RdpFacility
         Mouse.Capture(null);
         _dx = -_dx;
         _dy = -_dy;
-        File.AppendAllTextAsync(App.TextLog, $"{prefix}togglePosition({msg}).{_crlf}");
+        File.AppendAllTextAsync(App.TextLog, $"{prefix}tglPsn({msg}).{_crlf}");
       }
     }
 
