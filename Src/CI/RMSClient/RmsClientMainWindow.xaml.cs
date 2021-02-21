@@ -30,11 +30,10 @@ namespace RMSClient
       if (Environment.MachineName == "RAZER1") { Top = 1650; Left = 10; }
       else { Top = 1600; Left = 2500; }
 #endif
-      MouseWheel += (s, e) => { if (!(Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl))) return; ZV += (e.Delta * .001); e.Handled = true; Debug.WriteLine(Title = $">>ZV:{ZV}"); }; //tu:
+      MouseWheel += (s, e) => { if (!(Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl))) return; ZVa += (e.Delta * .001); e.Handled = true; Debug.WriteLine(Title = $">>ZVa:{ZVa}"); }; //tu:
     }
 
-    const double _defaultZoomV = 1.25;
-    public static readonly DependencyProperty ZVProperty = DependencyProperty.Register("ZV", typeof(double), typeof(RmsClientMainWindow), new PropertyMetadata(_defaultZoomV)); public double ZV { get => (double)GetValue(ZVProperty); set => SetValue(ZVProperty, value); }
+    public static readonly DependencyProperty ZVaProperty = DependencyProperty.Register("ZVa", typeof(double), typeof(RmsClientMainWindow), new PropertyMetadata(1.25)); public double ZVa { get => (double)GetValue(ZVaProperty); set => SetValue(ZVaProperty, value); }
 
     async void Window_Loaded(object sender, RoutedEventArgs e) => await find(); //_db.Database.EnsureCreated();
 
@@ -42,7 +41,8 @@ namespace RMSClient
     {
       try
       {
-        tbxAccount.Focus();
+        btnFind.Focus();
+        vb1.Visibility = Visibility.Visible;
         const int top = 12;
         var sw = Stopwatch.StartNew();
         var acnt = string.IsNullOrEmpty(tbxAccount.Text) || tbxAccount.Text == "xxxxxxxxx" ? null : tbxAccount.Text;
@@ -60,9 +60,13 @@ namespace RMSClient
 
         Title = $"RMS Client ({Environment.UserName}) - {report} {sw.Elapsed.TotalSeconds:N2} sec.";
         Debug.WriteLine(sw.Elapsed);
-        vb1.Visibility = Visibility.Collapsed;
       }
       catch (Exception ex) { Clipboard.SetText(ex.Message); MessageBox.Show($"{ex.Message}", "Exception", MessageBoxButton.OK, MessageBoxImage.Error); }
+      finally
+      {
+        vb1.Visibility = Visibility.Collapsed;
+        tbxAccount.Focus();
+      }
     }
     async void onFind(object sender, RoutedEventArgs e) => await find();
 
