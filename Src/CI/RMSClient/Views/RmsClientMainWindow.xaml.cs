@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using RMSClient.Models.RMS;
 using System;
 using System.ComponentModel;
@@ -14,11 +15,12 @@ namespace RMSClient
 {
   public partial class RmsClientMainWindow : Window
   {
+    readonly ILogger<RmsClientMainWindow> _logger;
     readonly RMSContext _dbRMS = new RMSContext();
     readonly CollectionViewSource _accountRequestViewSource;
     bool _loaded = false;
 
-    public RmsClientMainWindow()
+    public RmsClientMainWindow(Microsoft.Extensions.Logging.ILogger<RmsClientMainWindow> logger)
     {
       InitializeComponent();//DataContext = this;
 
@@ -32,8 +34,11 @@ namespace RMSClient
       else { Top = 1600; Left = 2500; }
 #endif
       MouseWheel += (s, e) => { if (!(Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl))) return; ZVa += (e.Delta * .001); e.Handled = true; Debug.WriteLine(Title = $">>ZVa:{ZVa}"); }; //tu:
+      _logger = logger;
     }
-    public static readonly DependencyProperty ZVaProperty = DependencyProperty.Register("ZVa", typeof(double), typeof(RmsClientMainWindow), new PropertyMetadata(1.25)); public double ZVa { get => (double)GetValue(ZVaProperty); set => SetValue(ZVaProperty, value); }
+    public static readonly DependencyProperty ZVaProperty = DependencyProperty.Register("ZVa", typeof(double), typeof(RmsClientMainWindow), new PropertyMetadata(1.25));
+
+    public double ZVa { get => (double)GetValue(ZVaProperty); set => SetValue(ZVaProperty, value); }
 
     async void onLoaded(object sender, RoutedEventArgs e) { _loaded = true; await find(); } //_db.Database.EnsureCreated();
     async void onDiRein(object sender, RoutedEventArgs e) => await find();
@@ -75,14 +80,20 @@ namespace RMSClient
         _accountRequestViewSource.Source = l.Take(top);
         var report = l.Count() <= top ?
           $"Total {l.Count()} matches found in " :
-          $"Top {Math.Min(top, l.Count())} rows out of {l.Count()} matches found in ";
+          $"Top {Math.Min(top, l.Count()),3}  rows out of {l.Count(),5}  matches found in ";
 #endif
 
-        Title = $"RMS Client ({Environment.UserName}) - {report} {sw.Elapsed.TotalSeconds:N2} sec.";
+        Title = $"RMS Client ({Environment.UserName}) - {report} {sw.Elapsed.TotalSeconds,5:N2} sec.";
+
+        _logger.LogInformation($" +{(DateTime.Now - App._started):mm\\:ss\\.ff}  {Title}   params: {dt1.SelectedDate} - {dt2.SelectedDate}   {acnt}   {(cnkDirein.IsChecked == true ? "Direct Reinvest" : "")}");
 
         await Task.Delay(333);
       }
-      catch (Exception ex) { Clipboard.SetText(ex.Message); MessageBox.Show($"{ex.Message}", "Exception 3 ", MessageBoxButton.OK, MessageBoxImage.Error); }
+      catch (Exception ex)
+      {
+        _logger.LogError($" +{(DateTime.Now - App._started):mm\\:ss\\.ff}  {ex}");
+        Clipboard.SetText(ex.Message); MessageBox.Show($"{ex.Message}", "Exception 3 ", MessageBoxButton.OK, MessageBoxImage.Error);
+      }
       finally
       {
         vb1.Visibility = Visibility.Collapsed;
@@ -96,7 +107,11 @@ namespace RMSClient
       {
         Clipboard.SetData(DataFormats.StringFormat, DataContext);
       }
-      catch (Exception ex) { Clipboard.SetText(ex.Message); MessageBox.Show($"{ex.Message}", "Exception 4 ", MessageBoxButton.OK, MessageBoxImage.Error); }
+      catch (Exception ex)
+      {
+        _logger.LogError($" +{(DateTime.Now - App._started):mm\\:ss\\.ff}  {ex}");
+        Clipboard.SetText(ex.Message); MessageBox.Show($"{ex.Message}", "Exception 4 ", MessageBoxButton.OK, MessageBoxImage.Error);
+      }
     }
     void onExit(object sender, RoutedEventArgs e) => Close();
 
