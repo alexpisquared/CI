@@ -2,8 +2,8 @@
         xmlns:local="clr-namespace:RMSClient"
                 Title="RMS Client" Height="300" Width="1800" Loaded="Window_Loaded" x:Name="wnd">
   <Window.Resources>
-    <CollectionViewSource x:Key="categoryViewSource"/>
-    <!--<CollectionViewSource x:Key="categoryProductsViewSource" Source="{Binding Products, Source={StaticResource categoryViewSource}}"/>-->
+    <CollectionViewSource x:Key="_accountRequestViewSource"/>
+    <!--<CollectionViewSource x:Key="categoryProductsViewSource" Source="{Binding Products, Source={StaticResource _accountRequestViewSource}}"/>-->
     <Style TargetType="TextBox">
       <Setter Property="Width"  Value="76" />
       <Setter Property="Height" Value="26" />
@@ -60,7 +60,7 @@
     </StackPanel>
 
     <!--<DataGrid Grid.Row="1" x:Name="dg0" AutoGenerateColumns="True" ItemsSource="{Binding}" Background="#eee"               AlternatingRowBackground="#1000" CanUserAddRows="False" CanUserDeleteRows="False" GridLinesVisibility="None" HeadersVisibility="Column" SelectionMode="Single" BorderThickness="0" />-->
-    <DataGrid Grid.Row="1" x:Name="dg1" AutoGenerateColumns="False" ItemsSource="{Binding Source={StaticResource categoryViewSource}}" Background="#eee"
+    <DataGrid Grid.Row="1" x:Name="dg1" AutoGenerateColumns="False" ItemsSource="{Binding Source={StaticResource _accountRequestViewSource}}" Background="#eee"
               AlternatingRowBackground="#f0f8ff" CanUserAddRows="False" CanUserDeleteRows="False" GridLinesVisibility="None" HeadersVisibility="Column" SelectionMode="Single" BorderThickness="0" >
       <DataGrid.Columns>
         <DataGridTextColumn Header="Order ID"	                Binding="{Binding RequestId}"													/>

@@ -16,7 +16,7 @@ namespace RMSClient
   {
     readonly BRContext _dbBR = new BRContext();
     readonly RMSContext _dbRM = new RMSContext();
-    readonly CollectionViewSource categoryViewSource;
+    readonly CollectionViewSource _accountRequestViewSource;
 
     public RmsClientMainWindow0()
     {
@@ -25,7 +25,7 @@ namespace RMSClient
       dt1.SelectedDate = DateTimeOffset.Now.Date.AddYears(-1);
       dt2.SelectedDate = DateTimeOffset.Now.Date;
 
-      categoryViewSource = (CollectionViewSource)FindResource(nameof(categoryViewSource));
+      _accountRequestViewSource = (CollectionViewSource)FindResource(nameof(_accountRequestViewSource));
 
 #if DEBUG
       if (Environment.MachineName == "RAZER1") { Top = 1650; Left = 10; }
@@ -58,7 +58,7 @@ namespace RMSClient
         await _dbRM.Statuses.LoadAsync();
         var fullrv = _dbRM.Requests.Local.ToObservableCollection().Where(r => dt1.SelectedDate <= r.CreationDate && r.CreationDate <= dt2.SelectedDate);
 
-        categoryViewSource.Source = fullrv;
+        _accountRequestViewSource.Source = fullrv;
         var report = $"Top {Math.Min(top, fullrv.Count())} rows out of {fullrv.Count()} matches found in ";
 #endif
 

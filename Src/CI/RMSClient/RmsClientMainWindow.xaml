@@ -2,8 +2,8 @@
         xmlns:stb="clr-namespace:AAV.Common" 
         Title="RMS Client" Height="500" Width="1800" Loaded="onLoaded" x:Name="wnd" Background="#ddd">
   <Window.Resources>
-    <CollectionViewSource x:Key="categoryViewSource"/>
-    <!--<CollectionViewSource x:Key="categoryProductsViewSource" Source="{Binding Products, Source={StaticResource categoryViewSource}}"/>-->
+    <CollectionViewSource x:Key="_accountRequestViewSource"/>
+    <!--<CollectionViewSource x:Key="categoryProductsViewSource" Source="{Binding Products, Source={StaticResource _accountRequestViewSource}}"/>-->
 
     <Style TargetType="stb:HighlightableTextBlock">
       <Setter Property="ToolTipService.ShowDuration" Value="999999" />
@@ -65,7 +65,8 @@
       <Setter Property="HorizontalAlignment" Value="Center" />
     </Style>
     <Style x:Key="DarkOrangeStyle"   TargetType="{x:Type TextBlock}">
-      <Setter Property="Foreground"  Value="DarkOrange" />
+      <Setter Property="Foreground"  Value="#f40" />
+      <Setter Property="FontWeight"  Value="SemiBold" />
     </Style>
   </Window.Resources>
   <Grid >
@@ -95,14 +96,14 @@
       </ComboBox>
 
       <Label Content="_Account" Target="{Binding ElementName=tbxAccount}" />
-      <TextBox x:Name="tbxAccount" Text="xxxxxxxxx" />
+      <TextBox x:Name="tbxAccount" Text="xxxxxxxxx" TextChanged="onxAccountChanged" />
 
       <Label Content="_Start date" />
       <DatePicker x:Name="dt1" SelectedDateChanged="onDateCh"/>
       <Label Content="_End date" />
       <DatePicker x:Name="dt2" SelectedDateChanged="onDateCh" />
 
-      <CheckBox x:Name="cnkDirein" Content="_Dividend Reinvest" Checked="onDiRein" Unchecked="onDiRein" Foreground="DarkOrange"/>
+      <CheckBox x:Name="cnkDirein" Content="_Dividend Reinvest" Checked="onDiRein" Unchecked="onDiRein" Foreground="#f40" FontWeight="SemiBold" />
 
       <Button Content="_Find" Click="onFind" IsDefault="True" x:Name="btnFind"/>
       <Button Click="onExit" IsCancel="True" Opacity="0" />
@@ -112,7 +113,7 @@
       <Grid.LayoutTransform>
         <ScaleTransform ScaleX=".8" ScaleY=".8" />
       </Grid.LayoutTransform>
-      <DataGrid x:Name="dg1" AutoGenerateColumns="False" ItemsSource="{Binding Source={StaticResource categoryViewSource}}" Background="#eee"
+      <DataGrid x:Name="dg1" AutoGenerateColumns="False" ItemsSource="{Binding Source={StaticResource _accountRequestViewSource}}" Background="#eee"
               AlternatingRowBackground="#f0f8ff" CanUserAddRows="False" CanUserDeleteRows="False" GridLinesVisibility="None" HeadersVisibility="Column" SelectionMode="Single" BorderThickness="0" >
         <DataGrid.Columns>
           <DataGridTextColumn Header="Order ID"	                Binding="{Binding OrderId}"				ElementStyle="{StaticResource RightAlignStyle}"													/>

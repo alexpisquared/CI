@@ -15,7 +15,7 @@ namespace RMSClient
   public partial class RmsClientMainWindow : Window
   {
     readonly RMSContext _dbRMS = new RMSContext();
-    readonly CollectionViewSource categoryViewSource;
+    readonly CollectionViewSource _accountRequestViewSource;
     bool _loaded = false;
 
     public RmsClientMainWindow()
@@ -25,7 +25,7 @@ namespace RMSClient
       dt1.SelectedDate = DateTimeOffset.Now.Date.AddYears(-100);
       dt2.SelectedDate = DateTimeOffset.Now.Date;
 
-      categoryViewSource = (CollectionViewSource)FindResource(nameof(categoryViewSource));
+      _accountRequestViewSource = (CollectionViewSource)FindResource(nameof(_accountRequestViewSource));
 
 #if DEBUG
       if (Environment.MachineName == "RAZER1") { Top = 1650; Left = 10; }
@@ -33,12 +33,21 @@ namespace RMSClient
 #endif
       MouseWheel += (s, e) => { if (!(Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl))) return; ZVa += (e.Delta * .001); e.Handled = true; Debug.WriteLine(Title = $">>ZVa:{ZVa}"); }; //tu:
     }
-
     public static readonly DependencyProperty ZVaProperty = DependencyProperty.Register("ZVa", typeof(double), typeof(RmsClientMainWindow), new PropertyMetadata(1.25)); public double ZVa { get => (double)GetValue(ZVaProperty); set => SetValue(ZVaProperty, value); }
 
     async void onLoaded(object sender, RoutedEventArgs e) { _loaded = true; await find(); } //_db.Database.EnsureCreated();
     async void onDiRein(object sender, RoutedEventArgs e) => await find();
     async void onDateCh(object sender, SelectionChangedEventArgs e) => await find();
+    async void onFind(object sender, RoutedEventArgs e) => await find();
+    async void onxAccountChanged(object s, TextChangedEventArgs e)
+    {
+      if (!_loaded) return;
+
+      var prev = tbxAccount.Text;
+      await Task.Delay(555);
+      if (prev == tbxAccount.Text)
+        await find();
+    }
 
     async Task find()
     {
@@ -59,15 +68,15 @@ namespace RMSClient
 #else
         await _dbRMS.RmsDboRequestBrDboAccountViews                             /**/.Where(r => dt1.SelectedDate <= r.CreationDate && r.CreationDate <= dt2.SelectedDate && (acnt == null || r.AdpAcountNumber.Contains(acnt)) && (cnkDirein.IsChecked != true || (r.OtherInfo != null && r.OtherInfo.Contains("einv")))).LoadAsync();
         var l = _dbRMS.RmsDboRequestBrDboAccountViews.Local.ToObservableCollection().Where(r => dt1.SelectedDate <= r.CreationDate && r.CreationDate <= dt2.SelectedDate && (acnt == null || r.AdpAcountNumber.Contains(acnt)) && (cnkDirein.IsChecked != true || (r.OtherInfo != null && r.OtherInfo.Contains("einv"))));
-        categoryViewSource.Source = l.Take(top);
-        var report = top == l.Count() ?
+        _accountRequestViewSource.Source = l.Take(top);
+        var report = l.Count() <= top ?
           $"Total {l.Count()} matches found in " :
           $"Top {Math.Min(top, l.Count())} rows out of {l.Count()} matches found in ";
 #endif
 
         Title = $"RMS Client ({Environment.UserName}) - {report} {sw.Elapsed.TotalSeconds:N2} sec.";
-        Debug.WriteLine(sw.Elapsed);
-        await Task.Delay(250);
+
+        await Task.Delay(333);
       }
       catch (Exception ex) { Clipboard.SetText(ex.Message); MessageBox.Show($"{ex.Message}", "Exception", MessageBoxButton.OK, MessageBoxImage.Error); }
       finally
@@ -76,9 +85,6 @@ namespace RMSClient
         tbxAccount.Focus();
       }
     }
-    async void onFind(object sender, RoutedEventArgs e) => await find();
-
-    void onExit(object sender, RoutedEventArgs e) => Close();
 
     void onClip(object sender, RoutedEventArgs e)
     {
@@ -88,6 +94,7 @@ namespace RMSClient
       }
       catch (Exception ex) { Clipboard.SetText(ex.Message); MessageBox.Show($"{ex.Message}", "Exception", MessageBoxButton.OK, MessageBoxImage.Error); }
     }
+    void onExit(object sender, RoutedEventArgs e) => Close();
 
     protected override void OnClosing(CancelEventArgs e)
     {
@@ -95,6 +102,5 @@ namespace RMSClient
       _dbRMS.Dispose();
       base.OnClosing(e);
     }
-
   }
 }
