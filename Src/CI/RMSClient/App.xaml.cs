@@ -21,7 +21,7 @@ namespace RMSClient
       var loggerFactory = LoggerFactory.Create(builder =>
       {
         var loggerConfiguration = new LoggerConfiguration()
-          .WriteTo.File("Logs\\log.txt", rollingInterval: RollingInterval.Day)
+          .WriteTo.File(@"Z:\AlexPi\RMSClient.POC.1459\Logs\log.txt", rollingInterval: RollingInterval.Day)
           .MinimumLevel.Information();
 
         builder.AddSerilog(loggerConfiguration.CreateLogger());
