@@ -17,7 +17,5 @@ namespace RMSClient.Models.RMS
         public double? Price { get; set; }
         public DateTime UpdateTime { get; set; }
         public string Bbsnote { get; set; }
-
-        public virtual Request Request { get; set; }
     }
 }

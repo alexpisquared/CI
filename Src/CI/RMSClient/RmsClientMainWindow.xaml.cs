@@ -65,6 +65,10 @@ namespace RMSClient
         var fullrv = _dbRM.RmsDboRequestBrDboAccountViews.Where(r => dt1.SelectedDate <= r.CreationDate && r.CreationDate <= dt2.SelectedDate);
         var report = $"Top {Math.Min(top, fullrv.Count())} rows out of {fullrv.Count()} matches found in ";
         DataContext = await fullrv.Take(top).ToListAsync();
+#elif RawSql
+        var fullrv = _dbRM.RmsDboRequestBrDboAccountViews.Where(r => dt1.SelectedDate <= r.CreationDate && r.CreationDate <= dt2.SelectedDate);
+        var report = $"Top {Math.Min(top, fullrv.Count())} rows out of {fullrv.Count()} matches found in ";
+        DataContext = await fullrv.Take(top).ToListAsync();
 #else
         await _dbRMS.RmsDboRequestBrDboAccountViews                             /**/.Where(r => dt1.SelectedDate <= r.CreationDate && r.CreationDate <= dt2.SelectedDate && (acnt == null || r.AdpAcountNumber.Contains(acnt)) && (cnkDirein.IsChecked != true || (r.OtherInfo != null && r.OtherInfo.Contains("einv")))).LoadAsync();
         var l = _dbRMS.RmsDboRequestBrDboAccountViews.Local.ToObservableCollection().Where(r => dt1.SelectedDate <= r.CreationDate && r.CreationDate <= dt2.SelectedDate && (acnt == null || r.AdpAcountNumber.Contains(acnt)) && (cnkDirein.IsChecked != true || (r.OtherInfo != null && r.OtherInfo.Contains("einv"))));
@@ -78,7 +82,7 @@ namespace RMSClient
 
         await Task.Delay(333);
       }
-      catch (Exception ex) { Clipboard.SetText(ex.Message); MessageBox.Show($"{ex.Message}", "Exception", MessageBoxButton.OK, MessageBoxImage.Error); }
+      catch (Exception ex) { Clipboard.SetText(ex.Message); MessageBox.Show($"{ex.Message}", "Exception 3 ", MessageBoxButton.OK, MessageBoxImage.Error); }
       finally
       {
         vb1.Visibility = Visibility.Collapsed;
@@ -92,7 +96,7 @@ namespace RMSClient
       {
         Clipboard.SetData(DataFormats.StringFormat, DataContext);
       }
-      catch (Exception ex) { Clipboard.SetText(ex.Message); MessageBox.Show($"{ex.Message}", "Exception", MessageBoxButton.OK, MessageBoxImage.Error); }
+      catch (Exception ex) { Clipboard.SetText(ex.Message); MessageBox.Show($"{ex.Message}", "Exception 4 ", MessageBoxButton.OK, MessageBoxImage.Error); }
     }
     void onExit(object sender, RoutedEventArgs e) => Close();
 

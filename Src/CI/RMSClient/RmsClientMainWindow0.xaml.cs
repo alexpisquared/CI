@@ -66,7 +66,7 @@ namespace RMSClient
         Debug.WriteLine(sw.Elapsed);
         vb1.Visibility = Visibility.Collapsed;
       }
-      catch (Exception ex) { Clipboard.SetText(ex.Message); MessageBox.Show($"{ex.Message}", "Exception", MessageBoxButton.OK, MessageBoxImage.Error); }
+      catch (Exception ex) { Clipboard.SetText(ex.Message); MessageBox.Show($"{ex.Message}", "Exception 2", MessageBoxButton.OK, MessageBoxImage.Error); }
     }
     async void onFind(object sender, RoutedEventArgs e) => await find();
 
@@ -78,7 +78,7 @@ namespace RMSClient
       {
         Clipboard.SetData(DataFormats.StringFormat, DataContext);
       }
-      catch (Exception ex) { Clipboard.SetText(ex.Message); MessageBox.Show($"{ex.Message}", "Exception", MessageBoxButton.OK, MessageBoxImage.Error); }
+      catch (Exception ex) { Clipboard.SetText(ex.Message); MessageBox.Show($"{ex.Message}", "Exception 1", MessageBoxButton.OK, MessageBoxImage.Error); }
     }
 
     protected override void OnClosing(CancelEventArgs e)

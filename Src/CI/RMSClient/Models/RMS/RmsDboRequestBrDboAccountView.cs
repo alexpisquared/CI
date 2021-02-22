@@ -10,7 +10,7 @@ namespace RMSClient.Models.RMS
     {
     [Key] //tu: patch vw-no-kwy 2/2 
     public long AccountId { get; set; }
-        public int OrderId { get; set; }
+        public int? OrderId { get; set; }
         public string Account { get; set; }
         public string AdpAcountNumber { get; set; }
         public string AccountNum { get; set; }
