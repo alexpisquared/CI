@@ -4,10 +4,8 @@ using System.Net;
 using System.Net.Sockets;
 using System.Text;
 
-//var ws = new WebSocket();// "ws://10.98.99.100:6756");
-
-//t1("10.98.99.100", 6756);
-t2("mtprdwebts01.bbssecurities.com", 6756);
+//t1("10.10.19.152", 6756);
+t2("mtdevwebts01.bbssecurities.com", 6756);
 
 static void t1(string ip, int port)
 {

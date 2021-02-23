@@ -104,6 +104,40 @@ namespace RMSClient
         tbxAccount.Focus();
       }
     }
+    async void dg1_SelectedCellsChanged(object s, SelectedCellsChangedEventArgs e)
+    {
+      if (!_loaded) return;
+
+      try
+      {
+        btnFind.Focus();
+        vb1.Visibility = Visibility.Visible;
+        const int top = 12;
+        var sw = Stopwatch.StartNew();
+
+        var l = _dbRMS.RequestHistories.          Where(r => r.RequestId == 123        );
+        dg2.ItemsSource = await l.Take(top).ToListAsync();
+
+        var report = l.Count() <= top ?
+          $"Total {l.Count()} matches found in " :
+          $"Top {Math.Min(top, l.Count()),3}  rows out of {l.Count(),5}  matches found in ";
+
+        Title = $"RMS Client ({Environment.UserName}) - {report} {sw.Elapsed.TotalSeconds,5:N2} sec.";
+
+        _logger.LogInformation($" +{(DateTime.Now - App._started):mm\\:ss\\.ff}  {Title}   ");
+
+        await Task.Delay(333);
+      }
+      catch (Exception ex)
+      {
+        _logger.LogError($" +{(DateTime.Now - App._started):mm\\:ss\\.ff}  {ex}");
+        Clipboard.SetText(ex.Message); MessageBox.Show($"{ex.Message}", "Exception 3 ", MessageBoxButton.OK, MessageBoxImage.Error);
+      }
+      finally
+      {
+        vb1.Visibility = Visibility.Collapsed;
+      }
+    }
 
     void onClip(object sender, RoutedEventArgs e)
     {

@@ -73,7 +73,8 @@
     </Grid.LayoutTransform>
     <Grid.RowDefinitions>
       <RowDefinition Height="Auto"/>
-      <RowDefinition Height="*"/>
+      <RowDefinition Height="3*"/>
+      <RowDefinition Height="2*"/>
       <RowDefinition Height="Auto"/>
     </Grid.RowDefinitions>
 
@@ -113,7 +114,7 @@
       <Grid.LayoutTransform>
         <ScaleTransform ScaleX=".8" ScaleY=".8" />
       </Grid.LayoutTransform>
-      <DataGrid x:Name="dg1" AutoGenerateColumns="False" ItemsSource="{Binding Source={StaticResource _accountRequestViewSource}}" Background="#eee"
+      <DataGrid x:Name="dg1" AutoGenerateColumns="False" ItemsSource="{Binding Source={StaticResource _accountRequestViewSource}}" Background="#eee" SelectedCellsChanged="dg1_SelectedCellsChanged"
               AlternatingRowBackground="#f0f8ff" CanUserAddRows="False" CanUserDeleteRows="False" GridLinesVisibility="None" HeadersVisibility="Column" SelectionMode="Single" BorderThickness="0" >
         <DataGrid.Columns>
           <DataGridTextColumn Header="Order ID"	                Binding="{Binding OrderId}"				ElementStyle="{StaticResource RightAlignStyle}"													/>
@@ -153,15 +154,36 @@
         <DataGridTextColumn Header="BBSNote"	          Binding="{Binding BBSNote}"								/>
         <DataGridTextColumn Header="UpdateDate"	        Binding="{Binding UpdateDate}"						/>
         <DataGridTextColumn Header="QuantityType"	      Binding="{Binding QuantityType}"					/>-->
-          <DataGridTextColumn Header="CompoundFreq"	    Binding="{Binding CompoundFreq}"					/>
-          <DataGridTextColumn Header="PaymentFreq"	    Binding="{Binding PaymentFreq}"						/>
+          <DataGridTextColumn Header="Compound Freq"	    Binding="{Binding CompoundFreq}"					/>
+          <DataGridTextColumn Header="Payment Freq"	    Binding="{Binding PaymentFreq}"						/>
           <DataGridTextColumn Header="Term"	            Binding="{Binding Term}"									/>
           <DataGridTextColumn Header="Rate"	            Binding="{Binding Rate}"									/>
           <DataGridTextColumn Header="Other Info"	      Binding="{Binding OtherInfo}"	Width="*"		ElementStyle="{StaticResource DarkOrangeStyle}"													/>
         </DataGrid.Columns>
       </DataGrid>
     </Grid>
-    <Viewbox  Grid.Row="1" x:Name="vb1" >
+
+    <Grid Grid.Row="2" x:Name="gdg2">
+      <Grid.LayoutTransform>
+        <ScaleTransform ScaleX=".8" ScaleY=".8" />
+      </Grid.LayoutTransform>
+      <DataGrid x:Name="dg2" AutoGenerateColumns="False" ItemsSource="{Binding Source={StaticResource _accountRequestViewSource}}" Background="#eee"
+              AlternatingRowBackground="#f0f8ff" CanUserAddRows="False" CanUserDeleteRows="False" GridLinesVisibility="None" HeadersVisibility="Column" SelectionMode="Single" BorderThickness="0" >
+        <DataGrid.Columns>
+          <DataGridTextColumn Header="Update ID"   Binding="{Binding Type}"									/>
+          <DataGridTextColumn Header="Parent" 	   Binding="{Binding Subtype}"								/>
+          <DataGridTextColumn Header="Type"  	     Binding="{Binding Action}"								/>
+          <DataGridTextColumn Header="Date"  	     Binding="{Binding CreationDate, StringFormat='{}{0:yyyy-MM-dd HH\\:mm}'}"													/>
+          <DataGridTextColumn Header="Status"	     Binding="{Binding Status}"								/>
+          <DataGridTextColumn Header="User"   	   Binding="{Binding CreationDate, StringFormat='{}{0:yyyy-MM-dd HH\\:mm}'}"													/>
+          <DataGridTextColumn Header="Last Shares" Binding="{Binding SecAdpnumber}"					/>
+          <DataGridTextColumn Header="Price"       Binding="{Binding Cusip}"									/>
+          <DataGridTextColumn Header="BBS Note"	   Binding="{Binding Symbol}"						Width="*"		/>
+        </DataGrid.Columns>
+      </DataGrid>
+    </Grid>
+
+    <Viewbox  Grid.Row="1" Grid.RowSpan="2" x:Name="vb1" >
       <TextBlock Text="Loading..." Foreground="#49d" FontStyle="Italic"/>
     </Viewbox>
   </Grid>
