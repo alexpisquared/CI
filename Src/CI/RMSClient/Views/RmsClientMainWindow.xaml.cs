@@ -110,12 +110,11 @@ namespace RMSClient
 
       try
       {
-        btnFind.Focus();
-        vb1.Visibility = Visibility.Visible;
         const int top = 12;
         var sw = Stopwatch.StartNew();
+        var requestID = ((RmsDboRequestBrDboAccountView)((System.Windows.Controls.Primitives.Selector)s).SelectedValue).OrderId;
 
-        var l = _dbRMS.RequestHistories.          Where(r => r.RequestId == 123        );
+        var l = _dbRMS.RequestHistories.Where(r => r.RequestId == requestID);
         dg2.ItemsSource = await l.Take(top).ToListAsync();
 
         var report = l.Count() <= top ?
@@ -132,10 +131,6 @@ namespace RMSClient
       {
         _logger.LogError($" +{(DateTime.Now - App._started):mm\\:ss\\.ff}  {ex}");
         Clipboard.SetText(ex.Message); MessageBox.Show($"{ex.Message}", "Exception 3 ", MessageBoxButton.OK, MessageBoxImage.Error);
-      }
-      finally
-      {
-        vb1.Visibility = Visibility.Collapsed;
       }
     }
 

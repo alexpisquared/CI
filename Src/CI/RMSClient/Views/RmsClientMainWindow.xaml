@@ -74,7 +74,7 @@
     <Grid.RowDefinitions>
       <RowDefinition Height="Auto"/>
       <RowDefinition Height="3*"/>
-      <RowDefinition Height="2*"/>
+      <RowDefinition Height="120"/>
       <RowDefinition Height="Auto"/>
     </Grid.RowDefinitions>
 
@@ -110,7 +110,7 @@
       <Button Click="onExit" IsCancel="True" Opacity="0" />
     </StackPanel>
 
-    <Grid Grid.Row="1" x:Name="gdg1">
+    <Grid Grid.Row="1" x:Name="gdg1" Margin="0 0 0 10">
       <Grid.LayoutTransform>
         <ScaleTransform ScaleX=".8" ScaleY=".8" />
       </Grid.LayoutTransform>
@@ -170,15 +170,15 @@
       <DataGrid x:Name="dg2" AutoGenerateColumns="False" ItemsSource="{Binding Source={StaticResource _accountRequestViewSource}}" Background="#eee"
               AlternatingRowBackground="#f0f8ff" CanUserAddRows="False" CanUserDeleteRows="False" GridLinesVisibility="None" HeadersVisibility="Column" SelectionMode="Single" BorderThickness="0" >
         <DataGrid.Columns>
-          <DataGridTextColumn Header="Update ID"   Binding="{Binding Type}"									/>
-          <DataGridTextColumn Header="Parent" 	   Binding="{Binding Subtype}"								/>
-          <DataGridTextColumn Header="Type"  	     Binding="{Binding Action}"								/>
-          <DataGridTextColumn Header="Date"  	     Binding="{Binding CreationDate, StringFormat='{}{0:yyyy-MM-dd HH\\:mm}'}"													/>
-          <DataGridTextColumn Header="Status"	     Binding="{Binding Status}"								/>
-          <DataGridTextColumn Header="User"   	   Binding="{Binding CreationDate, StringFormat='{}{0:yyyy-MM-dd HH\\:mm}'}"													/>
-          <DataGridTextColumn Header="Last Shares" Binding="{Binding SecAdpnumber}"					/>
-          <DataGridTextColumn Header="Price"       Binding="{Binding Cusip}"									/>
-          <DataGridTextColumn Header="BBS Note"	   Binding="{Binding Symbol}"						Width="*"		/>
+          <DataGridTextColumn Header="Update ID"   Binding="{Binding RequestHistoryId}"									/>
+          <DataGridTextColumn Header="Parent" 	   Binding="{Binding ParentId}"								/>
+          <DataGridTextColumn Header="Type"  	     Binding="{Binding TypeId}"								/>
+          <DataGridTextColumn Header="Date"  	     Binding="{Binding UpdateTime, StringFormat='{}{0:yyyy-MM-dd HH\\:mm}'}"													/>
+          <DataGridTextColumn Header="Status"	     Binding="{Binding StatusId}"								/>
+          <DataGridTextColumn Header="User"   	   Binding="{Binding UserId}"													/>
+          <DataGridTextColumn Header="Last Shares" Binding="{Binding LastShares}"					/>
+          <DataGridTextColumn Header="Price"       Binding="{Binding Price}"									/>
+          <DataGridTextColumn Header="BBS Note"	   Binding="{Binding Bbsnote}"						Width="*"		/>
         </DataGrid.Columns>
       </DataGrid>
     </Grid>
