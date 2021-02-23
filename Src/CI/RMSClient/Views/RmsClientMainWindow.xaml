@@ -89,8 +89,10 @@
     <StackPanel Orientation="Horizontal" x:Name="spc1" Margin="8">
       <Button Content="_Clip" Click="onClip" />
       <Label Content="_Filter" />
-      <ComboBox>
+      <ComboBox x:Name="cbxOAF" SelectionChanged="onDateCh">
         <ComboBoxItem Content="Outstanding" IsSelected="True" />
+        <ComboBoxItem Content="All"     />
+        <ComboBoxItem Content="Filled"  />
       </ComboBox>
 
       <Label Content="_Account" Target="{Binding ElementName=tbxAccount}" />
