@@ -36,14 +36,12 @@ namespace RMSClient
       MouseWheel += (s, e) => { if (!(Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl))) return; ZVa += (e.Delta * .001); e.Handled = true; Debug.WriteLine(Title = $">>ZVa:{ZVa}"); }; //tu:
       _logger = logger;
     }
-    public static readonly DependencyProperty ZVaProperty = DependencyProperty.Register("ZVa", typeof(double), typeof(RmsClientMainWindow), new PropertyMetadata(1.25));
+    public static readonly DependencyProperty ZVaProperty = DependencyProperty.Register("ZVa", typeof(double), typeof(RmsClientMainWindow), new PropertyMetadata(1.25)); public double ZVa { get => (double)GetValue(ZVaProperty); set => SetValue(ZVaProperty, value); }
 
-    public double ZVa { get => (double)GetValue(ZVaProperty); set => SetValue(ZVaProperty, value); }
-
-    async void onLoaded(object sender, RoutedEventArgs e) { _loaded = true; await find(); } //_db.Database.EnsureCreated();
-    async void onDiRein(object sender, RoutedEventArgs e) => await find();
-    async void onDateCh(object sender, SelectionChangedEventArgs e) => await find();
-    async void onFind(object sender, RoutedEventArgs e) => await find();
+    async void onLoaded(object s, RoutedEventArgs e) { _loaded = true; await find(); } //_db.Database.EnsureCreated();
+    async void onDiRein(object s, RoutedEventArgs e) => await find();
+    async void onDateCh(object s, SelectionChangedEventArgs e) => await find();
+    async void onFind(object s, RoutedEventArgs e) => await find();
     async void onxAccountChanged(object s, TextChangedEventArgs e)
     {
       if (!_loaded) return;
@@ -87,7 +85,7 @@ namespace RMSClient
           $"Total {l.Count()} matches found in " :
           $"Top {Math.Min(top, l.Count()),3}  rows out of {l.Count(),5}  matches found in ";
 
-        Title = $"RMS Client ({Environment.UserName}) - {report} {sw.Elapsed.TotalSeconds,5:N2} sec.";
+        Title = $"RMS Client ({Environment.UserName}) - {_dbRMS.Server()} - {report} {sw.Elapsed.TotalSeconds,5:N2} sec.";
 
         _logger.LogInformation($" +{(DateTime.Now - App._started):mm\\:ss\\.ff}  {Title}   params: {dt1.SelectedDate} - {dt2.SelectedDate}   {acnt}   {(cnkDirein.IsChecked == true ? "Direct Reinvest" : "")}");
 
@@ -134,7 +132,7 @@ namespace RMSClient
       }
     }
 
-    void onClip(object sender, RoutedEventArgs e)
+    void onClip(object s, RoutedEventArgs e)
     {
       try
       {
@@ -146,7 +144,7 @@ namespace RMSClient
         Clipboard.SetText(ex.Message); MessageBox.Show($"{ex.Message}", "Exception 4 ", MessageBoxButton.OK, MessageBoxImage.Error);
       }
     }
-    void onExit(object sender, RoutedEventArgs e) => Close();
+    void onExit(object s, RoutedEventArgs e) => Close();
 
     protected override void OnClosing(CancelEventArgs e)
     {
