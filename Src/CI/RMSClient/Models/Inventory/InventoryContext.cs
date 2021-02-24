@@ -26,9 +26,13 @@ namespace RMSClient.Models.Inventory
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseSqlServer("Server=.\\sqlexpress;Database=Inventory;Trusted_Connection=True;");
-            }
-        }
+#if DEBUG
+        optionsBuilder.UseSqlServer("Server=.\\sqlexpress;Database=Inventory;Trusted_Connection=True;"); // var constr = Environment.UserName.Contains("lex.pi") ? "Server=.\\sqlexpress;Database=Inventory;Trusted_Connection=True;" : "Server=MTdevSQLDB;Database=Inventory;Trusted_Connection=True;";        optionsBuilder.UseSqlServer(constr);        System.Diagnostics.Debug.WriteLine($" ■ ■ ■ {constr}");
+#else
+        optionsBuilder.UseSqlServer("Server=MTdevSQLDB;Database=Inventory;Trusted_Connection=True;");
+#endif
+      }
+    }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

@@ -120,17 +120,17 @@
                 SelectionMode="Single" BorderThickness="0" IsReadOnly="True" >
         <DataGrid.Columns>
           <DataGridTextColumn Header="Order ID"	                Binding="{Binding OrderId}"				ElementStyle="{StaticResource RightAlignStyle}"													/>
-          <DataGridTemplateColumn Header="Acount"   SortMemberPath="Account" CanUserSort="True" >
+          <DataGridTemplateColumn Header="Acount"   SortMemberPath="ShortName" CanUserSort="True" >
             <DataGridTemplateColumn.CellTemplate>
               <DataTemplate>
-                <stb:HighlightableTextBlock Text="{Binding Account}" SearchText="{Binding ElementName=tbxAccount, Path=Text}" ToolTip="{Binding AccountId}" Margin="5 0" />
+                <stb:HighlightableTextBlock Text="{Binding ShortName}" SearchText="{Binding ElementName=tbxAccount, Path=Text}" ToolTip="{Binding AccountId}" Margin="5 0" />
               </DataTemplate>
             </DataGridTemplateColumn.CellTemplate>
           </DataGridTemplateColumn>
-          <DataGridTemplateColumn Header="ADP Acount"   SortMemberPath="AdpAcountNumber" CanUserSort="True" >
+          <DataGridTemplateColumn Header="ADP Acount"   SortMemberPath="AdpaccountCode" CanUserSort="True" >
             <DataGridTemplateColumn.CellTemplate>
               <DataTemplate>
-                <stb:HighlightableTextBlock Text="{Binding AdpAcountNumber}" SearchText="{Binding ElementName=tbxAccount, Path=Text}" ToolTip="{Binding AccountId}" Margin="5 0" />
+                <stb:HighlightableTextBlock Text="{Binding AdpaccountCode}" SearchText="{Binding ElementName=tbxAccount, Path=Text}" ToolTip="{Binding AccountId}" Margin="5 0" />
               </DataTemplate>
             </DataGridTemplateColumn.CellTemplate>
           </DataGridTemplateColumn>
@@ -143,7 +143,7 @@
           <DataGridTextColumn Header="Subtype"	        Binding="{Binding Subtype}"								/>
           <DataGridTextColumn Header="Action"	          Binding="{Binding Action}"								/>
           <DataGridTextColumn Header="Status"	          Binding="{Binding Status}"								/>
-          <DataGridTextColumn Header="Created"	        Binding="{Binding CreationDate, StringFormat='{}{0:yyyy-MM-dd HH\\:mm}'}"													/>
+          <DataGridTextColumn Header="Created"	        Binding="{Binding SendingTimeGmt, StringFormat='{}{0:yyyy-MM-dd HH\\:mm}'}"													/>
           <DataGridTextColumn Header="ADP Number"	      Binding="{Binding SecAdpnumber}"					/>
           <DataGridTextColumn Header="CUSIP"	          Binding="{Binding Cusip}"									/>
           <DataGridTextColumn Header="Symbol"	          Binding="{Binding Symbol}"								/>
