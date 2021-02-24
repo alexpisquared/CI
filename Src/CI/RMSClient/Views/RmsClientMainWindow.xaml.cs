@@ -9,6 +9,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Input;
 
@@ -21,11 +22,11 @@ namespace RMSClient
     readonly CollectionViewSource _accountRequestViewSource;
     bool _loaded = false;
 
-    public RmsClientMainWindow(Microsoft.Extensions.Logging.ILogger<RmsClientMainWindow> logger)
+    public RmsClientMainWindow(ILogger<RmsClientMainWindow> logger)
     {
       InitializeComponent();//DataContext = this;
 
-      dt1.SelectedDate = DateTimeOffset.Now.Date.AddYears(-100);
+      dt1.SelectedDate = DateTimeOffset.Now.Date.AddDays(-7);
       dt2.SelectedDate = DateTimeOffset.Now.Date;
 
       _accountRequestViewSource = (CollectionViewSource)FindResource(nameof(_accountRequestViewSource));
@@ -47,36 +48,39 @@ namespace RMSClient
       {
         btnFind.Focus();
         vb1.Visibility = Visibility.Visible;
-        const int top = 12;
+        const int top = 100;
         var sw = Stopwatch.StartNew();
         var acnt = string.IsNullOrEmpty(tbxAccount.Text) || tbxAccount.Text == "xxxxxxxxx" ? null : tbxAccount.Text;
 
 #if !DIRECT
+
+        var sti =
+          cbxOAF.SelectedIndex == 0 ? 1 :
+          cbxOAF.SelectedIndex == 1 ? 0 :
+          cbxOAF.SelectedIndex == 2 ? 7 : 0;
+
         var l = _dbRMS.RmsDboRequestInvDboAccountViews.
           Where(r =>
-          //r.TypeID != 5 &&
-          dt1.SelectedDate <= r.SendingTimeGmt && r.SendingTimeGmt <= dt2.SelectedDate && (acnt == null || r.AdpaccountCode.Contains(acnt)) && (cnkDirein.IsChecked != true || (r.OtherInfo != null && r.OtherInfo.Contains("einv")))
-          //&& (cbxOAF.SelectedValue.ToString() == "All" || (r.Status == cbxOAF.SelectedValue.ToString()))       
-        ).OrderByDescending(r=>r.UpdateTineGmt);
+            dt1.SelectedDate <= r.SendingTimeGmt && r.SendingTimeGmt <= dt2.SelectedDate.Value.AddDays(1) && (acnt == null || r.AdpaccountCode.Contains(acnt)) && (cnkDirein.IsChecked != true || (r.OtherInfo != null && r.OtherInfo.Contains("einv")))
+            && (cbxOAF.SelectedValue.ToString() == "All" || (r.StatusId == sti))       
+            ).OrderBy(r => r.SendingTimeGmt);
+
         dg1.ItemsSource = await l.Take(top).ToListAsync();
 #elif RawSql
-        var fullrv = _dbRM.RmsDboRequestBrDboAccountViews.Where(r => dt1.SelectedDate <= r.SendingTimeGmt && r.SendingTimeGmt <= dt2.SelectedDate);
+        var fullrv = _dbRM.RmsDboRequestInvDboAccountViews.Where(r => dt1.SelectedDate <= r.SendingTimeGmt && r.SendingTimeGmt <= dt2.SelectedDate);
         var report = $"Top {Math.Min(top, fullrv.Count())} rows out of {fullrv.Count()} matches found in ";
         DataContext = await fullrv.Take(top).ToListAsync();
 #else
-        await _dbRMS.RmsDboRequestBrDboAccountViews                             /**/.Where(r => /*r.TypeID!=5 &&*/ dt1.SelectedDate <= r.SendingTimeGmt && r.SendingTimeGmt <= dt2.SelectedDate && (acnt == null || r.AdpaccountCode.Contains(acnt)) && (cnkDirein.IsChecked != true || (r.OtherInfo != null && r.OtherInfo.Contains("einv"))) && (cbxOAF.SelectedValue.ToString() == "All" || (r.Status == cbxOAF.SelectedValue.ToString()))).          LoadAsync();
-        var l = _dbRMS.RmsDboRequestBrDboAccountViews.Local.ToObservableCollection().Where(r => /*r.TypeID!=5 &&*/ dt1.SelectedDate <= r.SendingTimeGmt && r.SendingTimeGmt <= dt2.SelectedDate && (acnt == null || r.AdpaccountCode.Contains(acnt)) && (cnkDirein.IsChecked != true || (r.OtherInfo != null && r.OtherInfo.Contains("einv"))) && (cbxOAF.SelectedValue.ToString() == "All" || (r.Status == cbxOAF.SelectedValue.ToString())));
+        await _dbRMS.RmsDboRequestInvDboAccountViews                             /**/.Where(r => /*r.TypeID!=5 &&*/ dt1.SelectedDate <= r.SendingTimeGmt && r.SendingTimeGmt <= dt2.SelectedDate && (acnt == null || r.AdpaccountCode.Contains(acnt)) && (cnkDirein.IsChecked != true || (r.OtherInfo != null && r.OtherInfo.Contains("einv"))) && (cbxOAF.SelectedValue.ToString() == "All" || (r.Status == cbxOAF.SelectedValue.ToString()))).          LoadAsync();
+        var l = _dbRMS.RmsDboRequestInvDboAccountViews.Local.ToObservableCollection().Where(r => /*r.TypeID!=5 &&*/ dt1.SelectedDate <= r.SendingTimeGmt && r.SendingTimeGmt <= dt2.SelectedDate && (acnt == null || r.AdpaccountCode.Contains(acnt)) && (cnkDirein.IsChecked != true || (r.OtherInfo != null && r.OtherInfo.Contains("einv"))) && (cbxOAF.SelectedValue.ToString() == "All" || (r.Status == cbxOAF.SelectedValue.ToString())));
         _accountRequestViewSource.Source = l.Take(top);
 #endif
-        var report = l.Count() <= top ?
-          $"Total {l.Count()} matches found in " :
-          $"Top {Math.Min(top, l.Count()),3}  rows out of {l.Count(),5}  matches found in ";
+        var cnt = await l.CountAsync();
+        var report = cnt <= top ? $"Total {cnt} matches found in " : $"Top {Math.Min(top, cnt),3}  rows out of {cnt,5}  matches found in ";
 
         Title = $"RMS Client ({Environment.UserName}) - {_dbRMS.Server()} - {report} {sw.Elapsed.TotalSeconds,5:N2} sec.";
 
         _logger.LogInformation($" +{(DateTime.Now - App._started):mm\\:ss\\.ff}  {Title}   params: {dt1.SelectedDate} - {dt2.SelectedDate}   {acnt}   {(cnkDirein.IsChecked == true ? "Direct Reinvest" : "")}");
-
-        await Task.Delay(333);
       }
       catch (Exception ex)
       {
@@ -94,7 +98,7 @@ namespace RMSClient
     async void onDiRein(object s, RoutedEventArgs e) => await find();
     async void onDateCh(object s, SelectionChangedEventArgs e) => await find();
     async void onFind(object s, RoutedEventArgs e) => await find();
-    async void onxAccountChanged(object s, TextChangedEventArgs e)
+    async void onAccountChanged(object s, TextChangedEventArgs e)
     {
       if (!_loaded) return;
 
@@ -104,40 +108,68 @@ namespace RMSClient
         await find();
     }
 
-    async void dg1_SelectedCellsChanged(object s, SelectedCellsChangedEventArgs e)
+    async void onSelect(object s, SelectedCellsChangedEventArgs e)
     {
       if (!_loaded) return;
 
-      var requestID = ((RmsDboRequestBrDboAccountView)((System.Windows.Controls.Primitives.Selector)s).SelectedValue).OrderId;
+      var requestID = ((RmsDboRequestInvDboAccountView)((Selector)s).SelectedValue).OrderId;
       await Task.Delay(555);
-      if (requestID != ((RmsDboRequestBrDboAccountView)((System.Windows.Controls.Primitives.Selector)s).SelectedValue).OrderId)
+      if (requestID != ((RmsDboRequestInvDboAccountView)((Selector)s).SelectedValue).OrderId)
         return;
+
+      var report = "Nothing yet ... ";
+      Title = $"RMS Client ({Environment.UserName}) - looking for history ...";
+      var sw = Stopwatch.StartNew();
 
       try
       {
-        const int top = 12;
-        var sw = Stopwatch.StartNew();
-
         var l = _dbRMS.RequestHistories.Where(r => r.RequestId == requestID);
-        dg2.ItemsSource = await l.Take(top).ToListAsync();
-
-        var report = l.Count() <= top ?
-          $"Total {l.Count()} matches found in " :
-          $"Top {Math.Min(top, l.Count()),3}  rows out of {l.Count(),5}  matches found in ";
-
-        Title = $"RMS Client ({Environment.UserName}) - {report} {sw.Elapsed.TotalSeconds,5:N2} sec.";
-
-        _logger.LogInformation($" +{(DateTime.Now - App._started):mm\\:ss\\.ff}  {Title}   ");
-
-        await Task.Delay(333);
+        dg2.ItemsSource = await l.ToListAsync();
+        report = $"Total  {l.Count()}  historical entires found in ";
       }
       catch (Exception ex)
       {
         _logger.LogError($" +{(DateTime.Now - App._started):mm\\:ss\\.ff}  {ex}");
         Clipboard.SetText(ex.Message); MessageBox.Show($"{ex.Message}", "Exception 3 ", MessageBoxButton.OK, MessageBoxImage.Error);
       }
+      finally
+      {
+        Title = $"RMS Client ({Environment.UserName}) - {report} {sw.Elapsed.TotalSeconds,5:N2} sec.";
+        _logger.LogInformation($" +{(DateTime.Now - App._started):mm\\:ss\\.ff}  {Title}   ");
+      }
     }
+    void onPopup(object s, MouseButtonEventArgs e)
+    {
+      try
+      {
+        var r = (RmsDboRequestInvDboAccountView)((Selector)s).SelectedValue;
 
+        var popup = new ProcessOrderPopup
+        {
+          Owner = this,
+          OrderId = r.OrderId,
+          OrderStatus = r.OrderStatus,
+          Symbol = r.Symbol,
+          AdpaccountCode = r.AdpaccountCode,
+          Quantity = r.Quantity,
+          AvgPx = r.AvgPx
+        };
+        var rv = popup.ShowDialog();
+        if (rv == true)
+        {
+          var note = popup.Note;
+          var newStatus = popup.NewOrderStatus;
+
+          MessageBox.Show($"Sending new order status {newStatus} \n\nwith note \n\n{note}\n\nto ???", "Thank you", MessageBoxButton.OK, MessageBoxImage.Information);
+        }
+      }
+      catch (Exception ex)
+      {
+        _logger.LogError($" +{(DateTime.Now - App._started):mm\\:ss\\.ff}  {ex}");
+        Clipboard.SetText(ex.Message);
+        MessageBox.Show($"{ex.Message}", "Exception 3 ", MessageBoxButton.OK, MessageBoxImage.Error);
+      }
+    }
     void onClip(object s, RoutedEventArgs e)
     {
       try
@@ -158,12 +190,7 @@ namespace RMSClient
       _dbRMS.Dispose();
       base.OnClosing(e);
     }
-
-    void dg1_MouseDoubleClick(object sender, MouseButtonEventArgs e)
-    {
-      var popup = new ProcessOrderPopup();
-      popup.Owner = this;
-      var rv = popup.ShowDialog();
-    }
   }
+  public enum OrderStatusEnum { Unknown, Done, PartDone, Rejected };
+  public enum OrderActionEnum { Unknown, SendUpdate, Acknowledge, UnlockOrder, Cancel };
 }

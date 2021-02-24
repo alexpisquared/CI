@@ -379,9 +379,13 @@ namespace RMSClient.Models.RMS
                     .IsUnicode(false)
                     .IsFixedLength(true);
 
-                entity.Property(e => e.OrderId).HasColumnName("OrderID");
+              entity.Property(e => e.OrderId).HasColumnName("OrderID");
 
-                entity.Property(e => e.OrderStatus)
+              entity.Property(e => e.OrderQty)
+                  .HasMaxLength(23)
+                  .IsUnicode(false);
+
+              entity.Property(e => e.OrderStatus)
                     .HasMaxLength(20)
                     .IsUnicode(false);
 

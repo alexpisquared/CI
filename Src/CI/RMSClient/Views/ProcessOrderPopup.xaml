@@ -62,16 +62,16 @@
 
     <StackPanel Grid.ColumnSpan="3" Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Center">
       <Label Content="Order ID " />
-      <Label Content="12332"    FontWeight="Bold" Foreground="#000"/>
+      <Label Content="{Binding OrderId}"          FontWeight="Bold" Foreground="#000"/>
       <Label Content="           Current Status " />
-      <Label Content="Sent"     FontWeight="Bold" Foreground="#000"/>
+      <Label Content="{Binding OrderStatus}"      FontWeight="Bold" Foreground="#000"/>
     </StackPanel>
 
     <StackPanel Grid.ColumnSpan="3" Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Left">
       <Label Content="Buy " />
-      <Label Content="12332"        FontWeight="SemiBold" Foreground="#000"/>
+      <Label Content="{Binding Symbol}"        FontWeight="SemiBold" Foreground="#000"/>
       <Label Content=" for " />
-      <Label Content="8908048023gc" FontWeight="SemiBold" Foreground="#000"/>
+      <Label Content="{Binding AdpaccountCode}" FontWeight="SemiBold" Foreground="#000"/>
     </StackPanel>
 
     <Label Grid.Column="0" Grid.Row="2" FontSize="14" Target="{Binding ElementName=c1}" Content="Ne_w Status" />
@@ -84,10 +84,9 @@
       <ComboBoxItem Content="Partial Done" />
       <ComboBoxItem Content="Rejected" />
     </ComboBox>
-    <TextBox  Grid.Column="1" Grid.Row="3" x:Name="c2" Text="9879.87"/>
-    <TextBox  Grid.Column="2" Grid.Row="3" x:Name="c3" />
-
-    <TextBox  Grid.Column="0" Grid.Row="5" x:Name="c4" Grid.ColumnSpan="3" MinLines="2" TextWrapping="Wrap" />
+    <TextBox  Grid.Column="1" Grid.Row="3" x:Name="c2" Text="{Binding Quantity}" />
+    <TextBox  Grid.Column="2" Grid.Row="3" x:Name="c3" Text="{Binding AvgPx}" />
+    <TextBox  Grid.Column="0" Grid.Row="5" x:Name="c4" Text="{Binding Note}" Grid.ColumnSpan="3" MinLines="2" TextWrapping="Wrap" />
 
     <StackPanel Grid.ColumnSpan="3" Grid.Row="6" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0 20 0 0">
       <Button Content="_Send Update"  Click="Button_Click1" IsDefault="True" />
