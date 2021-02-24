@@ -389,6 +389,10 @@ namespace RMSClient.Models.RMS
                     .HasMaxLength(100)
                     .IsUnicode(false);
 
+                entity.Property(e => e.RepCd)
+                    .IsUnicode(false)
+                    .HasColumnName("rep_cd");
+
                 entity.Property(e => e.SendingTimeGmt)
                     .HasColumnType("datetime")
                     .HasColumnName("SendingTimeGMT");

@@ -32,5 +32,6 @@ namespace RMSClient.Models.RMS
         public int? StatusId { get; set; }
         public int? UserId { get; set; }
         public string UserName { get; set; }
-    }
+    public string RepCd { get; set; }
+  }
 }

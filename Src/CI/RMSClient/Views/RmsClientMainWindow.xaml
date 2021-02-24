@@ -139,10 +139,11 @@
         <DataGridTextColumn Header="ClientRequestId"	  Binding="{Binding ClientRequestId}"													/>
         <DataGridTextColumn Header="SourceId"	          Binding="{Binding SourceId}"													/>
         <DataGridTextColumn Header="AccountId"	        Binding="{Binding AccountId}"													/>-->
-          <DataGridTextColumn Header="Type"	            Binding="{Binding Type}"									/>
-          <DataGridTextColumn Header="Subtype"	        Binding="{Binding Subtype}"								/>
+          <DataGridTextColumn Header="Rep CD"	          Binding="{Binding RepCd}"									/>
+          <DataGridTextColumn Header="Type"	            Binding="{Binding TypeName}"									/>
+          <DataGridTextColumn Header="Subtype"	        Binding="{Binding SubtypeName}"								/>
           <DataGridTextColumn Header="Action"	          Binding="{Binding Action}"								/>
-          <DataGridTextColumn Header="Status"	          Binding="{Binding Status}"								/>
+          <DataGridTextColumn Header="Status"	          Binding="{Binding OrderStatus}"								/>
           <DataGridTextColumn Header="Created"	        Binding="{Binding SendingTimeGmt, StringFormat='{}{0:yyyy-MM-dd HH\\:mm}'}"													/>
           <DataGridTextColumn Header="ADP Number"	      Binding="{Binding SecAdpnumber}"					/>
           <DataGridTextColumn Header="CUSIP"	          Binding="{Binding Cusip}"									/>
