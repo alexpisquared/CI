@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using RMSClient.Models.RMS;
+using RMSClient.Views;
 using System;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -151,6 +152,13 @@ namespace RMSClient
       _dbRMS.Dispose();
       _dbRMS.Dispose();
       base.OnClosing(e);
+    }
+
+    void dg1_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+    {
+      var popup = new ProcessOrderPopup();
+      popup.Owner = this;
+      var rv = popup.ShowDialog();
     }
   }
 }

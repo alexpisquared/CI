@@ -114,8 +114,10 @@
       <Grid.LayoutTransform>
         <ScaleTransform ScaleX=".8" ScaleY=".8" />
       </Grid.LayoutTransform>
-      <DataGrid x:Name="dg1" AutoGenerateColumns="False" ItemsSource="{Binding Source={StaticResource _accountRequestViewSource}}" Background="#eee" SelectedCellsChanged="dg1_SelectedCellsChanged"
-              AlternatingRowBackground="#f0f8ff" CanUserAddRows="False" CanUserDeleteRows="False" GridLinesVisibility="None" HeadersVisibility="Column" SelectionMode="Single" BorderThickness="0" >
+      <DataGrid x:Name="dg1" AutoGenerateColumns="False" ItemsSource="{Binding Source={StaticResource _accountRequestViewSource}}" Background="#eee" 
+                SelectedCellsChanged="dg1_SelectedCellsChanged" MouseDoubleClick="dg1_MouseDoubleClick"
+                AlternatingRowBackground="#f0f8ff" CanUserAddRows="False" CanUserDeleteRows="False" GridLinesVisibility="None" HeadersVisibility="Column" 
+                SelectionMode="Single" BorderThickness="0" IsReadOnly="True" >
         <DataGrid.Columns>
           <DataGridTextColumn Header="Order ID"	                Binding="{Binding OrderId}"				ElementStyle="{StaticResource RightAlignStyle}"													/>
           <DataGridTemplateColumn Header="Acount"   SortMemberPath="Account" CanUserSort="True" >
