@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 #nullable disable
 
@@ -7,7 +8,8 @@ namespace RMSClient.Models.RMS
 {
     public partial class RmsDboRequestInvDboAccountView
     {
-        public int? AccountId { get; set; }
+    [Key] //tu: patch vw-no-kwy 2/2 
+    public int? AccountId { get; set; }
         public string ShortName { get; set; }
         public string AdpaccountCode { get; set; }
         public DateTime? SendingTimeGmt { get; set; }
