@@ -8,7 +8,7 @@
       Install-Package Microsoft.EntityFrameworkCore.Tools
   ..installed all 3 straight from the Nuget manager.
 
-  Scaffold-DbContext "Server=.\sqlexpress;Database=OneBase;Trusted_Connection=True;" Microsoft.EntityFrameworkCore.SqlServer -OutputDir Model
+  Scaffold-DbContext "Server=.\sqlexpress;Database=Inventory;Trusted_Connection=True;" Microsoft.EntityFrameworkCore.SqlServer -OutputDir Models\Inventory
   Scaffold-DbContext "Server=.\sqlexpress;Database=RMS;Trusted_Connection=True;" Microsoft.EntityFrameworkCore.SqlServer -OutputDir Models\RMS
   Scaffold-DbContext "Server=.\sqlexpress;Database=RMS;Trusted_Connection=True;" Microsoft.EntityFrameworkCore.SqlServer -OutputDir Models\RMS -force
   Scaffold-DbContext "Server=.\sqlexpress;Database=BR;Trusted_Connection=True;" Microsoft.EntityFrameworkCore.SqlServer -OutputDir Models\BR
