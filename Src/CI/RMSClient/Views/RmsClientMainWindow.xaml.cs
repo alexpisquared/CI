@@ -39,20 +39,6 @@ namespace RMSClient
     }
     public static readonly DependencyProperty ZVaProperty = DependencyProperty.Register("ZVa", typeof(double), typeof(RmsClientMainWindow), new PropertyMetadata(1.25)); public double ZVa { get => (double)GetValue(ZVaProperty); set => SetValue(ZVaProperty, value); }
 
-    async void onLoaded(object s, RoutedEventArgs e) { _loaded = true; await find(); } //_db.Database.EnsureCreated();
-    async void onDiRein(object s, RoutedEventArgs e) => await find();
-    async void onDateCh(object s, SelectionChangedEventArgs e) => await find();
-    async void onFind(object s, RoutedEventArgs e) => await find();
-    async void onxAccountChanged(object s, TextChangedEventArgs e)
-    {
-      if (!_loaded) return;
-
-      var prev = tbxAccount.Text;
-      await Task.Delay(555);
-      if (prev == tbxAccount.Text)
-        await find();
-    }
-
     async Task find()
     {
       if (!_loaded) return;
@@ -103,15 +89,34 @@ namespace RMSClient
         tbxAccount.Focus();
       }
     }
+
+    async void onLoaded(object s, RoutedEventArgs e) { _loaded = true; await find(); } //_db.Database.EnsureCreated();
+    async void onDiRein(object s, RoutedEventArgs e) => await find();
+    async void onDateCh(object s, SelectionChangedEventArgs e) => await find();
+    async void onFind(object s, RoutedEventArgs e) => await find();
+    async void onxAccountChanged(object s, TextChangedEventArgs e)
+    {
+      if (!_loaded) return;
+
+      var prev = tbxAccount.Text;
+      await Task.Delay(555);
+      if (prev == tbxAccount.Text)
+        await find();
+    }
+
     async void dg1_SelectedCellsChanged(object s, SelectedCellsChangedEventArgs e)
     {
       if (!_loaded) return;
+
+      var requestID = ((RmsDboRequestBrDboAccountView)((System.Windows.Controls.Primitives.Selector)s).SelectedValue).OrderId;
+      await Task.Delay(555);
+      if (requestID != ((RmsDboRequestBrDboAccountView)((System.Windows.Controls.Primitives.Selector)s).SelectedValue).OrderId)
+        return;
 
       try
       {
         const int top = 12;
         var sw = Stopwatch.StartNew();
-        var requestID = ((RmsDboRequestBrDboAccountView)((System.Windows.Controls.Primitives.Selector)s).SelectedValue).OrderId;
 
         var l = _dbRMS.RequestHistories.Where(r => r.RequestId == requestID);
         dg2.ItemsSource = await l.Take(top).ToListAsync();
