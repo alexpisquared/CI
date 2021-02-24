@@ -24,6 +24,7 @@ namespace RMSClient.Models.RMS
         public virtual DbSet<RequestType> RequestTypes { get; set; }
         public virtual DbSet<Response> Responses { get; set; }
         public virtual DbSet<RmsDboRequestBrDboAccountView> RmsDboRequestBrDboAccountViews { get; set; }
+        public virtual DbSet<RmsDboRequestInvDboAccountView> RmsDboRequestInvDboAccountViews { get; set; }
         public virtual DbSet<Source> Sources { get; set; }
         public virtual DbSet<Status> Statuses { get; set; }
         public virtual DbSet<SubType> SubTypes { get; set; }
@@ -35,13 +36,9 @@ namespace RMSClient.Models.RMS
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-#if DEBUG
-        optionsBuilder.UseSqlServer("Server=.\\sqlexpress;Database=RMS;Trusted_Connection=True;"); // var constr = Environment.UserName.Contains("lex.pi") ? "Server=.\\sqlexpress;Database=RMS;Trusted_Connection=True;" : "Server=MTdevSQLDB;Database=RMS;Trusted_Connection=True;";        optionsBuilder.UseSqlServer(constr);        System.Diagnostics.Debug.WriteLine($" ■ ■ ■ {constr}");
-#else
-        optionsBuilder.UseSqlServer("Server=MTdevSQLDB;Database=RMS;Trusted_Connection=True;"); 
-#endif
-      }
-    }
+                optionsBuilder.UseSqlServer("Server=.\\sqlexpress;Database=RMS;Trusted_Connection=True;");
+            }
+        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -49,19 +46,19 @@ namespace RMSClient.Models.RMS
 
             modelBuilder.Entity<Action>(entity =>
             {
-                entity.HasNoKey();
+                entity.HasKey(e => new { e.TypeId, e.SubTypeId, e.ActionId });
 
                 entity.ToTable("Action");
+
+                entity.Property(e => e.TypeId).HasColumnName("TypeID");
+
+                entity.Property(e => e.SubTypeId).HasColumnName("SubTypeID");
 
                 entity.Property(e => e.ActionId).HasColumnName("ActionID");
 
                 entity.Property(e => e.Name)
                     .HasMaxLength(15)
                     .IsUnicode(false);
-
-                entity.Property(e => e.SubTypeId).HasColumnName("SubTypeID");
-
-                entity.Property(e => e.TypeId).HasColumnName("TypeID");
             });
 
             modelBuilder.Entity<DisableList>(entity =>
@@ -78,9 +75,11 @@ namespace RMSClient.Models.RMS
 
             modelBuilder.Entity<Request>(entity =>
             {
-                entity.HasNoKey();
-
                 entity.ToTable("Request");
+
+                entity.Property(e => e.RequestId)
+                    .ValueGeneratedNever()
+                    .HasColumnName("RequestID");
 
                 entity.Property(e => e.AccountId).HasColumnName("AccountID");
 
@@ -130,8 +129,6 @@ namespace RMSClient.Models.RMS
                     .HasMaxLength(20)
                     .IsUnicode(false);
 
-                entity.Property(e => e.RequestId).HasColumnName("RequestID");
-
                 entity.Property(e => e.SecAdpnumber)
                     .HasMaxLength(7)
                     .IsUnicode(false)
@@ -157,13 +154,40 @@ namespace RMSClient.Models.RMS
                 entity.Property(e => e.UpdateDate).HasColumnType("datetime");
 
                 entity.Property(e => e.UserId).HasColumnName("UserID");
+
+                entity.HasOne(d => d.Source)
+                    .WithMany(p => p.Requests)
+                    .HasForeignKey(d => d.SourceId)
+                    .HasConstraintName("FK_Request_Source");
+
+                entity.HasOne(d => d.Status)
+                    .WithMany(p => p.Requests)
+                    .HasForeignKey(d => d.StatusId)
+                    .HasConstraintName("FK_Request_Status");
+
+                entity.HasOne(d => d.Type)
+                    .WithMany(p => p.Requests)
+                    .HasForeignKey(d => d.TypeId)
+                    .HasConstraintName("FK_Request_RequestType");
+
+                entity.HasOne(d => d.SubType)
+                    .WithMany(p => p.Requests)
+                    .HasForeignKey(d => new { d.TypeId, d.SubTypeId })
+                    .HasConstraintName("FK_Request_SubType");
+
+                entity.HasOne(d => d.Action)
+                    .WithMany(p => p.Requests)
+                    .HasForeignKey(d => new { d.TypeId, d.SubTypeId, d.ActionId })
+                    .HasConstraintName("FK_Request_Action");
             });
 
             modelBuilder.Entity<RequestHistory>(entity =>
             {
-                entity.HasNoKey();
-
                 entity.ToTable("RequestHistory");
+
+                entity.Property(e => e.RequestHistoryId)
+                    .ValueGeneratedNever()
+                    .HasColumnName("RequestHistoryID");
 
                 entity.Property(e => e.Bbsnote)
                     .HasMaxLength(100)
@@ -171,8 +195,6 @@ namespace RMSClient.Models.RMS
                     .HasColumnName("BBSNote");
 
                 entity.Property(e => e.ParentId).HasColumnName("ParentID");
-
-                entity.Property(e => e.RequestHistoryId).HasColumnName("RequestHistoryID");
 
                 entity.Property(e => e.RequestId).HasColumnName("RequestID");
 
@@ -183,19 +205,26 @@ namespace RMSClient.Models.RMS
                 entity.Property(e => e.UpdateTime).HasColumnType("datetime");
 
                 entity.Property(e => e.UserId).HasColumnName("UserID");
+
+                entity.HasOne(d => d.Request)
+                    .WithMany(p => p.RequestHistories)
+                    .HasForeignKey(d => d.RequestId)
+                    .HasConstraintName("FK_RequestHistory_Request");
             });
 
             modelBuilder.Entity<RequestType>(entity =>
             {
-                entity.HasNoKey();
+                entity.HasKey(e => e.TypeId);
 
                 entity.ToTable("RequestType");
+
+                entity.Property(e => e.TypeId)
+                    .ValueGeneratedNever()
+                    .HasColumnName("TypeID");
 
                 entity.Property(e => e.Name)
                     .HasMaxLength(20)
                     .IsUnicode(false);
-
-                entity.Property(e => e.TypeId).HasColumnName("TypeID");
             });
 
             modelBuilder.Entity<Response>(entity =>
@@ -220,9 +249,9 @@ namespace RMSClient.Models.RMS
 
             modelBuilder.Entity<RmsDboRequestBrDboAccountView>(entity =>
             {
-                //tu: patch vw-no-kwy 1/2 entity.HasNoKey();
+              //tu: patch vw-no-kwy 1/2 entity.HasNoKey();
 
-                entity.ToView("RMS_dbo_Request_BR_dbo_Account_view");
+              entity.ToView("RMS_dbo_Request_BR_dbo_Account_view");
 
                 entity.Property(e => e.Account)
                     .IsRequired()
@@ -264,7 +293,7 @@ namespace RMSClient.Models.RMS
                     .IsUnicode(false)
                     .HasColumnName("CUSIP");
 
-                entity.Property(e => e.OrderId).HasColumnName("orderID");
+                entity.Property(e => e.OrderId).HasColumnName("OrderID");
 
                 entity.Property(e => e.OtherInfo)
                     .HasMaxLength(100)
@@ -312,13 +341,90 @@ namespace RMSClient.Models.RMS
                     .IsUnicode(false);
             });
 
+            modelBuilder.Entity<RmsDboRequestInvDboAccountView>(entity =>
+            {
+              //tu: patch vw-no-kwy 1/2 entity.HasNoKey();
+
+              entity.ToView("RMS_dbo_Request_INV_dbo_Account_view");
+
+                entity.Property(e => e.AccountId).HasColumnName("AccountID");
+
+                entity.Property(e => e.Action)
+                    .HasMaxLength(15)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.ActionId).HasColumnName("ActionID");
+
+                entity.Property(e => e.AdpaccountCode)
+                    .HasMaxLength(10)
+                    .IsUnicode(false)
+                    .HasColumnName("ADPAccountCode")
+                    .IsFixedLength(true);
+
+                entity.Property(e => e.Currency)
+                    .HasMaxLength(5)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Cusip)
+                    .HasMaxLength(10)
+                    .IsUnicode(false)
+                    .HasColumnName("CUSIP");
+
+                entity.Property(e => e.Note)
+                    .HasMaxLength(1)
+                    .IsUnicode(false)
+                    .IsFixedLength(true);
+
+                entity.Property(e => e.OrderId).HasColumnName("OrderID");
+
+                entity.Property(e => e.OrderStatus)
+                    .HasMaxLength(20)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.OtherInfo)
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.SendingTimeGmt)
+                    .HasColumnType("datetime")
+                    .HasColumnName("SendingTimeGMT");
+
+                entity.Property(e => e.ShortName)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.StatusId).HasColumnName("StatusID");
+
+                entity.Property(e => e.SubtypeName)
+                    .HasMaxLength(20)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Symbol)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.TypeName)
+                    .HasMaxLength(20)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.UpdateTineGmt)
+                    .HasColumnType("datetime")
+                    .HasColumnName("UpdateTineGMT");
+
+                entity.Property(e => e.UserId).HasColumnName("UserID");
+
+                entity.Property(e => e.UserName)
+                    .HasMaxLength(128)
+                    .IsUnicode(false);
+            });
+
             modelBuilder.Entity<Source>(entity =>
             {
-                entity.HasNoKey();
-
                 entity.ToTable("Source");
 
-                entity.Property(e => e.SourceId).HasColumnName("SourceID");
+                entity.Property(e => e.SourceId)
+                    .ValueGeneratedNever()
+                    .HasColumnName("SourceID");
 
                 entity.Property(e => e.SourceName)
                     .HasMaxLength(20)
@@ -327,56 +433,58 @@ namespace RMSClient.Models.RMS
 
             modelBuilder.Entity<Status>(entity =>
             {
-                entity.HasNoKey();
-
                 entity.ToTable("Status");
+
+                entity.Property(e => e.StatusId)
+                    .ValueGeneratedNever()
+                    .HasColumnName("StatusID");
 
                 entity.Property(e => e.Name)
                     .HasMaxLength(20)
                     .IsUnicode(false);
-
-                entity.Property(e => e.StatusId).HasColumnName("StatusID");
             });
 
             modelBuilder.Entity<SubType>(entity =>
             {
-                entity.HasNoKey();
+                entity.HasKey(e => new { e.TypeId, e.SubTypeId });
 
                 entity.ToTable("SubType");
+
+                entity.Property(e => e.TypeId).HasColumnName("TypeID");
+
+                entity.Property(e => e.SubTypeId).HasColumnName("SubTypeID");
 
                 entity.Property(e => e.Name)
                     .HasMaxLength(20)
                     .IsUnicode(false);
-
-                entity.Property(e => e.SubTypeId).HasColumnName("SubTypeID");
-
-                entity.Property(e => e.TypeId).HasColumnName("TypeID");
             });
 
             modelBuilder.Entity<UpdateType>(entity =>
             {
-                entity.HasNoKey();
+                entity.HasKey(e => e.TypeId);
 
                 entity.ToTable("UpdateType");
+
+                entity.Property(e => e.TypeId)
+                    .ValueGeneratedNever()
+                    .HasColumnName("TypeID");
 
                 entity.Property(e => e.Name)
                     .HasMaxLength(30)
                     .IsUnicode(false);
-
-                entity.Property(e => e.TypeId).HasColumnName("TypeID");
             });
 
             modelBuilder.Entity<User>(entity =>
             {
-                entity.HasNoKey();
-
                 entity.ToTable("User");
+
+                entity.Property(e => e.UserId)
+                    .ValueGeneratedNever()
+                    .HasColumnName("UserID");
 
                 entity.Property(e => e.Password)
                     .HasMaxLength(32)
                     .IsUnicode(false);
-
-                entity.Property(e => e.UserId).HasColumnName("UserID");
 
                 entity.Property(e => e.UserName)
                     .HasMaxLength(128)

@@ -7,6 +7,11 @@ namespace RMSClient.Models.RMS
 {
     public partial class Request
     {
+        public Request()
+        {
+            RequestHistories = new HashSet<RequestHistory>();
+        }
+
         public int RequestId { get; set; }
         public int? CreatorId { get; set; }
         public int? ClientRequestId { get; set; }
@@ -33,5 +38,12 @@ namespace RMSClient.Models.RMS
         public string PaymentFreq { get; set; }
         public string Term { get; set; }
         public string Rate { get; set; }
+
+        public virtual Action Action { get; set; }
+        public virtual Source Source { get; set; }
+        public virtual Status Status { get; set; }
+        public virtual SubType SubType { get; set; }
+        public virtual RequestType Type { get; set; }
+        public virtual ICollection<RequestHistory> RequestHistories { get; set; }
     }
 }
