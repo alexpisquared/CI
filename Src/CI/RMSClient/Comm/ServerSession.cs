@@ -123,7 +123,7 @@ namespace RMSClient.Comm
       }
       var bytesSent = m_tcpClient.Send(m_sendBuffer, lr.m_header.m_size, SocketFlags.None);
       var asyncRslt = m_tcpClient.BeginReceive(m_recvBuffer, m_received, BufferSize - m_received, SocketFlags.None, new AsyncCallback(ReceiveData), m_tcpClient);
-      log(asyncRslt, (Socket)asyncRslt.AsyncState, $"Log In {bytesSent,4} bytes sent");
+      log($"Log In {bytesSent,4} bytes sent", asyncRslt, (Socket)asyncRslt.AsyncState);
     }
     unsafe void ReceiveData(IAsyncResult iar)
     {
@@ -178,19 +178,17 @@ namespace RMSClient.Comm
       var socket = (Socket)asyncRslt.AsyncState;
       try
       {
-        log(asyncRslt, socket, "Connected()  EndConnect()ing");
         socket.EndConnect(asyncRslt);
-        log(asyncRslt, socket, "Connected()  Logging in");
+        log("Connected()  Logging in", asyncRslt, socket);
 
-        //conStatus.Text = "Connected to: " + client.RemoteEndPoint.ToString();
-        //client.BeginReceive(data, 0, size, SocketFlags.None, new AsyncCallback(ReceiveData), client);
+        //socket.BeginReceive(data, 0, size, SocketFlags.None, new AsyncCallback(ReceiveData), socket);
 
         LogIn();
       }
       catch (Exception ex) { _logger.LogError($"{ex}"); MessageBox.Show($"{ex.Message}", "Exception", MessageBoxButton.OK, MessageBoxImage.Error); }
     }
 
-    private void log(IAsyncResult asyncRslt, Socket socket, string s) => _logger.LogInformation($" ■ ■ ■ {s,-40} Connected:{socket.Connected,-5}    {socket.RemoteEndPoint}   IsCompleted:{asyncRslt.IsCompleted,-5} ."); static void MoveData(byte[] buffer, int offset, int size)
+    void log(string s, IAsyncResult asyncRslt, Socket socket) => _logger.LogInformation($" ■ ■ ■ {s,-40} Connected:{socket.Connected,-5}    {socket.RemoteEndPoint}   IsCompleted:{asyncRslt.IsCompleted,-5} ."); static void MoveData(byte[] buffer, int offset, int size)
     {
       for (var i = 0; i < size; i++)
       {
@@ -261,7 +259,7 @@ namespace RMSClient.Comm
       var bytesSent = m_tcpClient.Send(m_sendBuffer, msg.m_header.m_size, SocketFlags.None);
       var asyncRslt = m_tcpClient.BeginReceive(m_recvBuffer, m_received, BufferSize - m_received, SocketFlags.None, new AsyncCallback(ReceiveData), m_tcpClient);
 
-      log(asyncRslt, (Socket)asyncRslt.AsyncState, $"SendCR {bytesSent,4} bytes sent");
+      log($"SendCR {bytesSent,4} bytes sent", asyncRslt, (Socket)asyncRslt.AsyncState);
     }
   }
 }
