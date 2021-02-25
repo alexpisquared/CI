@@ -1,5 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using RMSClient.Comm;
+using RMSClient.Models;
 using RMSClient.Models.RMS;
 using RMSClient.Views;
 using System;
@@ -18,11 +21,13 @@ namespace RMSClient
   public partial class RmsClientMainWindow : Window
   {
     readonly ILogger<RmsClientMainWindow> _logger;
+    readonly IConfigurationRoot _config;
     readonly RMSContext _dbRMS = new RMSContext();
     readonly CollectionViewSource _accountRequestViewSource;
+    readonly AppSettings _appSettings;
     bool _loaded = false;
 
-    public RmsClientMainWindow(ILogger<RmsClientMainWindow> logger)
+    public RmsClientMainWindow(ILogger<RmsClientMainWindow> logger, IConfigurationRoot config)
     {
       InitializeComponent();//DataContext = this;
 
@@ -37,6 +42,8 @@ namespace RMSClient
 #endif
       MouseWheel += (s, e) => { if (!(Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl))) return; ZVa += (e.Delta * .001); e.Handled = true; Debug.WriteLine(Title = $">>ZVa:{ZVa}"); }; //tu:
       _logger = logger;
+      _config = config;
+      _appSettings = config.Get<AppSettings>();
     }
     public static readonly DependencyProperty ZVaProperty = DependencyProperty.Register("ZVa", typeof(double), typeof(RmsClientMainWindow), new PropertyMetadata(1.25)); public double ZVa { get => (double)GetValue(ZVaProperty); set => SetValue(ZVaProperty, value); }
 
@@ -62,7 +69,7 @@ namespace RMSClient
         var l = _dbRMS.RmsDboRequestInvDboAccountViews.
           Where(r =>
             dt1.SelectedDate <= r.SendingTimeGmt && r.SendingTimeGmt <= dt2.SelectedDate.Value.AddDays(1) && (acnt == null || r.AdpaccountCode.Contains(acnt)) && (cnkDirein.IsChecked != true || (r.OtherInfo != null && r.OtherInfo.Contains("einv")))
-            && (cbxOAF.SelectedValue.ToString() == "All" || (r.StatusId == sti))       
+            && (cbxOAF.SelectedValue.ToString() == "All" || (r.StatusId == sti))
             ).OrderBy(r => r.SendingTimeGmt);
 
         dg1.ItemsSource = await l.Take(top).ToListAsync();
@@ -94,7 +101,14 @@ namespace RMSClient
       }
     }
 
-    async void onLoaded(object s, RoutedEventArgs e) { _loaded = true; await find(); } //_db.Database.EnsureCreated();
+    async void onLoaded(object s, RoutedEventArgs e)
+    {
+      _loaded = true; 
+      await find();
+      //_db.Database.EnsureCreated();
+      ServerSession.Instance.SetMainForm(this);
+      ServerSession.Instance.Connect(_appSettings.IpAddress, _appSettings.Port);
+    }
     async void onDiRein(object s, RoutedEventArgs e) => await find();
     async void onDateCh(object s, SelectionChangedEventArgs e) => await find();
     async void onFind(object s, RoutedEventArgs e) => await find();
@@ -107,7 +121,6 @@ namespace RMSClient
       if (prev == tbxAccount.Text)
         await find();
     }
-
     async void onSelect(object s, SelectedCellsChangedEventArgs e)
     {
       if (!_loaded) return;
@@ -142,25 +155,22 @@ namespace RMSClient
     {
       try
       {
-        var r = (RmsDboRequestInvDboAccountView)((Selector)s).SelectedValue;
-
-        var popup = new ProcessOrderPopup
+        var request = (RmsDboRequestInvDboAccountView)((Selector)s).SelectedValue;
+        var dialogue = new ProcessOrderPopup
         {
           Owner = this,
-          OrderId = r.OrderId,
-          OrderStatus = r.OrderStatus,
-          Symbol = r.Symbol,
-          AdpaccountCode = r.AdpaccountCode,
-          Quantity = r.Quantity,
-          AvgPx = r.AvgPx
+          OrderId = request.OrderId,
+          OrderStatus = request.OrderStatus,
+          Symbol = request.Symbol,
+          AdpaccountCode = request.AdpaccountCode,
+          Quantity = request.Quantity,
+          AvgPx = request.AvgPx
         };
-        var rv = popup.ShowDialog();
-        if (rv == true)
-        {
-          var note = popup.Note;
-          var newStatus = popup.NewOrderStatus;
 
-          MessageBox.Show($"Sending new order status {newStatus} \n\nwith note \n\n{note}\n\nto ???", "Thank you", MessageBoxButton.OK, MessageBoxImage.Information);
+        if (dialogue.ShowDialog() == true &&
+          MessageBox.Show($"Sending new order status  {dialogue.NewOrderStatus}  \n\nwith note \n\n{dialogue.Note}\n\nto upstairs ...", "Are you sure?", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+        {
+          ServerSession.Instance.SendChangeRequest(request.OrderId, dialogue.NewOrderStatus.ToString(), (uint)(dialogue.Quantity ?? 0), dialogue.Note);
         }
       }
       catch (Exception ex)
@@ -183,6 +193,9 @@ namespace RMSClient
       }
     }
     void onExit(object s, RoutedEventArgs e) => Close();
+
+    internal void OnNewRequest(int m_requestID) => throw new NotImplementedException();
+    internal ServerSession.RequestStatus GetStatusID(string status) => throw new NotImplementedException();
 
     protected override void OnClosing(CancelEventArgs e)
     {

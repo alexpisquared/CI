@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using Serilog;
 using System;
 using System.Diagnostics;
@@ -9,8 +10,19 @@ namespace RMSClient
 {
   public partial class App : Application
   {
-   public static DateTime _started = DateTime.Now;
+    static readonly IConfigurationRoot _config;
+    public static DateTime _started = DateTime.Now;
     ILogger<RmsClientMainWindow> _logger;
+    
+    static App()
+    {
+      _config = new ConfigurationBuilder()
+        .SetBasePath(AppContext.BaseDirectory)
+        .AddJsonFile("appsettings.json")
+        .AddUserSecrets<RmsClientMainWindow>()
+        .Build();
+    }
+    
     protected override void OnStartup(StartupEventArgs e)
     {
       _started = DateTime.Now;
@@ -29,7 +41,7 @@ namespace RMSClient
 
       _logger = loggerFactory.CreateLogger<RmsClientMainWindow>();
 
-      MainWindow = new RmsClientMainWindow(_logger);
+      MainWindow = new RmsClientMainWindow(_logger, _config);
       MainWindow.Show();
 
       base.OnStartup(e);      //dbIni: //DBInitializer.DropCreateDB();				//test: var _db = new MediaQADB();				_db.MediaInfos.Load();				foreach (var mi in _db.MediaInfos.Local) Console.WriteLine(mi); 

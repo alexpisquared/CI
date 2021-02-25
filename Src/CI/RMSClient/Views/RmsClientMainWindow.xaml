@@ -184,8 +184,10 @@
       </DataGrid>
     </Grid>
 
-    <Viewbox  Grid.Row="1" Grid.RowSpan="2" x:Name="vb1" >
-      <TextBlock Text="Loading..." Foreground="#49d" FontStyle="Italic"/>
-    </Viewbox>
+    <Grid Grid.Row="1" Grid.RowSpan="3" x:Name="vb1" Background="#8888" >
+      <Viewbox  >
+        <TextBlock Text="Loading..." Foreground="#49d" FontStyle="Italic"/>
+      </Viewbox>
+    </Grid>
   </Grid>
 </Window>
