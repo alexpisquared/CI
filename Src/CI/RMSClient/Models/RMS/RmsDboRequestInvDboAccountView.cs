@@ -37,3 +37,11 @@ namespace RMSClient.Models.RMS
     public int? AccountId { get; set; }
   }
 }
+/* property not found on 'object' ''RmsDboRequestInvDboAccountView' (HashCode=4436986)'. BindingExpression:Path=Rate; DataItem='RmsDboRequestInvDboAccountView' (HashCode=4436986); target element is 'TextBlock' (Name=''); target property is 'Text' (type 'String'):
+'SecAdpnumber'
+'CurrencyCode'
+'CompoundFreq'
+'PaymentFreq' 
+'Term'        
+'Rate'          
+*/

@@ -30,7 +30,7 @@ namespace RMSClient.Shared
 
       try
       {
-        _logger.LogError($" +{(DateTime.Now - App._started):mm\\:ss\\.ff}  CurrentDispatcherUnhandledException: s: {s?.GetType().Name}. {innerMsgs}");
+        _logger.LogError($" +{(DateTime.Now - App.Started):mm\\:ss\\.ff}  CurrentDispatcherUnhandledException: s: {s?.GetType().Name}. {innerMsgs}");
         Clipboard.SetText(innerMsgs);
 #if Speakable
         new System.Speech.Synthesis.SpeechSynthesizer().SpeakAsync($"Oopsee... {imex.Message}");
@@ -41,7 +41,7 @@ namespace RMSClient.Shared
         }
         else if (MessageBox.Show($"An error occurred in this app...\n\n ...{innerMsgs}\n\nDo you want to continue?", _header, MessageBoxButton.YesNo, MessageBoxImage.Error, MessageBoxResult.Yes) == MessageBoxResult.No)
         {
-          _logger.LogInformation($" +{(DateTime.Now - App._started):mm\\:ss\\.ff}  Decided NOT to continue: Application.Current.Shutdown();");
+          _logger.LogInformation($" +{(DateTime.Now - App.Started):mm\\:ss\\.ff}  Decided NOT to continue: Application.Current.Shutdown();");
           Application.Current.Shutdown();
         }
       }
@@ -49,7 +49,7 @@ namespace RMSClient.Shared
       {
         var msg = $"An error occurred while reportikng an error ...\n\n ...{fatalEx.Message}...\n\n ...{innerMsgs}";
 
-        _logger.LogError($" +{(DateTime.Now - App._started):mm\\:ss\\.ff}  {msg}");
+        _logger.LogError($" +{(DateTime.Now - App.Started):mm\\:ss\\.ff}  {msg}");
 
         Environment.FailFast(msg, fatalEx); //tu: http://blog.functionalfun.net/2013/05/how-to-debug-silent-crashes-in-net.html // Capturing dump files with Windows Error Reporting: Db a key at HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\Windows Error Reporting\LocalDumps\[Your Application Exe FileName]. In that key, create a string value called DumpFolder, and set it to the folder where you want dumps to be written. Then create a DWORD value called DumpType with a value of 2.
         MessageBox.Show(msg, _header);

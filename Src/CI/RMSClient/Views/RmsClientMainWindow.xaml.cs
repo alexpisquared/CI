@@ -27,6 +27,8 @@ namespace RMSClient
     readonly IConfigurationRoot _config;
     readonly RMSContext _dbRMS;
     readonly CollectionViewSource _accountRequestViewSource;
+    ServerSession _serverSession;
+
     readonly AppSettings _appSettings;
     readonly string _constr;
     bool _loaded = false;
@@ -41,7 +43,7 @@ namespace RMSClient
       _accountRequestViewSource = (CollectionViewSource)FindResource(nameof(_accountRequestViewSource));
 
       MouseWheel += (s, e) => { if (!(Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl))) return; ZVa += (e.Delta * .001); e.Handled = true; Debug.WriteLine(Title = $">>ZVa:{ZVa}"); }; //tu:
-      MouseLeftButtonDown += (s, e) => DragMove();
+      MouseLeftButtonDown += (s, e) => { try { DragMove(); } catch { logger.LogWarning("Ignore mouse complaints for now."); } };
       _logger = logger;
       _config = config;
       _appSettings = config.Get<AppSettings>();
@@ -92,7 +94,7 @@ namespace RMSClient
 
         Title = $"RMS Client ({Environment.UserName}) - {_dbRMS.Server()} - {report} {sw.Elapsed.TotalSeconds,5:N2} sec.";
 
-        _logger.LogInformation($" +{(DateTime.Now - App._started):mm\\:ss\\.ff}  {Title}   params: {dt1.SelectedDate} - {dt2.SelectedDate}   {acnt}   {(cnkDirein.IsChecked == true ? "Direct Reinvest" : "")}");
+        _logger.LogInformation($" +{(DateTime.Now - App.Started):mm\\:ss\\.ff}  {Title}   params: {dt1.SelectedDate} - {dt2.SelectedDate}   {acnt}   {(cnkDirein.IsChecked == true ? "Direct Reinvest" : "")}");
       }
       catch (Exception ex) { _logger.LogError($"{ex}"); MessageBox.Show($"{ex.Message}", "Exception", MessageBoxButton.OK, MessageBoxImage.Error); }
       finally
@@ -109,8 +111,9 @@ namespace RMSClient
       //_db.Database.EnsureCreated();
 
       LoadStatuses();
-      ServerSession.Instance.SetMainForm(this);
-      ServerSession.Instance.Connect(_appSettings.IpAddress, _appSettings.Port);
+      _serverSession = new ServerSession(_logger);
+      _serverSession.SetMainForm(this);
+      _serverSession.Connect(_appSettings.IpAddress, _appSettings.Port);
     }
     async void onDiRein(object s, RoutedEventArgs e) => await find();
     async void onDateCh(object s, SelectionChangedEventArgs e) => await find();
@@ -147,7 +150,7 @@ namespace RMSClient
       finally
       {
         Title = $"RMS Client ({Environment.UserName}) - {report} {sw.Elapsed.TotalSeconds,5:N2} sec.";
-        _logger.LogInformation($" +{(DateTime.Now - App._started):mm\\:ss\\.ff}  {Title}   ");
+        _logger.LogInformation($" +{(DateTime.Now - App.Started):mm\\:ss\\.ff}  {Title}   ");
       }
     }
     void onPopup(object s, MouseButtonEventArgs e)
@@ -167,9 +170,12 @@ namespace RMSClient
         };
 
         if (dialogue.ShowDialog() == true &&
-          MessageBox.Show($"Sending new order status  {dialogue.NewOrderStatus}  \n\nwith note \n\n{dialogue.Note}\n\nto upstairs ...", "Are you sure?", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+          MessageBox.Show($"Sending new order status  {dialogue.NewOrderStatus}  \n\nwith note \n\n{dialogue.Note}\n\nto ...upstairs", "Are you sure?", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
         {
-          ServerSession.Instance.SendChangeRequest(request.OrderId, dialogue.NewOrderStatus.ToString(), (uint)(dialogue.Quantity ?? 0), dialogue.Note);
+#if DEBUG
+          dialogue.Note += $"Test @ {DateTime.Now} - {dialogue.NewOrderStatus} - {dialogue.NewOrderAction} - {dialogue.Quantity}";
+#endif
+          _serverSession.SendChangeRequest(request.OrderId, dialogue.NewOrderStatus.ToString(), (uint)(dialogue.Quantity ?? 0), dialogue.Note);
         }
       }
       catch (Exception ex) { _logger.LogError($"{ex}"); MessageBox.Show($"{ex.Message}", "Exception", MessageBoxButton.OK, MessageBoxImage.Error); }
