@@ -28,7 +28,7 @@ namespace RMSClient
     readonly RMSContext _dbRMS;
     readonly CollectionViewSource _accountRequestViewSource;
     readonly AppSettings _appSettings;
-    readonly string  _constr;
+    readonly string _constr;
     bool _loaded = false;
 
     public RmsClientMainWindow(ILogger<RmsClientMainWindow> logger, IConfigurationRoot config)
@@ -94,11 +94,7 @@ namespace RMSClient
 
         _logger.LogInformation($" +{(DateTime.Now - App._started):mm\\:ss\\.ff}  {Title}   params: {dt1.SelectedDate} - {dt2.SelectedDate}   {acnt}   {(cnkDirein.IsChecked == true ? "Direct Reinvest" : "")}");
       }
-      catch (Exception ex)
-      {
-        _logger.LogError($" +{(DateTime.Now - App._started):mm\\:ss\\.ff}  {ex}");
-        Clipboard.SetText(ex.Message); MessageBox.Show($"{ex.Message}", "Exception 3 ", MessageBoxButton.OK, MessageBoxImage.Error);
-      }
+      catch (Exception ex) { _logger.LogError($"{ex}"); MessageBox.Show($"{ex.Message}", "Exception", MessageBoxButton.OK, MessageBoxImage.Error); }
       finally
       {
         vb1.Visibility = Visibility.Collapsed;
@@ -147,11 +143,7 @@ namespace RMSClient
         dg2.ItemsSource = await l.ToListAsync();
         report = $"Total  {l.Count()}  historical entires found in ";
       }
-      catch (Exception ex)
-      {
-        _logger.LogError($" +{(DateTime.Now - App._started):mm\\:ss\\.ff}  {ex}");
-        Clipboard.SetText(ex.Message); MessageBox.Show($"{ex.Message}", "Exception 3 ", MessageBoxButton.OK, MessageBoxImage.Error);
-      }
+      catch (Exception ex) { _logger.LogError($"{ex}"); MessageBox.Show($"{ex.Message}", "Exception", MessageBoxButton.OK, MessageBoxImage.Error); }
       finally
       {
         Title = $"RMS Client ({Environment.UserName}) - {report} {sw.Elapsed.TotalSeconds,5:N2} sec.";
@@ -180,12 +172,7 @@ namespace RMSClient
           ServerSession.Instance.SendChangeRequest(request.OrderId, dialogue.NewOrderStatus.ToString(), (uint)(dialogue.Quantity ?? 0), dialogue.Note);
         }
       }
-      catch (Exception ex)
-      {
-        _logger.LogError($" +{(DateTime.Now - App._started):mm\\:ss\\.ff}  {ex}");
-        Clipboard.SetText(ex.Message);
-        MessageBox.Show($"{ex.Message}", "Exception 3 ", MessageBoxButton.OK, MessageBoxImage.Error);
-      }
+      catch (Exception ex) { _logger.LogError($"{ex}"); MessageBox.Show($"{ex.Message}", "Exception", MessageBoxButton.OK, MessageBoxImage.Error); }
     }
     void onClip(object s, RoutedEventArgs e)
     {
@@ -193,16 +180,14 @@ namespace RMSClient
       {
         Clipboard.SetData(DataFormats.StringFormat, DataContext);
       }
-      catch (Exception ex)
-      {
-        _logger.LogError($" +{(DateTime.Now - App._started):mm\\:ss\\.ff}  {ex}");
-        Clipboard.SetText(ex.Message); MessageBox.Show($"{ex.Message}", "Exception 4 ", MessageBoxButton.OK, MessageBoxImage.Error);
-      }
+      catch (Exception ex) { _logger.LogError($"{ex}"); MessageBox.Show($"{ex.Message}", "Exception", MessageBoxButton.OK, MessageBoxImage.Error); }
     }
     void onExit(object s, RoutedEventArgs e) => Close();
 
 
-    public void GetRequests(int requestID)
+    Dictionary<String, ServerSession.RequestStatus> m_statusDict = new Dictionary<String, ServerSession.RequestStatus>();
+    delegate void NewRequestDelegate(int n);
+    void GetRequests(int requestID)
     {
       try
       {
@@ -247,9 +232,6 @@ namespace RMSClient
       }
 
     }
-
-
-    Dictionary<String, ServerSession.RequestStatus> m_statusDict = new Dictionary<String, ServerSession.RequestStatus>();
     void LoadStatuses()
     {
       using (SqlConnection con = new SqlConnection(_constr))
@@ -266,9 +248,7 @@ namespace RMSClient
         }
       }
     }
-
-    public delegate void NewRequestDelegate(int n);
-     void OnNewRequestHandler(int n) => GetRequests(n);
+    void OnNewRequestHandler(int n) => GetRequests(n);
     internal void OnNewRequest(int requestID)
     {
       var deleg = new NewRequestDelegate(OnNewRequestHandler);
