@@ -8,7 +8,7 @@ namespace zEfPoc
 {
   public partial class MainWindow : Window
   {
-    readonly OneBaseContext _db = new OneBaseContext();
+    readonly OneBaseContext _db = new OneBaseContext("Server=.\\sqlexpress;Database=OneBase;Trusted_Connection=True;");
     public MainWindow()
     {
       InitializeComponent();//DataContext = this;

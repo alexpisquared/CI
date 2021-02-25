@@ -14,8 +14,8 @@ namespace RMSClient
 {
   public partial class RmsClientMainWindow0 : Window
   {
-    readonly BRContext _dbBR = new BRContext();
-    readonly RMSContext _dbRM = new RMSContext();
+    readonly BRContext _dbBR = new   BRContext("Server=.\\sqlexpress;Database=OneBase;Trusted_Connection=True;");
+    readonly RMSContext _dbRM = new RMSContext("Server=.\\sqlexpress;Database=OneBase;Trusted_Connection=True;");
     readonly CollectionViewSource _accountRequestViewSource;
 
     public RmsClientMainWindow0()

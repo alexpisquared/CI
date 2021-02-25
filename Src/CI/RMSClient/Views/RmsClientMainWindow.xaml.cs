@@ -22,7 +22,7 @@ namespace RMSClient
   {
     readonly ILogger<RmsClientMainWindow> _logger;
     readonly IConfigurationRoot _config;
-    readonly RMSContext _dbRMS = new RMSContext();
+    readonly RMSContext _dbRMS ;
     readonly CollectionViewSource _accountRequestViewSource;
     readonly AppSettings _appSettings;
     bool _loaded = false;
@@ -36,15 +36,18 @@ namespace RMSClient
 
       _accountRequestViewSource = (CollectionViewSource)FindResource(nameof(_accountRequestViewSource));
 
-#if DEBUG
-      if (Environment.MachineName == "RAZER1") { Top = 1650; Left = 10; }
-      else { Top = 1600; Left = 2500; }
-#endif
       MouseWheel += (s, e) => { if (!(Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl))) return; ZVa += (e.Delta * .001); e.Handled = true; Debug.WriteLine(Title = $">>ZVa:{ZVa}"); }; //tu:
       MouseLeftButtonDown += (s, e) => DragMove();
       _logger = logger;
       _config = config;
       _appSettings = config.Get<AppSettings>();
+#if DEBUG
+      if (Environment.MachineName == "RAZER1") { Top = 1650; Left = 10; }
+      else { Top = 1600; Left = 2500; }
+      _dbRMS = new RMSContext(_appSettings.RmsDebug);
+#else
+      _dbRMS = new RMSContext(_appSettings.RmsRelease);
+#endif
     }
     public static readonly DependencyProperty ZVaProperty = DependencyProperty.Register("ZVa", typeof(double), typeof(RmsClientMainWindow), new PropertyMetadata(1.25)); public double ZVa { get => (double)GetValue(ZVaProperty); set => SetValue(ZVaProperty, value); }
 

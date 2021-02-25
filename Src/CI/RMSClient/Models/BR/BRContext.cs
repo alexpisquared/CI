@@ -8,8 +8,11 @@ namespace RMSClient.Models.BR
 {
   public partial class BRContext : DbContext
   {
-    public BRContext()
+    readonly string _connectoinString;
+
+    public BRContext(string connectoinString)
     {
+      _connectoinString = connectoinString;
     }
 
     public BRContext(DbContextOptions<BRContext> options)
@@ -23,12 +26,7 @@ namespace RMSClient.Models.BR
     {
       if (!optionsBuilder.IsConfigured)
       {
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-#if DEBUG
-        optionsBuilder.UseSqlServer("Server=.\\sqlexpress;Database=BR;Trusted_Connection=True;"); // var constr = Environment.UserName.Contains("lex.pi") ? "Server=.\\sqlexpress;Database=BR;Trusted_Connection=True;" : "Server=MTdevSQLDB;Database=BR;Trusted_Connection=True;";        optionsBuilder.UseSqlServer(constr);        System.Diagnostics.Debug.WriteLine($" ■ ■ ■ {constr}");
-#else
-        optionsBuilder.UseSqlServer("Server=MTdevSQLDB;Database=BR;Trusted_Connection=True;"); 
-#endif
+        optionsBuilder.UseSqlServer(_connectoinString);
       }
     }
 
