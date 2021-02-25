@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using RMSClient.Comm;
@@ -6,7 +7,9 @@ using RMSClient.Models;
 using RMSClient.Models.RMS;
 using RMSClient.Views;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
+using System.Data;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
@@ -22,9 +25,10 @@ namespace RMSClient
   {
     readonly ILogger<RmsClientMainWindow> _logger;
     readonly IConfigurationRoot _config;
-    readonly RMSContext _dbRMS ;
+    readonly RMSContext _dbRMS;
     readonly CollectionViewSource _accountRequestViewSource;
     readonly AppSettings _appSettings;
+    readonly string  _constr;
     bool _loaded = false;
 
     public RmsClientMainWindow(ILogger<RmsClientMainWindow> logger, IConfigurationRoot config)
@@ -44,10 +48,11 @@ namespace RMSClient
 #if DEBUG
       if (Environment.MachineName == "RAZER1") { Top = 1650; Left = 10; }
       else { Top = 1600; Left = 2500; }
-      _dbRMS = new RMSContext(_appSettings.RmsDebug);
+      _constr = _appSettings.RmsDebug;
 #else
-      _dbRMS = new RMSContext(_appSettings.RmsRelease);
+      _constr = _appSettings.RmsRelease;
 #endif
+      _dbRMS = new RMSContext(_constr);
     }
     public static readonly DependencyProperty ZVaProperty = DependencyProperty.Register("ZVa", typeof(double), typeof(RmsClientMainWindow), new PropertyMetadata(1.25)); public double ZVa { get => (double)GetValue(ZVaProperty); set => SetValue(ZVaProperty, value); }
 
@@ -106,6 +111,8 @@ namespace RMSClient
       _loaded = true;
       await find();
       //_db.Database.EnsureCreated();
+
+      LoadStatuses();
       ServerSession.Instance.SetMainForm(this);
       ServerSession.Instance.Connect(_appSettings.IpAddress, _appSettings.Port);
     }
@@ -194,8 +201,83 @@ namespace RMSClient
     }
     void onExit(object s, RoutedEventArgs e) => Close();
 
-    internal void OnNewRequest(int m_requestID) => throw new NotImplementedException();
-    internal ServerSession.RequestStatus GetStatusID(string status) => throw new NotImplementedException();
+
+    public void GetRequests(int requestID)
+    {
+      try
+      {
+        using (var con = new SqlConnection(_constr))
+        {
+          con.Open();
+          using (var a = new SqlDataAdapter(@"select RequestID, CreatorID, r.SourceID, s.SourceName, AccountID, a.ShortName, r.TypeID, t.Name, r.SubtypeID, st.Name, r.ActionID, act.Name,
+                            r.StatusID, stat.Name, CreationDate, SecADPNumber, CUSIP, Symbol, CurrencyCode, Quantity, DoneQty, Price, OtherInfo, BBSNote
+                            from request r, source s, Inventory.dbo.Account a, RequestType t, Subtype st, [Action] act, [Status] stat
+                            where r.SourceID = s.SourceID and
+                            r.AccountID = a.Account_ID and
+                            r.TypeID = t.TypeID and
+                            r.TypeID = st.TypeID and
+                            r.SubtypeID = st.SubtypeID and
+                            r.typeID = act.typeID and
+                            r.subtypeID = act.SubtypeID and
+                            r.ActionID = act.ActionID and
+                            r.StatusID = stat.StatusID and r.StatusID not in(4, 5, 7)", con))
+          {
+            var t = new DataTable();
+            a.Fill(t);
+            dg1.ItemsSource = t.Rows;
+
+            if (requestID != 0)
+            {
+              for (var i = t.Rows.Count - 2; i >= 0; i--)
+              {
+                //select the row:
+                //if (Convert.ToInt32(dg1.rows.Rows[i].Cells[0].Value.ToString()) == requestID)
+                //{
+                //  dg1.CurrentCell = dg1.Rows[i].Cells[0];
+                break;
+                //}
+              }
+            }
+          }
+        }
+      }
+      catch (System.Exception ex)
+      {
+        var str = ex.Message;
+      }
+
+    }
+
+
+    Dictionary<String, ServerSession.RequestStatus> m_statusDict = new Dictionary<String, ServerSession.RequestStatus>();
+    void LoadStatuses()
+    {
+      using (SqlConnection con = new SqlConnection(_constr))
+      {
+        con.Open();
+        SqlCommand command = new SqlCommand("select statusID, name from [Status]", con);
+        SqlDataReader reader = command.ExecuteReader();
+        if (reader.HasRows)
+        {
+          while (reader.Read())
+          {
+            m_statusDict[reader.GetString(1)] = (ServerSession.RequestStatus)reader.GetInt32(0);
+          }
+        }
+      }
+    }
+
+    public delegate void NewRequestDelegate(int n);
+     void OnNewRequestHandler(int n) => GetRequests(n);
+    internal void OnNewRequest(int requestID)
+    {
+      var deleg = new NewRequestDelegate(OnNewRequestHandler);
+      Dispatcher.Invoke(deleg, requestID);
+    }
+    internal ServerSession.RequestStatus GetStatusID(string statusName)
+    {
+      return m_statusDict[statusName];
+    }
 
     protected override void OnClosing(CancelEventArgs e)
     {

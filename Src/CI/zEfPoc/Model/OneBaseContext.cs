@@ -8,7 +8,7 @@ namespace zEfPoc.Model
 {
   public partial class OneBaseContext : DbContext
   {
-    private readonly string _connectoinString;
+     readonly string _connectoinString;
 
     public OneBaseContext(string connectoinString)
     {
