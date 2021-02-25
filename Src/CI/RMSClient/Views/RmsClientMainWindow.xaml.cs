@@ -184,17 +184,15 @@ namespace RMSClient
     }
     void onExit(object s, RoutedEventArgs e) => Close();
 
-
-    Dictionary<String, ServerSession.RequestStatus> m_statusDict = new Dictionary<String, ServerSession.RequestStatus>();
+    readonly Dictionary<string, ServerSession.RequestStatus> m_statusDict = new Dictionary<string, ServerSession.RequestStatus>();
     delegate void NewRequestDelegate(int n);
     void GetRequests(int requestID)
     {
       try
       {
-        using (var con = new SqlConnection(_constr))
-        {
-          con.Open();
-          using (var a = new SqlDataAdapter(@"select RequestID, CreatorID, r.SourceID, s.SourceName, AccountID, a.ShortName, r.TypeID, t.Name, r.SubtypeID, st.Name, r.ActionID, act.Name,
+        using var con = new SqlConnection(_constr);
+        con.Open();
+        using (var a = new SqlDataAdapter(@"select RequestID, CreatorID, r.SourceID, s.SourceName, AccountID, a.ShortName, r.TypeID, t.Name, r.SubtypeID, st.Name, r.ActionID, act.Name,
                             r.StatusID, stat.Name, CreationDate, SecADPNumber, CUSIP, Symbol, CurrencyCode, Quantity, DoneQty, Price, OtherInfo, BBSNote
                             from request r, source s, Inventory.dbo.Account a, RequestType t, Subtype st, [Action] act, [Status] stat
                             where r.SourceID = s.SourceID and
@@ -206,39 +204,34 @@ namespace RMSClient
                             r.subtypeID = act.SubtypeID and
                             r.ActionID = act.ActionID and
                             r.StatusID = stat.StatusID and r.StatusID not in(4, 5, 7)", con))
-          {
-            var t = new DataTable();
-            a.Fill(t);
-            dg1.ItemsSource = t.Rows;
+        {
+          var t = new DataTable();
+          a.Fill(t);
+          dg1.ItemsSource = t.Rows;
 
-            if (requestID != 0)
+          if (requestID != 0)
+          {
+            for (var i = t.Rows.Count - 2; i >= 0; i--)
             {
-              for (var i = t.Rows.Count - 2; i >= 0; i--)
-              {
-                //select the row:
-                //if (Convert.ToInt32(dg1.rows.Rows[i].Cells[0].Value.ToString()) == requestID)
-                //{
-                //  dg1.CurrentCell = dg1.Rows[i].Cells[0];
-                break;
-                //}
-              }
+              //select the row:
+              //if (Convert.ToInt32(dg1.rows.Rows[i].Cells[0].Value.ToString()) == requestID)
+              //{
+              //  dg1.CurrentCell = dg1.Rows[i].Cells[0];
+              break;
+              //}
             }
           }
         }
       }
-      catch (System.Exception ex)
-      {
-        var str = ex.Message;
-      }
-
+      catch (Exception ex) { _logger.LogError($"{ex}"); MessageBox.Show($"{ex.Message}", "Exception", MessageBoxButton.OK, MessageBoxImage.Error); }
     }
     void LoadStatuses()
     {
-      using (SqlConnection con = new SqlConnection(_constr))
+      using (var con = new SqlConnection(_constr))
       {
         con.Open();
-        SqlCommand command = new SqlCommand("select statusID, name from [Status]", con);
-        SqlDataReader reader = command.ExecuteReader();
+        var command = new SqlCommand("select statusID, name from [Status]", con);
+        var reader = command.ExecuteReader();
         if (reader.HasRows)
         {
           while (reader.Read())
@@ -254,10 +247,7 @@ namespace RMSClient
       var deleg = new NewRequestDelegate(OnNewRequestHandler);
       Dispatcher.Invoke(deleg, requestID);
     }
-    internal ServerSession.RequestStatus GetStatusID(string statusName)
-    {
-      return m_statusDict[statusName];
-    }
+    internal ServerSession.RequestStatus GetStatusID(string statusName) => m_statusDict[statusName];
 
     protected override void OnClosing(CancelEventArgs e)
     {
@@ -266,6 +256,6 @@ namespace RMSClient
       base.OnClosing(e);
     }
   }
-  public enum OrderStatusEnum { Unknown, Done, PartDone, Rejected };
+  public enum OrderStatusEnum { Unknown, Done, PartialyDone, Rejected }; //from $\\trunk\Server\RMS\RMSClient\ChangeRequest.Designer.cs: "Received", "Rejected", "Cancelled", "PartialyDone", "Done"
   public enum OrderActionEnum { Unknown, SendUpdate, Acknowledge, UnlockOrder, Cancel };
 }
