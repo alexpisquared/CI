@@ -1,4 +1,6 @@
-﻿using System.Windows;
+﻿using System.Diagnostics;
+using System.Windows;
+using System.Windows.Input;
 
 namespace RMSClient.Views
 {
@@ -8,10 +10,15 @@ namespace RMSClient.Views
     {
       InitializeComponent();
 
+      MouseWheel += (s, e) => { if (!(Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl))) return; ZVa += (e.Delta * .001); e.Handled = true; Debug.WriteLine(Title = $">>ZVa:{ZVa}"); }; //tu:
+      MouseLeftButtonDown += (s, e) => DragMove();
       DataContext = this;
       c1.Focus();
       c1.IsDropDownOpen = true;
     }
+
+    public static readonly DependencyProperty ZVaProperty = DependencyProperty.Register("ZVa", typeof(double), typeof(ProcessOrderPopup), new PropertyMetadata(1.25)); public double ZVa { get => (double)GetValue(ZVaProperty); set => SetValue(ZVaProperty, value); }
+
     public static readonly DependencyProperty OrderIdProperty = DependencyProperty.Register("OrderId", typeof(int), typeof(ProcessOrderPopup)); public int OrderId { get => (int)GetValue(OrderIdProperty); set => SetValue(OrderIdProperty, value); }
     public static readonly DependencyProperty OrderStatusProperty = DependencyProperty.Register("OrderStatus", typeof(string), typeof(ProcessOrderPopup)); public string OrderStatus { get => (string)GetValue(OrderStatusProperty); set => SetValue(OrderStatusProperty, value); }
     public static readonly DependencyProperty SymbolProperty = DependencyProperty.Register("Symbol", typeof(string), typeof(ProcessOrderPopup)); public string Symbol { get => (string)GetValue(SymbolProperty); set => SetValue(SymbolProperty, value); }

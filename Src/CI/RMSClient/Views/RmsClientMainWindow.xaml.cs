@@ -41,6 +41,7 @@ namespace RMSClient
       else { Top = 1600; Left = 2500; }
 #endif
       MouseWheel += (s, e) => { if (!(Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl))) return; ZVa += (e.Delta * .001); e.Handled = true; Debug.WriteLine(Title = $">>ZVa:{ZVa}"); }; //tu:
+      MouseLeftButtonDown += (s, e) => DragMove();
       _logger = logger;
       _config = config;
       _appSettings = config.Get<AppSettings>();
@@ -61,18 +62,14 @@ namespace RMSClient
 
 #if !DIRECT
 
-        var sti =
-          cbxOAF.SelectedIndex == 0 ? 1 :
-          cbxOAF.SelectedIndex == 1 ? 0 :
-          cbxOAF.SelectedIndex == 2 ? 7 : 0;
-
-        var l = _dbRMS.RmsDboRequestInvDboAccountViews.
+        var sti = cbxOAF.SelectedIndex == 0 ? 1 : 7;
+        var lst = _dbRMS.RmsDboRequestInvDboAccountViews.
           Where(r =>
             dt1.SelectedDate <= r.SendingTimeGmt && r.SendingTimeGmt <= dt2.SelectedDate.Value.AddDays(1) && (acnt == null || r.AdpaccountCode.Contains(acnt)) && (cnkDirein.IsChecked != true || (r.OtherInfo != null && r.OtherInfo.Contains("einv")))
-            && (cbxOAF.SelectedValue.ToString() == "All" || (r.StatusId == sti))
+            && (cbxOAF.SelectedIndex == 1 || r.StatusId == sti)
             ).OrderBy(r => r.SendingTimeGmt);
 
-        dg1.ItemsSource = await l.Take(top).ToListAsync();
+        dg1.ItemsSource = await lst.Take(top).ToListAsync();
 #elif RawSql
         var fullrv = _dbRM.RmsDboRequestInvDboAccountViews.Where(r => dt1.SelectedDate <= r.SendingTimeGmt && r.SendingTimeGmt <= dt2.SelectedDate);
         var report = $"Top {Math.Min(top, fullrv.Count())} rows out of {fullrv.Count()} matches found in ";
@@ -82,7 +79,7 @@ namespace RMSClient
         var l = _dbRMS.RmsDboRequestInvDboAccountViews.Local.ToObservableCollection().Where(r => /*r.TypeID!=5 &&*/ dt1.SelectedDate <= r.SendingTimeGmt && r.SendingTimeGmt <= dt2.SelectedDate && (acnt == null || r.AdpaccountCode.Contains(acnt)) && (cnkDirein.IsChecked != true || (r.OtherInfo != null && r.OtherInfo.Contains("einv"))) && (cbxOAF.SelectedValue.ToString() == "All" || (r.Status == cbxOAF.SelectedValue.ToString())));
         _accountRequestViewSource.Source = l.Take(top);
 #endif
-        var cnt = await l.CountAsync();
+        var cnt = await lst.CountAsync();
         var report = cnt <= top ? $"Total {cnt} matches found in " : $"Top {Math.Min(top, cnt),3}  rows out of {cnt,5}  matches found in ";
 
         Title = $"RMS Client ({Environment.UserName}) - {_dbRMS.Server()} - {report} {sw.Elapsed.TotalSeconds,5:N2} sec.";
@@ -103,7 +100,7 @@ namespace RMSClient
 
     async void onLoaded(object s, RoutedEventArgs e)
     {
-      _loaded = true; 
+      _loaded = true;
       await find();
       //_db.Database.EnsureCreated();
       ServerSession.Instance.SetMainForm(this);
