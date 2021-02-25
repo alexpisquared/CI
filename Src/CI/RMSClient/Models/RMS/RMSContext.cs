@@ -363,9 +363,19 @@ namespace RMSClient.Models.RMS
                   .HasColumnName("ADPAccountCode")
                   .IsFixedLength(true);
 
+        entity.Property(e => e.CompoundFreq)
+                  .HasMaxLength(1)
+                  .IsUnicode(false)
+                  .IsFixedLength(true);
+
         entity.Property(e => e.Currency)
                   .HasMaxLength(5)
                   .IsUnicode(false);
+
+        entity.Property(e => e.CurrencyCode)
+                  .HasMaxLength(3)
+                  .IsUnicode(false)
+                  .IsFixedLength(true);
 
         entity.Property(e => e.Cusip)
                   .HasMaxLength(10)
@@ -380,20 +390,35 @@ namespace RMSClient.Models.RMS
         entity.Property(e => e.OrderId).HasColumnName("OrderID");
 
         entity.Property(e => e.OrderQty)
-            .HasMaxLength(23)
-            .IsUnicode(false);
+                  .HasMaxLength(23)
+                  .IsUnicode(false);
 
         entity.Property(e => e.OrderStatus)
-              .HasMaxLength(20)
-              .IsUnicode(false);
+                  .HasMaxLength(20)
+                  .IsUnicode(false);
 
         entity.Property(e => e.OtherInfo)
                   .HasMaxLength(100)
                   .IsUnicode(false);
 
+        entity.Property(e => e.PaymentFreq)
+                  .HasMaxLength(1)
+                  .IsUnicode(false)
+                  .IsFixedLength(true);
+
+        entity.Property(e => e.Rate)
+                  .HasMaxLength(20)
+                  .IsUnicode(false);
+
         entity.Property(e => e.RepCd)
                   .IsUnicode(false)
                   .HasColumnName("rep_cd");
+
+        entity.Property(e => e.SecAdpnumber)
+                  .HasMaxLength(7)
+                  .IsUnicode(false)
+                  .HasColumnName("SecADPNumber")
+                  .IsFixedLength(true);
 
         entity.Property(e => e.SendingTimeGmt)
                   .HasColumnType("datetime")
@@ -411,6 +436,10 @@ namespace RMSClient.Models.RMS
 
         entity.Property(e => e.Symbol)
                   .HasMaxLength(50)
+                  .IsUnicode(false);
+
+        entity.Property(e => e.Term)
+                  .HasMaxLength(20)
                   .IsUnicode(false);
 
         entity.Property(e => e.TypeName)

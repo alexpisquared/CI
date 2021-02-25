@@ -1,6 +1,6 @@
 ﻿<Window x:Class="RMSClient.RmsClientMainWindow" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d"
         xmlns:stb="clr-namespace:AAV.Common" 
-        Title="RMS Client" Height="600" Width="1800" Loaded="onLoaded" x:Name="wnd" Background="#ddd">
+        Title="RMS Client" Height="600" Width="1750" Loaded="onLoaded" x:Name="wnd" Background="#ddd">
   <Window.Resources>
     <CollectionViewSource x:Key="_accountRequestViewSource"/>
     <!--<CollectionViewSource x:Key="categoryProductsViewSource" Source="{Binding Products, Source={StaticResource _accountRequestViewSource}}"/>-->

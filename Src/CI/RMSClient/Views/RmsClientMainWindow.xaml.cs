@@ -110,8 +110,7 @@ namespace RMSClient
       await find();
       //_db.Database.EnsureCreated();
 
-
-#if DEBUG
+#if DEBUG_UNIT_TEST
       onPopupPOC();
 #endif
     }

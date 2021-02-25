@@ -33,15 +33,13 @@ namespace RMSClient.Models.RMS
         public int? ActionId { get; set; }
         public string Action { get; set; }
         public string Note { get; set; }
+        public int? AccountId { get; set; }
         public int? LeavesQty { get; set; }
-    public int? AccountId { get; set; }
-  }
+        public string SecAdpnumber { get; set; }
+        public string CurrencyCode { get; set; }
+        public string CompoundFreq { get; set; }
+        public string PaymentFreq { get; set; }
+        public string Term { get; set; }
+        public string Rate { get; set; }
+    }
 }
-/* property not found on 'object' ''RmsDboRequestInvDboAccountView' (HashCode=4436986)'. BindingExpression:Path=Rate; DataItem='RmsDboRequestInvDboAccountView' (HashCode=4436986); target element is 'TextBlock' (Name=''); target property is 'Text' (type 'String'):
-'SecAdpnumber'
-'CurrencyCode'
-'CompoundFreq'
-'PaymentFreq' 
-'Term'        
-'Rate'          
-*/
