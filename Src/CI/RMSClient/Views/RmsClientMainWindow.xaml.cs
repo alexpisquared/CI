@@ -109,6 +109,11 @@ namespace RMSClient
       _loaded = true;
       await find();
       //_db.Database.EnsureCreated();
+
+
+#if DEBUG
+      onPopupPOC();
+#endif
     }
     async void onDiRein(object s, RoutedEventArgs e) => await find();
     async void onDateCh(object s, SelectionChangedEventArgs e) => await find();
@@ -180,6 +185,36 @@ namespace RMSClient
       }
       catch (Exception ex) { _logger.LogError($"{ex}"); MessageBox.Show($"{ex.Message}", "Exception", MessageBoxButton.OK, MessageBoxImage.Error); }
     }
+    async void onPopupPOC()
+    {
+      try
+      {
+        var request = _dbRMS.RmsDboRequestInvDboAccountViews.First();
+        var dialogue = new ProcessOrderPopup
+        {
+          Owner = this,
+          OrderId = request.OrderId,
+          OrderStatus = request.OrderStatus,
+          Symbol = request.Symbol,
+          AdpaccountCode = request.AdpaccountCode,
+          Quantity = request.Quantity,
+          AvgPx = request.AvgPx
+        };
+
+        LoadStatuses();
+        var _serverSession = new ServerSession(_logger);
+        _serverSession.SetMainForm(this);
+        _serverSession.Connect(_appSettings.IpAddress, _appSettings.Port);
+        await Task.Delay(250);
+        _serverSession.SendChangeRequest(request.OrderId, OrderStatusEnum.Rejected.ToString(), (uint)request.Quantity, $"Test @ {DateTime.Now} - {dialogue.NewOrderStatus} - {dialogue.NewOrderAction} - {dialogue.Quantity} 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 ".Substring(0, 100));
+        SystemSounds.Beep.Play();
+        await Task.Delay(500);
+        SystemSounds.Hand.Play();
+        await Task.Delay(500);
+        Application.Current.Shutdown();
+      }
+      catch (Exception ex) { _logger.LogError($"{ex}"); MessageBox.Show($"{ex.Message}", "Exception", MessageBoxButton.OK, MessageBoxImage.Error); }
+    }
     void onClip(object s, RoutedEventArgs e)
     {
       try
@@ -198,7 +233,7 @@ namespace RMSClient
       {
         using var con = new SqlConnection(_constr);
         con.Open();
-        using (var a = new SqlDataAdapter(@"select RequestID, CreatorID, r.SourceID, s.SourceName, AccountID, a.ShortName, r.TypeID, t.Name, r.SubtypeID, st.Name, r.ActionID, act.Name,
+        using var a = new SqlDataAdapter(@"select RequestID, CreatorID, r.SourceID, s.SourceName, AccountID, a.ShortName, r.TypeID, t.Name, r.SubtypeID, st.Name, r.ActionID, act.Name,
                             r.StatusID, stat.Name, CreationDate, SecADPNumber, CUSIP, Symbol, CurrencyCode, Quantity, DoneQty, Price, OtherInfo, BBSNote
                             from request r, source s, Inventory.dbo.Account a, RequestType t, Subtype st, [Action] act, [Status] stat
                             where r.SourceID = s.SourceID and
@@ -209,30 +244,28 @@ namespace RMSClient
                             r.typeID = act.typeID and
                             r.subtypeID = act.SubtypeID and
                             r.ActionID = act.ActionID and
-                            r.StatusID = stat.StatusID and r.StatusID not in(4, 5, 7)", con))
-        {
-          var t = new DataTable();
-          a.Fill(t);
-          dg1.ItemsSource = t.Rows;
+                            r.StatusID = stat.StatusID and r.StatusID not in(4, 5, 7)", con);
+        var t = new DataTable();
+        a.Fill(t);
+        dg1.ItemsSource = t.Rows;
 
-          if (requestID != 0)
+        if (requestID != 0)
+        {
+          for (var i = t.Rows.Count - 2; i >= 0; i--)
           {
-            for (var i = t.Rows.Count - 2; i >= 0; i--)
-            {
-              //select the row:
-              //if (Convert.ToInt32(dg1.rows.Rows[i].Cells[0].Value.ToString()) == requestID)
-              //{
-              //  dg1.CurrentCell = dg1.Rows[i].Cells[0];
-              break;
-              //}
-            }
+            //select the row:
+            //if (Convert.ToInt32(dg1.rows.Rows[i].Cells[0].Value.ToString()) == requestID)
+            //{
+            //  dg1.CurrentCell = dg1.Rows[i].Cells[0];
+            break;
+            //}
           }
         }
       }
       catch (Exception ex) { _logger.LogError($"{ex}"); MessageBox.Show($"{ex.Message}", "Exception", MessageBoxButton.OK, MessageBoxImage.Error); }
     }
     void LoadStatuses()
-    {    
+    {
       foreach (var reader in _dbRMS.Statuses)
       {
         Debug.WriteLine($"  ~~~~  {reader.Name}   {(ServerSession.RequestStatus)reader.StatusId}");

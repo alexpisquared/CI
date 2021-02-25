@@ -86,7 +86,7 @@ namespace RMSClient.Comm
       public int m_requestID;
     }
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
-    public unsafe struct ChangeRequestMessage
+    public unsafe struct ChangeRequestMessage //todo: !!! see more at   $\\   C:\dev\trunk\Server\RMS\Common\RMSMessage.h:170 - struct ChangeRequest
     {
       public MessageHeader m_header;
       public int m_requestID;
