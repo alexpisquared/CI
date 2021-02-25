@@ -94,29 +94,30 @@ namespace RMSClient.Comm
       public uint m_doneQty;
       public fixed byte m_bbsNote[100];
     };
+#if !!!DEBUG_UNIT_TEST
     public unsafe struct ChangeRequest
     {
-      MessageHeader _messageHeader;
-      OrderUpdateData m_data;
+      public MessageHeader m_messageHeader;
+      public OrderUpdateData m_data;
     };
+    [StructLayout(LayoutKind.Explicit)]
     public unsafe struct OrderUpdateData
     {
-      int m_updateID;
-      int /*UpdateType*/ m_type;
-      int m_orderID;
-      int m_parentID;
-      int /*OrderStatus*/ m_status;
-      int m_lastShares;
-      double m_price;
-      int m_userID;
-      fixed char/*BBSNote*/ m_bbsNote[101];
+      [FieldOffset(sizeof(int) * 0)] public int m_updateID;
+      [FieldOffset(sizeof(int) * 1)] public int /*UpdateType*/ m_type;
+      [FieldOffset(sizeof(int) * 2)] public int m_orderID;
+      [FieldOffset(sizeof(int) * 3)] public int m_parentID;
+      [FieldOffset(sizeof(int) * 4)] public int /*OrderStatus*/ m_status;
+      [FieldOffset(sizeof(int) * 5)] public int m_lastShares;
+      [FieldOffset(sizeof(int) * 6)] public double m_price;
+      [FieldOffset(sizeof(int) * 6 + sizeof(double))] public int m_userID;
+      //[MarshalAs(UnmanagedType.ByValArray, SizeConst = 101)]
+      [FieldOffset(sizeof(int) * 7 + sizeof(double))] public fixed char/*BBSNote*/ m_bbsNote[101];
       //union 
-      //{
-      //  FILETIME m_time;
-      Int64  /*long long*/ m_int64Time;
-      //};
+      [FieldOffset(sizeof(int) * 7 + sizeof(double) + sizeof(char) * 101)] public System.Runtime.InteropServices.ComTypes.FILETIME m_time;
+      [FieldOffset(sizeof(int) * 7 + sizeof(double) + sizeof(char) * 101)] public Int64  /*long long*/ m_int64Time;
     };
-
+#endif
 
     public void SetMainForm(RmsClientMainWindow form) => m_mainForm = form;
     unsafe void StringToByteArray(string str, byte* buffer)
