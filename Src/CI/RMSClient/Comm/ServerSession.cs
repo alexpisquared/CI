@@ -106,7 +106,7 @@ namespace RMSClient.Comm
       }
       buffer[len] = 0;
     }
-    void Recv() => m_tcpClient.BeginReceive(m_recvBuffer, m_received, BufferSize - m_received, SocketFlags.None, new AsyncCallback(ReceiveData), m_tcpClient);
+    
     string GetUserName() => WindowsIdentity.GetCurrent().Name.Split('.').Last();
     public unsafe void LogIn()
     {
@@ -122,8 +122,10 @@ namespace RMSClient.Comm
       {
         m_sendBuffer[i] = p[i];
       }
-      m_tcpClient.Send(m_sendBuffer, lr.m_header.m_size, SocketFlags.None);
-      Recv();
+      var bytesSent = m_tcpClient.Send(m_sendBuffer, lr.m_header.m_size, SocketFlags.None);
+      var rv = m_tcpClient.BeginReceive(m_recvBuffer, m_received, BufferSize - m_received, SocketFlags.None, new AsyncCallback(ReceiveData), m_tcpClient);
+
+      _logger.LogInformation($"  ~~~~  login() - {bytesSent} bytes sent successfully ???     rv:{rv}.");
     }
     unsafe void ReceiveData(IAsyncResult iar)
     {
@@ -155,7 +157,9 @@ namespace RMSClient.Comm
             }
           }
         }
-        Recv();
+
+        var rv = m_tcpClient.BeginReceive(m_recvBuffer, m_received, BufferSize - m_received, SocketFlags.None, new AsyncCallback(ReceiveData), m_tcpClient);
+        _logger.LogInformation($"  ~~~~  ReceiveData() - {iar.IsCompleted} ???     rv:{rv.IsCompleted}.");
       }
       catch (Exception ex) { _logger.LogError($"{ex}"); MessageBox.Show($"{ex.Message}", "Exception", MessageBoxButton.OK, MessageBoxImage.Error); }
     }
@@ -252,14 +256,14 @@ namespace RMSClient.Comm
       msg.m_requestID = requestID;
       StringToByteArray(note, msg.m_bbsNote);
       var p = (byte*)&msg;
-      for (var i = 0; i < sizeof(LoginRequest); i++)
+      for (var i = 0; i < sizeof(ChangeRequestMessage); i++)
       {
         m_sendBuffer[i] = p[i];
       }
 
       var bytesSent = m_tcpClient.Send(m_sendBuffer, msg.m_header.m_size, SocketFlags.None);
 
-      Debug.WriteLine($"  ~~~~  {bytesSent} bytes sent successfully");
+      _logger.LogInformation($"  ~~~~  SendChangeRequest() - {bytesSent} bytes sent successfully ???");
     }
   }
 }

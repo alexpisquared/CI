@@ -169,8 +169,7 @@ namespace RMSClient
           AvgPx = request.AvgPx
         };
 
-        if (dialogue.ShowDialog() == true &&
-          MessageBox.Show($"Sending new order status  {dialogue.NewOrderStatus}  \n\nwith note \n\n{dialogue.Note}\n\nto ...upstairs", "Are you sure?", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+        if (dialogue.ShowDialog() == true) //&& MessageBox.Show($"Sending new order status  {dialogue.NewOrderStatus}  \n\nwith note \n\n{dialogue.Note}\n\nto ...upstairs", "Are you sure?", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
         {
 #if DEBUG
           dialogue.Note += $"Test @ {DateTime.Now} - {dialogue.NewOrderStatus} - {dialogue.NewOrderAction} - {dialogue.Quantity}";
