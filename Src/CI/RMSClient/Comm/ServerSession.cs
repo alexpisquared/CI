@@ -125,7 +125,7 @@ namespace RMSClient.Comm
       var bytesSent = m_tcpClient.Send(m_sendBuffer, lr.m_header.m_size, SocketFlags.None);
       var rv = m_tcpClient.BeginReceive(m_recvBuffer, m_received, BufferSize - m_received, SocketFlags.None, new AsyncCallback(ReceiveData), m_tcpClient);
 
-      _logger.LogInformation($"  ~~~~  login() - {bytesSent} bytes sent successfully ???     rv:{rv}.");
+      _logger.LogInformation($" ■ ■ ■ login() - {bytesSent} bytes sent successfully ???     rv:{rv}.");
     }
     unsafe void ReceiveData(IAsyncResult iar)
     {
@@ -159,7 +159,7 @@ namespace RMSClient.Comm
         }
 
         var rv = m_tcpClient.BeginReceive(m_recvBuffer, m_received, BufferSize - m_received, SocketFlags.None, new AsyncCallback(ReceiveData), m_tcpClient);
-        _logger.LogInformation($"  ~~~~  ReceiveData() - {iar.IsCompleted} ???     rv:{rv.IsCompleted}.");
+        _logger.LogInformation($" ■ ■ ■ ReceiveData() - in.IsCompleted:{iar.IsCompleted}      out.IsCompleted:{rv.IsCompleted}.");
       }
       catch (Exception ex) { _logger.LogError($"{ex}"); MessageBox.Show($"{ex.Message}", "Exception", MessageBoxButton.OK, MessageBoxImage.Error); }
     }
@@ -172,20 +172,21 @@ namespace RMSClient.Comm
     }
     public void Connect(string address, ushort port)
     {
-      //Socket newsock = new Socket(AddressFamily.InterNetwork,
-      //                SocketType.Stream, ProtocolType.Tcp);
-      var iep = new IPEndPoint(IPAddress.Parse(address), port);
-      m_tcpClient.BeginConnect(iep, new AsyncCallback(Connected), m_tcpClient);
+      _logger.LogInformation($" ■ ■ ■ Connect({address}:{port})");
+      //Socket newsock = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+      m_tcpClient.BeginConnect(new IPEndPoint(IPAddress.Parse(address), port), new AsyncCallback(Connected), m_tcpClient);
     }
     void Connected(IAsyncResult iar)
     {
-      var s = (Socket)iar.AsyncState;
+      var socket = (Socket)iar.AsyncState;
       try
       {
-        s.EndConnect(iar);
+        socket.EndConnect(iar);
+        _logger.LogInformation($" ■ ■ ■ Connected()  completed:{iar.IsCompleted}.  Logging in...");
+
         //conStatus.Text = "Connected to: " + client.RemoteEndPoint.ToString();
-        //client.BeginReceive(data, 0, size, SocketFlags.None,
-        //              new AsyncCallback(ReceiveData), client);
+        //client.BeginReceive(data, 0, size, SocketFlags.None, new AsyncCallback(ReceiveData), client);
+        
         LogIn();
       }
       catch (Exception ex) { _logger.LogError($"{ex}"); MessageBox.Show($"{ex.Message}", "Exception", MessageBoxButton.OK, MessageBoxImage.Error); }
@@ -263,7 +264,7 @@ namespace RMSClient.Comm
 
       var bytesSent = m_tcpClient.Send(m_sendBuffer, msg.m_header.m_size, SocketFlags.None);
 
-      _logger.LogInformation($"  ~~~~  SendChangeRequest() - {bytesSent} bytes sent successfully ???");
+      _logger.LogInformation($" ■ ■ ■ SendChangeRequest() - {bytesSent} bytes sent successfully ???");
     }
   }
 }

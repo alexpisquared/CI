@@ -43,7 +43,7 @@ namespace RMSClient
       _accountRequestViewSource = (CollectionViewSource)FindResource(nameof(_accountRequestViewSource));
 
       MouseWheel += (s, e) => { if (!(Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl))) return; ZVa += (e.Delta * .001); e.Handled = true; Debug.WriteLine(Title = $">>ZVa:{ZVa}"); }; //tu:
-      MouseLeftButtonDown += (s, e) => { try { DragMove(); } catch { logger.LogWarning("Ignore mouse complaints for now."); } };
+      //MouseLeftButtonDown += (s, e) => { try { DragMove(); } catch { logger.LogWarning("Ignore mouse complaints for now.- interfering with sockets?"); } };
       _logger = logger;
       _config = config;
       _appSettings = config.Get<AppSettings>();
@@ -172,7 +172,7 @@ namespace RMSClient
         if (dialogue.ShowDialog() == true) //&& MessageBox.Show($"Sending new order status  {dialogue.NewOrderStatus}  \n\nwith note \n\n{dialogue.Note}\n\nto ...upstairs", "Are you sure?", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
         {
 #if DEBUG
-          dialogue.Note += $"Test @ {DateTime.Now} - {dialogue.NewOrderStatus} - {dialogue.NewOrderAction} - {dialogue.Quantity}";
+          dialogue.Note += $"Test @ {DateTime.Now} - {dialogue.NewOrderStatus} - {dialogue.NewOrderAction} - {dialogue.Quantity} 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 ".Substring(0, 100);
 #endif
           _serverSession.SendChangeRequest(request.OrderId, dialogue.NewOrderStatus.ToString(), (uint)(dialogue.Quantity ?? 0), dialogue.Note);
         }
