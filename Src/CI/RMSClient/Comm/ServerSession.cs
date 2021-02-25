@@ -86,7 +86,7 @@ namespace RMSClient.Comm
       public int m_requestID;
     }
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
-    public unsafe struct ChangeRequestMessage //todo: !!! see more at   $\\   C:\dev\trunk\Server\RMS\Common\RMSMessage.h:170 - struct ChangeRequest
+    public unsafe struct ChangeRequestMessage //todo: !!! see more at   $\\trunk\Server\RMS\Common\RMSMessage.h:170 - struct ChangeRequest  +  RMS.ChangeRequest structure.png here.
     {
       public MessageHeader m_header;
       public int m_requestID;
@@ -94,6 +94,29 @@ namespace RMSClient.Comm
       public uint m_doneQty;
       public fixed byte m_bbsNote[100];
     };
+    public unsafe struct ChangeRequest
+    {
+      MessageHeader _messageHeader;
+      OrderUpdateData m_data;
+    };
+    public unsafe struct OrderUpdateData
+    {
+      int m_updateID;
+      int /*UpdateType*/ m_type;
+      int m_orderID;
+      int m_parentID;
+      int /*OrderStatus*/ m_status;
+      int m_lastShares;
+      double m_price;
+      int m_userID;
+      fixed char/*BBSNote*/ m_bbsNote[101];
+      //union 
+      //{
+      //  FILETIME m_time;
+      Int64  /*long long*/ m_int64Time;
+      //};
+    };
+
 
     public void SetMainForm(RmsClientMainWindow form) => m_mainForm = form;
     unsafe void StringToByteArray(string str, byte* buffer)
