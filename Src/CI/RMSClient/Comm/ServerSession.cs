@@ -106,26 +106,24 @@ namespace RMSClient.Comm
       }
       buffer[len] = 0;
     }
-    
-    string GetUserName() => WindowsIdentity.GetCurrent().Name.Split('.').Last();
+
+    string GetUserName() => WindowsIdentity.GetCurrent().Name.Split('\\').Last();
     public unsafe void LogIn()
     {
       LoginRequest lr;
       lr.m_header.m_type = MessageType.mtLogin;
       lr.m_header.m_size = sizeof(LoginRequest);
       lr.m_header.m_seqNo = ++m_seqNo;
-      var userName = GetUserName();
       lr.m_password[0] = 0;
-      StringToByteArray(userName, lr.m_userName);
+      StringToByteArray(GetUserName(), lr.m_userName);
       var p = (byte*)&lr;
       for (var i = 0; i < sizeof(LoginRequest); i++)
       {
         m_sendBuffer[i] = p[i];
       }
       var bytesSent = m_tcpClient.Send(m_sendBuffer, lr.m_header.m_size, SocketFlags.None);
-      var rv = m_tcpClient.BeginReceive(m_recvBuffer, m_received, BufferSize - m_received, SocketFlags.None, new AsyncCallback(ReceiveData), m_tcpClient);
-
-      _logger.LogInformation($" ■ ■ ■ login() - {bytesSent} bytes sent successfully ???     rv:{rv}.");
+      var asyncRslt = m_tcpClient.BeginReceive(m_recvBuffer, m_received, BufferSize - m_received, SocketFlags.None, new AsyncCallback(ReceiveData), m_tcpClient);
+      log(asyncRslt, (Socket)asyncRslt.AsyncState, $"Log In {bytesSent,4} bytes sent");
     }
     unsafe void ReceiveData(IAsyncResult iar)
     {
@@ -172,26 +170,27 @@ namespace RMSClient.Comm
     }
     public void Connect(string address, ushort port)
     {
-      _logger.LogInformation($" ■ ■ ■ Connect({address}:{port})");
-      //Socket newsock = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+      _logger.LogInformation($" ■ ■ ■ Connect({address}:{port}) ..."); // Socket newsock = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
       m_tcpClient.BeginConnect(new IPEndPoint(IPAddress.Parse(address), port), new AsyncCallback(Connected), m_tcpClient);
     }
-    void Connected(IAsyncResult iar)
+    void Connected(IAsyncResult asyncRslt)
     {
-      var socket = (Socket)iar.AsyncState;
+      var socket = (Socket)asyncRslt.AsyncState;
       try
       {
-        socket.EndConnect(iar);
-        _logger.LogInformation($" ■ ■ ■ Connected()  completed:{iar.IsCompleted}.  Logging in...");
+        log(asyncRslt, socket, "Connected()  EndConnect()ing");
+        socket.EndConnect(asyncRslt);
+        log(asyncRslt, socket, "Connected()  Logging in");
 
         //conStatus.Text = "Connected to: " + client.RemoteEndPoint.ToString();
         //client.BeginReceive(data, 0, size, SocketFlags.None, new AsyncCallback(ReceiveData), client);
-        
+
         LogIn();
       }
       catch (Exception ex) { _logger.LogError($"{ex}"); MessageBox.Show($"{ex.Message}", "Exception", MessageBoxButton.OK, MessageBoxImage.Error); }
     }
-    static void MoveData(byte[] buffer, int offset, int size)
+
+    private void log(IAsyncResult asyncRslt, Socket socket, string s) => _logger.LogInformation($" ■ ■ ■ {s,-40} Connected:{socket.Connected,-5}    {socket.RemoteEndPoint}   IsCompleted:{asyncRslt.IsCompleted,-5} ."); static void MoveData(byte[] buffer, int offset, int size)
     {
       for (var i = 0; i < size; i++)
       {
@@ -223,14 +222,11 @@ namespace RMSClient.Comm
     {
       switch (msg->m_type)
       {
-        case MessageType.mtResponse:
-          ProcessResponse((Response*)msg);
-          break;
-        case MessageType.mtNewRequestNotification:
-          ProcessNewRequestNotification((NewRequestNotification*)msg);
-          break;
-
+        case MessageType.mtResponse:                 /**/ ProcessResponse((Response*)msg); break;
+        case MessageType.mtNewRequestNotification:   /**/ ProcessNewRequestNotification((NewRequestNotification*)msg); break;
+        default: _logger.LogWarning($" ▄▀▄▀▄ seq:{msg->m_seqNo,3}    sz:{msg->m_size,5}    {msg->m_type,5} - Unknown message type"); return;
       }
+      _logger.LogInformation($" ■▓■▓■ seq:{msg->m_seqNo,3}    sz:{msg->m_size,5}    {msg->m_type,5} - {(MessageType)msg->m_type} ");
     }
     unsafe void ProcessNewRequestNotification(NewRequestNotification* msg) => m_mainForm.OnNewRequest(msg->m_requestID);
     unsafe void ProcessResponse(Response* resp)
@@ -263,8 +259,9 @@ namespace RMSClient.Comm
       }
 
       var bytesSent = m_tcpClient.Send(m_sendBuffer, msg.m_header.m_size, SocketFlags.None);
+      var asyncRslt = m_tcpClient.BeginReceive(m_recvBuffer, m_received, BufferSize - m_received, SocketFlags.None, new AsyncCallback(ReceiveData), m_tcpClient);
 
-      _logger.LogInformation($" ■ ■ ■ SendChangeRequest() - {bytesSent} bytes sent successfully ???");
+      log(asyncRslt, (Socket)asyncRslt.AsyncState, $"SendCR {bytesSent,4} bytes sent");
     }
   }
 }

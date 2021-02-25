@@ -12,6 +12,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Diagnostics;
 using System.Linq;
+using System.Media;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -27,7 +28,6 @@ namespace RMSClient
     readonly IConfigurationRoot _config;
     readonly RMSContext _dbRMS;
     readonly CollectionViewSource _accountRequestViewSource;
-    ServerSession _serverSession;
 
     readonly AppSettings _appSettings;
     readonly string _constr;
@@ -109,11 +109,6 @@ namespace RMSClient
       _loaded = true;
       await find();
       //_db.Database.EnsureCreated();
-
-      LoadStatuses();
-      _serverSession = new ServerSession(_logger);
-      _serverSession.SetMainForm(this);
-      _serverSession.Connect(_appSettings.IpAddress, _appSettings.Port);
     }
     async void onDiRein(object s, RoutedEventArgs e) => await find();
     async void onDateCh(object s, SelectionChangedEventArgs e) => await find();
@@ -153,7 +148,7 @@ namespace RMSClient
         _logger.LogInformation($" +{(DateTime.Now - App.Started):mm\\:ss\\.ff}  {Title}   ");
       }
     }
-    void onPopup(object s, MouseButtonEventArgs e)
+    async void onPopup(object s, MouseButtonEventArgs e)
     {
       try
       {
@@ -174,7 +169,13 @@ namespace RMSClient
 #if DEBUG
           dialogue.Note += $"Test @ {DateTime.Now} - {dialogue.NewOrderStatus} - {dialogue.NewOrderAction} - {dialogue.Quantity} 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 ".Substring(0, 100);
 #endif
+          LoadStatuses();
+          var _serverSession = new ServerSession(_logger);
+          _serverSession.SetMainForm(this);
+          _serverSession.Connect(_appSettings.IpAddress, _appSettings.Port);
+          await Task.Delay(250);
           _serverSession.SendChangeRequest(request.OrderId, dialogue.NewOrderStatus.ToString(), (uint)(dialogue.Quantity ?? 0), dialogue.Note);
+          SystemSounds.Beep.Play();
         }
       }
       catch (Exception ex) { _logger.LogError($"{ex}"); MessageBox.Show($"{ex.Message}", "Exception", MessageBoxButton.OK, MessageBoxImage.Error); }
@@ -231,19 +232,11 @@ namespace RMSClient
       catch (Exception ex) { _logger.LogError($"{ex}"); MessageBox.Show($"{ex.Message}", "Exception", MessageBoxButton.OK, MessageBoxImage.Error); }
     }
     void LoadStatuses()
-    {
-      using (var con = new SqlConnection(_constr))
+    {    
+      foreach (var reader in _dbRMS.Statuses)
       {
-        con.Open();
-        var command = new SqlCommand("select statusID, name from [Status]", con);
-        var reader = command.ExecuteReader();
-        if (reader.HasRows)
-        {
-          while (reader.Read())
-          {
-            m_statusDict[reader.GetString(1)] = (ServerSession.RequestStatus)reader.GetInt32(0);
-          }
-        }
+        Debug.WriteLine($"  ~~~~  {reader.Name}   {(ServerSession.RequestStatus)reader.StatusId}");
+        m_statusDict[reader.Name] = (ServerSession.RequestStatus)reader.StatusId;
       }
     }
     void OnNewRequestHandler(int n) => GetRequests(n);
