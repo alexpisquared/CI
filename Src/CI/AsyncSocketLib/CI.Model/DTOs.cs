@@ -3,65 +3,8 @@ using System.Net.Sockets;
 using System.Runtime.InteropServices;
 using System.Text;
 
-namespace Asynchronous_Client_Socket_Example
+namespace AsyncSocketLib.CI.Model
 {
-  class BbsSocketModel { }
-
-  public partial class AsynchronousClient
-  {
-    readonly object m_thisLock = new object(); // public object CriticalSection => m_thisLock;
-    readonly Socket m_tcpClient = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-    readonly byte[] m_recvBuffer = new byte[BufferSize];
-    readonly byte[] m_sendBuffer = new byte[BufferSize];
-    readonly HashSet<int> m_outstandingRequests = new HashSet<int>();
-    const int BufferSize = 1000;
-    readonly int m_received = 0;
-    static uint m_seqNo = 0;
-
-    class Request
-    {
-      public unsafe Request(MessageHeader* msgHeader) => m_msgHeader = msgHeader;
-      public unsafe MessageHeader* m_msgHeader = null;
-    }
-
-    static unsafe void StringToByteArray(string str, byte* buffer)
-    {
-      var byteArray = Encoding.ASCII.GetBytes(str);
-      for (var i = 0; i < str.Length; i++)
-        buffer[i] = byteArray[i];
-
-      buffer[str.Length] = 0;
-    }
-  }
-  public enum MessageType
-  {
-    mtNotSet = 0,
-    mtResponse = 1,
-    mtLogin = 2,
-    mtChangeRequest = 3,
-    mtNewRequestNotification = 4
-  };
-  public enum ResponseCode
-  {
-    rcNotSet = -1,
-    rcOK = 0,
-    rcUserNotFound = 1,
-    rcNotLoggedIn = 2,
-    rcInternalError = 3,
-    rcChangeRequestError = 4
-  }
-  public enum RequestStatus
-  {
-    rsSent = 1,
-    rcReceived = 2,
-    rsProcessing = 3,
-    rsRejected = 4,
-    rsCancelled = 5,
-    rsPartialyDone = 6,
-    rsDone = 7,
-    rsCancelRequested = 8 // new 2021
-  };
-
   [StructLayout(LayoutKind.Sequential, Pack = 1)]
   public unsafe struct MessageHeader
   {
@@ -98,7 +41,7 @@ namespace Asynchronous_Client_Socket_Example
     public uint m_doneQty;
     public fixed byte m_bbsNote[100];
   };
-#if !!!DEBUG_UNIT_TEST
+#if UNION_POC
   public unsafe struct ChangeRequest
   {
     public MessageHeader m_messageHeader;

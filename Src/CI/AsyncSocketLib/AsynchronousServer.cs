@@ -9,25 +9,15 @@ using System.Threading;
 
 namespace AsyncSocketLib
 {
-
-  public class StateObjectS// State object for reading client data asynchronously  
-  {
-    public Socket workSocket = null;                // Client socket.
-    public const int BufferSize = 1024;             // Size of receive buffer.  
-    public byte[] buffer = new byte[BufferSize];    // Receive buffer.  
-    public StringBuilder sb = new StringBuilder();  // Received data string.
-  }
-
   public class AsynchronousServer
   {
-    // Thread signal.  
-    public static ManualResetEvent allDone = new ManualResetEvent(false);
+    public ManualResetEvent allDone = new ManualResetEvent(false); // Thread signal.  
 
     public AsynchronousServer()
     {
     }
 
-    public static void StartListening(string uri, int port)
+    public void StartListening(string uri, int port)
     {
       // Establish the local endpoint for the socket.  
       // The DNS name of the computer  
@@ -72,7 +62,7 @@ namespace AsyncSocketLib
 
     }
 
-    public static void AcceptCallback(IAsyncResult ar)
+    public void AcceptCallback(IAsyncResult ar)
     {
       // Signal the main thread to continue.  
       allDone.Set();
@@ -82,18 +72,18 @@ namespace AsyncSocketLib
       var handler = listener.EndAccept(ar);
 
       // Create the state object.  
-      var state = new StateObjectS
+      var state = new StateObject
       {
         workSocket = handler
       };
-      handler.BeginReceive(state.buffer, 0, StateObjectS.BufferSize, 0,
+      handler.BeginReceive(state.buffer, 0, StateObject.BufferSize, 0,
           new AsyncCallback(ReadCallback), state);
     }
 
-    public static void ReadCallback(IAsyncResult ar)
+    public void ReadCallback(IAsyncResult ar)
     {
       var content = string.Empty;
-      var state = (StateObjectS)ar.AsyncState;    // Retrieve the state object and the handler socket from the asynchronous state object.  
+      var state = (StateObject)ar.AsyncState;    // Retrieve the state object and the handler socket from the asynchronous state object.  
       var handler = state.workSocket;
       var bytesRead = handler.EndReceive(ar);    // Read data from the client socket.
 
@@ -111,13 +101,13 @@ namespace AsyncSocketLib
         else
         {
           // Not all data received. Get more.  
-          handler.BeginReceive(state.buffer, 0, StateObjectS.BufferSize, 0,
+          handler.BeginReceive(state.buffer, 0, StateObject.BufferSize, 0,
           new AsyncCallback(ReadCallback), state);
         }
       }
     }
 
-    private static void Send(Socket handler, string data)
+    void Send(Socket handler, string data)
     {
       // Convert the string data to byte data using ASCII encoding.  
       var byteData = Encoding.ASCII.GetBytes(data);
@@ -127,7 +117,7 @@ namespace AsyncSocketLib
           new AsyncCallback(SendCallback), handler);
     }
 
-    private static void SendCallback(IAsyncResult ar)
+    void SendCallback(IAsyncResult ar)
     {
       try
       {

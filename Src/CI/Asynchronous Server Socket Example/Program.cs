@@ -1,2 +1,3 @@
-﻿
-AsyncSocketLib.AsynchronousServer.StartListening(System.Net.Dns.GetHostName(), 11000);
+﻿using System.Net;
+
+new AsyncSocketLib.AsynchronousServer().StartListening(Dns.GetHostName(), 11000);
