@@ -30,40 +30,38 @@ static void t1(string ip, int port)
   catch (Exception ex) { Console.ForegroundColor = ConsoleColor.Yellow; Console.WriteLine(ex); }
 }
 
-static void t2(string ip, int port)
+static void t2(string uri, int port)
 {
   Console.ForegroundColor = ConsoleColor.Cyan; Console.WriteLine("\n************************");
-  byte[] bytes = new byte[1024];
+  var bytes = new byte[1024];
 
   try
   {
     //IPAddress ipAddress = IPAddress.Parse(ip);
-    IPAddress ipAddress = Dns.GetHostEntry(ip).AddressList.First(); // If a host has multiple addresses, you will get a list of addresses  
-    IPEndPoint remoteEP = new IPEndPoint(ipAddress, port);
+    var endpoint = new IPEndPoint(Dns.GetHostEntry(uri).AddressList.First(), port);    // If a host has multiple addresses, you will get a list of addresses  
 
-    Socket sender = new Socket(ipAddress.AddressFamily, SocketType.Stream, ProtocolType.Tcp);    // Create a TCP/IP  socket.    
+    using var senderSocket = new Socket(Dns.GetHostEntry(uri).AddressList.First().AddressFamily, SocketType.Stream, ProtocolType.Tcp);    // Create a TCP/IP  socket.    
 
     try
     {
-      Console.ForegroundColor = ConsoleColor.Green; 
-      
-      sender.Connect(remoteEP);
+      Console.ForegroundColor = ConsoleColor.Green;
 
-      Console.WriteLine("Socket connected to {0}", sender.RemoteEndPoint.ToString());
+      senderSocket.Connect(endpoint);
 
-      // Encode the data string into a byte array.    
-      byte[] msg = Encoding.ASCII.GetBytes("This is a test<EOF>");
+      Console.WriteLine("Socket connected to {0}", senderSocket.RemoteEndPoint.ToString());
+
+      var msg = Encoding.ASCII.GetBytes("This is a test<EOF>"); // Encode the data string into a byte array.    
 
       Console.Write("Sending the data through the socket ... ");
-      int bytesSent = sender.Send(msg);
+      var bytesSent = senderSocket.Send(msg);
       Console.WriteLine($"{bytesSent} bytes Sent.    ");
 
       Console.Write("Receiving the response from the remote device ... ");
-      int bytesRec = sender.Receive(bytes);
+      var bytesRec = senderSocket.Receive(bytes);
       Console.WriteLine("Echoed test = {0}", Encoding.ASCII.GetString(bytes, 0, bytesRec));
 
-      sender.Shutdown(SocketShutdown.Both);
-      sender.Close();
+      senderSocket.Shutdown(SocketShutdown.Both);
+      senderSocket.Close();
 
       Console.WriteLine("The End");
     }
