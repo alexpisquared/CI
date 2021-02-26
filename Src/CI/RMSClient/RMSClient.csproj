@@ -14,6 +14,7 @@
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <DefineConstants>TRACE;DEBUG_UNIT_TEST;DIRECT_RO_BINDING</DefineConstants>
   </PropertyGroup>
 
   <ItemGroup>

@@ -141,26 +141,25 @@ namespace RMSClient.Comm
       lr.m_password[0] = 0;
       StringToByteArray(GetUserName(), lr.m_userName);
       var p = (byte*)&lr;
-      for (var i = 0; i < sizeof(LoginRequest); i++)
-      {
-        m_sendBuffer[i] = p[i];
-      }
+      for (var i = 0; i < sizeof(LoginRequest); i++) m_sendBuffer[i] = p[i];
+
       var bytesSent = m_tcpClient.Send(m_sendBuffer, lr.m_header.m_size, SocketFlags.None);
       var asyncRslt = m_tcpClient.BeginReceive(m_recvBuffer, m_received, BufferSize - m_received, SocketFlags.None, new AsyncCallback(ReceiveData), m_tcpClient);
-      log($"Log In {bytesSent,4} bytes sent", asyncRslt, (Socket)asyncRslt.AsyncState);
+      logInfo($"Log In {bytesSent,4} bytes sent", asyncRslt);
     }
-    unsafe void ReceiveData(IAsyncResult iar)
+    unsafe void ReceiveData(IAsyncResult asyncResult)
     {
+      logInfo($"ReceiveData( ...", asyncResult);
       try
       {
-        var remote = (Socket)iar.AsyncState;
-        var recv = remote.EndReceive(iar);
+        var remote = (Socket)asyncResult.AsyncState;
+        var recv = remote.EndReceive(asyncResult);
         if (recv == 0)
         {
           recv = 0;
         }
-        m_received += recv;
 
+        m_received += recv;
 
         if (m_received >= sizeof(MessageHeader))
         {
@@ -181,7 +180,7 @@ namespace RMSClient.Comm
         }
 
         var rv = m_tcpClient.BeginReceive(m_recvBuffer, m_received, BufferSize - m_received, SocketFlags.None, new AsyncCallback(ReceiveData), m_tcpClient);
-        _logger.LogInformation($" ■ ■ ■ ReceiveData() - in.IsCompleted:{iar.IsCompleted}      out.IsCompleted:{rv.IsCompleted}.");
+        _logger.LogInformation($" ■ ■ ■ ReceiveData() - in.IsCompleted:{asyncResult.IsCompleted}      out.IsCompleted:{rv.IsCompleted}.");
       }
       catch (Exception ex) { _logger.LogError($"{ex}"); MessageBox.Show($"{ex.Message}", "Exception", MessageBoxButton.OK, MessageBoxImage.Error); }
     }
@@ -189,8 +188,8 @@ namespace RMSClient.Comm
     {
       var remote = (Socket)iar.AsyncState;
       var sent = remote.EndSend(iar);
-      //m_received = 0;
-      //remote.BeginReceive(m_recvBuffer, 0, BufferSize, SocketFlags.None, new AsyncCallback(ReceiveData), remote);
+      m_received = 0;
+      remote.BeginReceive(m_recvBuffer, 0, BufferSize, SocketFlags.None, new AsyncCallback(ReceiveData), remote);
     }
     public void Connect(string address, ushort port)
     {
@@ -203,7 +202,7 @@ namespace RMSClient.Comm
       try
       {
         socket.EndConnect(asyncRslt);
-        log("Connected()  Logging in", asyncRslt, socket);
+        logInfo("Connected()  Logging in ...", asyncRslt);
 
         //socket.BeginReceive(data, 0, size, SocketFlags.None, new AsyncCallback(ReceiveData), socket);
 
@@ -212,7 +211,8 @@ namespace RMSClient.Comm
       catch (Exception ex) { _logger.LogError($"{ex}"); MessageBox.Show($"{ex.Message}", "Exception", MessageBoxButton.OK, MessageBoxImage.Error); }
     }
 
-    void log(string s, IAsyncResult asyncRslt, Socket socket) => _logger.LogInformation($" ■ ■ ■ {s,-40} Connected:{socket.Connected,-5}    {socket.RemoteEndPoint}   IsCompleted:{asyncRslt.IsCompleted,-5} ."); static void MoveData(byte[] buffer, int offset, int size)
+    void logInfo(string s, IAsyncResult asyncRslt) => _logger.LogInformation($" ■ ■ ■ {s,-40} Connected:{((Socket)asyncRslt.AsyncState).Connected,-5}    {((Socket)asyncRslt.AsyncState).RemoteEndPoint}   IsCompleted:{asyncRslt.IsCompleted,-5} .");
+    static void MoveData(byte[] buffer, int offset, int size)
     {
       for (var i = 0; i < size; i++)
       {
@@ -246,7 +246,7 @@ namespace RMSClient.Comm
       {
         case MessageType.mtResponse:                 /**/ ProcessResponse((Response*)msg); break;
         case MessageType.mtNewRequestNotification:   /**/ ProcessNewRequestNotification((NewRequestNotification*)msg); break;
-        default: _logger.LogWarning($" ▄▀▄▀▄ seq:{msg->m_seqNo,3}    sz:{msg->m_size,5}    {msg->m_type,5} - Unknown message type"); return;
+        default: _logger.LogWarning($" ▄▀▄▀▄ seq:{msg->m_seqNo,3}    sz:{msg->m_size,5}    {msg->m_type,5} - unknown MessageType"); return;
       }
       _logger.LogInformation($" ■▓■▓■ seq:{msg->m_seqNo,3}    sz:{msg->m_size,5}    {msg->m_type,5} - {(MessageType)msg->m_type} ");
     }
@@ -275,15 +275,12 @@ namespace RMSClient.Comm
       msg.m_requestID = requestID;
       StringToByteArray(note, msg.m_bbsNote);
       var p = (byte*)&msg;
-      for (var i = 0; i < sizeof(ChangeRequestMessage); i++)
-      {
-        m_sendBuffer[i] = p[i];
-      }
+      for (var i = 0; i < sizeof(ChangeRequestMessage); i++)              m_sendBuffer[i] = p[i];      
 
       var bytesSent = m_tcpClient.Send(m_sendBuffer, msg.m_header.m_size, SocketFlags.None);
       var asyncRslt = m_tcpClient.BeginReceive(m_recvBuffer, m_received, BufferSize - m_received, SocketFlags.None, new AsyncCallback(ReceiveData), m_tcpClient);
 
-      log($"SendCR {bytesSent,4} bytes sent", asyncRslt, (Socket)asyncRslt.AsyncState);
+      logInfo($"SendCR {bytesSent,4} bytes sent", asyncRslt);
     }
   }
 }

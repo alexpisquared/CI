@@ -70,8 +70,7 @@ namespace RMSClient
         var sw = Stopwatch.StartNew();
         var acnt = string.IsNullOrEmpty(tbxAccount.Text) || tbxAccount.Text == "xxxxxxxxx" ? null : tbxAccount.Text;
 
-#if !DIRECT
-
+#if DIRECT_RO_BINDING
         var sti = cbxOAF.SelectedIndex == 0 ? 1 : 7;
         var lst = _dbRMS.RmsDboRequestInvDboAccountViews.
           Where(r =>
@@ -209,7 +208,7 @@ namespace RMSClient
         SystemSounds.Beep.Play();
         await Task.Delay(500);
         SystemSounds.Hand.Play();
-        await Task.Delay(500);
+        await Task.Delay(5000);
         Application.Current.Shutdown();
       }
       catch (Exception ex) { _logger.LogError($"{ex}"); MessageBox.Show($"{ex.Message}", "Exception", MessageBoxButton.OK, MessageBoxImage.Error); }
@@ -226,40 +225,12 @@ namespace RMSClient
 
     readonly Dictionary<string, ServerSession.RequestStatus> m_statusDict = new Dictionary<string, ServerSession.RequestStatus>();
     delegate void NewRequestDelegate(int n);
-    void GetRequests(int requestID)
+    void RefreshDataSelectRow(int requestID)
     {
       try
       {
-        using var con = new SqlConnection(_constr);
-        con.Open();
-        using var a = new SqlDataAdapter(@"select RequestID, CreatorID, r.SourceID, s.SourceName, AccountID, a.ShortName, r.TypeID, t.Name, r.SubtypeID, st.Name, r.ActionID, act.Name,
-                            r.StatusID, stat.Name, CreationDate, SecADPNumber, CUSIP, Symbol, CurrencyCode, Quantity, DoneQty, Price, OtherInfo, BBSNote
-                            from request r, source s, Inventory.dbo.Account a, RequestType t, Subtype st, [Action] act, [Status] stat
-                            where r.SourceID = s.SourceID and
-                            r.AccountID = a.Account_ID and
-                            r.TypeID = t.TypeID and
-                            r.TypeID = st.TypeID and
-                            r.SubtypeID = st.SubtypeID and
-                            r.typeID = act.typeID and
-                            r.subtypeID = act.SubtypeID and
-                            r.ActionID = act.ActionID and
-                            r.StatusID = stat.StatusID and r.StatusID not in(4, 5, 7)", con);
-        var t = new DataTable();
-        a.Fill(t);
-        dg1.ItemsSource = t.Rows;
-
-        if (requestID != 0)
-        {
-          for (var i = t.Rows.Count - 2; i >= 0; i--)
-          {
-            //select the row:
-            //if (Convert.ToInt32(dg1.rows.Rows[i].Cells[0].Value.ToString()) == requestID)
-            //{
-            //  dg1.CurrentCell = dg1.Rows[i].Cells[0];
-            break;
-            //}
-          }
-        }
+        find();
+        //todo: Select row
       }
       catch (Exception ex) { _logger.LogError($"{ex}"); MessageBox.Show($"{ex.Message}", "Exception", MessageBoxButton.OK, MessageBoxImage.Error); }
     }
@@ -271,7 +242,7 @@ namespace RMSClient
         m_statusDict[reader.Name] = (ServerSession.RequestStatus)reader.StatusId;
       }
     }
-    void OnNewRequestHandler(int n) => GetRequests(n);
+    void OnNewRequestHandler(int n) => RefreshDataSelectRow(n);
     internal void OnNewRequest(int requestID)
     {
       var deleg = new NewRequestDelegate(OnNewRequestHandler);
