@@ -56,7 +56,8 @@ namespace RMSClient.Comm
       rsRejected = 4,
       rsCancelled = 5,
       rsPartialyDone = 6,
-      rsDone = 7
+      rsDone = 7,
+      rsCancelRequested
     };
 
     [StructLayout(LayoutKind.Sequential, Pack = 1)]

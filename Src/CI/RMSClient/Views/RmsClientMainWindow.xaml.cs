@@ -1,5 +1,4 @@
-﻿using Microsoft.Data.SqlClient;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using RMSClient.Comm;
@@ -234,14 +233,7 @@ namespace RMSClient
       }
       catch (Exception ex) { _logger.LogError($"{ex}"); MessageBox.Show($"{ex.Message}", "Exception", MessageBoxButton.OK, MessageBoxImage.Error); }
     }
-    void LoadStatuses()
-    {
-      foreach (var reader in _dbRMS.Statuses)
-      {
-        Debug.WriteLine($"  ~~~~  {reader.Name}   {(ServerSession.RequestStatus)reader.StatusId}");
-        m_statusDict[reader.Name] = (ServerSession.RequestStatus)reader.StatusId;
-      }
-    }
+    void LoadStatuses() => _dbRMS.Statuses.ToList().ForEach(r => m_statusDict[r.Name] = (ServerSession.RequestStatus)r.StatusId);
     void OnNewRequestHandler(int n) => RefreshDataSelectRow(n);
     internal void OnNewRequest(int requestID)
     {
@@ -257,6 +249,7 @@ namespace RMSClient
       base.OnClosing(e);
     }
   }
+
   public enum OrderStatusEnum { Unknown, Done, PartialyDone, Rejected }; //from $\\trunk\Server\RMS\RMSClient\ChangeRequest.Designer.cs: "Received", "Rejected", "Cancelled", "PartialyDone", "Done"
   public enum OrderActionEnum { Unknown, SendUpdate, Acknowledge, UnlockOrder, Cancel };
 }
