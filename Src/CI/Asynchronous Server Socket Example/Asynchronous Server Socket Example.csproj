@@ -6,4 +6,8 @@
     <RootNamespace>Asynchronous_Server_Socket_Example</RootNamespace>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\AsyncSocketLib\AsyncSocketLib.csproj" />
+  </ItemGroup>
+
 </Project>

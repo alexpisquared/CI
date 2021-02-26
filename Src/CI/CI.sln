@@ -27,6 +27,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "RdpSupport", "RdpSupport", 
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Initiatives", "Initiatives", "{F16BF214-9833-4185-AE87-308935E38FC8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AsyncSocketLib", "AsyncSocketLib\AsyncSocketLib.csproj", "{B1471C7A-B271-49F7-9A4E-1E22808362A9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -69,6 +71,10 @@ Global
 		{DF37E063-C6B2-4ADF-9144-83EFC8C0761B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DF37E063-C6B2-4ADF-9144-83EFC8C0761B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DF37E063-C6B2-4ADF-9144-83EFC8C0761B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B1471C7A-B271-49F7-9A4E-1E22808362A9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B1471C7A-B271-49F7-9A4E-1E22808362A9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B1471C7A-B271-49F7-9A4E-1E22808362A9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B1471C7A-B271-49F7-9A4E-1E22808362A9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -81,6 +87,7 @@ Global
 		{EE765F80-ED77-4F42-9D43-2B90B61EF849} = {035CADBC-78D8-4B6A-9930-EBA0C167BABE}
 		{45651739-6E3C-4A49-9B69-1FD2D9CFC56A} = {035CADBC-78D8-4B6A-9930-EBA0C167BABE}
 		{DF37E063-C6B2-4ADF-9144-83EFC8C0761B} = {035CADBC-78D8-4B6A-9930-EBA0C167BABE}
+		{B1471C7A-B271-49F7-9A4E-1E22808362A9} = {035CADBC-78D8-4B6A-9930-EBA0C167BABE}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {4865768B-0AD7-4582-AA59-912DEDF64F5A}
