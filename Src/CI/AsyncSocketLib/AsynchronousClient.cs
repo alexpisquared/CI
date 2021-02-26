@@ -18,7 +18,7 @@ namespace AsyncSocketLib
 
     static string _response = string.Empty; // The response from the remote device.  
 
-    static void StartClient(string uri, int port)
+   public static void StartClient(string uri, int port)
     {
       try
       {
