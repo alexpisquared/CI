@@ -228,11 +228,13 @@ namespace RMSClient
     {
       try
       {
-        find();
-        //todo: Select row
+        Task.Run(async () => await find());
+        preSelectRequestRow(requestID);
       }
       catch (Exception ex) { _logger.LogError($"{ex}"); MessageBox.Show($"{ex.Message}", "Exception", MessageBoxButton.OK, MessageBoxImage.Error); }
     }
+
+    void preSelectRequestRow(int requestID) { }
     void LoadStatuses() => _dbRMS.Statuses.ToList().ForEach(r => m_statusDict[r.Name] = (ServerSession.RequestStatus)r.StatusId);
     void OnNewRequestHandler(int n) => RefreshDataSelectRow(n);
     internal void OnNewRequest(int requestID)
