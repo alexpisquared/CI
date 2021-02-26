@@ -57,7 +57,7 @@ namespace RMSClient.Comm
       rsCancelled = 5,
       rsPartialyDone = 6,
       rsDone = 7,
-      rsCancelRequested
+      rsCancelRequested = 8 // new 2021
     };
 
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
@@ -276,7 +276,7 @@ namespace RMSClient.Comm
       msg.m_requestID = requestID;
       StringToByteArray(note, msg.m_bbsNote);
       var p = (byte*)&msg;
-      for (var i = 0; i < sizeof(ChangeRequestMessage); i++)              m_sendBuffer[i] = p[i];      
+      for (var i = 0; i < sizeof(ChangeRequestMessage); i++) m_sendBuffer[i] = p[i];
 
       var bytesSent = m_tcpClient.Send(m_sendBuffer, msg.m_header.m_size, SocketFlags.None);
       var asyncRslt = m_tcpClient.BeginReceive(m_recvBuffer, m_received, BufferSize - m_received, SocketFlags.None, new AsyncCallback(ReceiveData), m_tcpClient);
