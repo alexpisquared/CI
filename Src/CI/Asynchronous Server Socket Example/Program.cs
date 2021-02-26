@@ -29,13 +29,12 @@ public class AsynchronousSocketListener
   {
   }
 
-  public static void StartListening()
+  public static void StartListening(string uri, int port)
   {
-    var port = 11000;
     // Establish the local endpoint for the socket.  
     // The DNS name of the computer  
     // running the listener is "host.contoso.com".  
-    IPHostEntry ipHostInfo = Dns.GetHostEntry(Dns.GetHostName());
+    IPHostEntry ipHostInfo = Dns.GetHostEntry(uri);
     IPAddress ipAddress = ipHostInfo.AddressList[0];
     IPEndPoint localEndPoint = new IPEndPoint(ipAddress, port);
 
@@ -163,7 +162,7 @@ public class AsynchronousSocketListener
 
   public static int Main(String[] args)
   {
-    StartListening();
+    StartListening(Dns.GetHostName(), 11000);
     return 0;
   }
 }
