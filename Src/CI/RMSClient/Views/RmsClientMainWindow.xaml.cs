@@ -178,11 +178,11 @@ namespace RMSClient
           _serverSession.SetMainForm(this);
           _serverSession.Connect(_appSettings.IpAddress, _appSettings.Port);
           await Task.Delay(250);
-          _serverSession.SendChangeRequest(request.OrderId, dialogue.NewOrderStatus.ToString(), (uint)(dialogue.Quantity ?? 0), dialogue.Note);
+          _serverSession.SendChangeRequest(request.OrderId, dialogue.NewOrderStatus.ToString(), (uint)(dialogue.Quantity ?? 0), dialogue.Note ?? "");
           SystemSounds.Beep.Play();
         }
       }
-      catch (Exception ex) { _logger.LogError($"{ex}"); MessageBox.Show($"{ex.Message}", "Exception", MessageBoxButton.OK, MessageBoxImage.Error); }
+      catch (Exception ex) { _logger.LogError($"{ex}"); MessageBox.Show($"{ex.Message}", "Exception in onPopup()", MessageBoxButton.OK, MessageBoxImage.Error); }
     }
     async void onPopupPOC()
     {
