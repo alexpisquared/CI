@@ -248,7 +248,9 @@
         </DataGrid>
       </Grid>
 
-      <GridSplitter Grid.Row="3" Background="Transparent" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="12 -6" />
+      <GridSplitter Grid.Row="3" Margin="12 -6" 
+                    FocusVisualStyle="{x:Null}" Background="Transparent" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" 
+                    />
 
       <Grid Grid.Row="4" x:Name="gdg2" Margin="8" d:IsHidden="True">
         <Grid.LayoutTransform>

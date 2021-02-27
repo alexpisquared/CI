@@ -8,10 +8,8 @@
              mc:Ignorable="d" 
              d:DesignHeight="26" d:DesignWidth="75">
   <Grid Margin="2" Width="75" Height="26" >
-    <xui:ProgressBar	x:Name="ZoomPrgBar"	Minimum="{Binding ElementName=ZoomSlider, Path=Minimum}" Maximum="{Binding ElementName=ZoomSlider, Path=Maximum}" PBValue="{Binding ElementName=ZoomSlider, Path=Value}" Cursor="Hand" ToolTip="Adjust zoom. &#10;Double Click - back to 100%" IsTabStop="False" Opacity=".5" 
-											ForeGround="#005487" 
-											BackGround="#003c61" />
-    <TextBlock		Text="{Binding ElementName=ZoomSlider, Path=Value, StringFormat='{}{0:N0} %', Converter={cnv:Multy100}}"	HorizontalAlignment="Center" VerticalAlignment="Top" Foreground="White" FontSize="16"/>
+    <xui:ProgressBar x:Name="ZoomPrgBar" Minimum="{Binding ElementName=ZoomSlider, Path=Minimum}" Maximum="{Binding ElementName=ZoomSlider, Path=Maximum}" PBValue="{Binding ElementName=ZoomSlider, Path=Value}" Cursor="Hand" ToolTip="Adjust zoom. &#10;Double Click - back to 100%" IsTabStop="False" Opacity=".5" />
+    <TextBlock		Text="{Binding ElementName=ZoomSlider, Path=Value, StringFormat='{}{0:N0} %', Converter={cnv:Multy100}}"	HorizontalAlignment="Center" VerticalAlignment="Top" Foreground="#fff" FontSize="16"/>
     <Slider				Orientation="Horizontal"	x:Name="ZoomSlider"	Minimum="0.1" Maximum="3" Value="{Binding ZmValue}" Cursor="Hand" ToolTip="Zoom. &#10;&#10;Use mouse wheel to adjust ...&#10;&#10; ... or Double Click to go back to 100% " IsTabStop="False" Opacity="0" />
   </Grid>
 </UserControl>

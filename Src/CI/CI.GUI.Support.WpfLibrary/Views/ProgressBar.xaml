@@ -7,17 +7,10 @@
              mc:Ignorable="d" 
              d:DesignHeight="30" d:DesignWidth="300">
   <UserControl.Resources>
-    <!--
-    <ResourceDictionary Source="/AAV.OLP.UI.Common;component/Resources\Common.xaml" />
-    <ResourceDictionary >
-			<ResourceDictionary.MergedDictionaries>
-				<ResourceDictionary />
-			</ResourceDictionary.MergedDictionaries>
-		</ResourceDictionary>-->
   </UserControl.Resources>
   <Grid>
-    <Rectangle Fill="{Binding  ElementName=uc,	Path=BackGround,	FallbackValue=#800}" />
-    <Rectangle Fill="{Binding  ElementName=uc,	Path=ForeGround,	FallbackValue=#FF0079C2}" 
+    <Rectangle Fill="{Binding  ElementName=uc,	Path=BackGround,	FallbackValue=#444}" />
+    <Rectangle Fill="{Binding  ElementName=uc,	Path=ForeGround,	FallbackValue=#777}" 
 							 Width="{Binding ElementName=uc,	Path=Progress,		FallbackValue=30, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" />
   </Grid>
 </UserControl>
