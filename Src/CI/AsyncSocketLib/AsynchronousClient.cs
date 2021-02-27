@@ -1,12 +1,9 @@
-﻿using System;
+﻿using AsyncSocketLib.CI.Model;
+using System;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using AsyncSocketLib.CI.Model;
 
 namespace AsyncSocketLib
 {
@@ -125,14 +122,14 @@ namespace AsyncSocketLib
         var state = (StateObject)ar.AsyncState;
         var client = state.workSocket;
 
-        var bytesRead = client.EndReceive(ar); // Read data from the remote device.  
+        var bytesRead = client?.EndReceive(ar) ?? 0; // Read data from the remote device.  
         if (bytesRead > 0)
         {
           // There might be more data, so store the data received so far.  
           state.sb.Append(Encoding.ASCII.GetString(state.buffer, 0, bytesRead));
 
           // Get the rest of the data.  
-          client.BeginReceive(state.buffer, 0, StateObject.BufferSize, 0, new AsyncCallback(ReceiveCallback), state);
+          client?.BeginReceive(state.buffer, 0, StateObject.BufferSize, 0, new AsyncCallback(ReceiveCallback), state);
         }
         else
         {
@@ -166,7 +163,9 @@ namespace AsyncSocketLib
       lr.m_header.m_seqNo = ++m_seqNo;
       lr.m_password[0] = 0;
       username.ToByteArray(lr.m_userName);
+#if EofDemo
       "<EOF>".ToByteArray(lr.m_eof);
+#endif
 
       var ptr = (byte*)&lr;
       for (var i = 0; i < sizeof(LoginRequest); i++) byteData[i] = ptr[i];

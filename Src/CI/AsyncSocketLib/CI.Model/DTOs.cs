@@ -24,7 +24,9 @@ namespace AsyncSocketLib.CI.Model
     public MessageHeader m_header;
     public fixed byte m_userName[128];
     public fixed byte m_password[32];
+#if EofDemo
     public fixed byte m_eof[5]; // = "<EOF>";
+#endif
   }
   [StructLayout(LayoutKind.Sequential, Pack = 1)]
   public unsafe struct NewRequestNotification

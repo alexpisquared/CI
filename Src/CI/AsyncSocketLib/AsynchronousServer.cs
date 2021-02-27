@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
@@ -83,9 +80,9 @@ namespace AsyncSocketLib
     public void ReadCallback(IAsyncResult ar)
     {
       var content = string.Empty;
-      var state = (StateObject)ar.AsyncState;    // Retrieve the state object and the handler socket from the asynchronous state object.  
+      var state = (StateObject)ar.AsyncState;       // Retrieve the state object and the handler socket from the asynchronous state object.  
       var handler = state.workSocket;
-      var bytesRead = handler.EndReceive(ar);    // Read data from the client socket.
+      var bytesRead = handler?.EndReceive(ar) ?? 0; // Read data from the client socket.
 
       if (bytesRead > 0)
       {
@@ -101,20 +98,16 @@ namespace AsyncSocketLib
         else
         {
           // Not all data received. Get more.  
-          handler.BeginReceive(state.buffer, 0, StateObject.BufferSize, 0,
+          handler?.BeginReceive(state.buffer, 0, StateObject.BufferSize, 0,
           new AsyncCallback(ReadCallback), state);
         }
       }
     }
 
-    void Send(Socket handler, string data)
+    void Send(Socket? handler, string data)
     {
-      // Convert the string data to byte data using ASCII encoding.  
-      var byteData = Encoding.ASCII.GetBytes(data);
-
-      // Begin sending the data to the remote device.  
-      handler.BeginSend(byteData, 0, byteData.Length, 0,
-          new AsyncCallback(SendCallback), handler);
+      var byteData = Encoding.ASCII.GetBytes(data);      // Convert the string data to byte data using ASCII encoding.  
+      handler?.BeginSend(byteData, 0, byteData.Length, 0, new AsyncCallback(SendCallback), handler); // Begin sending the data to the remote device.  
     }
 
     void SendCallback(IAsyncResult ar)
