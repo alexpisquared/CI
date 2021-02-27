@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using CI.GUI.Support.WpfLibrary.Base;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using RMSClient.Comm;
@@ -21,7 +22,7 @@ using System.Windows.Input;
 
 namespace RMSClient
 {
-  public partial class RmsClientMainWindow : Window
+  public partial class RmsClientMainWindow : WindowBase
   {
     readonly ILogger<RmsClientMainWindow> _logger;
     readonly IConfigurationRoot _config;
@@ -41,7 +42,7 @@ namespace RMSClient
 
       _accountRequestViewSource = (CollectionViewSource)FindResource(nameof(_accountRequestViewSource));
 
-      MouseWheel += (s, e) => { if (!(Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl))) return; ZVa += (e.Delta * .001); e.Handled = true; Debug.WriteLine(Title = $">>ZVa:{ZVa}"); }; //tu:
+      //MouseWheel += (s, e) => { if (!(Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl))) return; ZVa += (e.Delta * .001); e.Handled = true; Debug.WriteLine(Title = $">>ZVa:{ZVa}"); }; //tu:
       //MouseLeftButtonDown += (s, e) => { try { DragMove(); } catch { logger.LogWarning("Ignore mouse complaints for now.- interfering with sockets?"); } };
       _logger = logger;
       _config = config;
@@ -221,6 +222,9 @@ namespace RMSClient
       catch (Exception ex) { _logger.LogError($"{ex}"); MessageBox.Show($"{ex.Message}", "Exception", MessageBoxButton.OK, MessageBoxImage.Error); }
     }
     void onExit(object s, RoutedEventArgs e) => Close();
+    void onWindowMinimize(object sender, RoutedEventArgs e) { WindowState = System.Windows.WindowState.Minimized; }
+    void onWindowRestoree(object sender, RoutedEventArgs e) { wr.Visibility = Visibility.Collapsed; wm.Visibility = Visibility.Visible; WindowState = System.Windows.WindowState.Normal; }
+    void onWindowMaximize(object sender, RoutedEventArgs e) { wm.Visibility = Visibility.Collapsed; wr.Visibility = Visibility.Visible; WindowState = System.Windows.WindowState.Maximized; }
 
     readonly Dictionary<string, ServerSession.RequestStatus> m_statusDict = new Dictionary<string, ServerSession.RequestStatus>();
     delegate void NewRequestDelegate(int n);

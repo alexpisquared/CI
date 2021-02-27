@@ -17,9 +17,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RMSClient", "RMSClient\RMSC
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebSockConsoleApp", "WebSockConsoleApp\WebSockConsoleApp.csproj", "{EE765F80-ED77-4F42-9D43-2B90B61EF849}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Asynchronous Client Socket Example", "Asynchronous Client Socket Example\Asynchronous Client Socket Example.csproj", "{45651739-6E3C-4A49-9B69-1FD2D9CFC56A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Asynchronous Client Socket Example", "Asynchronous Client Socket Example\Asynchronous Client Socket Example.csproj", "{45651739-6E3C-4A49-9B69-1FD2D9CFC56A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Asynchronous Server Socket Example", "Asynchronous Server Socket Example\Asynchronous Server Socket Example.csproj", "{DF37E063-C6B2-4ADF-9144-83EFC8C0761B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Asynchronous Server Socket Example", "Asynchronous Server Socket Example\Asynchronous Server Socket Example.csproj", "{DF37E063-C6B2-4ADF-9144-83EFC8C0761B}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SocketsPOC", "SocketsPOC", "{035CADBC-78D8-4B6A-9930-EBA0C167BABE}"
 EndProject
@@ -27,9 +27,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "RdpSupport", "RdpSupport", 
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Initiatives", "Initiatives", "{F16BF214-9833-4185-AE87-308935E38FC8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AsyncSocketLib", "AsyncSocketLib\AsyncSocketLib.csproj", "{B1471C7A-B271-49F7-9A4E-1E22808362A9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AsyncSocketLib", "AsyncSocketLib\AsyncSocketLib.csproj", "{B1471C7A-B271-49F7-9A4E-1E22808362A9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AsyncSocketTester", "AsyncSocketTester\AsyncSocketTester.csproj", "{7426870D-0609-4D1D-B432-C38628BC747C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AsyncSocketTester", "AsyncSocketTester\AsyncSocketTester.csproj", "{7426870D-0609-4D1D-B432-C38628BC747C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CI.GUI.Support.WpfLibrary", "CI.GUI.Support.WpfLibrary\CI.GUI.Support.WpfLibrary.csproj", "{AE96A3DC-DF2B-47DF-BBB8-9B8FF39A6BE7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -81,6 +83,10 @@ Global
 		{7426870D-0609-4D1D-B432-C38628BC747C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7426870D-0609-4D1D-B432-C38628BC747C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7426870D-0609-4D1D-B432-C38628BC747C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AE96A3DC-DF2B-47DF-BBB8-9B8FF39A6BE7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AE96A3DC-DF2B-47DF-BBB8-9B8FF39A6BE7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AE96A3DC-DF2B-47DF-BBB8-9B8FF39A6BE7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AE96A3DC-DF2B-47DF-BBB8-9B8FF39A6BE7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

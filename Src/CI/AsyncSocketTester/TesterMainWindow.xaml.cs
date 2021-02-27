@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CI.GUI.Support.WpfLibrary.Base;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -15,7 +16,7 @@ using System.Windows.Shapes;
 
 namespace AsyncSocketTester
 {
-  public partial class TesterMainWindow : Window
+  public partial class TesterMainWindow : WindowBase
   {
     public TesterMainWindow()
     {
