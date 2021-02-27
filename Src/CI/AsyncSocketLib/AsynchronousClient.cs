@@ -1,5 +1,6 @@
 ﻿using AsyncSocketLib.CI.Model;
 using System;
+using System.Diagnostics;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
@@ -67,9 +68,9 @@ namespace AsyncSocketLib
 
         Receive(client); // Receive the response from the remote device.  
         Console.WriteLine("  Waiting for the Response ...");
-        _receiveDone.WaitOne();
+        _receiveDone.WaitOne(1000); // wait just for a sec
 
-        Console.WriteLine("   Response received : {0}", _response);
+        Console.WriteLine("   Response received : '{0}'", _response);
 
         client.Shutdown(SocketShutdown.Both);
         client.Close();
@@ -158,9 +159,9 @@ namespace AsyncSocketLib
     {
       var byteData = new byte[StateObject.BufferSize];
       LoginRequest lr;
-      lr.m_header.m_type = MessageType.mtLogin;
       lr.m_header.m_size = sizeof(LoginRequest);
-      lr.m_header.m_seqNo = ++m_seqNo;
+      lr.m_header.m_type = MessageType.mtLogin;
+      //lr.m_header.m_seqNo = ++m_seqNo;
       lr.m_password[0] = 0;
       username.ToByteArray(lr.m_userName);
 #if EofDemo
@@ -169,6 +170,12 @@ namespace AsyncSocketLib
 
       var ptr = (byte*)&lr;
       for (var i = 0; i < sizeof(LoginRequest); i++) byteData[i] = ptr[i];
+      
+      //mimic cpp: for (var i = 20; i < sizeof(LoginRequest); i++) byteData[i] = 205;
+
+      Debug.WriteLine($"-- total: {sizeof(LoginRequest)}:");
+      for (var i = 0; i < sizeof(LoginRequest); i++) Debug.WriteLine($"  {i,4} {(int)byteData[i],4}");
+      Debug.WriteLine($"-- total: {sizeof(LoginRequest)}:");
 
       client.BeginSend(byteData, 0, sizeof(LoginRequest), 0, new AsyncCallback(SendCallback), client); // Begin sending the data to the remote device.  
     }

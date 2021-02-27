@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Net.Sockets;
-using System.Runtime.InteropServices;
-using System.Text;
+﻿using System.Runtime.InteropServices;
 
 namespace AsyncSocketLib.CI.Model
 {
@@ -10,7 +7,7 @@ namespace AsyncSocketLib.CI.Model
   {
     public int m_size;
     public MessageType m_type;
-    public uint m_seqNo;
+    //public uint m_seqNo;
   };
   [StructLayout(LayoutKind.Sequential, Pack = 1)]
   public unsafe struct Response
