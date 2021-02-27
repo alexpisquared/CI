@@ -7,30 +7,30 @@ namespace AsyncSocketLib.CI.Model
   {
     public int m_size;
     public MessageType m_type;
-    //public uint m_seqNo;
   };
+
   [StructLayout(LayoutKind.Sequential, Pack = 1)]
   public unsafe struct Response
   {
     public MessageHeader m_header;
     public ResponseCode m_code;
   };
+
   [StructLayout(LayoutKind.Sequential, Pack = 1)]
   public unsafe struct LoginRequest
   {
     public MessageHeader m_header;
     public fixed byte m_userName[128];
     public fixed byte m_password[32];
-#if EofDemo
-    public fixed byte m_eof[5]; // = "<EOF>";
-#endif
   }
+
   [StructLayout(LayoutKind.Sequential, Pack = 1)]
   public unsafe struct NewRequestNotification
   {
     public MessageHeader m_header;
     public int m_requestID;
   }
+
   [StructLayout(LayoutKind.Sequential, Pack = 1)]
   public unsafe struct ChangeRequestMessage //todo: !!! see more at   $\\trunk\Server\RMS\Common\RMSMessage.h:170 - struct ChangeRequest  +  RMS.ChangeRequest structure.png here.
   {

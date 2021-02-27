@@ -161,7 +161,6 @@ namespace AsyncSocketLib
       LoginRequest lr;
       lr.m_header.m_size = sizeof(LoginRequest);
       lr.m_header.m_type = MessageType.mtLogin;
-      //lr.m_header.m_seqNo = ++m_seqNo;
       lr.m_password[0] = 0;
       username.ToByteArray(lr.m_userName);
 #if EofDemo
@@ -173,9 +172,7 @@ namespace AsyncSocketLib
       
       //mimic cpp: for (var i = 20; i < sizeof(LoginRequest); i++) byteData[i] = 205;
 
-      Debug.WriteLine($"-- total: {sizeof(LoginRequest)}:");
-      for (var i = 0; i < sizeof(LoginRequest); i++) Debug.WriteLine($"  {i,4} {(int)byteData[i],4}");
-      Debug.WriteLine($"-- total: {sizeof(LoginRequest)}:");
+      Debug.WriteLine($"-- total: {sizeof(LoginRequest)}:"); // for (var i = 0; i < sizeof(LoginRequest); i++) Debug.WriteLine($"  {i,4} {(int)byteData[i],4}"); Debug.WriteLine($"-- total: {sizeof(LoginRequest)}:");
 
       client.BeginSend(byteData, 0, sizeof(LoginRequest), 0, new AsyncCallback(SendCallback), client); // Begin sending the data to the remote device.  
     }
