@@ -40,12 +40,14 @@ namespace AsyncSocketLib.CI.Model
     public uint m_doneQty;
     public fixed byte m_bbsNote[100];
   };
-#if UNION_POC
-  public unsafe struct ChangeRequest
+
+  [StructLayout(LayoutKind.Sequential, Pack = 1)]
+  public unsafe struct ChangeRequest // straight from RMSMessage.h
   {
     public MessageHeader m_messageHeader;
     public OrderUpdateData m_data;
   };
+
   [StructLayout(LayoutKind.Explicit)]
   public unsafe struct OrderUpdateData
   {
@@ -63,5 +65,4 @@ namespace AsyncSocketLib.CI.Model
     [FieldOffset(sizeof(int) * 7 + sizeof(double) + sizeof(char) * 101)] public System.Runtime.InteropServices.ComTypes.FILETIME m_time;
     [FieldOffset(sizeof(int) * 7 + sizeof(double) + sizeof(char) * 101)] public long  /*long long*/ m_int64Time;
   };
-#endif
 }
