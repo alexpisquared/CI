@@ -55,8 +55,10 @@ namespace RMSClient
       _constr = _appSettings.RmsRelease;
 #endif
       _dbRMS = new RMSContext(_constr);
+
+
+      themeSelector1.ApplyTheme = ApplyTheme;
     }
-    public static readonly DependencyProperty ZVaProperty = DependencyProperty.Register("ZVa", typeof(double), typeof(RmsClientMainWindow), new PropertyMetadata(1.25)); public double ZVa { get => (double)GetValue(ZVaProperty); set => SetValue(ZVaProperty, value); }
 
     async Task find()
     {
@@ -108,6 +110,9 @@ namespace RMSClient
       _loaded = true;
       await find();
       //_db.Database.EnsureCreated();
+
+      themeSelector1.SetCurTheme(Thm);
+
 
 #if DEBUG_UNIT_TEST
       onPopupPOC();
