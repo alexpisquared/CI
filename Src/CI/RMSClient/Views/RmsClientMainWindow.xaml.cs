@@ -57,7 +57,7 @@ namespace RMSClient
       _dbRMS = new RMSContext(_constr);
 
 
-      themeSelector1.ApplyTheme = ApplyTheme;
+      themeSelector.ApplyTheme = ApplyTheme;
     }
 
     async Task find()
@@ -111,8 +111,7 @@ namespace RMSClient
       await find();
       //_db.Database.EnsureCreated();
 
-      themeSelector1.SetCurTheme(Thm);
-
+      themeSelector.SetCurThemeToMenu(Thm);
 
 #if DEBUG_UNIT_TEST
       onPopupPOC();

@@ -1,31 +1,17 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace CI.GUI.Support.WpfLibrary.Views
 {
-  /// <summary>
-  /// Interaction logic for ThemeSelectorUsrCtrl.xaml
-  /// </summary>
   public partial class ThemeSelectorUsrCtrl : UserControl
   {
     public ThemeSelectorUsrCtrl() => InitializeComponent();
 
     public delegate void ApplyThemeDelegate(string v);
-    public ApplyThemeDelegate? ApplyTheme { get; set; }
+    public ApplyThemeDelegate ApplyTheme { get; set; }
 
-    public void SetCurTheme(string theme)
+    public void SetCurThemeToMenu(string theme)
     {
       foreach (MenuItem? item in ((ItemsControl)menu1.Items[0]).Items)
         if (item != null)
@@ -43,7 +29,7 @@ namespace CI.GUI.Support.WpfLibrary.Views
     {
       ApplyTheme?.Invoke(CurTheme = ((FrameworkElement)s).Tag?.ToString() ?? "No Theme");
 
-      SetCurTheme(CurTheme);
+      SetCurThemeToMenu(CurTheme);
     }
   }
 }
