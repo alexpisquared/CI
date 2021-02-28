@@ -70,9 +70,10 @@
   <Style TargetType="{x:Type Button}"       BasedOn="{StaticResource BtnBase}" />
 
   <Style TargetType="{x:Type GridSplitter}" >
-    <Setter Property="Background"           Value="{StaticResource ButnBackgroundBrush}" />
+    <Setter Property="Background"           Value="Transparent" />
     <Setter Property="HorizontalAlignment"  Value="Stretch" />
     <Setter Property="VerticalAlignment"    Value="Stretch" />
+    <Setter Property="FocusVisualStyle"     Value="{x:Null}" />
   </Style>
 
   <Style TargetType="{x:Type Border}"       x:Key="BorderStyle_Aav0">
@@ -122,7 +123,6 @@
     <Setter Property="Foreground"           Value="#777" />
     <Setter Property="Background"           Value="{DynamicResource BackBackgroundBrush}" />
   </Style>
-
 
   <Style TargetType="{x:Type Window}"       x:Key="WindowStyle_Aav0" >
     <Setter Property="WindowStyle"          Value="None"        />
