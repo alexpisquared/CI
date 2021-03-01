@@ -294,7 +294,7 @@
     <Setter Property="VerticalContentAlignment" Value="Center" />
     <Setter Property="HorizontalContentAlignment" Value="Left" />
     <Setter Property="FontWeight" Value="Bold" />
-    <Setter Property="FontSize" Value="11pt" />
+    <Setter Property="FontSize" Value="9.5pt" />
     <Setter Property="Padding" Value="0,0,2,2" />
 
     <Style.Triggers>
