@@ -15,3 +15,5 @@
   
   Scaffold-DbContext "Server=MTdevSQLDB;Database=RMS;Trusted_Connection=True;" Microsoft.EntityFrameworkCore.SqlServer -OutputDir Model
   
+
+  RMSClient_tempCertificate - has a password of RMSClient_tempCertificate

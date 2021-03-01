@@ -24,6 +24,7 @@ namespace RMSClient.Shared
 
       var _header = $"Current Dispatcher Unhandled Exception - {DateTimeOffset.Now: HH:mm:ss}";
       var innerMsgs = $""
+        + $"{ex?.Exception?.Message}  "
         + $"{ex?.Exception?.InnerException?.Message}  "
         + $"{ex?.Exception?.InnerException?.InnerException?.Message}  "
         + $"{ex?.Exception?.InnerException?.InnerException?.InnerException?.Message}  ";
@@ -39,7 +40,7 @@ namespace RMSClient.Shared
         {
           Debugger.Break(); //seems like always true: if (ex is System.Windows.Threading.DispatcherUnhandledExceptionEventArgs)					Bpr.BeepEr();				else 
         }
-        else if (MessageBox.Show($"An error occurred in this app...\n\n ...{innerMsgs}\n\nDo you want to continue?", _header, MessageBoxButton.YesNo, MessageBoxImage.Error, MessageBoxResult.Yes) == MessageBoxResult.No)
+        else if (MessageBox.Show($"An error occurred in this app...\n\n    {innerMsgs}\n\nDo you want to continue?", _header, MessageBoxButton.YesNo, MessageBoxImage.Error, MessageBoxResult.Yes) == MessageBoxResult.No)
         {
           _logger.LogInformation($" +{(DateTime.Now - App.Started):mm\\:ss\\.ff}  Decided NOT to continue: Application.Current.Shutdown();");
           Application.Current.Shutdown();

@@ -157,7 +157,7 @@
             <ScaleTransform ScaleX=".8" ScaleY=".8" />
           </Grid.LayoutTransform>
           <DataGrid 
-            Style="{DynamicResource DataGridStyle}"
+            Style="{DynamicResource DataGridStyle}" VerticalAlignment="Top" HorizontalAlignment="Stretch"
             Foreground="{StaticResource MainForegroundBrush}" x:Name="dg1" AutoGenerateColumns="False" ItemsSource="{Binding Source={StaticResource _accountRequestViewSource}}" 
                 SelectedCellsChanged="onSelect" MouseDoubleClick="onPopup"
                 CanUserAddRows="False" CanUserDeleteRows="False" GridLinesVisibility="None" HeadersVisibility="Column" 
@@ -206,7 +206,7 @@
             <ScaleTransform ScaleX=".8" ScaleY=".8" />
           </Grid.LayoutTransform>
           <DataGrid 
-            Style="{DynamicResource DataGridStyle}"
+            Style="{DynamicResource DataGridStyle}" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"
             Foreground="{StaticResource MainForegroundBrush}" x:Name="dg2" AutoGenerateColumns="False" ItemsSource="{Binding Source={StaticResource _accountRequestViewSource}}" 
               CanUserAddRows="False" CanUserDeleteRows="False" GridLinesVisibility="None" HeadersVisibility="Column" SelectionMode="Single" BorderThickness="0" Margin="0 3" >
             <DataGrid.Columns>
