@@ -19,9 +19,19 @@
   RMSClient_tempCertificate - has a password of RMSClient_tempCertificate
 
 
-  Installers
-  ClickOnce - Fails all over
-  Try these:
-  https://www.youtube.com/watch?v=yhOnClQrvBk
-  https://www.youtube.com/watch?v=4t2TI8ImwMY
-  https://www.youtube.com/watch?v=4t2TI8ImwMY&feature=youtu.be&t=1177
+  Installers  -  ClickOnce fails all over  -    For MSIX try these:
+    https://www.youtube.com/watch?v=yhOnClQrvBk
+    https://www.youtube.com/watch?v=4t2TI8ImwMY
+    https://www.youtube.com/watch?v=4t2TI8ImwMY&feature=youtu.be&t=1177
+
+  #2021-03
+  *.deps.json solution: clean ef nuget entries:
+    <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.3" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="5.0.3" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="5.0.3" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="5.0.3" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="5.0.3" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="3.1.0" />
+
+
