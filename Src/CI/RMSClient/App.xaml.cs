@@ -3,6 +3,7 @@ using Microsoft.Extensions.Logging;
 using RMSClient.Shared;
 using Serilog;
 using System;
+using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -17,12 +18,36 @@ namespace RMSClient
     static App()
     {
       Started = DateTime.Now;
-
+      var aps = "appsettings.json";
       try
       {
+        if (!File.Exists(aps))
+          File.WriteAllText(aps, 
+@"{
+  ""WhereAmI"": "" ??\\RMSClient\\appsettings.json"",
+  ""LogFolder"": ""Z:\\AlexPi\\Misc\\Logs\\RMS.aps.txt"",
+  ""LogFolder2"": ""\\\\bbsfile01\\Public\\AlexPi\\Misc\\Logs\\RMS.aps.txt"",
+  ""AppSettings"": {
+          ""IpAddress"": ""10.10.19.152"",
+    ""Port"": ""6756"",
+    ""BR"": ""Server=MTdevSQLDB;Database=BR;Trusted_Connection=True;"",
+    ""RmsDebug"": ""Server=.\\sqlexpress;Database=RMS;Trusted_Connection=True;"",
+    ""RmsRelease"": ""Server=MTdevSQLDB;Database=RMS;Trusted_Connection=True;"",
+    ""Inv"": ""Server=MTdevSQLDB;Database=Inventory;Trusted_Connection=True;"",
+    ""ForceSocketReconnect"": true,
+    ""ForceSocketReconnectTime"": 300000,
+    ""KeyVaultURL"": ""<moved to a safer place>""
+  },
+  ""VoiceNames"": [
+    ""en-gb-george-apollo"",
+    ""en-US-GuyNeural""
+  ]
+}
+");
+
         _config = new ConfigurationBuilder()
           .SetBasePath(AppContext.BaseDirectory)
-          .AddJsonFile("appsettings.json")
+          .AddJsonFile(aps)
           .AddUserSecrets<RmsClientMainWindow>()
           .Build();
       }
