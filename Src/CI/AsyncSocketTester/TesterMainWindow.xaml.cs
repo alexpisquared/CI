@@ -1,4 +1,6 @@
-﻿using CI.GUI.Support.WpfLibrary.Base;
+﻿using System.Net;
+using System.Net;
+using CI.GUI.Support.WpfLibrary.Base;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,34 +15,58 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using AsyncSocketLib;
+using System.Media;
 
 namespace AsyncSocketTester
 {
   public partial class TesterMainWindow : WindowBase
   {
+    readonly AsynchronousServer _svr = new AsynchronousServer();
+
     public TesterMainWindow()
     {
       InitializeComponent();
     }
 
-    void CheckBox_Checked(object sender, RoutedEventArgs e)
+    async void CheckBox_Checked(object s, RoutedEventArgs e)
     {
+      if (((CheckBox)s).IsChecked == true)
+      {
+        b1.IsEnabled = true;
+        await _svr.StartListening(Dns.GetHostName(), 11000, SystemSounds.Hand.Play);
+      }
+      else
+      {
+        _svr.StopAndClose();
+        b1.IsEnabled = false;
+      }
+
+      await Task.Yield();
+    }
+
+    void Button_Click(object s, RoutedEventArgs e)
+    {
+      new AsynchronousClient().StartClient(Dns.GetHostName(), 11000);
 
     }
 
-    private void Button_Click(object sender, RoutedEventArgs e)
+    void Button_Click_1(object s, RoutedEventArgs e)
     {
+      new AsynchronousClient().StartClientReal(Dns.GetHostName(), 11000, "alex.pigida");
 
     }
 
-    private void Button_Click_1(object sender, RoutedEventArgs e)
+    void Button_Click_2(object s, RoutedEventArgs e)
     {
+
+      new AsynchronousClient().StartClientReal("10.10.19.152", 6756, "alex.pigida");
 
     }
 
-    private void Button_Click_2(object sender, RoutedEventArgs e)
+    void onRR(object s, RoutedEventArgs e)
     {
-
+      tbkReport.Text = _svr.Report;
     }
   }
 }

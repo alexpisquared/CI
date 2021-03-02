@@ -55,27 +55,32 @@
       <CollectionViewSource x:Key="cmdLogsViewSource" Source="{Binding Logs, Source={StaticResource cmdViewSource}}"/>-->
     </ResourceDictionary>
   </lnk:WindowBase.Resources>
-  <Grid>
-    <Grid.ColumnDefinitions>
-      <ColumnDefinition Width="571*"/>
-      <ColumnDefinition Width="571*"/>
-      <ColumnDefinition Width="229*"/>
-    </Grid.ColumnDefinitions>
-    <Grid.RowDefinitions>
-      <RowDefinition Height="163*"/>
-      <RowDefinition Height="267*"/>
-    </Grid.RowDefinitions>
+  <Border CornerRadius="9" Background="#ccc" BorderBrush="#06d" BorderThickness="2">
+    <Grid>
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="*"/>
+        <ColumnDefinition Width=".1*"/>
+        <ColumnDefinition Width="*"/>
+      </Grid.ColumnDefinitions>
+      <Grid.RowDefinitions>
+        <RowDefinition Height="*"/>
+        <RowDefinition Height="Auto"/>
+      </Grid.RowDefinitions>
 
-    <Viewbox></Viewbox>
-    <CheckBox Content="Server" Grid.Column="2" HorizontalAlignment="Left" Margin="34,49,0,0" VerticalAlignment="Top" Checked="CheckBox_Checked"/>
+      <StackPanel Grid.Row="1" Grid.Column="2" Orientation="Horizontal">
+        <CheckBox Content="_Server ON" HorizontalAlignment="Left" Margin="5" VerticalAlignment="Center" Checked="CheckBox_Checked"/>
+        <Button Content="_Read Report" Click="onRR" />
+      </StackPanel>
 
-    <TextBlock Grid.Column="2" Margin="5" Grid.Row="1" d:Text="result of server activities - line 1 - line 1 - line 1 - line 1 - line 1" TextWrapping="Wrap" />
+      <TextBlock Grid.Column="2" Margin="5" Grid.Row="0" d:Text="result of server activities - line 1 - line 1 - line 1 - line 1 - line 1" TextWrapping="Wrap" x:Name="tbkReport"/>
 
-    <StackPanel Grid.Row="1" Orientation="Horizontal">
-      <Button Content="Button" Click="Button_Click" />
-      <Button Content="Button" Click="Button_Click_1" />
-      <Button Content="Button" Click="Button_Click_2" />
-    </StackPanel>
+      <StackPanel Grid.Row="1" Orientation="Horizontal">
+        <Label Content="   Call: " />
+        <Button Content="   _Me   " Click="Button_Click" x:Name="b1" IsEnabled="False"/>
+        <Button Content="Real me  " Click="Button_Click_1" />
+        <Button Content="Real real" Click="Button_Click_2" />
+      </StackPanel>
 
-  </Grid>
+    </Grid>
+  </Border>
 </lnk:WindowBase>
