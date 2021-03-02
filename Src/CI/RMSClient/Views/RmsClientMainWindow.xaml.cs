@@ -28,9 +28,7 @@ namespace RMSClient
     readonly IConfigurationRoot _config;
     readonly RMSContext _dbRMS;
     readonly CollectionViewSource _accountRequestViewSource;
-
     readonly AppSettings _appSettings;
-    readonly string _constr;
     bool _loaded = false;
 
     public RmsClientMainWindow(ILogger<RmsClientMainWindow> logger, IConfigurationRoot config)
@@ -46,16 +44,25 @@ namespace RMSClient
       //MouseLeftButtonDown += (s, e) => { try { DragMove(); } catch { logger.LogWarning("Ignore mouse complaints for now.- interfering with sockets?"); } };
       _logger = logger;
       _config = config;
-      _appSettings = config.Get<AppSettings>();
-#if DEBUG
-      if (Environment.MachineName == "RAZER1") { Top = 1650; Left = 10; }
-      else { Top = 1600; Left = 2500; }
-      _constr = _appSettings.RmsDebug;
-#else
-      _constr = _appSettings.RmsRelease;
-#endif
-      _dbRMS = new RMSContext(_constr);
 
+
+      var aps = config.GetSection("AppSettings").GetChildren();
+
+      _appSettings = new AppSettings
+      {
+        Port = ushort.Parse(aps.FirstOrDefault(r => r.Key == nameof(AppSettings.Port))?.Value),
+        IpAddress = aps.FirstOrDefault(r => r.Key == nameof(AppSettings.IpAddress))?.Value,
+        RmsDebug = aps.FirstOrDefault(r => r.Key == "RmsDebug")?.Value,
+        RmsRelease = aps.FirstOrDefault(r => r.Key == "RmsRelease")?.Value
+      };
+
+#if DEBUG
+      _dbRMS = new RMSContext(_appSettings.RmsDebug);
+#else
+      _dbRMS = new RMSContext(_appSettings.RmsRelease);
+#endif
+
+      Title = _config["WhereAmI"];
 
       themeSelector.ApplyTheme = ApplyTheme;
     }
@@ -93,7 +100,7 @@ namespace RMSClient
         var cnt = await lst.CountAsync();
         var report = cnt <= top ? $"Total {cnt} matches found in " : $"Top {Math.Min(top, cnt),3}  rows out of {cnt,5}  matches found in ";
 
-        Title = $"RMS Client ({Environment.UserName}) - {_dbRMS.Server()} - {report} {sw.Elapsed.TotalSeconds,5:N2} sec.";
+        Title = $"({Environment.UserName}) - {_dbRMS.Server()} - {report} {sw.Elapsed.TotalSeconds,5:N2} sec.";
 
         _logger.LogInformation($" +{(DateTime.Now - App.Started):mm\\:ss\\.ff}  {Title}   params: {dt1.SelectedDate} - {dt2.SelectedDate}   {acnt}   {(cnkDirein.IsChecked == true ? "Direct Reinvest" : "")}");
       }
@@ -139,7 +146,7 @@ namespace RMSClient
         return;
 
       var report = "Nothing yet ... ";
-      Title = $"RMS Client ({Environment.UserName}) - looking for history ...";
+      Title = $"({Environment.UserName}) - looking for history ...";
       var sw = Stopwatch.StartNew();
 
       try
@@ -151,7 +158,7 @@ namespace RMSClient
       catch (Exception ex) { _logger.LogError($"{ex}"); MessageBox.Show($"{ex.Message}", "Exception", MessageBoxButton.OK, MessageBoxImage.Error); }
       finally
       {
-        Title = $"RMS Client ({Environment.UserName}) - {report} {sw.Elapsed.TotalSeconds,5:N2} sec.";
+        Title = $"({Environment.UserName}) - {report} {sw.Elapsed.TotalSeconds,5:N2} sec.";
         _logger.LogInformation($" +{(DateTime.Now - App.Started):mm\\:ss\\.ff}  {Title}   ");
       }
     }
@@ -226,7 +233,7 @@ namespace RMSClient
       catch (Exception ex) { _logger.LogError($"{ex}"); MessageBox.Show($"{ex.Message}", "Exception", MessageBoxButton.OK, MessageBoxImage.Error); }
     }
     void onExit(object s, RoutedEventArgs e) => Close();
-    void onWindowMinimize(object sender, RoutedEventArgs e) { WindowState = System.Windows.WindowState.Minimized; }
+    void onWindowMinimize(object sender, RoutedEventArgs e) => WindowState = System.Windows.WindowState.Minimized;
     void onWindowRestoree(object sender, RoutedEventArgs e) { wr.Visibility = Visibility.Collapsed; wm.Visibility = Visibility.Visible; WindowState = System.Windows.WindowState.Normal; }
     void onWindowMaximize(object sender, RoutedEventArgs e) { wm.Visibility = Visibility.Collapsed; wr.Visibility = Visibility.Visible; WindowState = System.Windows.WindowState.Maximized; }
 
