@@ -18,11 +18,18 @@ namespace RMSClient
     {
       Started = DateTime.Now;
 
-      _config = new ConfigurationBuilder()
-        .SetBasePath(AppContext.BaseDirectory)
-        .AddJsonFile("appsettings.json")
-        .AddUserSecrets<RmsClientMainWindow>()
-        .Build();
+      try
+      {
+        _config = new ConfigurationBuilder()
+          .SetBasePath(AppContext.BaseDirectory)
+          .AddJsonFile("appsettings.json")
+          .AddUserSecrets<RmsClientMainWindow>()
+          .Build();
+      }
+      catch (Exception ex)
+      {
+        MessageBox.Show($"{ex.Message}", "Exception", MessageBoxButton.OK, MessageBoxImage.Error);
+      }
     }
 
     protected override void OnStartup(StartupEventArgs e)
