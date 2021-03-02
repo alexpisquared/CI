@@ -17,3 +17,11 @@
   
 
   RMSClient_tempCertificate - has a password of RMSClient_tempCertificate
+
+
+  Installers
+  ClickOnce - Fails all over
+  Try these:
+  https://www.youtube.com/watch?v=yhOnClQrvBk
+  https://www.youtube.com/watch?v=4t2TI8ImwMY
+  https://www.youtube.com/watch?v=4t2TI8ImwMY&feature=youtu.be&t=1177
