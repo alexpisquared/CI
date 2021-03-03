@@ -1,33 +1,28 @@
-﻿using System.Net;
-using System.Net;
+﻿using AsyncSocketLib;
 using CI.GUI.Support.WpfLibrary.Base;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using System.Media;
+using System.Net;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using AsyncSocketLib;
-using System.Media;
+using System.Windows.Threading;
 
 namespace AsyncSocketTester
 {
   public partial class TesterMainWindow : WindowBase
   {
+    //DispatcherTimer __ = new DispatcherTimer(TimeSpan.FromSeconds(.250), DispatcherPriority.Normal, new EventHandler(async (s, e) => await onTick()), Dispatcher.CurrentDispatcher); //tu:
     readonly AsynchronousServer _svr = new AsynchronousServer();
 
     public TesterMainWindow()
     {
       InitializeComponent();
+      _ = new DispatcherTimer(TimeSpan.FromSeconds(.250), DispatcherPriority.Normal, new EventHandler(async (s, e) => await onTick()), Dispatcher.CurrentDispatcher); //tu:
     }
+
+    async void onLoaded(object sender, RoutedEventArgs e) { chkSvr.IsChecked = true; await Task.Yield(); }
+    async Task onTick() { onRR(); await Task.Yield(); }
 
     async void CheckBox_Checked(object s, RoutedEventArgs e)
     {
@@ -45,28 +40,29 @@ namespace AsyncSocketTester
       await Task.Yield();
     }
 
-    void Button_Click(object s, RoutedEventArgs e)
+    void onMe(object s, RoutedEventArgs e)
     {
-      new AsynchronousClient().StartClient(Dns.GetHostName(), 11000);
+      var c = new AsynchronousClient();
+      c.StartClient(Dns.GetHostName(), 11000);
+      tbkReportClt.Text = c.Report;
+    }
+    void onRealMe(object s, RoutedEventArgs e)
+    {
+      var c = new AsynchronousClient();
+      c.StartClientReal(Dns.GetHostName(), 11000, "alex.pigida");
 
     }
-
-    void Button_Click_1(object s, RoutedEventArgs e)
+    void onRealReal(object s, RoutedEventArgs e)
     {
-      new AsynchronousClient().StartClientReal(Dns.GetHostName(), 11000, "alex.pigida");
+      var c = new AsynchronousClient();
+      c.StartClientReal("10.10.19.152", 6756, "alex.pigida");
 
     }
-
-    void Button_Click_2(object s, RoutedEventArgs e)
+    void onRR(object s = null, RoutedEventArgs e = null)
     {
-
-      new AsynchronousClient().StartClientReal("10.10.19.152", 6756, "alex.pigida");
-
+      tbkReportSvr.Text = _svr.Report;
+      ;
     }
 
-    void onRR(object s, RoutedEventArgs e)
-    {
-      tbkReport.Text = _svr.Report;
-    }
   }
 }
