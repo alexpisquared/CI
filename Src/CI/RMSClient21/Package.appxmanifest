@@ -9,7 +9,7 @@
   <Identity
     Name="9b2ed22d-fad6-49c6-9c32-b248c1153d59"
     Publisher="CN=alex.pigida"
-    Version="1.0.0.0" />
+    Version="0.0.0.0" />
 
   <Properties>
     <DisplayName>RMSClient21</DisplayName>
