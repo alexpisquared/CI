@@ -8,8 +8,8 @@
 
   <Identity
     Name="9b2ed22d-fad6-49c6-9c32-b248c1153d59"
-    Publisher="CN=alex.pigida"
-    Version="0.0.0.0" />
+    Publisher="CN=AlexPi"
+    Version="0.0.3.0" />
 
   <Properties>
     <DisplayName>RMSClient21</DisplayName>
