@@ -20,11 +20,31 @@ namespace RMSClient
     {
       Started = DateTime.Now;
       var aps = "appsettings.json";
+      Again:
+      try
+      {
+        _config = new ConfigurationBuilder()
+          .SetBasePath(AppContext.BaseDirectory)
+          .AddJsonFile(aps)
+          .AddUserSecrets<RmsClientMainWindow>()
+          .Build();
+      }
+      catch (Exception ex)
+      {
+        if (tryToCreatedefaultFile(aps))
+          goto Again;
+
+        ex.Pop(null, optl: "The default values will be used  ...maybe"); //  MessageBox.Show($"{ex.Message}", "Exception", MessageBoxButton.OK, MessageBoxImage.Error);
+      }
+    }
+
+    static bool tryToCreatedefaultFile(string aps)
+    {
       try
       {
         if (!File.Exists(aps))
-          File.WriteAllText(aps, 
-@"{
+          File.WriteAllText(aps,
+  @"{
   ""WhereAmI"": "" ??\\RMSClient\\appsettings.json"",
   ""LogFolder"": ""Z:\\AlexPi\\Misc\\Logs\\RMS.aps.txt"",
   ""LogFolder2"": ""\\\\bbsfile01\\Public\\AlexPi\\Misc\\Logs\\RMS.aps.txt"",
@@ -43,18 +63,13 @@ namespace RMSClient
     ""en-gb-george-apollo"",
     ""en-US-GuyNeural""
   ]
-}
-");
-
-        _config = new ConfigurationBuilder()
-          .SetBasePath(AppContext.BaseDirectory)
-          .AddJsonFile(aps)
-          .AddUserSecrets<RmsClientMainWindow>()
-          .Build();
+}");
+        return true;
       }
       catch (Exception ex)
       {
         ex.Pop(null); //  MessageBox.Show($"{ex.Message}", "Exception", MessageBoxButton.OK, MessageBoxImage.Error);
+        return false;
       }
     }
 

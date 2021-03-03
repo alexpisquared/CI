@@ -9,7 +9,7 @@
   <Identity
     Name="29e6b2aa-6baf-4b97-b11d-06733ffb8e88"
     Publisher="CN=AlexPi"
-    Version="0.0.0.0" />
+    Version="0.0.8.0" />
 
   <Properties>
     <DisplayName>RMSClient2</DisplayName>

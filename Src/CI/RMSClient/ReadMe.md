@@ -36,5 +36,10 @@
 
 
     MSIX 'Microsoft.Data.SqlClient.SNI.runtime', issue
-        fixed in 16.9.0 according to https://developercommunity2.visualstudio.com/t/ClickOnce-no-longer-works/1288425
-       currently 16.8.6 is what is on now ==> so just sit tight and wait.
+        fixed in 16.9.0 according to https://developercommunity2.visualstudio.com/t/ClickOnce-no-longer-works/1288425 ...
+        ... but for ClickOnce only - not for Packaging projects.
+        THE ACTUAL FIX:
+        ..is to add 
+            <PackageReference Include="Microsoft.Data.SqlClient.SNI.runtime" Version="2.1.1" />
+
+       
