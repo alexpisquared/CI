@@ -4,11 +4,20 @@
     <OutputType>WinExe</OutputType>
     <TargetFramework>net5.0-windows</TargetFramework>
     <UseWPF>true</UseWPF>
+    <ApplicationIcon>internet_connections_3.ico</ApplicationIcon>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="internet_connections_3.ico" />
+  </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\AsyncSocketLib\AsyncSocketLib.csproj" />
     <ProjectReference Include="..\CI.GUI.Support.WpfLibrary\CI.GUI.Support.WpfLibrary.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="internet_connections_3.ico" />
   </ItemGroup>
 
 </Project>

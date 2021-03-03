@@ -35,22 +35,23 @@ namespace AsyncSocketLib
         {
           _allDone.Reset();    // Set the event to nonsignaled state.  
 
-          _report += ($"\nStart an asynchronous socket to listen for connections.  \n  Waiting for a connection on  {ipAddress}:{port}...\n");
+          _report += ($"\nStart an asynchronous socket to listen for connections.  \n  waiting for a connection on  {ipAddress}:{port}...\n");
           _listener.BeginAccept(new AsyncCallback(AcceptCallback), _listener);
 
-          while (!_allDone.WaitOne(_blockingMs)) // Wait until a connection is made before continuing.  
+          while (_keepOnListening && !_allDone.WaitOne(_blockingMs)) // Wait until a connection is made before continuing.  
           {
             beep();
             await Task.Delay(_uiFreedomMs);
           }
         }
       }
-      catch (Exception e) { _report += $"{e}\n\n"; }
+      catch (Exception e) { _report += $" ■ ■ ■ {e}\n\n"; }
 
       return _report;
     }
-    public void StopAndClose() => Debug.WriteLine("throw new NotImplementedException();");
-    public string Report => _report;
+    public void StopAndClose() => _keepOnListening = false;
+    public string Report { get { try { return _report; } finally { _report = ""; } } }
+
     public bool KeepOnListening { get => _keepOnListening; set => _keepOnListening = value; }
 
     void AcceptCallback(IAsyncResult ar)
@@ -110,7 +111,7 @@ namespace AsyncSocketLib
         handler.Shutdown(SocketShutdown.Both);
         handler.Close();
       }
-      catch (Exception e) { _report += $"{e}\n\n"; }
+      catch (Exception e) { _report += $" ■ ■ ■ {e}\n\n"; }
     }
 
     public void Dispose() => ((IDisposable)_listener).Dispose();

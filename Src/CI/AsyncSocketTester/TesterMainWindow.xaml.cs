@@ -6,6 +6,7 @@ using System.Net;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 using System.Windows.Threading;
 
 namespace AsyncSocketTester
@@ -14,6 +15,11 @@ namespace AsyncSocketTester
   {
     //DispatcherTimer __ = new DispatcherTimer(TimeSpan.FromSeconds(.250), DispatcherPriority.Normal, new EventHandler(async (s, e) => await onTick()), Dispatcher.CurrentDispatcher); //tu:
     readonly AsynchronousServer _svr = new AsynchronousServer();
+    int _cnt = 0;
+    Brush
+      c0 = new SolidColorBrush(Colors.Gray),
+      c1 = new SolidColorBrush(Colors.Red),
+      c2 = new SolidColorBrush(Colors.Blue);
 
     public TesterMainWindow()
     {
@@ -22,45 +28,39 @@ namespace AsyncSocketTester
     }
 
     async void onLoaded(object sender, RoutedEventArgs e) { chkSvr.IsChecked = true; await Task.Yield(); }
-    async Task onTick() { onRR(); await Task.Yield(); }
+    async Task onTick()
+    {
+      onRR();
+      await Task.Yield();
+      rb.Fill = b1.IsEnabled ? (_cnt++) % 2 == 0 ? c1 : c2 : c0;
+    }
 
-    async void CheckBox_Checked(object s, RoutedEventArgs e)
+    async void onToggleSvrListening(object s, RoutedEventArgs e)
     {
       if (((CheckBox)s).IsChecked == true)
       {
+        tbkReportSvr.Text += "■■■ Turning server ON  ... ";
         b1.IsEnabled = true;
         await _svr.StartListening(Dns.GetHostName(), 11000, SystemSounds.Hand.Play);
+        tbkReportSvr.Text += "Done ▀▄▀▄▀  ON\n";
       }
       else
       {
+        tbkReportSvr.Text += "■■■ Turning server Off ... ";
         _svr.StopAndClose();
         b1.IsEnabled = false;
+        tbkReportSvr.Text += "Done ▀▄▀▄▀  Off\n";
       }
 
       await Task.Yield();
     }
 
-    void onMe(object s, RoutedEventArgs e)
-    {
-      var c = new AsynchronousClient();
-      c.StartClient(Dns.GetHostName(), 11000);
-      tbkReportClt.Text = c.Report;
-    }
-    void onRealMe(object s, RoutedEventArgs e)
-    {
-      var c = new AsynchronousClient();
-      c.StartClientReal(Dns.GetHostName(), 11000, "alex.pigida");
-
-    }
-    void onRealReal(object s, RoutedEventArgs e)
-    {
-      var c = new AsynchronousClient();
-      c.StartClientReal("10.10.19.152", 6756, "alex.pigida");
-
-    }
+    void onMe(object s, RoutedEventArgs e) { var c = new AsynchronousClient(); c.StartClient(Dns.GetHostName(), 11000); tbkReportClt.Text += c.Report; }
+    void onRealHere(object s, RoutedEventArgs e) { var c = new AsynchronousClient(); c.StartClientReal(Dns.GetHostName(), 11000, "alex.pigida"); tbkReportClt.Text += c.Report; }
+    void onRealReal(object s, RoutedEventArgs e) { var c = new AsynchronousClient(); c.StartClientReal("10.10.19.152", 6756, "alex.pigida"); tbkReportClt.Text += c.Report; }
     void onRR(object s = null, RoutedEventArgs e = null)
     {
-      tbkReportSvr.Text = _svr.Report;
+      tbkReportSvr.Text += _svr.Report;
       ;
     }
 
