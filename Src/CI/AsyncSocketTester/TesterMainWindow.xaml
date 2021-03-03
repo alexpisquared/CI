@@ -59,13 +59,13 @@
         <RowDefinition Height="Auto"/>
       </Grid.RowDefinitions>
 
+      <TextBlock Grid.Column="0" Margin="5" Grid.Row="1" TextWrapping="Wrap" x:Name="tbkReportClt" VerticalAlignment="Top" Foreground="#d00" d:Text="result of server activities - line 1 - line 1 - line 1 - line 1 - line 1" />
+      <TextBlock Grid.Column="2" Margin="5" Grid.Row="1" TextWrapping="Wrap" x:Name="tbkReportSvr" VerticalAlignment="Top" Foreground="#00d" d:Text="result of server activities - line 1 - line 1 - line 1 - line 1 - line 1" />
+
       <StackPanel Grid.Row="2" Grid.Column="2" Orientation="Horizontal">
         <CheckBox Content="_Server ON" HorizontalAlignment="Left" Margin="5" VerticalAlignment="Center" Checked="CheckBox_Checked" x:Name="chkSvr"/>
         <Button Content="_Read Report" Click="onRR" />
       </StackPanel>
-
-      <TextBlock Grid.Column="0" Margin="5" Grid.Row="1" d:Text="result of server activities - line 1 - line 1 - line 1 - line 1 - line 1" TextWrapping="Wrap" x:Name="tbkReportClt" VerticalAlignment="Top"/>
-      <TextBlock Grid.Column="2" Margin="5" Grid.Row="1" d:Text="result of server activities - line 1 - line 1 - line 1 - line 1 - line 1" TextWrapping="Wrap" x:Name="tbkReportSvr" VerticalAlignment="Top"/>
 
       <StackPanel Grid.Row="2" Orientation="Horizontal">
         <Label Content="   Call: " />
