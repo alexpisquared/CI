@@ -5,6 +5,8 @@
     <TargetFramework>net5.0-windows</TargetFramework>
     <UseWPF>true</UseWPF>
     <ApplicationIcon>Clock4.ico</ApplicationIcon>
+      <Nullable>enable</Nullable>
+      <LangVersion>latest</LangVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

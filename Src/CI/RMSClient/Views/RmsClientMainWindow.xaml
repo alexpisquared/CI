@@ -227,11 +227,11 @@
       </Grid>
 
       <StackPanel Grid.ColumnSpan="6" Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0">
-        <xui:ThemeToggleUsrCtrl x:Name="themeSelector"/>
+        <xui:ThemeToggleUsrCtrl x:Name="themeSelector" Margin="10 0"/>
         <!-- More themes for later
         <xui:ThemeSelectorUsrCtrl x:Name="themeSelector"/>-->
-        <TextBlock  x:Name="tbkVer" Text="Version 0.2.28" Margin="10 0" Foreground="#07e" />
-        <xui:Zoomer x:Name="ZoomSlider2" ZmValue="{Binding ElementName=wnd, Path=ZV, Mode=TwoWay}"	VerticalAlignment="Top" Margin="20 0"/>
+        <TextBlock  x:Name="tbkVer" Text="Version 0.3.11" Margin="10 0" Foreground="#07e" />
+        <xui:Zoomer x:Name="ZoomSlider2" ZmValue="{Binding ElementName=wnd, Path=ZV, Mode=TwoWay}"	VerticalAlignment="Top" Margin="10 0"/>
         <Button	Margin="2" Content="-"                          FontSize="26" Height="26" Padding="2 -0" Width="26" Foreground="#111" BorderThickness="0" ToolTip="Minimize Window"   Click="onWindowMinimize"                                     />
         <Button	Margin="2" Content="£" FontFamily="Wingdings 2" FontSize="16" Height="26" Padding="0 -1" Width="26" Foreground="#111" BorderThickness="0" ToolTip="Maximize Window"   Click="onWindowMaximize" x:Name="wm"                         />
         <Button	Margin="2" Content="+" FontFamily="Wingdings 2" FontSize="16" Height="26" Padding="0 -1" Width="26" Foreground="#111" BorderThickness="0" ToolTip="Restore Window"    Click="onWindowRestoree" x:Name="wr" Visibility="Collapsed"  />

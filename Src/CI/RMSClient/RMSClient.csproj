@@ -4,7 +4,9 @@
     <OutputType>WinExe</OutputType>
     <TargetFramework>net5.0-windows</TargetFramework>
     <UseWPF>true</UseWPF>
-    <ApplicationIcon>favicon.ico</ApplicationIcon>
+      <Nullable>enable</Nullable>
+      <LangVersion>latest</LangVersion>
+      <ApplicationIcon>favicon.ico</ApplicationIcon>
     <UserSecretsId>4aa8a862-4eee-4472-a919-4a9b477676d3</UserSecretsId>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>RMSClient2_TemporaryKey.pfx</AssemblyOriginatorKeyFile>
