@@ -1,4 +1,5 @@
 ﻿using CI.GUI.Support.WpfLibrary.Base;
+using CI.GUI.Support.WpfLibrary.Extensions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
@@ -104,7 +105,7 @@ namespace RMSClient
 
         _logger.LogInformation($" +{(DateTime.Now - App.Started):mm\\:ss\\.ff}  {Title}   params: {dt1.SelectedDate} - {dt2.SelectedDate}   {acnt}   {(cnkDirein.IsChecked == true ? "Direct Reinvest" : "")}");
       }
-      catch (Exception ex) { _logger.LogError($"{ex}"); MessageBox.Show($"{ex.Message}", "Exception", MessageBoxButton.OK, MessageBoxImage.Error); }
+      catch (Exception ex) { _logger.LogError($"{ex}");  ex.Pop(this); }
       finally
       {
         vb1.Visibility = Visibility.Collapsed;
@@ -155,7 +156,7 @@ namespace RMSClient
         dg2.ItemsSource = await l.ToListAsync();
         report = $"Total  {l.Count()}  historical entires found in ";
       }
-      catch (Exception ex) { _logger.LogError($"{ex}"); MessageBox.Show($"{ex.Message}", "Exception", MessageBoxButton.OK, MessageBoxImage.Error); }
+      catch (Exception ex) { _logger.LogError($"{ex}"); ex.Pop(this); }
       finally
       {
         Title = $"({Environment.UserName}) - {report} {sw.Elapsed.TotalSeconds,5:N2} sec.";
@@ -222,7 +223,7 @@ namespace RMSClient
         await Task.Delay(5000);
         Application.Current.Shutdown();
       }
-      catch (Exception ex) { _logger.LogError($"{ex}"); MessageBox.Show($"{ex.Message}", "Exception", MessageBoxButton.OK, MessageBoxImage.Error); }
+      catch (Exception ex) { _logger.LogError($"{ex}"); ex.Pop(this); }
     }
     void onClip(object s, RoutedEventArgs e)
     {
@@ -230,7 +231,7 @@ namespace RMSClient
       {
         Clipboard.SetData(DataFormats.StringFormat, DataContext);
       }
-      catch (Exception ex) { _logger.LogError($"{ex}"); MessageBox.Show($"{ex.Message}", "Exception", MessageBoxButton.OK, MessageBoxImage.Error); }
+      catch (Exception ex) { _logger.LogError($"{ex}"); ex.Pop(this); }
     }
     void onExit(object s, RoutedEventArgs e) => Close();
     void onWindowMinimize(object sender, RoutedEventArgs e) => WindowState = System.Windows.WindowState.Minimized;
@@ -246,7 +247,7 @@ namespace RMSClient
         Task.Run(async () => await find());
         preSelectRequestRow(requestID);
       }
-      catch (Exception ex) { _logger.LogError($"{ex}"); MessageBox.Show($"{ex.Message}", "Exception", MessageBoxButton.OK, MessageBoxImage.Error); }
+      catch (Exception ex) { _logger.LogError($"{ex}"); ex.Pop(this); }
     }
 
     void preSelectRequestRow(int requestID) { }

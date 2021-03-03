@@ -1,26 +1,21 @@
 ﻿using CI.GUI.Support.WpfLibrary.Base;
 using CI.GUI.Support.WpfLibrary.Extensions;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace CI.GUI.Support.WpfLibrary.Views
 {
   public partial class ExceptionPopup : WindowBase
   {
     public ExceptionPopup() => InitializeComponent();
-    public ExceptionPopup(Exception ex, string optl, string cmn, string cfp, int cln) : this()
+    public ExceptionPopup(Exception ex, string optl, string cmn, string cfp, int cln, Window owner) : this()
     {
+      IgnoreWindowPlacement = true;
+      Owner = owner;
+      WindowStartupLocation = owner != null ? WindowStartupLocation.CenterOwner : WindowStartupLocation.CenterScreen;
+      InitializeComponent();
+      
       Loaded += (s, e) =>
       {
         ExType.Text = ex?.GetType().Name;

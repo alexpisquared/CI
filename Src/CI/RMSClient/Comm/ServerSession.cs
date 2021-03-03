@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using CI.GUI.Support.WpfLibrary.Extensions;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -159,7 +160,7 @@ namespace RMSClient.Comm
         var rv = m_tcpClient.BeginReceive(m_recvBuffer, m_received, BufferSize - m_received, SocketFlags.None, new AsyncCallback(ReceiveData), m_tcpClient);
         _logger.LogInformation($" ■ ■ ■ ReceiveData() - in.IsCompleted:{asyncResult.IsCompleted}      out.IsCompleted:{rv.IsCompleted}.");
       }
-      catch (Exception ex) { _logger.LogError($"{ex}"); MessageBox.Show($"{ex.Message}", "Exception", MessageBoxButton.OK, MessageBoxImage.Error); }
+      catch (Exception ex) { _logger.LogError($"{ex}"); ex.Pop(null); }
     }
     void SendData(IAsyncResult iar)
     {
@@ -185,7 +186,7 @@ namespace RMSClient.Comm
 
         LogIn();
       }
-      catch (Exception ex) { _logger.LogError($"{ex}"); MessageBox.Show($"{ex.Message}", "Exception", MessageBoxButton.OK, MessageBoxImage.Error); }
+      catch (Exception ex) { _logger.LogError($"{ex}"); ex.Pop(null); }
     }
 
     void logInfo(string s, IAsyncResult asyncRslt) => _logger.LogInformation($" ■ ■ ■ {s,-40} Connected:{((Socket)asyncRslt.AsyncState).Connected,-5}    {((Socket)asyncRslt.AsyncState).RemoteEndPoint}   IsCompleted:{asyncRslt.IsCompleted,-5} .");

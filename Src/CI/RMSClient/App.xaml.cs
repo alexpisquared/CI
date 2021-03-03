@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using CI.GUI.Support.WpfLibrary.Extensions;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using RMSClient.Shared;
 using Serilog;
@@ -53,7 +54,7 @@ namespace RMSClient
       }
       catch (Exception ex)
       {
-        MessageBox.Show($"{ex.Message}", "Exception", MessageBoxButton.OK, MessageBoxImage.Error);
+        ex.Pop(null); //  MessageBox.Show($"{ex.Message}", "Exception", MessageBoxButton.OK, MessageBoxImage.Error);
       }
     }
 
