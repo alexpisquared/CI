@@ -226,7 +226,7 @@ ClientBin/
 *.dbmdl
 *.dbproj.schemaview
 *.jfm
-*.pfx
+# *.pfx  ... at least temporary
 *.publishsettings
 orleans.codegen.cs
 
@@ -348,3 +348,5 @@ MigrationBackup/
 
 # Ionide (cross platform F# VS Code tools) working folder
 .ionide/
+Src/CI/CI.GUI.Support.WpfLibrary/CI.GUI.Support.TempCertificate.pfx
+Src/CI/RMSClient/RMSClient_tempCertificate.pfx
