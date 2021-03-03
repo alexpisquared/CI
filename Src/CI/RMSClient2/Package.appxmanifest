@@ -7,12 +7,12 @@
   IgnorableNamespaces="uap rescap">
 
   <Identity
-    Name="9b2ed22d-fad6-49c6-9c32-b248c1153d59"
+    Name="29e6b2aa-6baf-4b97-b11d-06733ffb8e88"
     Publisher="CN=AlexPi"
-    Version="0.0.5.0" />
+    Version="0.0.0.0" />
 
   <Properties>
-    <DisplayName>RMSClient21</DisplayName>
+    <DisplayName>RMSClient2</DisplayName>
     <PublisherDisplayName>alex.pigida</PublisherDisplayName>
     <Logo>Images\StoreLogo.png</Logo>
   </Properties>
@@ -31,8 +31,8 @@
       Executable="$targetnametoken$.exe"
       EntryPoint="$targetentrypoint$">
       <uap:VisualElements
-        DisplayName="RMSClient21"
-        Description="RMSClient21"
+        DisplayName="RMSClient2"
+        Description="RMSClient2"
         BackgroundColor="transparent"
         Square150x150Logo="Images\Square150x150Logo.png"
         Square44x44Logo="Images\Square44x44Logo.png">
