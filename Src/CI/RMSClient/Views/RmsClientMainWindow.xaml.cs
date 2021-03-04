@@ -269,6 +269,11 @@ namespace RMSClient
       _dbRMS.Dispose();
       base.OnClosing(e);
     }
+
+    private void Button_Click(object sender, RoutedEventArgs e)
+    {
+
+    }
   }
 
   public enum OrderStatusEnum { Unknown, Done, PartialyDone, Rejected }; //from $\\trunk\Server\RMS\RMSClient\ChangeRequest.Designer.cs: "Received", "Rejected", "Cancelled", "PartialyDone", "Done"

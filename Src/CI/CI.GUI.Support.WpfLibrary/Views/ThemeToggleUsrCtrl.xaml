@@ -5,5 +5,5 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
              d:DesignHeight="48" d:DesignWidth="110">
-  <ToggleButton Content=" _Dark Mode " Click="ToggleButton_Click" x:Name="tgl1" FocusVisualStyle="{x:Null}" ToolTip="Change to Dark mode ... and back"/>
+  <ToggleButton Content=" _Dark Mode " Click="ToggleButton_Click" x:Name="tgl1" FocusVisualStyle="{x:Null}" ToolTip="Change to Dark mode ... and back" Background="#333" />
 </UserControl>
