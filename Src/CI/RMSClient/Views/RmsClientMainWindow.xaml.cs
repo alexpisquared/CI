@@ -31,28 +31,28 @@ namespace RMSClient
     readonly CollectionViewSource _accountRequestViewSource;
     readonly AppSettings _appSettings;
     bool _loaded = false;
+    double blur = 0;
 
     public RmsClientMainWindow(ILogger<RmsClientMainWindow> logger, IConfigurationRoot config)
     {
-      InitializeComponent();//DataContext = this;
+      InitializeComponent(); //DataContext = this;
 
       dt1.SelectedDate = DateTimeOffset.Now.Date.AddDays(-7);
       dt2.SelectedDate = DateTimeOffset.Now.Date;
 
+      var  lur = FindResource("blur");
+      blur = (double)FindResource("blur");
+
       _accountRequestViewSource = (CollectionViewSource)FindResource(nameof(_accountRequestViewSource));
 
-      //MouseWheel += (s, e) => { if (!(Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl))) return; ZVa += (e.Delta * .001); e.Handled = true; Debug.WriteLine(Title = $">>ZVa:{ZVa}"); }; //tu:
-      //MouseLeftButtonDown += (s, e) => { try { DragMove(); } catch { logger.LogWarning("Ignore mouse complaints for now.- interfering with sockets?"); } };
       _logger = logger;
       _config = config;
 
-
       var aps = config.GetSection("AppSettings").GetChildren();
-
       _appSettings = new AppSettings
       {
-        Port = ushort.Parse(aps.FirstOrDefault(r => r.Key == nameof(AppSettings.Port))?.Value),
-        IpAddress = aps.FirstOrDefault(r => r.Key == nameof(AppSettings.IpAddress))?.Value,
+        Port = ushort.Parse(aps.FirstOrDefault(r => r.Key == nameof(AppSettings.Port))?.Value ?? "6756"),
+        IpAddress = aps.FirstOrDefault(r => r.Key == nameof(AppSettings.IpAddress))?.Value ?? "10.10.19.152",
         RmsDebug = aps.FirstOrDefault(r => r.Key == "RmsDebug")?.Value,
         RmsRelease = aps.FirstOrDefault(r => r.Key == "RmsRelease")?.Value
       };
@@ -75,7 +75,9 @@ namespace RMSClient
       try
       {
         btnFind.Focus();
+        blur = 5;
         vb1.Visibility = Visibility.Visible;
+        await Task.Delay(999);
         const int top = 100;
         var sw = Stopwatch.StartNew();
         var acnt = string.IsNullOrEmpty(tbxAccount.Text) || tbxAccount.Text == "xxxxxxxxx" ? null : tbxAccount.Text;
@@ -105,10 +107,11 @@ namespace RMSClient
 
         _logger.LogInformation($" +{(DateTime.Now - App.Started):mm\\:ss\\.ff}  {Title}   params: {dt1.SelectedDate} - {dt2.SelectedDate}   {acnt}   {(cnkDirein.IsChecked == true ? "Direct Reinvest" : "")}");
       }
-      catch (Exception ex) { _logger.LogError($"{ex}");  ex.Pop(this); }
+      catch (Exception ex) { _logger.LogError($"{ex}"); ex.Pop(this); }
       finally
       {
         vb1.Visibility = Visibility.Collapsed;
+        blur = 0;
         tbxAccount.Focus();
       }
     }
