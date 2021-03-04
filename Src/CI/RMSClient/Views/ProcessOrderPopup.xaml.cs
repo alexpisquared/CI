@@ -1,13 +1,16 @@
-﻿using System.Diagnostics;
+﻿using CI.GUI.Support.WpfLibrary.Base;
+using System.Diagnostics;
 using System.Windows;
 using System.Windows.Input;
 
 namespace RMSClient.Views
 {
-  public partial class ProcessOrderPopup : Window
+  public partial class ProcessOrderPopup : WindowBase
   {
     public ProcessOrderPopup()
     {
+      IgnoreWindowPlacement = true;
+
       InitializeComponent();
 
       MouseWheel += (s, e) => { if (!(Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl))) return; ZVa += (e.Delta * .001); e.Handled = true; Debug.WriteLine(Title = $">>ZVa:{ZVa}"); }; //tu:

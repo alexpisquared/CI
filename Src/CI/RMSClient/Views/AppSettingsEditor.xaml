@@ -16,21 +16,14 @@
       <Style TargetType="TextBox">
         <Setter Property="FontWeight"         Value="SemiBold" />
         <Setter Property="Padding"            Value="4" />
-        <Setter Property="Margin"             Value="10 0" />
-        <Setter Property="VerticalAlignment"  Value="Top" />
-        <Setter Property="BorderBrush"        Value="#ccc" />
-      </Style>
-      <Style TargetType="ComboBox">
-        <Setter Property="FontWeight"         Value="SemiBold" />
-        <Setter Property="Padding"            Value="5" />
-        <Setter Property="Margin"             Value="10 0" />
+        <Setter Property="Margin"             Value="30 0" />
         <Setter Property="VerticalAlignment"  Value="Top" />
         <Setter Property="BorderBrush"        Value="#ccc" />
       </Style>
       <Style TargetType="Label">
         <Setter Property="FontSize"   Value="16" />
         <Setter Property="Height"     Value="22" />
-        <Setter Property="Margin"     Value="11 0 0 0" />
+        <Setter Property="Margin"     Value="30 20 0 0" />
         <Setter Property="Padding"    Value="0" />
         <Setter Property="Foreground" Value="#888" />
         <Setter Property="VerticalAlignment" Value="Bottom" />
@@ -42,37 +35,52 @@
       </Style>
 
       <system:Double x:Key="blur">0</system:Double>
+      <LinearGradientBrush x:Key="RectangleFill1" EndPoint="0.5,1" StartPoint="0.5,0">
+        <GradientStop Color="#1ccc" Offset="1"/>
+        <GradientStop Color="#1fff" Offset="0"/>
+      </LinearGradientBrush>
     </ResourceDictionary>
   </lnk:WindowBase.Resources>
   <Border Style="{StaticResource BorderStyle_Aav0}">
-    <Grid Margin="50 25">
+    <Grid Margin="-5 -0">
       <Grid.ColumnDefinitions>
         <ColumnDefinition Width="*"/>
-        <ColumnDefinition Width="*"/>
-        <ColumnDefinition Width="*"/>
+        <ColumnDefinition Width="160"/>
       </Grid.ColumnDefinitions>
       <Grid.RowDefinitions>
-        <RowDefinition Height="40"/>
-        <RowDefinition Height="40"/>
-        <RowDefinition Height="46"/>
-        <RowDefinition Height="36"/>
-        <RowDefinition Height="36"/>
+        <RowDefinition Height="Auto"/>
+        <RowDefinition Height="Auto"/>
+        <RowDefinition Height="Auto"/>
+        <RowDefinition Height="Auto"/>
+        <RowDefinition Height="Auto"/>
+        <RowDefinition Height="Auto"/>
+        <RowDefinition Height="20"/>
         <RowDefinition Height="Auto"/>
         <RowDefinition Height="Auto"/>
       </Grid.RowDefinitions>
 
+      <Rectangle Fill="{DynamicResource RectangleFill1}" Grid.ColumnSpan="3" Grid.Row="0" Grid.RowSpan="1"/>
+      <Rectangle Fill="{DynamicResource RectangleFill1}" Grid.ColumnSpan="3" Grid.Row="1" Grid.RowSpan="6"/>
+      <Rectangle Fill="{DynamicResource RectangleFill1}" Grid.ColumnSpan="3" Grid.Row="7" Grid.RowSpan="2"/>
 
-      <Label Grid.Column="0" Grid.Row="0" FontSize="14" Target="{Binding ElementName=c1}" Content="_Address" />
-      <Label Grid.Column="1" Grid.Row="0" FontSize="14" Target="{Binding ElementName=c2}" Content="_Port" />
-      <Label Grid.Column="0" Grid.Row="2" FontSize="14" Target="{Binding ElementName=c3}" Content="_Database Connection String" />
+      <Viewbox HorizontalAlignment="Left" Margin="10" Grid.ColumnSpan="3" Height="40">
+        <StackPanel Orientation="Horizontal">
+          <local:BrandTitleUserControl />
+          <TextBlock Text="   · ·  Settings     " FontSize="50" />
+        </StackPanel>
+      </Viewbox>
 
-      <TextBox Grid.Column="0" Grid.Row="1" x:Name="c1" Text="{Binding Address}" />
-      <TextBox Grid.Column="1" Grid.Row="1" x:Name="c2" Text="{Binding Port}" />
-      <TextBox Grid.Column="0" Grid.Row="3" x:Name="c3" Text="{Binding AvgPx}" Grid.ColumnSpan="3"/>
+      <Label Grid.Column="0" Grid.Row="1" FontSize="14" Target="{Binding ElementName=c1}" Content="_Address" />
+      <Label Grid.Column="1" Grid.Row="1" FontSize="14" Target="{Binding ElementName=c2}" Content="_Port   " />
+      <Label Grid.Column="0" Grid.Row="4" FontSize="14" Target="{Binding ElementName=c3}" Content="_Database Connection String" />
 
-      <StackPanel Grid.ColumnSpan="3" Grid.Row="6" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0 20 0 0">
-        <Button Content=" _Save "  Click="Button_Click"   IsDefault="True" />
-        <Button Content="_Cancel"  Click="Button_Click_1" IsCancel="True" />
+      <TextBox Grid.Column="0" Grid.Row="2" x:Name="c1" Text="{Binding IpAddress}" />
+      <TextBox Grid.Column="1" Grid.Row="2" x:Name="c2" Text="{Binding Port}" />
+      <TextBox Grid.Column="0" Grid.Row="5" x:Name="c3" Text="{Binding RmsRelease}" Grid.ColumnSpan="3" Width="600"/>
+
+      <StackPanel Grid.ColumnSpan="3" Grid.Row="7" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0 5 0 0 ">
+        <Button Content=" _Save "  Click="onSave" IsDefault="True" />
+        <Button Content="_Cancel"  Click="onQuit" IsCancel="True" />
       </StackPanel>
 
     </Grid>

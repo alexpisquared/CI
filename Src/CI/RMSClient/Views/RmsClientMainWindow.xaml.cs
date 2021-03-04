@@ -1,5 +1,6 @@
 ﻿using CI.GUI.Support.WpfLibrary.Base;
 using CI.GUI.Support.WpfLibrary.Extensions;
+using CI.GUI.Support.WpfLibrary.Helpers;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
@@ -31,7 +32,7 @@ namespace RMSClient
     readonly CollectionViewSource _accountRequestViewSource;
     readonly AppSettings _appSettings;
     bool _loaded = false;
-    double blur = 0;
+    string _isoFilenameONLY = $"{nameof(AppSettings)}.xml";
 
     public RmsClientMainWindow(ILogger<RmsClientMainWindow> logger, IConfigurationRoot config)
     {
@@ -40,33 +41,25 @@ namespace RMSClient
       dt1.SelectedDate = DateTimeOffset.Now.Date.AddDays(-7);
       dt2.SelectedDate = DateTimeOffset.Now.Date;
 
-      var  lur = FindResource("blur");
-      blur = (double)FindResource("blur");
-
       _accountRequestViewSource = (CollectionViewSource)FindResource(nameof(_accountRequestViewSource));
 
       _logger = logger;
       _config = config;
 
-      var aps = config.GetSection("AppSettings").GetChildren();
-      _appSettings = new AppSettings
-      {
-        Port = ushort.Parse(aps.FirstOrDefault(r => r.Key == nameof(AppSettings.Port))?.Value ?? "6756"),
-        IpAddress = aps.FirstOrDefault(r => r.Key == nameof(AppSettings.IpAddress))?.Value ?? "10.10.19.152",
-        RmsDebug = aps.FirstOrDefault(r => r.Key == "RmsDebug")?.Value,
-        RmsRelease = aps.FirstOrDefault(r => r.Key == "RmsRelease")?.Value
-      };
+      _appSettings = XmlIsoFileSerializer.Load<AppSettings>(_isoFilenameONLY); // = new AppSettings { Port = ushort.Parse(aps.FirstOrDefault(r => r.Key == nameof(AppSettings.Port))?.Value ?? "6756"), IpAddress = aps.FirstOrDefault(r => r.Key == nameof(AppSettings.IpAddress))?.Value ?? "10.10.19.152", RmsDebug = aps.FirstOrDefault(r => r.Key == "RmsDebug")?.Value, RmsRelease = aps.FirstOrDefault(r => r.Key == "RmsRelease")?.Value };      //var aps = config.GetSection("AppSettings").GetChildren();
 
 #if DEBUG
       _dbRMS = new RMSContext(_appSettings.RmsDebug);
 #else
       _dbRMS = new RMSContext(_appSettings.RmsRelease);
+      Topmost = false;
 #endif
 
       Title = _config["WhereAmI"];
 
       themeSelector.ApplyTheme = ApplyTheme;
     }
+    public static readonly DependencyProperty BlurProperty = DependencyProperty.Register("Blur", typeof(double), typeof(RmsClientMainWindow), new PropertyMetadata(.0)); public double Blur { get { return (double)GetValue(BlurProperty); } set { SetValue(BlurProperty, value); } }
 
     async Task find()
     {
@@ -75,7 +68,7 @@ namespace RMSClient
       try
       {
         btnFind.Focus();
-        blur = 5;
+        Blur = 5;
         vb1.Visibility = Visibility.Visible;
         await Task.Delay(999);
         const int top = 100;
@@ -111,7 +104,7 @@ namespace RMSClient
       finally
       {
         vb1.Visibility = Visibility.Collapsed;
-        blur = 0;
+        Blur = 0;
         tbxAccount.Focus();
       }
     }
@@ -169,6 +162,7 @@ namespace RMSClient
     {
       try
       {
+        Blur = 5;
         var request = (RmsDboRequestInvDboAccountView)((Selector)s).SelectedValue;
         var dialogue = new ProcessOrderPopup
         {
@@ -181,7 +175,7 @@ namespace RMSClient
           AvgPx = request.AvgPx
         };
 
-        if (dialogue.ShowDialog() == true) 
+        if (dialogue.ShowDialog() == true)
         {
 #if DEBUG
           dialogue.Note += $"Test @ {DateTime.Now} - {dialogue.NewOrderStatus} - {dialogue.NewOrderAction} - {dialogue.Quantity} 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 ".Substring(0, 100);
@@ -196,7 +190,24 @@ namespace RMSClient
         }
       }
       catch (Exception ex) { _logger.LogError($"{ex}"); MessageBox.Show($"{ex.Message}", "Exception in onPopup()", MessageBoxButton.OK, MessageBoxImage.Error); }
+      finally      {        Blur = 0;      }    }
+    void onEditAppSettings(object sender, RoutedEventArgs e)
+    {
+      try
+      {
+        Blur = 5;
+        var w = new AppSettingsEditor(_appSettings, this);
+        if (w.ShowDialog() == true)
+        {
+          XmlIsoFileSerializer.Save(_appSettings, _isoFilenameONLY);
+        }
+      }
+      finally
+      {
+        Blur = 0;
+      }
     }
+
     async void onPopupPOC()
     {
       try
@@ -267,14 +278,6 @@ namespace RMSClient
       _dbRMS.Dispose();
       _dbRMS.Dispose();
       base.OnClosing(e);
-    }
-
-    void Button_Click(object sender, RoutedEventArgs e)
-    {
-      var w = new AppSettingsEditor();
-      if (w.ShowDialog() == true)
-      { 
-      }
     }
   }
 
