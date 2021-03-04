@@ -1,4 +1,5 @@
 ﻿<lnk:WindowBase xmlns:lnk="clr-namespace:CI.GUI.Support.WpfLibrary.Base;assembly=CI.GUI.Support.WpfLibrary" x:Name="wnd" x:Class="RMSClient.Views.ProcessOrderPopup" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d"
+                xmlns:local="clr-namespace:RMSClient.Views"
                 Style="{DynamicResource WindowStyle_Aav0}"
         Title="Update Order Status" WindowStartupLocation="CenterOwner" SizeToContent="WidthAndHeight">
   <lnk:WindowBase.Resources>
@@ -40,54 +41,72 @@
     </ResourceDictionary>
   </lnk:WindowBase.Resources>
   <Border Style="{StaticResource BorderStyle_Aav0}">
-    <Grid Margin="50 25">
-      <Grid.LayoutTransform>
-        <ScaleTransform ScaleX="{Binding ZVa, ElementName=wnd, FallbackValue=.5}" ScaleY="{Binding ZVa, ElementName=wnd, FallbackValue=.5}" />
-      </Grid.LayoutTransform>
-      <Grid.ColumnDefinitions>
-        <ColumnDefinition Width="*"/>
-        <ColumnDefinition Width="*"/>
-        <ColumnDefinition Width="*"/>
-      </Grid.ColumnDefinitions>
+    <Grid Margin="-5 -0">
       <Grid.RowDefinitions>
-        <RowDefinition Height="40"/>
-        <RowDefinition Height="40"/>
-        <RowDefinition Height="46"/>
-        <RowDefinition Height="36"/>
-        <RowDefinition Height="36"/>
         <RowDefinition Height="Auto"/>
+        <RowDefinition Height="*"/>
         <RowDefinition Height="Auto"/>
       </Grid.RowDefinitions>
 
-      <StackPanel Grid.ColumnSpan="3" Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Center">
-        <Label Content="Order ID " />
-        <Label Content="{Binding OrderId}"          FontWeight="Bold" Foreground="#000"/>
-        <Label Content="           Current Status " />
-        <Label Content="{Binding OrderStatus}"      FontWeight="Bold" Foreground="#000"/>
-      </StackPanel>
+      <Rectangle Fill="{DynamicResource SattleGradientBrush}" Grid.Row="0" />
+      <Rectangle Fill="{DynamicResource SattleGradientBrush}" Grid.Row="1" />
+      <Rectangle Fill="{DynamicResource SattleGradientBrush}" Grid.Row="2" />
 
-      <StackPanel Grid.ColumnSpan="3" Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Left">
-        <Label Content="Buy " />
-        <Label Content="{Binding Symbol}"        FontWeight="SemiBold" Foreground="#000"/>
-        <Label Content=" for " />
-        <Label Content="{Binding AdpaccountCode}" FontWeight="SemiBold" Foreground="#000"/>
-      </StackPanel>
+      <Viewbox HorizontalAlignment="Left" Margin="10" Height="40">
+        <StackPanel Orientation="Horizontal">
+          <local:BrandTitleUserControl />
+          <TextBlock Text="   · ·  Update Order Status     " FontSize="50" />
+        </StackPanel>
+      </Viewbox>
 
-      <Label Grid.Column="0" Grid.Row="2" FontSize="14" Target="{Binding ElementName=c1}" Content="Ne_w Status" />
-      <Label Grid.Column="1" Grid.Row="2" FontSize="14" Target="{Binding ElementName=c2}" Content="_Last Shares" />
-      <Label Grid.Column="2" Grid.Row="2" FontSize="14" Target="{Binding ElementName=c3}" Content="_Price" />
-      <Label Grid.Column="0" Grid.Row="4" FontSize="14" Target="{Binding ElementName=c4}" Content="_Note" />
+      <Grid Grid.Row="1" Margin="50 25" >
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="*"/>
+          <ColumnDefinition Width="*"/>
+          <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+          <RowDefinition Height="Auto"/>
+          <RowDefinition Height="40"/>
+          <RowDefinition Height="40"/>
+          <RowDefinition Height="46"/>
+          <RowDefinition Height="36"/>
+          <RowDefinition Height="36"/>
+          <RowDefinition Height="Auto"/>
+          <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
 
-      <ComboBox Grid.Column="0" Grid.Row="3" x:Name="c1" IsReadOnly="True">
-        <ComboBoxItem Content="Done" IsSelected="True" />
-        <ComboBoxItem Content="Partial Done" />
-        <ComboBoxItem Content="Rejected" />
-      </ComboBox>
-      <TextBox  Grid.Column="1" Grid.Row="3" x:Name="c2" Text="{Binding Quantity}" />
-      <TextBox  Grid.Column="2" Grid.Row="3" x:Name="c3" Text="{Binding AvgPx}" />
-      <TextBox  Grid.Column="0" Grid.Row="5" x:Name="c4" Text="{Binding Note}" Grid.ColumnSpan="3" MinLines="2" TextWrapping="Wrap" />
+        <StackPanel Grid.ColumnSpan="3" Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Center">
+          <Label Content="Order ID " />
+          <Label Content="{Binding OrderId}"          FontWeight="Bold" Foreground="#000"/>
+          <Label Content="           Current Status " />
+          <Label Content="{Binding OrderStatus}"      FontWeight="Bold" Foreground="#000"/>
+        </StackPanel>
 
-      <StackPanel Grid.ColumnSpan="3" Grid.Row="6" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0 20 0 0">
+        <StackPanel Grid.ColumnSpan="3" Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Left">
+          <Label Content="Buy " />
+          <Label Content="{Binding Symbol}"        FontWeight="SemiBold" Foreground="#000"/>
+          <Label Content=" for " />
+          <Label Content="{Binding AdpaccountCode}" FontWeight="SemiBold" Foreground="#000"/>
+        </StackPanel>
+
+        <Label Grid.Column="0" Grid.Row="2" FontSize="14" Target="{Binding ElementName=c1}" Content="Ne_w Status" />
+        <Label Grid.Column="1" Grid.Row="2" FontSize="14" Target="{Binding ElementName=c2}" Content="_Last Shares" />
+        <Label Grid.Column="2" Grid.Row="2" FontSize="14" Target="{Binding ElementName=c3}" Content="_Price" />
+        <Label Grid.Column="0" Grid.Row="4" FontSize="14" Target="{Binding ElementName=c4}" Content="_Note" />
+
+        <ComboBox Grid.Column="0" Grid.Row="3" x:Name="c1" IsReadOnly="True">
+          <ComboBoxItem Content="Done" IsSelected="True" />
+          <ComboBoxItem Content="Partial Done" />
+          <ComboBoxItem Content="Rejected" />
+        </ComboBox>
+        <TextBox  Grid.Column="1" Grid.Row="3" x:Name="c2" Text="{Binding Quantity}" />
+        <TextBox  Grid.Column="2" Grid.Row="3" x:Name="c3" Text="{Binding AvgPx}" />
+        <TextBox  Grid.Column="0" Grid.Row="5" x:Name="c4" Text="{Binding Note}" Grid.ColumnSpan="3" MinLines="2" TextWrapping="Wrap" />
+
+      </Grid>
+
+      <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0 0 0 0">
         <Button Content="_Send Update"  Click="Button_Click1" IsDefault="True" />
         <Button Content="_Acknowledge"  Click="Button_Click2" />
         <Button Content="_Unlock Order" Click="Button_Click3" />

@@ -190,8 +190,9 @@ namespace RMSClient
         }
       }
       catch (Exception ex) { _logger.LogError($"{ex}"); MessageBox.Show($"{ex.Message}", "Exception in onPopup()", MessageBoxButton.OK, MessageBoxImage.Error); }
-      finally      {        Blur = 0;      }    }
-    void onEditAppSettings(object sender, RoutedEventArgs e)
+      finally { Blur = 0; }
+    }
+    void onEditAppSettings(object s, RoutedEventArgs e)
     {
       try
       {
@@ -242,14 +243,17 @@ namespace RMSClient
     {
       try
       {
-        Clipboard.SetData(DataFormats.StringFormat, DataContext);
+        var tabDelimetedValues = string.Join("\r\n", ((List<RmsDboRequestInvDboAccountView>)dg1.ItemsSource));
+        Clipboard.SetText(tabDelimetedValues);
+        _logger.LogInformation(tabDelimetedValues);
+        SystemSounds.Beep.Play();
       }
       catch (Exception ex) { _logger.LogError($"{ex}"); ex.Pop(this); }
     }
     void onExit(object s, RoutedEventArgs e) => Close();
-    void onWindowMinimize(object sender, RoutedEventArgs e) => WindowState = System.Windows.WindowState.Minimized;
-    void onWindowRestoree(object sender, RoutedEventArgs e) { wr.Visibility = Visibility.Collapsed; wm.Visibility = Visibility.Visible; WindowState = System.Windows.WindowState.Normal; }
-    void onWindowMaximize(object sender, RoutedEventArgs e) { wm.Visibility = Visibility.Collapsed; wr.Visibility = Visibility.Visible; WindowState = System.Windows.WindowState.Maximized; }
+    void onWindowMinimize(object s, RoutedEventArgs e) => WindowState = System.Windows.WindowState.Minimized;
+    void onWindowRestoree(object s, RoutedEventArgs e) { wr.Visibility = Visibility.Collapsed; wm.Visibility = Visibility.Visible; WindowState = System.Windows.WindowState.Normal; }
+    void onWindowMaximize(object s, RoutedEventArgs e) { wm.Visibility = Visibility.Collapsed; wr.Visibility = Visibility.Visible; WindowState = System.Windows.WindowState.Maximized; }
 
     readonly Dictionary<string, ServerSession.RequestStatus> m_statusDict = new Dictionary<string, ServerSession.RequestStatus>();
     delegate void NewRequestDelegate(int n);
