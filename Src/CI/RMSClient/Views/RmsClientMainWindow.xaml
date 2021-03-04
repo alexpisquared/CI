@@ -90,8 +90,16 @@
         </Grid.RowDefinitions>
 
         <StackPanel Grid.ColumnSpan="7" Grid.Row="0" Orientation="Horizontal">
-          <Image Width="45" Source="/RMSClient;component/favicon.ico" Margin="14 0"/>
-          <TextBlock Text="RMS Client" FontSize="64" FontWeight="SemiBold" Foreground="#a00" Padding="0 0 0 8" Margin="0 -10"/>
+          <Image Width="45" Source="/RMSClient;component/favicon.ico" Margin="14 0">
+            <Image.Effect>
+              <DropShadowEffect ShadowDepth="0" BlurRadius="12" Color="#cde" />
+            </Image.Effect>
+          </Image>
+          <TextBlock Text="RMS Client" FontSize="64" FontWeight="SemiBold" Foreground="#a00" Padding="0 0 0 8" Margin="0 -10" >
+            <TextBlock.Effect>
+              <DropShadowEffect ShadowDepth="2" BlurRadius="12" Color="#faa" Opacity=".4" />
+            </TextBlock.Effect>
+          </TextBlock>
           <TextBlock Text="{Binding ElementName=wnd, Path=Title}" FontSize="11" FontWeight="SemiBold" Padding="0 0 0 8" Margin="180 10 0 0" x:Name="tbkTitle"/>
         </StackPanel>
 
