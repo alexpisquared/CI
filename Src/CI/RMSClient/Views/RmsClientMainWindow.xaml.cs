@@ -119,8 +119,7 @@ namespace RMSClient
     async void onLoaded(object s, RoutedEventArgs e)
     {
       _loaded = true;
-      await find();
-      //_db.Database.EnsureCreated();
+      await find();       //todo: _db.Database.EnsureCreated();
 
       themeSelector.SetCurThemeToMenu(Thm);
 
@@ -182,7 +181,7 @@ namespace RMSClient
           AvgPx = request.AvgPx
         };
 
-        if (dialogue.ShowDialog() == true) //&& MessageBox.Show($"Sending new order status  {dialogue.NewOrderStatus}  \n\nwith note \n\n{dialogue.Note}\n\nto ...upstairs", "Are you sure?", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+        if (dialogue.ShowDialog() == true) 
         {
 #if DEBUG
           dialogue.Note += $"Test @ {DateTime.Now} - {dialogue.NewOrderStatus} - {dialogue.NewOrderAction} - {dialogue.Quantity} 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 ".Substring(0, 100);
@@ -270,9 +269,12 @@ namespace RMSClient
       base.OnClosing(e);
     }
 
-    private void Button_Click(object sender, RoutedEventArgs e)
+    void Button_Click(object sender, RoutedEventArgs e)
     {
-
+      var w = new AppSettingsEditor();
+      if (w.ShowDialog() == true)
+      { 
+      }
     }
   }
 
