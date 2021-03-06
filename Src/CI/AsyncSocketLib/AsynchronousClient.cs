@@ -17,8 +17,8 @@ namespace AsyncSocketLib
 
     public string Report { get { try { return _report; } finally { _report = ""; } } }
 
-    public void StartClient(string uri, int port) => StartClientReal(uri, port, "");
-    public void StartClientReal(string uri, int port, string username)
+    public void ConnectSendClose_formerStartClient(string uri, int port) => ConnectSendClose(uri, port, "");
+    public void ConnectSendClose(string uri, int port, string username)
     {
       try
       {
@@ -35,7 +35,7 @@ namespace AsyncSocketLib
         _report += $"  sending \t{(string.IsNullOrEmpty(username) ? msg : username)} ...\n";
 
         if (string.IsNullOrEmpty(username))
-          sendOriginal(client, msg);
+          sendOriginalStr(client, msg);
         else
           sendLoginRequest(client, username);
 
@@ -105,10 +105,9 @@ namespace AsyncSocketLib
       catch (Exception e) { _report += $" ■ ■ ■ {e}\n\n"; }
     }
 
-    void sendOriginal(Socket client, string data)
+    void sendOriginalStr(Socket client, string stringData)
     {
-      var byteData = Encoding.ASCII.GetBytes(data);
-
+      var byteData = Encoding.ASCII.GetBytes(stringData);
       send(client, byteData, byteData.Length);
     }
     unsafe void sendLoginRequest(Socket client, string username)

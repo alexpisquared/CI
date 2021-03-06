@@ -1,7 +1,7 @@
 ﻿<lnk:WindowBase xmlns:lnk="clr-namespace:CI.GUI.Support.WpfLibrary.Base;assembly=CI.GUI.Support.WpfLibrary" x:Name="wnd" 
                 x:Class="AsyncSocketTester.TesterMainWindow" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d"
                 Style="{DynamicResource WindowStyle_Aav0}"
-                Title="Socket Explorer" Height="450" Width="800" Loaded="onLoaded">
+                Title="Socket Explorer" Height="450" Width="1000" Loaded="onLoaded">
   <WindowChrome.WindowChrome>
     <WindowChrome CaptionHeight="0" ResizeBorderThickness="10" />
   </WindowChrome.WindowChrome>
@@ -66,16 +66,17 @@
       <Rectangle Grid.Column="0" Margin="5" Grid.Row="0" d:Fill="Orange" VerticalAlignment="Center" HorizontalAlignment="Right" Width="32" Height="32" x:Name="ra"/>
       <Rectangle Grid.Column="2" Margin="5" Grid.Row="0" d:Fill="Orange" VerticalAlignment="Center" HorizontalAlignment="Right" Width="32" Height="32" x:Name="rb"/>
 
-      <StackPanel Grid.Row="2" Grid.Column="2" Orientation="Horizontal">
-        <CheckBox Content="_Server ON" HorizontalAlignment="Left" Margin="5" VerticalAlignment="Center" Checked="onToggleSvrListening" x:Name="chkSvr"/>
-        <Button Content="_Read Report" Click="onRR" />
+      <StackPanel Grid.Row="2" Orientation="Horizontal">
+        <Label Content=" Call:" />
+        <Button Content="_Strng to Lcl" Click="onMe" x:Name="b1" IsEnabled="False"/>
+        <Button Content="Login to .Lcl" Click="onRealHere" />
+        <Button Content="Login to .152" Click="onRealReal" />
+        <Button Content="Login to .154" Click="onRealRea2" />
       </StackPanel>
 
-      <StackPanel Grid.Row="2" Orientation="Horizontal">
-        <Label Content="   Call: " />
-        <Button Content="_Strng to Lcl" Click="onMe" x:Name="b1" IsEnabled="False"/>
-        <Button Content="Login to .152" Click="onRealHere" />
-        <Button Content="Login to .152" Click="onRealReal" />
+      <StackPanel Grid.Row="2" Grid.Column="2" Orientation="Horizontal">
+        <CheckBox Content="_Server ON" HorizontalAlignment="Left" Margin="5" VerticalAlignment="Center" Checked="onToggleSvrListening" Unchecked="onToggleSvrListening" x:Name="chkSvr"/>
+        <Button Content="_Read Report" Click="onRR" />
       </StackPanel>
 
       <GridSplitter Grid.Column="1" Grid.RowSpan="3" Background="AliceBlue" />

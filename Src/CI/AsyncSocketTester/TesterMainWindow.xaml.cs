@@ -27,7 +27,7 @@ namespace AsyncSocketTester
       _ = new DispatcherTimer(TimeSpan.FromSeconds(.250), DispatcherPriority.Normal, new EventHandler(async (s, e) => await onTick()), Dispatcher.CurrentDispatcher); //tu:
     }
 
-    async void onLoaded(object sender, RoutedEventArgs e) { chkSvr.IsChecked = true; await Task.Yield(); }
+    async void onLoaded(object s, RoutedEventArgs e) { /*chkSvr.IsChecked = true;*/ await Task.Yield(); }
     async Task onTick()
     {
       onRR();
@@ -55,14 +55,11 @@ namespace AsyncSocketTester
       await Task.Yield();
     }
 
-    void onMe(object s, RoutedEventArgs e) { var c = new AsynchronousClient(); c.StartClient(Dns.GetHostName(), 11000); tbkReportClt.Text += c.Report; }
-    void onRealHere(object s, RoutedEventArgs e) { var c = new AsynchronousClient(); c.StartClientReal(Dns.GetHostName(), 11000, "alex.pigida"); tbkReportClt.Text += c.Report; }
-    void onRealReal(object s, RoutedEventArgs e) { var c = new AsynchronousClient(); c.StartClientReal("10.10.19.152", 6756, "alex.pigida"); tbkReportClt.Text += c.Report; }
-    void onRR(object s = null, RoutedEventArgs e = null)
-    {
-      tbkReportSvr.Text += _svr.Report;
-      ;
-    }
+    void onMe(object s, RoutedEventArgs e) { var c = new AsynchronousClient(); c.ConnectSendClose_formerStartClient(Dns.GetHostName(), 11000); tbkReportClt.Text += c.Report; }
+    void onRealHere(object s, RoutedEventArgs e) { var c = new AsynchronousClient(); c.ConnectSendClose(Dns.GetHostName(), 11000, "alex.pigida"); tbkReportClt.Text += c.Report; }
+    void onRealReal(object s, RoutedEventArgs e) { var c = new AsynchronousClient(); c.ConnectSendClose("mtdevwebts01.bbssecurities.com", 6756, "alex.pigida"); tbkReportClt.Text += c.Report; }
+    void onRealRea2(object s, RoutedEventArgs e) { var c = new AsynchronousClient(); c.ConnectSendClose("MTDEVTSAPP01.bbssecurities.com", 22225, "alex.pigida"); tbkReportClt.Text += c.Report; }
+    void onRR(object s = null, RoutedEventArgs e = null)    {      tbkReportSvr.Text += _svr.Report;      ;    }
 
   }
 }
