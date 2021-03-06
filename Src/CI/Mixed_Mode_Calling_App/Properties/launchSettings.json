@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "Mixed_Mode_Calling_App": {
+      "commandName": "Project",
+      "nativeDebugging": true
+    }
+  }
+}

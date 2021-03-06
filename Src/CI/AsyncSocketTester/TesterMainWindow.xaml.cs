@@ -57,7 +57,7 @@ namespace AsyncSocketTester
 
     void onMe(object s, RoutedEventArgs e) { var c = new AsynchronousClient(); c.ConnectSendClose_formerStartClient(Dns.GetHostName(), 11000); tbkReportClt.Text += c.Report; }
     void onRealHere(object s, RoutedEventArgs e) { var c = new AsynchronousClient(); c.ConnectSendClose(Dns.GetHostName(), 11000, "alex.pigida"); tbkReportClt.Text += c.Report; }
-    void onRealReal(object s, RoutedEventArgs e) { var c = new AsynchronousClient(); c.ConnectSendClose("mtdevwebts01.bbssecurities.com", 6756, "alex.pigida"); tbkReportClt.Text += c.Report; }
+    void onRealReal(object s, RoutedEventArgs e) { var c = new AsynchronousClient(); c.ConnectSendClose("10.10.19.152", 6756, "alex.pigida"); tbkReportClt.Text += c.Report; }
     void onRealRea2(object s, RoutedEventArgs e) { var c = new AsynchronousClient(); c.ConnectSendClose("MTDEVTSAPP01.bbssecurities.com", 22225, "alex.pigida"); tbkReportClt.Text += c.Report; }
     void onRR(object s = null, RoutedEventArgs e = null)    {      tbkReportSvr.Text += _svr.Report;      ;    }
 
