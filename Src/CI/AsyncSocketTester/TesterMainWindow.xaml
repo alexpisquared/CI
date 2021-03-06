@@ -1,6 +1,5 @@
 ﻿<lnk:WindowBase xmlns:lnk="clr-namespace:CI.GUI.Support.WpfLibrary.Base;assembly=CI.GUI.Support.WpfLibrary" x:Name="wnd" 
                 x:Class="AsyncSocketTester.TesterMainWindow" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d"
-                xmlns:local="clr-namespace:AsyncSocketTester"
                 Style="{DynamicResource WindowStyle_Aav0}"
                 Title="Socket Explorer" Height="450" Width="800" Loaded="onLoaded">
   <WindowChrome.WindowChrome>
@@ -74,9 +73,9 @@
 
       <StackPanel Grid.Row="2" Orientation="Horizontal">
         <Label Content="   Call: " />
-        <Button Content="   _Me   " Click="onMe" x:Name="b1" IsEnabled="False"/>
-        <Button Content="Real me  " Click="onRealHere" />
-        <Button Content="Real real" Click="onRealReal" />
+        <Button Content="_Strng to Lcl" Click="onMe" x:Name="b1" IsEnabled="False"/>
+        <Button Content="Login to .152" Click="onRealHere" />
+        <Button Content="Login to .152" Click="onRealReal" />
       </StackPanel>
 
       <GridSplitter Grid.Column="1" Grid.RowSpan="3" Background="AliceBlue" />
