@@ -49,26 +49,29 @@ namespace AsyncSocketLib
           return;
         }
 
-        if (string.IsNullOrEmpty(username))
+        if (string.IsNullOrEmpty(username)) // str local test
+        {
           sendOriginalStr(client, "This is a TEST <EOF>");
-        else if (port == 6756)
+          _sendingDone.WaitOne();
+          Receive<UnknownType>(client); 
+        }
+        else if (port == 6756) // rms client
         {
           sendLoginRequestRmsC(client, username);
           _sendingDone.WaitOne();
-          Receive<UnknownType>(client); // Receive the response from the remote device.  
+          Receive<UnknownType>(client); 
         }
-        else if (port == 22225)
+        else if (port == 22225) // risk
         {
           sendLoginRequestRisk(client, username);
           _sendingDone.WaitOne();
-          Receive<RiskBaseMsg>(client); // Receive the response from the remote device.  
+          Receive<RiskBaseMsg>(client); 
         }
 
         Report = "  waiting for the Response ...\n";
-        _receiveDone.WaitOne(1000); // wait just for a sec
+        _receiveDone.WaitOne(1000); 
 
         Report = $"  response received: '{_responseStrVer}'.  Closing client socket.\n\n";
-
         client.Shutdown(SocketShutdown.Both);
         client.Close();
       }

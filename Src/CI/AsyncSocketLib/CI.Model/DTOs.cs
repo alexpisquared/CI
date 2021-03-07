@@ -83,12 +83,12 @@ namespace AsyncSocketLib.CI.Model
   };
 
 
+
   [StructLayout(LayoutKind.Sequential, Pack = 1)]
   public unsafe struct UnknownType
   {
+    public object m_obj;
   };
-
-
   [StructLayout(LayoutKind.Sequential, Pack = 1)]
   public unsafe struct RiskBaseMsg
   {
@@ -139,7 +139,4 @@ namespace AsyncSocketLib.CI.Model
         RISK_MSG_EOD_STATUS,
         RISK_MSG_MAXIMUM // like undefided
     };
-
-
-
 }
