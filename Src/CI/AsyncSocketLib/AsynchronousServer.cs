@@ -10,7 +10,7 @@ namespace AsyncSocketLib
 {
   public class AsynchronousServer : IDisposable
   {
-    readonly ManualResetEvent _allDone = new ManualResetEvent(false); // Thread signal.  
+    readonly ManualResetEvent _allDone = new(false); // Thread signal.  
     Socket? _listener;
     string _report = "";
     bool _keepOnListening = true;
@@ -114,6 +114,6 @@ namespace AsyncSocketLib
       catch (Exception e) { _report += $" ■ ■ ■ {e}\n\n"; }
     }
 
-    public void Dispose() => ((IDisposable)_listener).Dispose();
+    void IDisposable.Dispose() => ((IDisposable?)_listener)?.Dispose();
   }
 }

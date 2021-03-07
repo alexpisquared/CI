@@ -80,13 +80,19 @@ namespace AsyncSocketLib.CI.Model
         public RequestStatus m_status;
         public uint m_doneQty;
         public fixed byte m_bbsNote[100];
-    };
+  };
 
 
-    [StructLayout(LayoutKind.Sequential, Pack = 1)]
-    public unsafe struct RiskBaseMsg
-    {
-        public RiskMsgType m_type;
+  [StructLayout(LayoutKind.Sequential, Pack = 1)]
+  public unsafe struct UnknownType
+  {
+  };
+
+
+  [StructLayout(LayoutKind.Sequential, Pack = 1)]
+  public unsafe struct RiskBaseMsg
+  {
+    public RiskMsgType m_type;
         public long m_seq;
         public int m_size;
         public Int64 m_time;
