@@ -31,6 +31,17 @@ namespace AsyncSocketLib.CI.Model
         public MessageHeader m_header;
         public int m_requestID;
     }
+    [StructLayout(LayoutKind.Sequential, Pack = 1)]
+    unsafe public struct ChangeRequestMessage
+    {
+        public MessageHeader m_header;
+        public int m_requestID;
+        public RequestStatus m_status;
+        public uint m_doneQty;
+        public fixed byte m_bbsNote[100];
+    };
+
+
 
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
     public unsafe struct ChangeRequest // straight from RMSMessage.h
