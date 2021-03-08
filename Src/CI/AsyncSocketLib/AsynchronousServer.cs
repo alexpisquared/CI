@@ -63,23 +63,23 @@ namespace AsyncSocketLib
 
       var state = new StateObject
       {
-        workSocket = handler
+        WorkSocket = handler
       };
 
-      handler.BeginReceive(state.buffer, 0, StateObject.BufferSize, 0, new AsyncCallback(ReadCallback), state);
+      handler.BeginReceive(state.Buffer, 0, StateObject.BufferSize, 0, new AsyncCallback(ReadCallback), state);
     }
     void ReadCallback(IAsyncResult ar)
     {
       var content = string.Empty;
-      var state = (StateObject)ar.AsyncState;       // Retrieve the state object and the handler socket from the asynchronous state object.  
-      var handler = state.workSocket;
-      var bytesRead = handler?.EndReceive(ar) ?? 0; // Read data from the client socket.
+      var state = (StateObject)ar.AsyncState;                                           // Retrieve the state object and the handler socket from the asynchronous state object.  
+      var handler = state.WorkSocket;
+      var bytesRead = handler?.EndReceive(ar) ?? 0;                                     // Read data from the client socket.
 
       if (bytesRead > 0)
       {
-        state.sb.Append(Encoding.ASCII.GetString(state.buffer, 0, bytesRead));          // There  might be more data, so store the data received so far.  
+        state.SB.Append(Encoding.ASCII.GetString(state.Buffer, 0, bytesRead));          // There  might be more data, so store the data received so far.  
 
-        content = state.sb.ToString();                                                  // Check for end-of-file tag. If it is not there, read more data.  
+        content = state.SB.ToString();                                                  // Check for end-of-file tag. If it is not there, read more data.  
         if (content.IndexOf("<EOF>") > -1)
         {
           _report += $"  Read {content.Length} bytes from socket: \n    {content} \n";  // All the data has been read from the client. Display it on the console.  
@@ -87,8 +87,7 @@ namespace AsyncSocketLib
         }
         else
         {
-          // Not all data received. Get more.  
-          handler?.BeginReceive(state.buffer, 0, StateObject.BufferSize, 0,
+          handler?.BeginReceive(state.Buffer, 0, StateObject.BufferSize, 0,             // Not all data received. Get more.  
           new AsyncCallback(ReadCallback), state);
         }
       }
@@ -96,14 +95,13 @@ namespace AsyncSocketLib
     void Send(Socket? handler, string data)
     {
       var byteData = Encoding.ASCII.GetBytes(data);      // Convert the string data to byte data using ASCII encoding.  
-      handler?.BeginSend(byteData, 0, byteData.Length, 0, new AsyncCallback(SendCallback), handler); // Begin sending the data to the remote device.  
+      handler?.BeginSend(byteData, 0, byteData.Length, 0, new AsyncCallback(SendCallback), handler);   
     }
     void SendCallback(IAsyncResult ar)
     {
       try
       {
         var handler = (Socket)ar.AsyncState;        // Retrieve the socket from the state object.  
-
         var bytesSent = handler.EndSend(ar);        // Complete sending the data to the remote device.  
 
         _report += $"  Sent {bytesSent} bytes to client.\n";

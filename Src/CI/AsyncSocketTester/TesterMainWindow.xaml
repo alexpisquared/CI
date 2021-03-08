@@ -8,7 +8,7 @@
   <lnk:WindowBase.Resources>
     <ResourceDictionary>
       <Style TargetType="{x:Type StackPanel}">
-        <Setter Property="Background" Value="#8888" />
+        <Setter Property="Background" Value="#333" />
         <Setter Property="HorizontalAlignment" Value="Center" />
         <Setter Property="Margin" Value="5" />
       </Style>
@@ -19,33 +19,22 @@
         <Setter Property="VerticalAlignment" Value="Center" />
         <Setter Property="Margin" Value="5" />
       </Style>
+      <Style TargetType="{x:Type Label}">
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="Margin" Value="5" />
+        <Setter Property="Foreground" Value="#f00" />
+      </Style>
       <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="/CI.GUI.Support.WpfLibrary;component/Base/BasicDefaultsLayout.xaml" />
         <!--
         <ResourceDictionary Source="/CI.GUI.Support.WpfLibrary;component/Base/DataGrid.Base.xaml" />
-        <ResourceDictionary Source="/CI.GUI.Support.WpfLibrary;component/ColorScheme/Theme.Color.Dark.Gray.xaml" />-->
+        -->
+        <ResourceDictionary Source="/CI.GUI.Support.WpfLibrary;component/ColorScheme/Theme.Color.Dark.Gray.xaml" />
       </ResourceDictionary.MergedDictionaries>
 
-      <!--<Style TargetType="{x:Type stb:HighlightableTextBlock}">
-        <Setter Property="ToolTipService.ShowDuration" Value="999999" />
-        <Setter Property="HighlightForeground" Value="#c00" />
-        <Setter Property="HighlightBackground" Value="#fcc" />
-        <Setter Property="Template">
-          <Setter.Value>
-            <ControlTemplate TargetType="{x:Type stb:HighlightableTextBlock}">
-              <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
-                <TextBlock x:Name="PART_TEXT"/>
-              </Border>
-            </ControlTemplate>
-          </Setter.Value>
-        </Setter>
-      </Style>
-
-      <CollectionViewSource x:Key="cmdViewSource" d:DesignSource="{d:DesignInstance {x:Type Models:Cmd}, CreateList=True}"/>
-      <CollectionViewSource x:Key="cmdLogsViewSource" Source="{Binding Logs, Source={StaticResource cmdViewSource}}"/>-->
     </ResourceDictionary>
   </lnk:WindowBase.Resources>
-  <Border CornerRadius="9" Background="#200" BorderBrush="#06d" BorderThickness="2">
+  <Border CornerRadius="9" BorderBrush="#06d" BorderThickness="2">
     <Grid>
       <Grid.ColumnDefinitions>
         <ColumnDefinition Width="4*"/>
@@ -67,14 +56,14 @@
       <Rectangle Grid.Column="2" Margin="5" Grid.Row="0" d:Fill="Orange" VerticalAlignment="Center" HorizontalAlignment="Right" Width="32" Height="32" x:Name="rb"/>
 
       <StackPanel Grid.Row="2" Orientation="Horizontal">
-        <Label Content="Lcl:" />
+        <TextBlock Foreground="#ff0" Text="Lcl:" />
         <Button Content="_Str" Click="onMe" x:Name="b1" IsEnabled="False"/>
         <Button Content="._Lcl" Click="onRealHere" />
-        <Label Content="  RMS:" />
+        <TextBlock Foreground="#ff0" Text="  RMS:" />
         <Button Content="15_2:6" Click="onTag" Tag="10.10.19.152:6756"/>
         <Button Content="_dev:6" Click="onTag" Tag="mtdevwebts01.bbssecurities.com:6756"/>
         <Button Content="_uat:6" Click="onTag" Tag="mtuatwebts01.bbssecurities.com:6756" IsDefault="True" />
-        <Label Content="  risk:" />
+        <TextBlock Foreground="#ff0" Text="  risk:" />
         <Button Content="d_ev:2" Click="onTag" Tag="MTDEVTSAPP01.bbssecurities.com:22225"/>
         <Button Content="u_at:2" Click="onTag" Tag="MTUATTSAPP01.bbssecurities.com:22225"/>
       </StackPanel>

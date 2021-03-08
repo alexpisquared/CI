@@ -92,9 +92,9 @@ namespace AsyncSocketLib
         {
             try
             {
-                var state = new StateObject { workSocket = client };
+                var state = new StateObject { WorkSocket = client };
 
-                client.BeginReceive(state.buffer, 0, StateObject.BufferSize, 0, new AsyncCallback(ReceiveCallback<T>), state);
+                client.BeginReceive(state.Buffer, 0, StateObject.BufferSize, 0, new AsyncCallback(ReceiveCallback<T>), state);
             }
             catch (Exception ex) { Report = $" ■ ■ ■ {ex}\n\n"; }
         }
@@ -104,7 +104,7 @@ namespace AsyncSocketLib
             try
             {
                 var state = (StateObject)ar.AsyncState;        // Retrieve the state object and the client socket from the asynchronous state object.  
-                var client = state.workSocket;
+                var client = state.WorkSocket;
 
                 Report = ($"Connected:{client?.Connected}  ");
                 if (client?.Connected == true)
@@ -112,30 +112,30 @@ namespace AsyncSocketLib
                     var bytesRead = client?.EndReceive(ar) ?? 0; // Read data from the remote device.  
                     if (bytesRead > 0)
                     {
-                        state.sb.Append(Encoding.ASCII.GetString(state.buffer, 0, bytesRead));          // There might be more data, so store the data received so far.  
+                        state.SB.Append(Encoding.ASCII.GetString(state.Buffer, 0, bytesRead));          // There might be more data, so store the data received so far.  
 
-                        Report = $"'{state.sb}' got so far; maybe more coming...";
+                        Report = $"'{state.SB}' got so far; maybe more coming...";
 
-                        client?.BeginReceive(state.buffer, 0, StateObject.BufferSize, 0, new AsyncCallback(ReceiveCallback<T>), state); // Get the rest of the data.  
+                        client?.BeginReceive(state.Buffer, 0, StateObject.BufferSize, 0, new AsyncCallback(ReceiveCallback<T>), state); // Get the rest of the data.  
                     }
                     m_received += bytesRead;
                 }
                 else
                 {
-                    Report = $"'{state.sb}' All the data has arrived";
+                    Report = $"'{state.SB}' All the data has arrived";
 
-                    if (state.sb.Length > 1)          // All the data has arrived; put it in response.  
+                    if (state.SB.Length > 1)          // All the data has arrived; put it in response.  
                     {
-                        _responseStrVer = state.sb.ToString();
+                        _responseStrVer = state.SB.ToString();
                     }
 
                     _receiveDone.Set();               // Signal that all bytes have been received.  
                 }
 
                 //nogo: _rbm = FromByteArray<RiskBaseMsg>(state.buffer);
-                if (m_received >= 12 && state?.buffer != null)  //sizeof(RiskBaseMsg))
+                if (m_received >= 12 && state?.Buffer != null)  //sizeof(RiskBaseMsg))
                 {
-                    fixed (byte* pSource = state.buffer)
+                    fixed (byte* pSource = state.Buffer)
                     {
                         var msgHeader = (RiskBaseMsg*)pSource;
                         Report = $"\n       seq:{(*msgHeader).m_seq}  sz:{(*msgHeader).m_size}  t:{(*msgHeader).m_time}  gu:{(*msgHeader).iGuidID}  ty:{(*msgHeader).m_type}";
@@ -145,14 +145,14 @@ namespace AsyncSocketLib
                             var remainder = m_received - bytesProcessed;
                             if (remainder > 0)
                             {
-                                BinaryHelper.MoveData(state.buffer, bytesProcessed, remainder);
+                                BinaryHelper.MoveData(state.Buffer, bytesProcessed, remainder);
                             }
                             m_received -= bytesProcessed;
                         }
                     }
                 }
 
-                _responseStrVer = state?.sb.ToString() ?? "Emtpy as null can be";
+                _responseStrVer = state?.SB.ToString() ?? "Emtpy as null can be";
             }
             catch (Exception ex) { Report = $" ■ ■ ■ {ex}\n"; }
             finally { Report = "\n"; }
@@ -231,7 +231,7 @@ namespace AsyncSocketLib
 
             Report = $"  sending \t{nameof(LoginRequest)} ...  -- total: {sizeof(LoginRequest)}\n";             // for (var i = 0; i < sizeof(LoginRequest); i++) Debug.WriteLine($"  {i,4} {(int)byteData[i],4}"); Debug.WriteLine($"-- total: {sizeof(LoginRequest)}:");
 
-            send(client, byteData, sizeof(LoginRequest)); // client.BeginSend(byteData, 0, sizeof(LoginRequest), 0, new AsyncCallback(SendCallback), client); // Begin sending the data to the remote device.  
+            send(client, byteData, sizeof(LoginRequest)); // client.BeginSend(byteData, 0, sizeof(LoginRequest), 0, new AsyncCallback(SendCallback), client);   
         }
         unsafe void sendLoginRequestRisk(Socket client, string username)
         {
@@ -278,7 +278,7 @@ namespace AsyncSocketLib
             buffer[len] = 0;
         }
 
-        void send(Socket client, byte[] bytes, int len) => client.BeginSend(bytes, 0, len, 0, new AsyncCallback(sendCallback), client); // Begin sending the data to the remote device.      
+        void send(Socket client, byte[] bytes, int len) => client.BeginSend(bytes, 0, len, 0, new AsyncCallback(sendCallback), client);       
         void sendCallback(IAsyncResult ar)
         {
             try
