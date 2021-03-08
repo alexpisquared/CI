@@ -187,7 +187,7 @@ namespace RMSClient.Comm
             catch (Exception ex) { _logger.LogError($"{ex}"); ex.Pop(null); }
         }
 
-        void logInfo(string s, IAsyncResult asyncRslt) => _logger.LogInformation($" ■ ■ ■ {s,-40} Connected:{((Socket)asyncRslt.AsyncState).Connected,-5}    {((Socket)asyncRslt.AsyncState).RemoteEndPoint}   IsCompleted:{asyncRslt.IsCompleted,-5} .");
+        void logInfo(string s, IAsyncResult asyncRslt) => _logger.LogInformation($" ▓▓ {s,-40} Connected:{(asyncRslt.AsyncState as Socket)?.Connected ?? false,-5}    {(asyncRslt.AsyncState as Socket)?.RemoteEndPoint}   IsCompleted:{asyncRslt.IsCompleted,-5} .");
         static void MoveData(byte[] buffer, int offset, int size)
         {
             for (var i = 0; i < size; i++)

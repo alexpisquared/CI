@@ -34,10 +34,10 @@
 
     </ResourceDictionary>
   </lnk:WindowBase.Resources>
-  <Border CornerRadius="9" BorderBrush="#06d" BorderThickness="2">
+  <Border CornerRadius="9" Background="#300" BorderBrush="#600" BorderThickness="2">
     <Grid>
       <Grid.ColumnDefinitions>
-        <ColumnDefinition Width="4*"/>
+        <ColumnDefinition Width="7*"/>
         <ColumnDefinition Width="10"/>
         <ColumnDefinition Width="1*"/>
       </Grid.ColumnDefinitions>
@@ -56,16 +56,16 @@
       <Rectangle Grid.Column="2" Margin="5" Grid.Row="0" d:Fill="Orange" VerticalAlignment="Center" HorizontalAlignment="Right" Width="32" Height="32" x:Name="rb"/>
 
       <StackPanel Grid.Row="2" Orientation="Horizontal">
-        <TextBlock Foreground="#ff0" Text="Lcl:" />
+        <TextBlock Foreground="#ff0" Text="Str:" />
         <Button Content="_Str" Click="onMe" x:Name="b1" IsEnabled="False"/>
         <Button Content="._Lcl" Click="onRealHere" />
         <TextBlock Foreground="#ff0" Text="  RMS:" />
-        <Button Content="15_2:6" Click="onTag" Tag="10.10.19.152:6756"/>
-        <Button Content="_dev:6" Click="onTag" Tag="mtdevwebts01.bbssecurities.com:6756"/>
-        <Button Content="_uat:6" Click="onTag" Tag="mtuatwebts01.bbssecurities.com:6756" IsDefault="True" />
+        <Button Content="15_2:6" Click="onTag" Tag="10.10.19.152:6756:logInRmsC"/>
+        <Button Content="_dev:6" Click="onTag" Tag="mtdevwebts01.bbssecurities.com:6756:logInRmsC" IsDefault="True" x:Name="dfltBtn" />
+        <Button Content="_uat:6" Click="onTag" Tag="mtuatwebts01.bbssecurities.com:6756:logInRmsC" />
         <TextBlock Foreground="#ff0" Text="  risk:" />
-        <Button Content="d_ev:2" Click="onTag" Tag="MTDEVTSAPP01.bbssecurities.com:22225"/>
-        <Button Content="u_at:2" Click="onTag" Tag="MTUATTSAPP01.bbssecurities.com:22225"/>
+        <Button Content="d_ev:2" Click="onTag" Tag="MTDEVTSAPP01.bbssecurities.com:22225:logInRisk"/>
+        <Button Content="u_at:2" Click="onTag" Tag="MTUATTSAPP01.bbssecurities.com:22225:logInRisk"/>
       </StackPanel>
 
       <StackPanel Grid.Row="2" Grid.Column="2" Orientation="Horizontal">
