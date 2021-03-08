@@ -219,8 +219,6 @@ namespace AsyncSocketLib
         }
         unsafe void sendLoginRequestRmsC(Socket client, string username)
         {
-            var byteData = new byte[StateObject.BufferSize];
-
             LoginRequest lr;
             lr.m_header.m_size = sizeof(LoginRequest);
             lr.m_header.m_type = MessageType.mtLogin;
@@ -228,7 +226,8 @@ namespace AsyncSocketLib
             username.ToByteArray(lr.m_userName);
 
             var ptr = (byte*)&lr;
-            for (var i = 0; i < sizeof(LoginRequest); i++) byteData[i] = ptr[i];    //mimic cpp: for (var i = 20; i < sizeof(LoginRequest); i++) byteData[i] = 205;
+            var byteData = new byte[StateObject.BufferSize];
+            for (var i = 0; i < sizeof(LoginRequest); i++) byteData[i] = ptr[i];                                //mimic cpp: for (var i = 20; i < sizeof(LoginRequest); i++) byteData[i] = 205;
 
             Report = $"  sending \t{nameof(LoginRequest)} ...  -- total: {sizeof(LoginRequest)}\n";             // for (var i = 0; i < sizeof(LoginRequest); i++) Debug.WriteLine($"  {i,4} {(int)byteData[i],4}"); Debug.WriteLine($"-- total: {sizeof(LoginRequest)}:");
 
@@ -236,8 +235,6 @@ namespace AsyncSocketLib
         }
         unsafe void sendLoginRequestRisk(Socket client, string username)
         {
-            var byteData = new byte[StateObject.BufferSize];
-
             RiskBaseMsg rbm;
             rbm.m_type = RiskMsgType.RISK_MSG_LOGON;
             rbm.m_seq = 0;
@@ -246,39 +243,38 @@ namespace AsyncSocketLib
             rbm.iGuidID = 101;
 
             var ptr = (byte*)&rbm;
+            var byteData = new byte[StateObject.BufferSize];
             for (var i = 0; i < sizeof(RiskBaseMsg); i++) byteData[i] = ptr[i];
 
             Report = $"  sending \t{nameof(RiskBaseMsg)} ...  -- size C# / C++: {sizeof(RiskBaseMsg)} != {rbm.m_size}\n";
 
             send(client, byteData, rbm.m_size);
         }
-        public unsafe void SendChangeRequest(Socket client, int requestID, string status, uint doneQty, string note, RequestStatus m_status)
+        unsafe void sendChangeRequest(Socket client, int requestID, string status, uint doneQty, string note, RequestStatus m_status)
         {
-            ChangeRequestMessage msg;
-            msg.m_header.m_type = MessageType.mtChangeRequest;
-            msg.m_header.m_size = sizeof(ChangeRequestMessage);
-            msg.m_status = m_status;
-            msg.m_doneQty = doneQty;
-            msg.m_requestID = requestID;
-            StringToByteArray(note, msg.m_bbsNote);
-            var p = (byte*)&msg;
-            const int BufferSize = 1000;
-            byte[] m_sendBuffer = new byte[BufferSize];
-            for (var i = 0; i < sizeof(LoginRequest); i++)
-            {
-                m_sendBuffer[i] = p[i];
-            }
+            ChangeRequestMessage crm;
+            crm.m_header.m_type = MessageType.mtChangeRequest;
+            crm.m_header.m_size = sizeof(ChangeRequestMessage);
+            crm.m_status = m_status;
+            crm.m_doneQty = doneQty;
+            crm.m_requestID = requestID;
+            StringToByteArray(note, crm.m_bbsNote);
 
-            send(client, m_sendBuffer, sizeof(ChangeRequestMessage)); // m_tcpClient.Send(m_sendBuffer, msg.m_header.m_size, SocketFlags.None);
+            var ptr = (byte*)&crm;
+            var byteData = new byte[StateObject.BufferSize];
+            for (var i = 0; i < sizeof(LoginRequest); i++) byteData[i] = ptr[i];
+
+            Report = $"  sending \t{nameof(ChangeRequestMessage)} ...  -- size C# / C++: {sizeof(ChangeRequestMessage)} != ... \n";
+
+            send(client, byteData, sizeof(ChangeRequestMessage)); // m_tcpClient.Send(m_sendBuffer, msg.m_header.m_size, SocketFlags.None);
         }
         unsafe void StringToByteArray(string str, byte* buffer)
         {
-            var b = System.Text.Encoding.ASCII.GetBytes(str);
+            var bts = Encoding.ASCII.GetBytes(str);
             var len = str.Length;
             for (var i = 0; i < len; i++)
-            {
-                buffer[i] = b[i];
-            }
+                buffer[i] = bts[i];
+            
             buffer[len] = 0;
         }
 
