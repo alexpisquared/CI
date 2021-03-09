@@ -41,7 +41,6 @@ namespace AsyncSocketLib.CI.Model
         public uint m_doneQty;
         public fixed byte m_bbsNote[100];
     };
-
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
     unsafe public struct ChangeRequestMessage_RMS
     {
@@ -58,8 +57,6 @@ namespace AsyncSocketLib.CI.Model
         public fixed byte m_bbsNote[101];
         public System.Runtime.InteropServices.ComTypes.FILETIME m_time;        //public Int64 m_time; -- wrong for RMS
     };
-
-
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
     public unsafe struct ChangeRequest // straight from RMSMessage.h
     {
@@ -83,7 +80,6 @@ namespace AsyncSocketLib.CI.Model
         [FieldOffset(sizeof(int) * 7 + sizeof(double) + 101)] public System.Runtime.InteropServices.ComTypes.FILETIME m_time;
         [FieldOffset(sizeof(int) * 7 + sizeof(double) + 101)] public long  /*long long*/ m_int64Time;
     };
-
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
     public unsafe struct OrderUpdateData2 // straight from RMSMessage.h
     {
@@ -128,9 +124,6 @@ namespace AsyncSocketLib.CI.Model
         public override string ToString() => $"{m_header}  {m_code,-16}    user:{m_userID,3}    order:{m_orderID,6}    updateID:{m_updateID,4}";
     };
 
-
-
-
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
     public unsafe struct UnknownType
     {
@@ -142,7 +135,7 @@ namespace AsyncSocketLib.CI.Model
         public RiskMsgType m_type;
         public long m_seq;
         public int m_size;
-        public Int64 m_time;
+        public long m_time;
         public int iGuidID;
     }
     public enum RiskMsgType // risk messages types

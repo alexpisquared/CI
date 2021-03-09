@@ -28,7 +28,7 @@ namespace RMSClient.Comm
 
         class Request
         {
-            public unsafe Request(MessageHeader* msgHeader) => m_msgHeader = msgHeader;
+            public unsafe Request(MessageHeader* messageHeader) => m_msgHeader = messageHeader;
             public unsafe MessageHeader* m_msgHeader = null;
         }
         public enum MessageType
@@ -141,8 +141,8 @@ namespace RMSClient.Comm
                 {
                     fixed (byte* pSource = m_recvBuffer)
                     {
-                        var msgHeader = (MessageHeader*)pSource;
-                        if (m_received >= msgHeader->m_size)
+                        var messageHeader = (MessageHeader*)pSource;
+                        if (m_received >= messageHeader->m_size)
                         {
                             var bytesProcessed = ProcessMessages(pSource, m_received);
                             var remainder = m_received - bytesProcessed;
@@ -199,19 +199,19 @@ namespace RMSClient.Comm
         {
             var processed = 0;
             var remainder = length;
-            for (; ; )
+            while(true)
             {
                 if (remainder < sizeof(MessageHeader))
                 {
                     break;
                 }
-                var msgHeader = (MessageHeader*)(buffer + processed);
-                if (remainder < msgHeader->m_size)
+                var messageHeader = (MessageHeader*)(buffer + processed);
+                if (remainder < messageHeader->m_size)
                 {
                     break;
                 }
-                ProcessMessage(msgHeader);
-                processed += msgHeader->m_size;
+                ProcessMessage(messageHeader);
+                processed += messageHeader->m_size;
                 remainder = length - processed;
             }
             return processed;
@@ -220,14 +220,14 @@ namespace RMSClient.Comm
         {
             switch (msg->m_type)
             {
-                case MessageType.mtResponse:                 /**/ ProcessResponse((Response*)msg); break;
-                case MessageType.mtNewRequestNotification:   /**/ ProcessNewRequestNotification((NewRequestNotification*)msg); break;
+                case MessageType.mtResponse:                 /**/ ProcessMessage((Response*)msg); break;
+                case MessageType.mtNewRequestNotification:   /**/ ProcessMessage((NewRequestNotification*)msg); break;
                 default: _logger.LogWarning($" ▄▀▄▀▄ seq:{msg->m_seqNo,3}    sz:{msg->m_size,5}    {msg->m_type,5} - unknown MessageType"); return;
             }
             _logger.LogInformation($" ■▓■▓■ seq:{msg->m_seqNo,3}    sz:{msg->m_size,5}    {msg->m_type,5} - {msg->m_type} ");
         }
-        unsafe void ProcessNewRequestNotification(NewRequestNotification* msg) => m_mainForm.OnNewRequest(msg->m_requestID);
-        unsafe void ProcessResponse(Response* resp)
+        unsafe void ProcessMessage(NewRequestNotification* msg) => m_mainForm.OnNewRequest(msg->m_requestID);
+        unsafe void ProcessMessage(Response* resp)
         {
             switch (resp->m_code)
             {

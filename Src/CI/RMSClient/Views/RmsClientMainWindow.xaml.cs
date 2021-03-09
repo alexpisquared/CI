@@ -35,6 +35,7 @@ namespace RMSClient
         string _isoFilenameONLY = $"{nameof(AppSettings)}.xml";
         readonly Dictionary<string, ServerSession.RequestStatus> m_statusDict = new Dictionary<string, ServerSession.RequestStatus>();
         delegate void NewRequestDelegate(int n);
+        const int _delay = 50;
         public RmsClientMainWindow(ILogger<RmsClientMainWindow> logger, IConfigurationRoot config)
         {
             InitializeComponent(); //DataContext = this;
@@ -182,7 +183,7 @@ namespace RMSClient
                     LoadStatuses();
                     var _serverSession = new ServerSession(_logger, this);
                     _serverSession.Connect(_appSettings.IpAddress, _appSettings.Port);
-                    await Task.Delay(250);
+                    await Task.Delay(_delay);
                     _serverSession.SendChangeRequest(request.OrderId, dialogue.NewOrderStatus.ToString(), (uint)(dialogue.Quantity ?? 0), dialogue.Note ?? "");
                     SystemSounds.Beep.Play();
                 }
@@ -209,12 +210,10 @@ namespace RMSClient
                 LoadStatuses();
                 var _serverSession = new ServerSession(_logger, this);
                 _serverSession.Connect(_appSettings.IpAddress, _appSettings.Port);
-                await Task.Delay(250);
+                await Task.Delay(_delay);
                 _serverSession.SendChangeRequest(request.OrderId, OrderStatusEnum.Rejected.ToString(), (uint)request.Quantity, $"Test @ {DateTime.Now} - {dialogue.NewOrderStatus} - {dialogue.NewOrderAction} - {dialogue.Quantity} 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 ".Substring(0, 100));
-                SystemSounds.Beep.Play();
-                await Task.Delay(500);
-                SystemSounds.Hand.Play();
-                await Task.Delay(5000);
+                SystemSounds.Beep.Play();                await Task.Delay(_delay);
+                SystemSounds.Hand.Play();                await Task.Delay(_delay);
                 Application.Current.Shutdown();
             }
             catch (Exception ex) { _logger.LogError($"{ex}"); ex.Pop(this); }
