@@ -45,10 +45,10 @@ namespace AsyncSocketLib
                 var sw = Stopwatch.StartNew();
                 if (!_connectDone.WaitOne(_delay))
                 {
-                    return Report = $"  Failed to connect in allocated 2.5 sec\n";
+                    return Report = $"  Failed to connect in {sw.ElapsedMilliseconds} / {_delay} \n";
                 }
 
-                Report = $"Trying to connect to \t{uri,44}:{port} ... succeeded in {sw.ElapsedMilliseconds} / {_delay} \n";
+                Report = $" ◄ {uri}:{port}  in {sw.ElapsedMilliseconds} / {_delay} ms\n";
 
                 switch (job)
                 {
@@ -66,9 +66,9 @@ namespace AsyncSocketLib
                 }
 
                 sw = Stopwatch.StartNew();
-                Report = $"\n\n  Finally, waiting {_delay} for the Response ■ ";
+                Report = $"  Finally, waiting {_delay} for the Response ...";
                 _receiveDone.WaitOne(_delay);
-                Report = $"■ ■  in {sw.ElapsedMilliseconds} / {_delay} response of {_responseStrVer} received;  closing client socket.\n\n";
+                Report = $" in {sw.ElapsedMilliseconds} / {_delay} response of {_responseStrVer} received;  closing client socket.\n\n";
 
                 client.Shutdown(SocketShutdown.Both);
                 client.Close();
@@ -85,7 +85,7 @@ namespace AsyncSocketLib
                 var client = (Socket)ar.AsyncState;   // Retrieve the socket from the state object.  
                 client.EndConnect(ar);                // Complete the connection.  
 
-                Report = ($"    ◄ Ccb  Socket connected to \t\t{client.RemoteEndPoint,42} +++\n");
+                Report = ($"    ◄ Ccb  Socket connected to  {client.RemoteEndPoint}");
 
                 _connectDone.Set();                   // Signal that the connection has been made.  
             }

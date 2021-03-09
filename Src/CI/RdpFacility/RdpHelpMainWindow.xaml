@@ -27,8 +27,9 @@
         <CheckBox Content="_A" Checked="onAudible" Unchecked="onAudible" x:Name="chkAdbl" ToolTip="Audible"/>
         <CheckBox Content="_P" Checked="onInsmnia" Unchecked="onInsmnia" x:Name="chkPosn" ToolTip="Insmnia"/>
         <CheckBox Content="_I" Checked="onPosning" Unchecked="onPosning" x:Name="chkInso" ToolTip="Posning"/>
+        <CheckBox Content="_M" Checked="onMindBiz" Unchecked="onMindBiz" x:Name="chkMind" ToolTip="MindBiz"/>
         <Button   Content="_Rset" Click="onRset"  />
-        <Button   Content="_Mark" Click="onMark" IsDefault="True" />
+        <Button   Content="Mar_k" Click="onMark" IsDefault="True" />
         <Button   Content="  x  " Click="onExit"  IsCancel="True" />
       </StackPanel>
     </StackPanel>
