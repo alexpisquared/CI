@@ -2,6 +2,7 @@
 using AsyncSocketLib.Shared;
 using System;
 using System.Diagnostics;
+using System.IO;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
@@ -56,11 +57,12 @@ namespace AsyncSocketLib
                 {
                     case "stringPoc": sendOriginalStr(client, "This is a TEST <EOF>"); _sendingDone.WaitOne(); Receive<UnknownType>(client); break;
                     case "logInRmsC":
-                        sendLoginRequestRmsC(client, username); _sendingDone.WaitOne(); Receive<UnknownType>(client);
+                        sendLoginRequestRmsC(client, username); _sendingDone.WaitOne(); Receive<LoginResponse>(client);
                         await Task.Delay(1000 + 2500 + 500);
-                        sendChngeRequestRmsC(client, 26859, RequestStatus.rsDone, 8, $"AAAAAAAAAzAAAAAAAAAzAAAAAAAAAzAAAAAAAAAzAAAAAAAAAzAAAAAAAAAzAAAAAAAAAz"); 
-                        _sendingDone.WaitOne(); Receive<UnknownType>(client);
-                        await Task.Delay(1000 + 2500 + 500);
+                        sendChngeRequestRmsC(client, 26859, RequestStatus.rsDone, 8, $"C#C#C#C# zC#C#C#C# zC#C#C#C# zC#C#C#C# zC#C#C#C# zC#C#C#C# zC#C#C#C# z"); _sendingDone.WaitOne(); Receive<ChangeResponse>(client); await Task.Delay(500);
+                        sendChngeRequestRmsC(client, 26860, RequestStatus.rsDone, 8, $"C#C#C#C# zC#C#C#C# zC#C#C#C# zC#C#C#C# zC#C#C#C# zC#C#C#C# zC#C#C#C# z"); _sendingDone.WaitOne(); Receive<ChangeResponse>(client); await Task.Delay(500);
+                        sendChngeRequestRmsC(client, 26861, RequestStatus.rsDone, 8, $"C#C#C#C# zC#C#C#C# zC#C#C#C# zC#C#C#C# zC#C#C#C# zC#C#C#C# zC#C#C#C# z"); _sendingDone.WaitOne(); Receive<ChangeResponse>(client); await Task.Delay(500);
+                        sendChngeRequestRmsC(client, 26862, RequestStatus.rsDone, 8, $"C#C#C#C# zC#C#C#C# zC#C#C#C# zC#C#C#C# zC#C#C#C# zC#C#C#C# zC#C#C#C# z"); _sendingDone.WaitOne(); Receive<ChangeResponse>(client); await Task.Delay(500);
                         break;
                     case "logInRisk": sendLoginRequestRisk(client, username); _sendingDone.WaitOne(); Receive<RiskBaseMsg>(client); break;
                     default: throw new Exception($"{job} is unknown");
@@ -118,7 +120,7 @@ namespace AsyncSocketLib
                     {
                         state.SB.Append(Encoding.ASCII.GetString(state.Buffer, 0, bytesRead));          // There might be more data, so store the data received so far.  
 
-                        Report = $"{state.SB.Length,4}: '{state.SB}' got so far; maybe more coming...";
+                        Report = $"{state.SB.Length,4} bytes got so far; maybe more coming...";
 
                         client?.BeginReceive(state.Buffer, 0, StateObject.BufferSize, 0, new AsyncCallback(ReceiveCallback<T>), state); // Get the rest of the data.  
                     }
@@ -126,7 +128,7 @@ namespace AsyncSocketLib
                 }
                 else
                 {
-                    Report = $"{state.SB.Length,4}: '{state.SB}' All the data has arrived";
+                    Report = $"{state.SB.Length,4} bytes - All the data has arrived";
 
                     if (state.SB.Length > 1)          // All the data has arrived; put it in response.  
                     {
@@ -141,8 +143,22 @@ namespace AsyncSocketLib
                 {
                     fixed (byte* pSource = state.Buffer)
                     {
-                        var msgHeader = (RiskBaseMsg*)pSource;
-                        Report = $"\n       **RMB  seq sz tm gu: {(*msgHeader).m_seq,16}{(*msgHeader).m_size,16}{(*msgHeader).m_time,20}{(*msgHeader).iGuidID,16}{(*msgHeader).m_type,-32}·\n";
+                        var msgHeader = (MessageHeader*)pSource;
+
+                        switch ((*msgHeader).m_type)
+                        {
+                            case MessageType.mtNotSet: break;
+                            case MessageType.mtResponse: break;
+                            case MessageType.mtLogin: break;
+                            case MessageType.mtChangeRequest: break;
+                            case MessageType.mtNewRequestNotification: break;
+                            case MessageType.mtLockOrder: break;
+                            case MessageType.mtLockOrderResponse: break;
+                            case MessageType.mtLoginResponse: { var resp = (LoginResponse*)pSource; Report = $"\n      ■■■  Resp: {(*resp).ToString()}·\n"; break; }
+                            case MessageType.mtChangeResponse: { var resp = (ChangeResponse*)pSource; Report = $"\n      ■■■  Resp: {(*resp).ToString()}·\n"; break; }
+                            default: break;
+                        }
+
                         if (m_received >= msgHeader->m_size)
                         {
                             var bytesProcessed = ProcessMessages(pSource, m_received);
@@ -224,22 +240,25 @@ namespace AsyncSocketLib
         }
         unsafe void sendLoginRequestRmsC(Socket client, string username)
         {
+            int sz = sizeof(LoginRequest);
             LoginRequest lr;
-            lr.m_header.m_size = sizeof(LoginRequest);
+            lr.m_header.m_size = sz;
             lr.m_header.m_type = MessageType.mtLogin;
             lr.m_password[0] = 0;
             username.ToByteArray(lr.m_userName);
 
             var ptr = (byte*)&lr;
             var byteData = new byte[StateObject.BufferSize];
-            for (var i = 0; i < sizeof(LoginRequest); i++) byteData[i] = ptr[i];
-            for (var i = 20; i < sizeof(LoginRequest); i++) byteData[i] = 205; //mimic cpp: 
+            for (var i = 0; i < sz; i++) byteData[i] = ptr[i];
+            for (var i = 20; i < sz; i++) byteData[i] = 205; //mimic cpp: 
 
-            Report = $"  ►{(DateTime.Now - _started):s\\.fff} sending \t{nameof(LoginRequest),-26} \t\t total: {sizeof(LoginRequest)}\n";             //
+            //byteData = File.ReadAllBytes(@"C:\dev\trunk\Server\RMS\RMSClientCPP\Login.bin");
 
-            //for (var i = 0; i < sizeof(LoginRequest); i++) Debug.WriteLine($"  {i,4} {(int)byteData[i],4}"); Debug.WriteLine($"-- total: {sizeof(LoginRequest)} for log-in request.");
+            Report = $"  ►{ (DateTime.Now - _started):s\\.fff} sending \t{nameof(LoginRequest),-26} \t\t total: {sz}\n";             //
 
-            send(client, byteData, sizeof(LoginRequest)); // client.BeginSend(byteData, 0, sizeof(LoginRequest), 0, new AsyncCallback(SendCallback), client);   
+            for (var i = 0; i < sz; i++) Debug.WriteLine($"  {i,4} {(byteData[i] == 0 ? "" : $"{(int)byteData[i],4}")}"); Debug.WriteLine($"-- total: { sz} for log-in request.");
+
+            send(client, byteData, sz); // client.BeginSend(byteData, 0, sz, 0, new AsyncCallback(SendCallback), client);   
         }
         unsafe void sendChngeRequestRmsC(Socket client, int requestID, RequestStatus status, uint doneQty, string note)
         {
@@ -265,6 +284,8 @@ namespace AsyncSocketLib
             var ptr = (byte*)&crm;
             var byteData = new byte[StateObject.BufferSize];
             for (var i = 0; i < sz; i++) byteData[i] = ptr[i];
+
+            //byteData = File.ReadAllBytes(@"C:\dev\trunk\Server\RMS\RMSClientCPP\OrderUpdate.59.bin");
 
             Report = $"  ►{(DateTime.Now - _started):s\\.fff} sending \t{nameof(ChangeRequestMessage_RMS)} ...  -- total: {sz}\n";
 

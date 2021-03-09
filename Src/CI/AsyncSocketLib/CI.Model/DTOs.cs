@@ -8,6 +8,7 @@ namespace AsyncSocketLib.CI.Model
     {
         public int m_size;
         public MessageType m_type;
+        public override string ToString() => $" {m_type,-18}{m_size,4} bytes  ";
     };
 
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
@@ -31,15 +32,15 @@ namespace AsyncSocketLib.CI.Model
         public MessageHeader m_header;
         public int m_requestID;
     }
-            [StructLayout(LayoutKind.Sequential, Pack = 1)]
-        unsafe public struct ChangeRequestMessage
-	    {
-            public MessageHeader m_header;
-            public int m_requestID;
-		    public RequestStatus m_status;
-		    public uint m_doneQty;
-            public fixed byte m_bbsNote[100];
-	    };
+    [StructLayout(LayoutKind.Sequential, Pack = 1)]
+    unsafe public struct ChangeRequestMessage
+    {
+        public MessageHeader m_header;
+        public int m_requestID;
+        public RequestStatus m_status;
+        public uint m_doneQty;
+        public fixed byte m_bbsNote[100];
+    };
 
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
     unsafe public struct ChangeRequestMessage_RMS
@@ -54,7 +55,7 @@ namespace AsyncSocketLib.CI.Model
         public int m_lastShares;
         public double m_price;
         public int m_userID;
-        public fixed byte m_bbsNote[101]; 
+        public fixed byte m_bbsNote[101];
         public System.Runtime.InteropServices.ComTypes.FILETIME m_time;        //public Int64 m_time; -- wrong for RMS
     };
 
@@ -106,19 +107,39 @@ namespace AsyncSocketLib.CI.Model
         public RequestStatus m_status;
         public uint m_doneQty;
         public fixed byte m_bbsNote[100];
-  };
+    };
+
+    [StructLayout(LayoutKind.Sequential, Pack = 1)]
+    public unsafe struct LoginResponse
+    {
+        public MessageHeader m_header;
+        public ResponseCode m_code;
+        public int m_userID;
+        public override string ToString() => $"{m_header}  {m_code,-16}    user:{m_userID,3}";
+    }
+    [StructLayout(LayoutKind.Sequential, Pack = 1)]
+    public unsafe struct ChangeResponse
+    {
+        public MessageHeader m_header;
+        public ResponseCode m_code;
+        public int m_userID;
+        public int m_orderID;
+        public int m_updateID;
+        public override string ToString() => $"{m_header}  {m_code,-16}    user:{m_userID,3}    order:{m_orderID,6}    updateID:{m_updateID,4}";
+    };
 
 
 
-  [StructLayout(LayoutKind.Sequential, Pack = 1)]
-  public unsafe struct UnknownType
-  {
-    public object m_obj;
-  };
-  [StructLayout(LayoutKind.Sequential, Pack = 1)]
-  public unsafe struct RiskBaseMsg
-  {
-    public RiskMsgType m_type;
+
+    [StructLayout(LayoutKind.Sequential, Pack = 1)]
+    public unsafe struct UnknownType
+    {
+        public object m_obj;
+    };
+    [StructLayout(LayoutKind.Sequential, Pack = 1)]
+    public unsafe struct RiskBaseMsg
+    {
+        public RiskMsgType m_type;
         public long m_seq;
         public int m_size;
         public Int64 m_time;
