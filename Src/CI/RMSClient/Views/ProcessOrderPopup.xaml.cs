@@ -17,8 +17,8 @@ namespace RMSClient.Views
       MouseWheel += (s, e) => { if (!(Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl))) return; ZVa += (e.Delta * .001); e.Handled = true; Debug.WriteLine(Title = $">>ZVa:{ZVa}"); }; //tu:
       MouseLeftButtonDown += (s, e) => DragMove();
       DataContext = this;
-      c1.Focus();
-      c1.IsDropDownOpen = true;
+      cbxAction.Focus();
+      cbxAction.IsDropDownOpen = true;
     }
 
     public static readonly DependencyProperty ZVaProperty = DependencyProperty.Register("ZVa", typeof(double), typeof(ProcessOrderPopup), new PropertyMetadata(1.25)); public double ZVa { get => (double)GetValue(ZVaProperty); set => SetValue(ZVaProperty, value); }
@@ -33,11 +33,11 @@ namespace RMSClient.Views
     public static readonly DependencyProperty NewOrderStatusProperty = DependencyProperty.Register("NewOrderStatus", typeof(RequestStatus), typeof(ProcessOrderPopup)); public RequestStatus NewOrderStatus { get => (RequestStatus)GetValue(NewOrderStatusProperty); set => SetValue(NewOrderStatusProperty, value); }
     public static readonly DependencyProperty NewOrderActionProperty = DependencyProperty.Register("NewOrderAction", typeof(OrderActionEnum), typeof(ProcessOrderPopup)); public OrderActionEnum NewOrderAction { get => (OrderActionEnum)GetValue(NewOrderActionProperty); set => SetValue(NewOrderActionProperty, value); }
 
-    void Button_Click1(object s, RoutedEventArgs e) { DialogResult = true; NewOrderAction = OrderActionEnum.SendUpdate; NewOrderStatus = getIt; Close(); }
-    void Button_Click2(object s, RoutedEventArgs e) { DialogResult = true; NewOrderAction = OrderActionEnum.Acknowledge; NewOrderStatus = getIt; Close(); }
-    void Button_Click3(object s, RoutedEventArgs e) { DialogResult = true; NewOrderAction = OrderActionEnum.UnlockOrder; NewOrderStatus = getIt; Close(); }
-    void Button_Click4(object s, RoutedEventArgs e) { DialogResult = false; NewOrderAction = OrderActionEnum.Cancel; NewOrderStatus = getIt; Close(); }
+    void onUpdate(object s, RoutedEventArgs e) { DialogResult = true; NewOrderAction = OrderActionEnum.SendUpdate; NewOrderStatus = getIt; Close(); }
+    void onAckldg(object s, RoutedEventArgs e) { DialogResult = true; NewOrderAction = OrderActionEnum.Acknowledge; NewOrderStatus = getIt; Close(); }
+    void onUnlock(object s, RoutedEventArgs e) { DialogResult = true; NewOrderAction = OrderActionEnum.UnlockOrder; NewOrderStatus = getIt; Close(); }
+    void onCancel(object s, RoutedEventArgs e) { DialogResult = false; NewOrderAction = OrderActionEnum.Cancel; NewOrderStatus = getIt; Close(); }
 
-    RequestStatus getIt => (RequestStatus)c1.SelectedIndex + 1;
-  }
+         RequestStatus getIt => (RequestStatus)cbxAction.SelectedIndex + 1;
+    }
 }

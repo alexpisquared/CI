@@ -6,6 +6,7 @@
     <RootNamespace>Asynchronous_Server_Socket_Example</RootNamespace>
       <Nullable>enable</Nullable>
       <LangVersion>latest</LangVersion>
+      <Platforms>AnyCPU;x64</Platforms>
   </PropertyGroup>
 
   <ItemGroup>

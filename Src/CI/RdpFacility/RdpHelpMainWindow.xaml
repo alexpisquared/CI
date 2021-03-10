@@ -20,8 +20,8 @@
 
   <Viewbox Margin="5">
     <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
-      <Label Content="Big" x:Name="tbkBig"      HorizontalAlignment="Center" Foreground="#08e" />
-      <Label Content="Min" x:Name="tbkMin"      HorizontalAlignment="Center" Foreground="#d60" />
+      <Label Content="Big" x:Name="tbkBig"      HorizontalAlignment="Center" Foreground="#0dd" />
+      <Label Content="Min" x:Name="tbkMin"      HorizontalAlignment="Center" Foreground="#d00" />
       <Label Content="Log" x:Name="tbkLog"      HorizontalAlignment="Center" Foreground="#0a0" FontSize="3" MaxWidth="500" />
       <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center" Visibility="Visible">
         <CheckBox Content="_A" Checked="onAudible" Unchecked="onAudible" x:Name="chkAdbl" ToolTip="Audible"/>

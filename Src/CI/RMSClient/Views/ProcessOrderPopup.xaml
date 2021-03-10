@@ -90,12 +90,12 @@
           <Label Content="{Binding AdpaccountCode}" FontWeight="SemiBold" Foreground="#000"/>
         </StackPanel>
 
-        <Label Grid.Column="0" Grid.Row="2" FontSize="14" Target="{Binding ElementName=c1}" Content="Ne_w Status" />
+        <Label Grid.Column="0" Grid.Row="2" FontSize="14" Target="{Binding ElementName=cbxAction}" Content="Ne_w Status" />
         <Label Grid.Column="1" Grid.Row="2" FontSize="14" Target="{Binding ElementName=c2}" Content="_Last Shares" />
         <Label Grid.Column="2" Grid.Row="2" FontSize="14" Target="{Binding ElementName=c3}" Content="_Price" />
         <Label Grid.Column="0" Grid.Row="4" FontSize="14" Target="{Binding ElementName=c4}" Content="_Note" />
 
-        <ComboBox Grid.Column="0" Grid.Row="3" x:Name="c1" IsReadOnly="True">
+        <ComboBox Grid.Column="0" Grid.Row="3" x:Name="cbxAction" IsReadOnly="True">
           <ComboBoxItem Content="Done" IsSelected="True" />
           <ComboBoxItem Content="Partial Done" />
           <ComboBoxItem Content="Rejected" />
@@ -107,10 +107,10 @@
       </Grid>
 
       <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0 0 0 0">
-        <Button Content="_Send Update"  Click="Button_Click1" IsDefault="True" />
-        <Button Content="_Acknowledge"  Click="Button_Click2" />
-        <Button Content="_Unlock Order" Click="Button_Click3" />
-        <Button Content="_Cancel"       Click="Button_Click4" IsCancel="True" />
+        <Button Content="_Send Update"  Click="onUpdate" IsDefault="True" />
+        <Button Content="_Acknowledge"  Click="onAckldg" />
+        <Button Content="_Unlock Order" Click="onUnlock" />
+        <Button Content="_Cancel"       Click="onCancel" IsCancel="True" />
       </StackPanel>
     </Grid>
   </Border>

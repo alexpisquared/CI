@@ -89,7 +89,7 @@ namespace RdpFacility
                 var ibh = IsBizHours;
                 chkInso.IsChecked = ibh;
                 _insomniac.SetInso(ibh);
-                Background = new SolidColorBrush(ibh ? Colors.DodgerBlue : Colors.DarkRed);
+                Background = new SolidColorBrush(ibh ? Colors.DarkCyan : Colors.DarkRed);
             }
 
             if (_appset.IsPosning)
@@ -97,7 +97,8 @@ namespace RdpFacility
             else
                 await File.AppendAllTextAsync(App.TextLog, $"■"); // {prefix}onTick  {_crlf}");
         }
-        bool IsBizHours => _from <= DateTimeOffset.Now.Hour && DateTimeOffset.Now.Hour <= _till;
+
+        static bool IsBizHours => _from <= DateTimeOffset.Now.Hour && DateTimeOffset.Now.Hour != 12 && DateTimeOffset.Now.Hour <= _till;
 
         void togglePosition(string msg)
         {

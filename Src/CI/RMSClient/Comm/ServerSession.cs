@@ -128,8 +128,8 @@ namespace RMSClient.Comm
             logInfo($"ReceiveData( ...", asyncResult);
             try
             {
-                var remote = (Socket)asyncResult.AsyncState;
-                var recv = remote.EndReceive(asyncResult);
+                var remote = asyncResult.AsyncState as Socket;
+                var recv = remote?.EndReceive(asyncResult) ?? -1;
                 if (recv == 0)
                 {
                     recv = 0;
@@ -199,7 +199,7 @@ namespace RMSClient.Comm
         {
             var processed = 0;
             var remainder = length;
-            while(true)
+            while (true)
             {
                 if (remainder < sizeof(MessageHeader))
                 {

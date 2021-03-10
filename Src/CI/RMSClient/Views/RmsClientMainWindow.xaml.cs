@@ -191,7 +191,7 @@ namespace RMSClient
                     }
                 }
             }
-            catch (Exception ex) { _logger.LogError($"{ex}"); MessageBox.Show($"{ex.Message}", "Exception in onPopup()", MessageBoxButton.OK, MessageBoxImage.Error); }
+            catch (Exception ex) { _logger.LogError($"{ex}"); ex.Pop(this); }
             finally { Blur = 0; }
         }
         
