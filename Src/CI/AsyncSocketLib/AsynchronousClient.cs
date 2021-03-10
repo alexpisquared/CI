@@ -33,8 +33,8 @@ namespace AsyncSocketLib
             }
         }
 
-        public async Task ConnectSendClose_formerStartClient(string uri, int port) => await ConnectSendClose(uri, port, "", "stringPoc");
-        public async Task<string> ConnectSendClose(string uri, int port, string username, string job)
+        public async Task ConnectSendClose_formerStartClient(string uri, int port) => await ConnectSendClosePOC(uri, port, "", "stringPoc");
+        public async Task<string> ConnectSendClosePOC(string uri, int port, string username, string job)
         {
             try
             {

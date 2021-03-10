@@ -54,10 +54,10 @@ namespace AsyncSocketTester
             await Task.Yield();
         }
         async void onMe(object s, RoutedEventArgs e) { var c = new AsynchronousClient(); await c.ConnectSendClose_formerStartClient(Dns.GetHostName(), 11000); tbkReportClt.Text += c.Report; }
-        async void onRealHere(object s, RoutedEventArgs e) { var c = new AsynchronousClient(); await c.ConnectSendClose(Dns.GetHostName(), 11000, "alex.pigida", "stringPoc"); tbkReportClt.Text += c.Report; }
+        async void onRealHere(object s, RoutedEventArgs e) { var c = new AsynchronousClient(); await c.ConnectSendClosePOC(Dns.GetHostName(), 11000, "alex.pigida", "stringPoc"); tbkReportClt.Text += c.Report; }
         async void onTag(object s, RoutedEventArgs e) => await doJob(new AsynchronousClient(), ((Button)s).Tag?.ToString()?.Split(':') ?? new[] { "www", "123", "stringPoc" });
         void onClear(object? s = null, RoutedEventArgs? e = null) { tbkReportSvr.Text = tbkReportClt.Text = ""; ; }
 
-        async Task doJob(AsynchronousClient asc, string[] ipj) => tbkReportClt.Text += await asc.ConnectSendClose(ipj[0], int.Parse(ipj[1]), "alex.pigida", ipj[2]); void onRR(object? s = null, RoutedEventArgs? e = null) { tbkReportSvr.Text += _svr.Report; ; }
+        async Task doJob(AsynchronousClient asc, string[] ipj) => tbkReportClt.Text += await asc.ConnectSendClosePOC(ipj[0], int.Parse(ipj[1]), "alex.pigida", ipj[2]); void onRR(object? s = null, RoutedEventArgs? e = null) { tbkReportSvr.Text += _svr.Report; ; }
     }
 }

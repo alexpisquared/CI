@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
 using System.Windows.Threading;
 
 namespace RdpFacility
@@ -17,17 +18,18 @@ namespace RdpFacility
         readonly IdleTimeoutAnalizer _idleTimeoutAnalizer;
         readonly AppSettings _appset = AppSettings.Create();
         readonly Insomniac _insomniac = new Insomniac();
+        readonly string _crlf = $" ";
 #if DEBUG
         const int _from = 8, _till = 18, _dbgDelayMs = 500;
         int _dx = 1, _dy = 1;
 #else
-    const int _from = 8, _till = 20, _dbgDelayMs = 0;
-    int _dx = 10, _dy = 10;
+        const int _from = 8, _till = 18, _dbgDelayMs = 0;
+        int _dx = 10, _dy = 10;
 #endif
         bool _isLoaded = false;
 
         string prefix => $"{DateTimeOffset.Now:HH:mm:ss}+{DateTimeOffset.Now - App.Started:hh\\:mm\\:ss}  {(_appset.IsAudible ? "A" : "a")}{(_appset.IsPosning ? "P" : "p")}{(_appset.IsInsmnia ? "I" : "i")}  ";
-        string _crlf = $" ";
+
 
         public RdpHelpMainWindow()
         {
@@ -76,18 +78,25 @@ namespace RdpFacility
                     EvLogHelper.LogScrSvrBgn(4 * 60, "RDP Facility - OnLoaded()  Idle Timeout ");
             }
 
+            await onTick();
+
             _isLoaded = true;
         }
         async Task onTick()
         {
-            if (chkInso.IsChecked == true && chkMind.IsChecked == true && !(_from <= DateTimeOffset.Now.Hour && DateTimeOffset.Now.Hour <= _till))
-                chkInso.IsChecked = false;
+            if (chkMind.IsChecked == true)
+            {
+                var ibh = IsBizHours;
+                chkInso.IsChecked = ibh;
+                Background = new SolidColorBrush(ibh ? Colors.DodgerBlue : Colors.DarkRed);
+            }
 
             if (_appset.IsPosning)
                 togglePosition("onTick");
             else
                 await File.AppendAllTextAsync(App.TextLog, $"■"); // {prefix}onTick  {_crlf}");
         }
+        bool IsBizHours => _from <= DateTimeOffset.Now.Hour && DateTimeOffset.Now.Hour <= _till;
 
         void togglePosition(string msg)
         {

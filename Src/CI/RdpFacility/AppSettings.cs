@@ -12,7 +12,7 @@ namespace RdpFacility
         public bool IsInsmnia { get; set; }
         public bool IsPosning { get; set; }
         public bool IsMindBiz { get; set; }
-        public double PeriodSec { get; set; } = 210; //240 - 30
+        public double PeriodSec { get; set; } = 230; //240 - 10
         public double QuitAtHour { get; set; } = 18;
 
         static readonly string _stgFile;
