@@ -18,6 +18,8 @@ namespace AsyncSocketLib
         string _report = "", _responseStrVer = ""; // The response from the remote device.  
         int _bytesReceived;
         const int _delay = 50;
+        unsafe ChangeResponse _changeResponse;
+        unsafe LoginResponse _loginResponse;
 
         public AsynchronousClient() => _started = DateTime.Now;
 
@@ -32,6 +34,8 @@ namespace AsyncSocketLib
                 }
             }
         }
+        public LoginResponse LoginResponse { get => _loginResponse; }
+        public ChangeResponse ChangeResponse { get => _changeResponse; }
 
         public async Task<string> SendChangeRequest(string uri, int port, string username, int requestID, RequestStatus status, int doneQty, double price, string note)
         {
@@ -188,8 +192,8 @@ namespace AsyncSocketLib
                             case MessageType.mtNewRequestNotification: break;
                             case MessageType.mtLockOrder: break;
                             case MessageType.mtLockOrderResponse: break;
-                            case MessageType.mtLoginResponse:  /**/{ var resp = (LoginResponse*)buffer; Report = $"\n      ■■■  Resp: {*resp}·\n"; break; }
-                            case MessageType.mtChangeResponse: /**/{ var resp = (ChangeResponse*)buffer; Report = $"\n      ■■■  Resp: {*resp}·\n"; break; }
+                            case MessageType.mtLoginResponse:  /**/{ _loginResponse = *((LoginResponse*)buffer); Report = $"\n      ■■■  Resp: {_loginResponse}·\n"; break; }
+                            case MessageType.mtChangeResponse: /**/{ _changeResponse = *((ChangeResponse*)buffer); Report = $"\n      ■■■  Resp: {_changeResponse}·\n"; break; }
                             default: break;
                         }
 

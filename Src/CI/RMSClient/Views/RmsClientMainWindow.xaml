@@ -4,7 +4,7 @@
                 xmlns:system="clr-namespace:System;assembly=mscorlib"
                 xmlns:Views="clr-namespace:RMSClient.Views" x:Name="wnd" x:Class="RMSClient.RmsClientMainWindow" mc:Ignorable="d"
                 Style="{DynamicResource WindowStyle_Aav0}"
-                Title="RMS Client" Height="600" Width="1750" Loaded="onLoaded" Topmost="True">
+                Title="RMS Client" Height="600" Width="1750" Loaded="onLoaded" Topmost="False">
   <lnk:WindowBase.Resources>
     <ResourceDictionary >
       <ResourceDictionary.MergedDictionaries>

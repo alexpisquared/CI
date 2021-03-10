@@ -50,12 +50,12 @@ namespace RMSClient
             _logger = logger;
             _config = config;
 
-            _appSettings = XmlIsoFileSerializer.Load<AppSettings>(_isoFilenameONLY); // = new AppSettings { Port = ushort.Parse(aps.FirstOrDefault(r => r.Key == nameof(AppSettings.Port))?.Value ?? "6756"), IpAddress = aps.FirstOrDefault(r => r.Key == nameof(AppSettings.IpAddress))?.Value ?? "10.10.19.152", RmsDebug = aps.FirstOrDefault(r => r.Key == "RmsDebug")?.Value, RmsRelease = aps.FirstOrDefault(r => r.Key == "RmsRelease")?.Value };      //var aps = config.GetSection("AppSettings").GetChildren();
+            _appSettings = XmlIsoFileSerializer.Load<AppSettings>(_isoFilenameONLY); // = new AppSettings { Port = ushort.Parse(aps.FirstOrDefault(r => r.Key == nameof(AppSettings.Port))?.Value ?? "6756"), IpAddress = aps.FirstOrDefault(r => r.Key == nameof(AppSettings.IpAddress))?.Value ?? "10.10.19.152", RmsDbConStr = aps.FirstOrDefault(r => r.Key == "RmsDbConStr")?.Value, RmsDbConStr = aps.FirstOrDefault(r => r.Key == "RmsDbConStr")?.Value };      //var aps = config.GetSection("AppSettings").GetChildren();
 
 #if DEBUG
-            _dbRMS = new RMSContext(_appSettings.RmsDebug);
+            _dbRMS = new RMSContext(_appSettings.RmsDbConStr);
 #else
-      _dbRMS = new RMSContext(_appSettings.RmsRelease);
+      _dbRMS = new RMSContext(_appSettings.RmsDbConStr);
       Topmost = false;
 #endif
 
@@ -79,12 +79,20 @@ namespace RMSClient
                 var acnt = string.IsNullOrEmpty(tbxAccount.Text) || tbxAccount.Text == "xxxxxxxxx" ? null : tbxAccount.Text;
 
 #if DIRECT_RO_BINDING
-                var sti = cbxOAF.SelectedIndex == 0 ? 1 : 7;
+                const int outstg = 0, allord = 1, filled = 2;
                 var lst = _dbRMS.RmsDboRequestInvDboAccountViews.
                   Where(r =>
-                    dt1.SelectedDate <= r.SendingTimeGmt && r.SendingTimeGmt <= dt2.SelectedDate.Value.AddDays(1) && (acnt == null || r.AdpaccountCode.Contains(acnt)) && (cnkDirein.IsChecked != true || (r.OtherInfo != null && r.OtherInfo.Contains("einv")))
-                    && (cbxOAF.SelectedIndex == 1 || r.StatusId == sti)
-                    ).OrderBy(r => r.SendingTimeGmt);
+                    dt1.SelectedDate <= r.SendingTimeGmt && r.SendingTimeGmt <= (dt2.SelectedDate ?? DateTime.Now).AddDays(1)
+                    && (acnt == null || r.AdpaccountCode.Contains(acnt))
+                    && (cnkDirein.IsChecked != true || (r.OtherInfo != null && r.OtherInfo.Contains("einv")))
+                    && (
+                        (cbxOAF.SelectedIndex == allord) ||
+                        (cbxOAF.SelectedIndex == outstg && r.StatusId != (int)OrderStatus.rsDone && r.StatusId != (int)OrderStatus.rsRejected && r.StatusId != (int)OrderStatus.rsCancelled) ||
+                        (cbxOAF.SelectedIndex == filled && r.StatusId == (int)OrderStatus.rsDone)
+                    )
+                  ).OrderBy(r => r.SendingTimeGmt);
+
+                Debug.WriteLine(lst.ToQueryString());
 
                 dg1.ItemsSource = await lst.Take(top).ToListAsync();
 #elif RawSql
@@ -180,21 +188,22 @@ namespace RMSClient
                 if (dialogue.ShowDialog() == true)
                 {
 #if DEBUG
-                    dialogue.Note += $"Test @ {DateTime.Now:yMMdd.HHmm} - {dialogue.NewOrderStatus} - {dialogue.NewOrderAction} - {dialogue.Quantity} 123456789 123456789 123456789 123456789 123456789■".Substring(0, 100);
+                    dialogue.Note += $"Test @ {DateTime.Now:yMMdd.HHmm} - {dialogue.NewOrderStatus} - {dialogue.NewOrderAction} - {dialogue.Quantity} 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789■";
+                    if (dialogue.Note.Length > 100)
+                        dialogue.Note = dialogue.Note.Substring(0, 100);
 #endif
                     var client = new AsynchronousClient();
                     var rv = await client.SendChangeRequest(_appSettings.IpAddress, _appSettings.Port, Environment.UserName, request.OrderId, dialogue.NewOrderStatus, dialogue.Quantity, dialogue.AvgPx, dialogue.Note ?? "");
                     SystemSounds.Beep.Play();
-                    if (!string.IsNullOrEmpty(rv))
-                    {
-                        MessageBox.Show(rv, "Under Construction", MessageBoxButton.OK, MessageBoxImage.Exclamation);
-                    }
+                    MessageBox.Show($"Result:\n\n\t{client.ChangeResponse.m_code}", "Under Construction", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                    if (client.ChangeResponse.m_code == ResponseCode.rcOK)
+                        await find();
                 }
             }
             catch (Exception ex) { _logger.LogError($"{ex}"); ex.Pop(this); }
             finally { Blur = 0; }
         }
-        
+
         void onEditAppSettings(object s, RoutedEventArgs e)
         {
             try
@@ -252,6 +261,18 @@ namespace RMSClient
         }
     }
 
-    public enum OrderStatusEnum { Unknown, Done, PartialyDone, Rejected }; //from $\\trunk\Server\RMS\RMSClient\ChangeRequest.Designer.cs: "Received", "Rejected", "Cancelled", "PartialyDone", "Done"
+    public enum OrderStatusEnum { Unknown, Done, PartialyDone, Rejected }; // $\\trunk\Server\RMS\RMSClient\ChangeRequest.Designer.cs: "Received", "Rejected", "Cancelled", "PartialyDone", "Done"
     public enum OrderActionEnum { Unknown, SendUpdate, Acknowledge, UnlockOrder, Cancel };
+    public enum OrderStatus : int // $\\trunk\Server\RMS\Common\RMSMessage.h
+    {
+        rsNotSet = 0,
+        rsSent = 1,
+        rsReceived = 2,
+        //rsProcessing = 3,
+        rsRejected = 4,
+        rsCancelled = 5,
+        rsPartialyDone = 6,
+        rsDone = 7,
+        rsCancelRequested = 8
+    };
 }
