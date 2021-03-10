@@ -7,14 +7,17 @@ namespace RdpFacility
   internal class Insomniac
   {
     bool _isOn = false;
-    internal void RequestActive(string crlf)
+
+        internal void SetInso(bool isOn) { if (isOn) RequestActive(); else RequestRelease(); }
+
+        internal void RequestActive(string crlf = " ")
     {
       _isOn = true;
       SetThreadExecutionState(EXECUTION_STATE.ES_DISPLAY_REQUIRED | EXECUTION_STATE.ES_CONTINUOUS);
       //File.AppendAllText(App.TextLog, $"{DateTimeOffset.Now:HH:mm:ss} {(DateTimeOffset.Now - App.Started):hh\\:mm\\:ss}  Dr - On {crlf}");
       File.AppendAllText(App.TextLog, $"Dr-On{crlf}");
     }
-    internal void RequestRelease(string crlf)
+    internal void RequestRelease(string crlf = " ")
     {
       if (!_isOn) return;
 
