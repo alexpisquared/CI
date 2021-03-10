@@ -1,4 +1,5 @@
-﻿using CI.GUI.Support.WpfLibrary.Base;
+﻿using AsyncSocketLib.CI.Model;
+using CI.GUI.Support.WpfLibrary.Base;
 using System.Diagnostics;
 using System.Windows;
 using System.Windows.Input;
@@ -26,10 +27,10 @@ namespace RMSClient.Views
     public static readonly DependencyProperty OrderStatusProperty = DependencyProperty.Register("OrderStatus", typeof(string), typeof(ProcessOrderPopup)); public string OrderStatus { get => (string)GetValue(OrderStatusProperty); set => SetValue(OrderStatusProperty, value); }
     public static readonly DependencyProperty SymbolProperty = DependencyProperty.Register("Symbol", typeof(string), typeof(ProcessOrderPopup)); public string Symbol { get => (string)GetValue(SymbolProperty); set => SetValue(SymbolProperty, value); }
     public static readonly DependencyProperty AdpaccountCodeProperty = DependencyProperty.Register("AdpaccountCode", typeof(string), typeof(ProcessOrderPopup)); public string AdpaccountCode { get => (string)GetValue(AdpaccountCodeProperty); set => SetValue(AdpaccountCodeProperty, value); }
-    public static readonly DependencyProperty QuantityProperty = DependencyProperty.Register("Quantity", typeof(int?), typeof(ProcessOrderPopup)); public int? Quantity { get => (int?)GetValue(QuantityProperty); set => SetValue(QuantityProperty, value); }
-    public static readonly DependencyProperty AvgPxProperty = DependencyProperty.Register("AvgPx", typeof(double?), typeof(ProcessOrderPopup)); public double? AvgPx { get => (double?)GetValue(AvgPxProperty); set => SetValue(AvgPxProperty, value); }
+    public static readonly DependencyProperty QuantityProperty = DependencyProperty.Register("Quantity", typeof(int), typeof(ProcessOrderPopup)); public int Quantity { get => (int)GetValue(QuantityProperty); set => SetValue(QuantityProperty, value); }
+    public static readonly DependencyProperty AvgPxProperty = DependencyProperty.Register("AvgPx", typeof(double), typeof(ProcessOrderPopup)); public double AvgPx { get => (double)GetValue(AvgPxProperty); set => SetValue(AvgPxProperty, value); }
     public static readonly DependencyProperty NoteProperty = DependencyProperty.Register("Note", typeof(string), typeof(ProcessOrderPopup)); public string Note { get => (string)GetValue(NoteProperty); set => SetValue(NoteProperty, value); }
-    public static readonly DependencyProperty NewOrderStatusProperty = DependencyProperty.Register("NewOrderStatus", typeof(OrderStatusEnum), typeof(ProcessOrderPopup)); public OrderStatusEnum NewOrderStatus { get => (OrderStatusEnum)GetValue(NewOrderStatusProperty); set => SetValue(NewOrderStatusProperty, value); }
+    public static readonly DependencyProperty NewOrderStatusProperty = DependencyProperty.Register("NewOrderStatus", typeof(RequestStatus), typeof(ProcessOrderPopup)); public RequestStatus NewOrderStatus { get => (RequestStatus)GetValue(NewOrderStatusProperty); set => SetValue(NewOrderStatusProperty, value); }
     public static readonly DependencyProperty NewOrderActionProperty = DependencyProperty.Register("NewOrderAction", typeof(OrderActionEnum), typeof(ProcessOrderPopup)); public OrderActionEnum NewOrderAction { get => (OrderActionEnum)GetValue(NewOrderActionProperty); set => SetValue(NewOrderActionProperty, value); }
 
     void Button_Click1(object s, RoutedEventArgs e) { DialogResult = true; NewOrderAction = OrderActionEnum.SendUpdate; NewOrderStatus = getIt; Close(); }
@@ -37,6 +38,6 @@ namespace RMSClient.Views
     void Button_Click3(object s, RoutedEventArgs e) { DialogResult = true; NewOrderAction = OrderActionEnum.UnlockOrder; NewOrderStatus = getIt; Close(); }
     void Button_Click4(object s, RoutedEventArgs e) { DialogResult = false; NewOrderAction = OrderActionEnum.Cancel; NewOrderStatus = getIt; Close(); }
 
-    OrderStatusEnum getIt => (OrderStatusEnum)c1.SelectedIndex + 1;
+    RequestStatus getIt => (RequestStatus)c1.SelectedIndex + 1;
   }
 }

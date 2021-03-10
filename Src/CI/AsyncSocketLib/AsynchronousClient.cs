@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace AsyncSocketLib
 {
-    public partial class AsynchronousClient
+    public class AsynchronousClient
     {
         readonly ManualResetEvent _connectDone = new(false), _sendingDone = new(false), _receiveDone = new(false);    // ManualResetEvent instances signal completion.  
         readonly DateTime _started;
@@ -33,7 +33,44 @@ namespace AsyncSocketLib
             }
         }
 
-        public async Task ConnectSendClose_formerStartClient(string uri, int port) => await ConnectSendClosePOC(uri, port, "", "stringPoc");
+        public async Task<string> SendChangeRequest(string uri, int port, string username, int requestID, RequestStatus status, int doneQty, double price, string note)
+        {
+            try
+            {
+                var ipAddress = Dns.GetHostEntry(uri).AddressList[0];
+
+                using var client = new Socket(ipAddress.AddressFamily, SocketType.Stream, ProtocolType.Tcp); // Create a TCP/IP socket.  
+                client.BeginConnect(new IPEndPoint(ipAddress, port), new AsyncCallback(ConnectCallback), client);
+                var sw = Stopwatch.StartNew();
+                if (!_connectDone.WaitOne(_delay))
+                {
+                    return Report = $"  Failed to connect in {sw.ElapsedMilliseconds} / {_delay} \n";
+                }
+
+                Report = $" ◄ {uri}:{port}  in {sw.ElapsedMilliseconds} / {_delay} ms\n";
+
+                sendLoginRequestRmsC(client, username);
+                _sendingDone.WaitOne();
+                Receive<LoginResponse>(client);
+                await Task.Delay(_delay);
+
+                sendChngeRequestRmsC(client, requestID, status, doneQty, price, note);
+                _sendingDone.WaitOne();
+                Receive<ChangeResponse>(client);
+                await Task.Delay(_delay);
+
+                sw = Stopwatch.StartNew();
+                Report = $"  Finally, waiting {_delay} for the Response ...";
+                _receiveDone.WaitOne(_delay);
+                Report = $" in {sw.ElapsedMilliseconds} / {_delay} response of {_responseStrVer} received;  closing client socket.\n\n";
+
+                client.Shutdown(SocketShutdown.Both);
+                client.Close();
+            }
+            catch (Exception ex) { Report = $" ■ ■ ■ {ex}\n\n"; }
+
+            return Report;
+        }
         public async Task<string> ConnectSendClosePOC(string uri, int port, string username, string job)
         {
             try
@@ -77,6 +114,7 @@ namespace AsyncSocketLib
 
             return Report;
         }
+        public async Task ConnectSendClose_formerStartClient(string uri, int port) => await ConnectSendClosePOC(uri, port, "", "stringPoc");
 
         void ConnectCallback(IAsyncResult ar)
         {

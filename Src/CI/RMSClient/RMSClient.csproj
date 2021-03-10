@@ -55,6 +55,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\AsyncSocketLib\AsyncSocketLib.csproj" />
     <ProjectReference Include="..\CI.GUI.Support.WpfLibrary\CI.GUI.Support.WpfLibrary.csproj" />
   </ItemGroup>
 
@@ -69,12 +70,6 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </None>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Page Update="Views\RmsClientMainWindow0.xaml">
-      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
-    </Page>
   </ItemGroup>
 
 </Project>

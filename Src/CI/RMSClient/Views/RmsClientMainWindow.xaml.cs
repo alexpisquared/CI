@@ -1,4 +1,6 @@
-﻿using CI.GUI.Support.WpfLibrary.Base;
+﻿using AsyncSocketLib;
+using AsyncSocketLib.CI.Model;
+using CI.GUI.Support.WpfLibrary.Base;
 using CI.GUI.Support.WpfLibrary.Extensions;
 using CI.GUI.Support.WpfLibrary.Helpers;
 using Microsoft.EntityFrameworkCore;
@@ -171,53 +173,28 @@ namespace RMSClient
                     OrderStatus = request.OrderStatus,
                     Symbol = request.Symbol,
                     AdpaccountCode = request.AdpaccountCode,
-                    Quantity = request.Quantity,
-                    AvgPx = request.AvgPx
+                    Quantity = request.Quantity ?? 0,
+                    AvgPx = request.AvgPx ?? 0d
                 };
 
                 if (dialogue.ShowDialog() == true)
                 {
 #if DEBUG
-                    dialogue.Note += $"Test @ {DateTime.Now} - {dialogue.NewOrderStatus} - {dialogue.NewOrderAction} - {dialogue.Quantity} 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 ".Substring(0, 100);
+                    dialogue.Note += $"Test @ {DateTime.Now:yMMdd.HHmm} - {dialogue.NewOrderStatus} - {dialogue.NewOrderAction} - {dialogue.Quantity} 123456789 123456789 123456789 123456789 123456789■".Substring(0, 100);
 #endif
-                    LoadStatuses();
-                    var _serverSession = new ServerSession(_logger, this);
-                    _serverSession.Connect(_appSettings.IpAddress, _appSettings.Port);
-                    await Task.Delay(_delay);
-                    _serverSession.SendChangeRequest(request.OrderId, dialogue.NewOrderStatus.ToString(), (uint)(dialogue.Quantity ?? 0), dialogue.Note ?? "");
+                    var client = new AsynchronousClient();
+                    var rv = await client.SendChangeRequest(_appSettings.IpAddress, _appSettings.Port, Environment.UserName, request.OrderId, dialogue.NewOrderStatus, dialogue.Quantity, dialogue.AvgPx, dialogue.Note ?? "");
                     SystemSounds.Beep.Play();
+                    if (!string.IsNullOrEmpty(rv))
+                    {
+                        MessageBox.Show(rv, "Under Construction", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                    }
                 }
             }
             catch (Exception ex) { _logger.LogError($"{ex}"); MessageBox.Show($"{ex.Message}", "Exception in onPopup()", MessageBoxButton.OK, MessageBoxImage.Error); }
             finally { Blur = 0; }
         }
-        async void onPopupPOC()
-        {
-            try
-            {
-                var request = _dbRMS.RmsDboRequestInvDboAccountViews.First();
-                var dialogue = new ProcessOrderPopup
-                {
-                    Owner = this,
-                    OrderId = request.OrderId,
-                    OrderStatus = request.OrderStatus,
-                    Symbol = request.Symbol,
-                    AdpaccountCode = request.AdpaccountCode,
-                    Quantity = request.Quantity,
-                    AvgPx = request.AvgPx
-                };
-
-                LoadStatuses();
-                var _serverSession = new ServerSession(_logger, this);
-                _serverSession.Connect(_appSettings.IpAddress, _appSettings.Port);
-                await Task.Delay(_delay);
-                _serverSession.SendChangeRequest(request.OrderId, OrderStatusEnum.Rejected.ToString(), (uint)request.Quantity, $"Test @ {DateTime.Now} - {dialogue.NewOrderStatus} - {dialogue.NewOrderAction} - {dialogue.Quantity} 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 ".Substring(0, 100));
-                SystemSounds.Beep.Play();                await Task.Delay(_delay);
-                SystemSounds.Hand.Play();                await Task.Delay(_delay);
-                Application.Current.Shutdown();
-            }
-            catch (Exception ex) { _logger.LogError($"{ex}"); ex.Pop(this); }
-        }
+        
         void onEditAppSettings(object s, RoutedEventArgs e)
         {
             try
