@@ -65,6 +65,23 @@
       <Style x:Key="CenterAlignChkBox" TargetType="{x:Type CheckBox}">
         <Setter Property="HorizontalAlignment" Value="Center" />
       </Style>
+
+      <Color x:Key="c">#1f00</Color>
+      <Color x:Key="a">#3f00</Color>
+      <Color x:Key="b">#1f00</Color>
+      <Color x:Key="e">#10f0</Color>
+      <Color x:Key="f">#00f0</Color>
+      <LinearGradientBrush x:Key="rf1" EndPoint="0.5,1" StartPoint="0.5,0">
+        <GradientStop x:Name="GradientStop1a" Color="{StaticResource c}" Offset="0.0" />
+        <GradientStop x:Name="GradientStop2a" Color="{StaticResource a}" Offset="0.50" />
+        <GradientStop x:Name="GradientStop3"  Color="{StaticResource b}" Offset="1.0" />
+      </LinearGradientBrush>
+      <LinearGradientBrush x:Key="rf2" EndPoint="0.5,1" StartPoint="0.5,0">
+        <GradientStop x:Name="GradientStop3a" Color="{StaticResource f}" Offset="0.0" />
+        <GradientStop x:Name="GradientStop3e" Color="{StaticResource e}" Offset="0.50" />
+        <GradientStop x:Name="GradientStop3d" Color="{StaticResource f}" Offset="1.0" />
+      </LinearGradientBrush>
+
     </ResourceDictionary>
   </lnk:WindowBase.Resources>
   <WindowChrome.WindowChrome>
@@ -165,21 +182,39 @@
           <Grid.Effect>
             <BlurEffect Radius="{Binding ElementName=wnd, Path=Blur}" />
           </Grid.Effect>
-          <DataGrid 
-            Style="{DynamicResource DataGridStyle}" VerticalAlignment="Top" HorizontalAlignment="Stretch"
-            Foreground="{StaticResource MainForegroundBrush}" x:Name="dg1" AutoGenerateColumns="False" ItemsSource="{Binding Source={StaticResource _accountRequestViewSource}}" 
-                SelectedCellsChanged="onSelect" MouseDoubleClick="onPopup"
-                CanUserAddRows="False" CanUserDeleteRows="False" GridLinesVisibility="None" HeadersVisibility="Column" 
-                SelectionMode="Single" BorderThickness="0" IsReadOnly="True" Grid.ColumnSpan="2" Margin="0 3">
+          <Grid.Resources>
+            <DoubleAnimation x:Key="SearchAnimation"      Storyboard.TargetProperty="Opacity" To="1.0" Duration="0:0:2"/>
+            <DoubleAnimation x:Key="StopSearchAnimation"  Storyboard.TargetProperty="Opacity" To="0.2" Duration="0:0:2"/>            
+          </Grid.Resources>
+          <DataGrid Style="{DynamicResource DataGridStyle}" VerticalAlignment="Top" HorizontalAlignment="Stretch" Grid.ColumnSpan="2" Margin="0 3" BorderThickness="0" 
+                    Foreground="{StaticResource MainForegroundBrush}" ItemsSource="{Binding Source={StaticResource _accountRequestViewSource}}" x:Name="dg1" 
+                    SelectedCellsChanged="onSelect" MouseDoubleClick="onPopup"
+                    AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False" GridLinesVisibility="None" HeadersVisibility="Column" SelectionMode="Single" IsReadOnly="True">
             <DataGrid.RowStyle>
               <Style TargetType="DataGridRow">
                 <Setter Property="IsHitTestVisible" Value="False" />
+                <Style.Resources>
+                  <Storyboard x:Key="myAnimation" Duration="0:0:.5" AutoReverse="True" RepeatBehavior="Forever" >
+                    <DoubleAnimation Storyboard.TargetProperty="Opacity" From=".5" To="1" />
+                    <!--
+                    <ColorAnimation  Storyboard.TargetProperty="Color"  From="{StaticResource c}" To="{StaticResource b}" />
+                    <ColorAnimation  Storyboard.TargetName="GradientStop2a" Storyboard.TargetProperty="Color"  From="{StaticResource a}" To="{StaticResource b}" Duration="0:0:2.0" BeginTime="0:0:0.5" />
+                    <DoubleAnimation Storyboard.TargetName="GradientStop2a" Storyboard.TargetProperty="Offset" From="0.00" To="1.00"   Duration="0:0:0.5" />
+                    <DoubleAnimation Storyboard.TargetName="GradientStop2b" Storyboard.TargetProperty="Offset" From="0.01" To="1.01"   Duration="0:0:0.5" />-->
+                  </Storyboard>
+                </Style.Resources>
                 <Style.Triggers>
-                  <DataTrigger Binding="{Binding OrderStatus}" Value="Blah">
-                    <Setter Property="Background" Value="#10f0" />
-                  </DataTrigger>
+                  <!--<DataTrigger Binding="{Binding OrderStatus}" Value="Received">
+                    <Setter Property="Background" Value="{DynamicResource rf2}" />
+                  </DataTrigger>-->
                   <DataTrigger Binding="{Binding OrderStatus}" Value="CancelRequested">
-                    <Setter Property="Background" Value="#4f00" />
+                    <Setter Property="Background" Value="{DynamicResource rf1}" />
+                    <DataTrigger.EnterActions>
+                      <BeginStoryboard x:Name="beginAnimation" Storyboard="{StaticResource myAnimation}" />
+                    </DataTrigger.EnterActions>
+                    <DataTrigger.ExitActions>
+                      <StopStoryboard BeginStoryboardName="beginAnimation" />
+                    </DataTrigger.ExitActions>
                   </DataTrigger>
                 </Style.Triggers>
               </Style>
@@ -203,8 +238,51 @@
               <DataGridTextColumn Header="Rep CD"	          Binding="{Binding RepCd}"								  />
               <DataGridTextColumn Header="Type"	            Binding="{Binding TypeName}"						  />
               <DataGridTextColumn Header="Subtype"	        Binding="{Binding SubtypeName}"					  />
-              <DataGridTextColumn Header="Action"	          Binding="{Binding Action}"							  />
-              <DataGridTextColumn Header="Status"	          Binding="{Binding OrderStatus}"					  />
+
+              <DataGridTemplateColumn Header="Action" >
+                <DataGridTemplateColumn.CellTemplate>
+                  <DataTemplate>
+                    <TextBlock Text="{Binding Action}" />
+                  </DataTemplate>
+                </DataGridTemplateColumn.CellTemplate>
+                <DataGridTemplateColumn.CellStyle>
+                  <Style TargetType="{x:Type DataGridCell}">
+                    <Style.Triggers>
+                      <DataTrigger Binding="{Binding Action}" Value="Sell">
+                        <Setter Property="BorderThickness" Value="0"/>
+                        <Setter Property="Background"  Value="#2f00" />
+                      </DataTrigger>
+                      <DataTrigger Binding="{Binding Action}" Value="Buy">
+                        <Setter Property="BorderThickness" Value="0"/>
+                        <Setter Property="Background"  Value="#100f" />
+                      </DataTrigger>
+                    </Style.Triggers>
+                  </Style>
+                </DataGridTemplateColumn.CellStyle>
+              </DataGridTemplateColumn>
+
+              <DataGridTemplateColumn Header="Status" >
+                <DataGridTemplateColumn.CellTemplate>
+                  <DataTemplate>
+                    <TextBlock Text="{Binding OrderStatus}" />
+                  </DataTemplate>
+                </DataGridTemplateColumn.CellTemplate>
+                <DataGridTemplateColumn.CellStyle>
+                  <Style TargetType="{x:Type DataGridCell}">
+                    <Style.Triggers>
+                      <DataTrigger Binding="{Binding OrderStatus}" Value="Received">
+                        <Setter Property="BorderThickness" Value="0"/>
+                        <Setter Property="Background"  Value="#20f0" />
+                      </DataTrigger>
+                      <DataTrigger Binding="{Binding OrderStatus}" Value="CancelRequested">
+                        <Setter Property="BorderThickness" Value="0" />
+                        <Setter Property="Background"  Value="#2f0f" />
+                      </DataTrigger>
+                    </Style.Triggers>
+                  </Style>
+                </DataGridTemplateColumn.CellStyle>
+              </DataGridTemplateColumn>
+
               <DataGridTextColumn Header="Created"	        Binding="{Binding SendingTimeGmt, StringFormat=\{0:yyyy-MM-dd HH\\:mm\}}"												        />
               <DataGridTextColumn Header="ADP Number"	      Binding="{Binding SecAdpnumber}"					/>
               <DataGridTextColumn Header="CUSIP"	          Binding="{Binding Cusip}"									/>
