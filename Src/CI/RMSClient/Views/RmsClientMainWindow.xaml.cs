@@ -73,7 +73,6 @@ namespace RMSClient
                 btnFind.Focus();
                 Blur = 5;
                 vb1.Visibility = Visibility.Visible;
-                await Task.Delay(999);
                 const int top = 100;
                 var sw = Stopwatch.StartNew();
                 var acnt = string.IsNullOrEmpty(tbxAccount.Text) || tbxAccount.Text == "xxxxxxxxx" ? null : tbxAccount.Text;

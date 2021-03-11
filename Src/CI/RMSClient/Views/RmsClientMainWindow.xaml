@@ -266,13 +266,13 @@
                 <DataGridTemplateColumn.CellStyle>
                   <Style TargetType="{x:Type DataGridCell}">
                     <Style.Triggers>
+                      <!--
+                      <DataTrigger Binding="{Binding Action}" Value="Sell">                        <Setter Property="BorderThickness" Value="0"/>                        <Setter Property="Background"  Value="#2f00" />                      </DataTrigger>
+                      Buy EFT None Regular Rush Sell SellALL Wire
+                      -->
                       <DataTrigger Binding="{Binding Action}" Value="Sell">
                         <Setter Property="BorderThickness" Value="0"/>
-                        <Setter Property="Background"  Value="#2f00" />
-                      </DataTrigger>
-                      <DataTrigger Binding="{Binding Action}" Value="Buy">
-                        <Setter Property="BorderThickness" Value="0"/>
-                        <Setter Property="Background"  Value="#100f" />
+                        <Setter Property="Background"  Value="#1f00" />
                       </DataTrigger>
                     </Style.Triggers>
                   </Style>
