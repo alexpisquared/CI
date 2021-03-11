@@ -66,6 +66,24 @@
         <Setter Property="HorizontalAlignment" Value="Center" />
       </Style>
 
+      <SineEase    x:Key="si"     EasingMode="EaseIn" />
+      <SineEase    x:Key="so"     EasingMode="EaseOut" />
+      <SineEase    x:Key="sb"     EasingMode="EaseInOut" />
+      <CubicEase   x:Key="co"     EasingMode="EaseOut" />
+      <CubicEase   x:Key="ci"     EasingMode="EaseIn" />
+      <CubicEase   x:Key="cb"     EasingMode="EaseInOut" />
+      <QuarticEase x:Key="qo"     EasingMode="EaseOut" />
+      <QuarticEase x:Key="qi"     EasingMode="EaseIn" />
+      <QuarticEase x:Key="qb"     EasingMode="EaseInOut" />
+      <BackEase    x:Key="ko"     EasingMode="EaseOut" />
+      <BackEase    x:Key="ki"     EasingMode="EaseIn" />
+      <BackEase    x:Key="kb"     EasingMode="EaseInOut" />
+      <ElasticEase x:Key="ei"     EasingMode="EaseIn" />
+      <ElasticEase x:Key="eo"     EasingMode="EaseOut" />
+      <ElasticEase x:Key="eb"     EasingMode="EaseInOut" />
+      <ElasticEase x:Key="eo0s5"  EasingMode="EaseOut" Oscillations="0" Springiness="5" />
+      <ElasticEase x:Key="eo2s5"  EasingMode="EaseOut" Oscillations="2" Springiness="5" />
+      <BounceEase  x:Key="bo"     EasingMode="EaseOut" />
       <Color x:Key="c">#1f00</Color>
       <Color x:Key="a">#3f00</Color>
       <Color x:Key="b">#1f00</Color>
@@ -190,23 +208,23 @@
                     Foreground="{StaticResource MainForegroundBrush}" ItemsSource="{Binding Source={StaticResource _accountRequestViewSource}}" x:Name="dg1" 
                     SelectedCellsChanged="onSelect" MouseDoubleClick="onPopup"
                     AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False" GridLinesVisibility="None" HeadersVisibility="Column" SelectionMode="Single" IsReadOnly="True">
-            <DataGrid.RowStyle>
+            <!--<DataGrid.RowStyle>
               <Style TargetType="DataGridRow">
                 <Setter Property="IsHitTestVisible" Value="False" />
                 <Style.Resources>
                   <Storyboard x:Key="myAnimation" Duration="0:0:.5" AutoReverse="True" RepeatBehavior="Forever" >
-                    <DoubleAnimation Storyboard.TargetProperty="Opacity" From=".5" To="1" />
-                    <!--
+                    <DoubleAnimation Storyboard.TargetProperty="Opacity" From=".5" To="1" EasingFunction="{StaticResource so}" />
+                    --><!--
                     <ColorAnimation  Storyboard.TargetProperty="Color"  From="{StaticResource c}" To="{StaticResource b}" />
                     <ColorAnimation  Storyboard.TargetName="GradientStop2a" Storyboard.TargetProperty="Color"  From="{StaticResource a}" To="{StaticResource b}" Duration="0:0:2.0" BeginTime="0:0:0.5" />
                     <DoubleAnimation Storyboard.TargetName="GradientStop2a" Storyboard.TargetProperty="Offset" From="0.00" To="1.00"   Duration="0:0:0.5" />
-                    <DoubleAnimation Storyboard.TargetName="GradientStop2b" Storyboard.TargetProperty="Offset" From="0.01" To="1.01"   Duration="0:0:0.5" />-->
+                    <DoubleAnimation Storyboard.TargetName="GradientStop2b" Storyboard.TargetProperty="Offset" From="0.01" To="1.01"   Duration="0:0:0.5" />--><!--
                   </Storyboard>
                 </Style.Resources>
                 <Style.Triggers>
-                  <!--<DataTrigger Binding="{Binding OrderStatus}" Value="Received">
+                  --><!--<DataTrigger Binding="{Binding OrderStatus}" Value="Received">
                     <Setter Property="Background" Value="{DynamicResource rf2}" />
-                  </DataTrigger>-->
+                  </DataTrigger>--><!--
                   <DataTrigger Binding="{Binding OrderStatus}" Value="CancelRequested">
                     <Setter Property="Background" Value="{DynamicResource rf1}" />
                     <DataTrigger.EnterActions>
@@ -218,7 +236,7 @@
                   </DataTrigger>
                 </Style.Triggers>
               </Style>
-            </DataGrid.RowStyle>
+            </DataGrid.RowStyle>-->
             <DataGrid.Columns>
               <DataGridTextColumn Header="Order ID"	                Binding="{Binding OrderId}"				ElementStyle="{StaticResource RightAlignStyle}"													/>
               <DataGridTemplateColumn Header="Acount"   SortMemberPath="ShortName" CanUserSort="True" >
