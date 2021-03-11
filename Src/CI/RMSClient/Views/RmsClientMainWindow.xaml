@@ -171,6 +171,19 @@
                 SelectedCellsChanged="onSelect" MouseDoubleClick="onPopup"
                 CanUserAddRows="False" CanUserDeleteRows="False" GridLinesVisibility="None" HeadersVisibility="Column" 
                 SelectionMode="Single" BorderThickness="0" IsReadOnly="True" Grid.ColumnSpan="2" Margin="0 3">
+            <DataGrid.RowStyle>
+              <Style TargetType="DataGridRow">
+                <Setter Property="IsHitTestVisible" Value="False" />
+                <Style.Triggers>
+                  <DataTrigger Binding="{Binding OrderStatus}" Value="Blah">
+                    <Setter Property="Background" Value="#10f0" />
+                  </DataTrigger>
+                  <DataTrigger Binding="{Binding OrderStatus}" Value="CancelRequested">
+                    <Setter Property="Background" Value="#4f00" />
+                  </DataTrigger>
+                </Style.Triggers>
+              </Style>
+            </DataGrid.RowStyle>
             <DataGrid.Columns>
               <DataGridTextColumn Header="Order ID"	                Binding="{Binding OrderId}"				ElementStyle="{StaticResource RightAlignStyle}"													/>
               <DataGridTemplateColumn Header="Acount"   SortMemberPath="ShortName" CanUserSort="True" >
