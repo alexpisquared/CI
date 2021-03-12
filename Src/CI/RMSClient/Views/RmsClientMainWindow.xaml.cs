@@ -143,11 +143,11 @@ namespace RMSClient
         }
         async void onSelect(object s, SelectedCellsChangedEventArgs e)
         {
-            if (!_loaded || ((RmsDboRequestInvDboAccountView)((Selector)s)?.SelectedValue)?.OrderId == null) return;
+            if (!_loaded || ((RmsDboRequestInvDboAccountView)((Selector)s).SelectedValue)?.OrderId == null) return;
 
-            var requestID = ((RmsDboRequestInvDboAccountView)((Selector)s)?.SelectedValue)?.OrderId;
+            var requestID = ((RmsDboRequestInvDboAccountView)((Selector)s).SelectedValue)?.OrderId;
             await Task.Delay(555);
-            if (requestID != ((RmsDboRequestInvDboAccountView)((Selector)s)?.SelectedValue)?.OrderId)
+            if (requestID != ((RmsDboRequestInvDboAccountView)((Selector)s).SelectedValue)?.OrderId)
                 return;
 
             var report = "Nothing yet ... ";
