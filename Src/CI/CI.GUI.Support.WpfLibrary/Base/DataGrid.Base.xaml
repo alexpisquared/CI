@@ -1,5 +1,15 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
+  <SolidColorBrush x:Key="BackBackgroundBrush" Color="{DynamicResource BackBackgroundColor}"/>
+  <SolidColorBrush x:Key="ButnBackgroundBrush" Color="{DynamicResource ButnBackgroundColor}"/>
+  <SolidColorBrush x:Key="TextBackgroundBrush" Color="{DynamicResource TextBackgroundColor}"/>
+
+  <SolidColorBrush x:Key="LablForegroundBrush" Color="{DynamicResource LablForegroundColor}"/>
+  <SolidColorBrush x:Key="InfoForegroundBrush" Color="{DynamicResource InfoForegroundColor}"/>
+  <SolidColorBrush x:Key="MainForegroundBrush" Color="{DynamicResource TextForegroundColor}"/>
+  <SolidColorBrush x:Key="ErorForegroundBrush" Color="{DynamicResource ErorForegroundColor}"/>
+  <SolidColorBrush x:Key="___Brush"            Color="{DynamicResource ___Color}"/>
+
   <Style TargetType="{x:Type DataGridColumnHeader}" x:Key="ColumnHeaderStyle_Aav0" >
     <Setter Property="Height"         Value="28"/>
     <Setter Property="FontWeight"     Value="SemiBold"/>
