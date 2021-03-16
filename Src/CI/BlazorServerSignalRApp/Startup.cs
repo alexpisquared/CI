@@ -1,10 +1,10 @@
-using BlazorServerSignalRApp.Data;
+using Microsoft.AspNetCore.ResponseCompression;
 using BlazorServerSignalRApp.Server.Hubs;
+using BlazorServerSignalRApp.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -31,7 +31,7 @@ namespace BlazorServerSignalRApp
       services.AddRazorPages();
       services.AddServerSideBlazor();
       services.AddSingleton<WeatherForecastService>();
-      
+
       services.AddResponseCompression(opts =>
       {
         opts.MimeTypes = ResponseCompressionDefaults.MimeTypes.Concat(
@@ -43,7 +43,7 @@ namespace BlazorServerSignalRApp
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
     {
       app.UseResponseCompression();
-      
+
       if (env.IsDevelopment())
       {
         app.UseDeveloperExceptionPage();
