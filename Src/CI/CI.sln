@@ -45,7 +45,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RMSClient", "..\..\..\CI-Re
 EndProject
 Project("{C7167F0D-BC9F-4E6E-AFE1-012C56B48DB5}") = "RMSClient2", "..\..\..\CI-Reimagined-Invention\Src\CI-RI\RMSClient2\RMSClient2.wapproj", "{41657521-AE6C-40D1-AC2B-65AE10458990}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SignalRChat", "SignalRChat\SignalRChat.csproj", "{A6EDABE1-B4AF-4994-BC67-56E3278F0046}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SignalRChat", "SignalRChat\SignalRChat.csproj", "{A6EDABE1-B4AF-4994-BC67-56E3278F0046}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
