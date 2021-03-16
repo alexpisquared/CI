@@ -17,7 +17,7 @@ namespace RdpFacility
     {
         readonly IdleTimeoutAnalizer _idleTimeoutAnalizer;
         readonly AppSettings _appset = AppSettings.Create();
-        readonly Insomniac _insomniac = new Insomniac();
+        readonly Insomniac _insomniac = new();
         readonly string _crlf = $" ";
 #if DEBUG
         const int _from = 8, _till = 18, _dbgDelayMs = 500;
