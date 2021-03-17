@@ -1,0 +1,11 @@
+{
+  "solution": {
+    "path": "CI.sln",
+    "projects": [
+      "BlazorServerSignalRApp\\BlazorServerSignalRApp.csproj",
+      "SignalRChat\\SignalRChat.csproj",
+      "SignalRClientWpf\\SignalRClientWpf.csproj",
+      "WebSockConsoleApp\\WebSockConsoleApp.csproj"
+    ]
+  }
+}

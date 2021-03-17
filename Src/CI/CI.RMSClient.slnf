@@ -1,0 +1,11 @@
+{
+  "solution": {
+    "path": "CI.sln",
+    "projects": [
+      "..\\..\\..\\CI-Reimagined-Invention\\Src\\CI-RI\\RMSClient2\\RMSClient2.wapproj",
+      "..\\..\\..\\CI-Reimagined-Invention\\Src\\CI-RI\\RMSClient\\RMSClient.csproj",
+      "AsyncSocketLib\\AsyncSocketLib.csproj",
+      "CI.GUI.Support.WpfLibrary\\CI.GUI.Support.WpfLibrary.csproj"
+    ]
+  }
+}
