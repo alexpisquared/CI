@@ -17,7 +17,7 @@ public   class SignalRChatService
     public async Task Connect() { await _connection.StartAsync(); }
     public async Task SendColorMessage(ColorChatColor color)
     {
-      //_connection.SendAsync(nameof(SendColorMessage)) /// https://youtu.be/7fLnF7VBjas?t=705  ~~ SignalR cannot talk to raw sockets ...easily at least.
+      //_connection.SendAsync(nameof(SendColorMessage)) /// https://youtu.be/7fLnF7VBjas?t=705  ~~ SignalR cannot talk to raw sockets ...easily at least. So the project is on hold at this moment in the video.
     }
   }
 }

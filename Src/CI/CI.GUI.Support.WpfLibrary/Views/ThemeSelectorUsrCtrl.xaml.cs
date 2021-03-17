@@ -6,18 +6,16 @@ namespace CI.GUI.Support.WpfLibrary.Views
 {
   public partial class ThemeSelectorUsrCtrl : UserControl
   {
-    public ThemeSelectorUsrCtrl() => InitializeComponent();
-
     public delegate void ApplyThemeDelegate(string v);
-    public ApplyThemeDelegate ApplyTheme { get; set; }
-
+    public ThemeSelectorUsrCtrl() => InitializeComponent();
+    public ApplyThemeDelegate? ApplyTheme { get; set; }
+    public static readonly DependencyProperty CurThemeProperty = DependencyProperty.Register("CurTheme", typeof(string), typeof(ThemeSelectorUsrCtrl)); public string CurTheme { get => (string)GetValue(CurThemeProperty); set => SetValue(CurThemeProperty, value); }
     public void SetCurThemeToMenu(string theme)
     {
       foreach (MenuItem? item in ((ItemsControl)menu1.Items[0]).Items)
         if (item != null)
           item.IsChecked = theme?.Equals(item.Tag.ToString(), StringComparison.OrdinalIgnoreCase) ?? false;
     }
-    public static readonly DependencyProperty CurThemeProperty = DependencyProperty.Register("CurTheme", typeof(string), typeof(ThemeSelectorUsrCtrl), new PropertyMetadata(null)); public string CurTheme { get => (string)GetValue(CurThemeProperty); set => SetValue(CurThemeProperty, value); }
 
     void onChangeTheme(object s, RoutedEventArgs e) => ApplyTheme?.Invoke(((Button)s)?.Tag?.ToString() ?? "No Theme");
     void onSelectionChanged(object s, SelectionChangedEventArgs e)
