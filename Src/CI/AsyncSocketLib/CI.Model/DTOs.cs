@@ -121,7 +121,7 @@ namespace AsyncSocketLib.CI.Model
         public int m_userID;
         public int m_orderID;
         public int m_updateID;
-        public override string ToString() => $"{m_header}  {m_code,-16}    user:{m_userID,3}    order:{m_orderID,6}    updateID:{m_updateID,4}";
+        public override string ToString() => $"{m_header}  rc:{m_code,-16}    user:{m_userID,3}    order:{m_orderID,6}    updateID:{m_updateID,4}";
     };
 
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
@@ -178,5 +178,23 @@ namespace AsyncSocketLib.CI.Model
         RISK_MSG_REPUBLISH_EXCEL_DATA,
         RISK_MSG_EOD_STATUS,
         RISK_MSG_MAXIMUM // like undefided
+    };
+
+    [StructLayout(LayoutKind.Sequential, Pack = 1)]
+    public unsafe struct LockOrderRequest // straight from \dev\trunk\Server\RMS\Common\RMSMessage.h
+    {
+        public MessageHeader m_messageHeader;
+        public int m_orderID;
+        public bool m_isLock;
+    };
+    [StructLayout(LayoutKind.Sequential, Pack = 1)]
+    public unsafe struct LockOrderResponse
+    {
+        public MessageHeader m_header;
+        public ResponseCode m_code;
+        public int m_orderID;
+        public int m_userID;
+        public bool m_isLock;
+        public override string ToString() => $"{m_header}  rc:{m_code,-16}    user:{m_userID,3}    order:{m_orderID,6}    isLock:{m_isLock,4}";
     };
 }

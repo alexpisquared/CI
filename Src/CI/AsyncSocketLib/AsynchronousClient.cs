@@ -15,27 +15,56 @@ namespace AsyncSocketLib
         readonly ManualResetEvent _connectDone = new(false), _sendingDone = new(false), _receiveDone = new(false);    // ManualResetEvent instances signal completion.  
         readonly DateTime _started;
         readonly object _theLock = new();
-        string _report = "", _responseStrVer = ""; // The response from the remote device.  
-        int _bytesReceived;
-        const int _delay = 50;
         unsafe ChangeResponse _changeResponse;
         unsafe LoginResponse _loginResponse;
+        const int _delay = 50;
+        string _report = "", _responseStrVer = ""; // The response from the remote device.  
+        int _bytesReceived;
 
         public AsynchronousClient() => _started = DateTime.Now;
 
-        public string Report
+        public string Report { get => _report; set { lock (_theLock) { _report += value; } } }
+        public LoginResponse LoginResponse => _loginResponse;
+        public ChangeResponse ChangeResponse => _changeResponse;
+
+        public async Task<string> SendLockOrder(string uri, int port, string username, int requestID, bool isLock)
         {
-            get { try { return _report; } finally { /*_report = "";*/ } }
-            set
+            try
             {
-                lock (_theLock)
+                var ipAddress = Dns.GetHostEntry(uri).AddressList[0];
+
+                using var client = new Socket(ipAddress.AddressFamily, SocketType.Stream, ProtocolType.Tcp); // Create a TCP/IP socket.  
+                client.BeginConnect(new IPEndPoint(ipAddress, port), new AsyncCallback(ConnectCallback), client);
+                var sw = Stopwatch.StartNew();
+                if (!_connectDone.WaitOne(_delay))
                 {
-                    _report += value;
+                    return Report = $"  Failed to connect in {sw.ElapsedMilliseconds} / {_delay} \n";
                 }
+
+                Report = $" ◄ {uri}:{port}  in {sw.ElapsedMilliseconds} / {_delay} ms\n";
+
+                sendLoginRequestRmsC(client, username);
+                _sendingDone.WaitOne();
+                Receive<LoginResponse>(client);
+                await Task.Delay(_delay);
+
+                sendLockoRequestRmsC(client, requestID, isLock);
+                _sendingDone.WaitOne();
+                Receive<ChangeResponse>(client);
+                await Task.Delay(_delay);
+
+                sw = Stopwatch.StartNew();
+                Report = $"  Finally, waiting {_delay} for the Response ...";
+                _receiveDone.WaitOne(_delay);
+                Report = $" in {sw.ElapsedMilliseconds} / {_delay} response of {_responseStrVer} received;  closing client socket.\n\n";
+
+                client.Shutdown(SocketShutdown.Both);
+                client.Close();
             }
+            catch (Exception ex) { Report = $" ■ ■ ■ {ex}\n\n"; }
+
+            return Report;
         }
-        public LoginResponse LoginResponse { get => _loginResponse; }
-        public ChangeResponse ChangeResponse { get => _changeResponse; }
 
         public async Task<string> SendChangeRequest(string uri, int port, string username, int requestID, RequestStatus status, int doneQty, double price, string note)
         {
@@ -237,6 +266,7 @@ namespace AsyncSocketLib
 
             return processedLength;
         }
+
         unsafe void ProcessMessage(MessageHeader* messageHeader)
         {
             switch (messageHeader->m_type)
@@ -290,6 +320,27 @@ namespace AsyncSocketLib
 
             send(client, byteData, sz); // client.BeginSend(byteData, 0, sz, 0, new AsyncCallback(SendCallback), client);   
         }
+        unsafe void sendLockoRequestRmsC(Socket client, int requestID, bool isLock)
+        {
+            const int sz = 13; // sizeof(LockOrderRequest);
+            LockOrderRequest crm;
+            crm.m_messageHeader.m_size = sz;
+            crm.m_messageHeader.m_type = MessageType.mtLockOrder;
+            crm.m_orderID = requestID;
+            crm.m_isLock = isLock;
+
+            var ptr = (byte*)&crm;
+            var byteData = new byte[StateObject.BufferSize];
+            for (var i = 0; i < sz; i++) byteData[i] = ptr[i];
+
+            //byteData = File.ReadAllBytes(@"C:\dev\trunk\Server\RMS\RMSClientCPP\OrderUpdate.59.bin");
+
+            Report = $"  ►{(DateTime.Now - _started):s\\.fff} sending \t{nameof(LockOrderRequest),-26} total: {sz}\n";             //
+
+            //for (var i = 0; i < sz; i++) Debug.WriteLine($"  {i,4} {(byteData[i] == 0 ? "" : $"{(int)byteData[i],4}")}"); Debug.WriteLine($"-- total: { sz} for LockOrder request.");
+
+            send(client, byteData, sz); // client.BeginSend(byteData, 0, sz, 0, new AsyncCallback(SendCallback), client);   
+        }
         unsafe void sendChngeRequestRmsC(Socket client, int requestID, RequestStatus status, int doneQty, double price, string note)
         {
             const int sz = 153;
@@ -304,8 +355,8 @@ namespace AsyncSocketLib
             crm.m_data.m_price = price;
 
             crm.m_data.m_int64Time = 132597104686937912; //todo: 
-            //crm.m_data.m_time.dwLowDateTime = 991704888;
-            //crm.m_data.m_time.dwHighDateTime = 30872669;
+                                                         //crm.m_data.m_time.dwLowDateTime = 991704888;
+                                                         //crm.m_data.m_time.dwHighDateTime = 30872669;
 
             note.ToByteArray(crm.m_data.m_bbsNote);
 
