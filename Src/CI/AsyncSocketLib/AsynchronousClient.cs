@@ -18,7 +18,7 @@ namespace AsyncSocketLib
     unsafe LockOrderResponse _lockOrderResponse;
     unsafe ChangeResponse _changeResponse;
     unsafe LoginResponse _loginResponse;
-    const int _delay = 50;
+    const int _delay = 500;
     string _report = "██\n", _responseStrVer = ""; // The response from the remote device.  
     int _bytesReceived;
 
@@ -124,6 +124,12 @@ namespace AsyncSocketLib
         switch (job)
         {
           case "stringPoc": sendOriginalStr(client, "This is a TEST <EOF>"); _sendingDone.WaitOne(); Receive<UnknownType>(client); break;
+          case "lckOrRmsC":
+            sendLoginRequestRmsC(client, username); _sendingDone.WaitOne(); Receive<LoginResponse>(client);
+            await Task.Delay(_delay);
+            sendLockoRequestRmsC(client, 26859, true); _sendingDone.WaitOne(); Receive<LockOrderResponse>(client); await Task.Delay(_delay);
+            //sendLockoRequestRmsC(client, 26859, false); _sendingDone.WaitOne(); Receive<LockOrderResponse>(client); await Task.Delay(_delay);
+            break;
           case "logInRmsC":
             sendLoginRequestRmsC(client, username); _sendingDone.WaitOne(); Receive<LoginResponse>(client);
             await Task.Delay(_delay);
@@ -189,7 +195,7 @@ namespace AsyncSocketLib
           {
             state.SB.Append(Encoding.ASCII.GetString(state.Buffer, 0, bytesRead));          // There might be more data, so store the data received so far.  
 
-            Report = $"{state.SB.Length,4} bytes got so far; maybe more coming...";
+            Report = $"{state.SB.Length,4} bytes got; more coming..?";
 
             client?.BeginReceive(state.Buffer, 0, StateObject.BufferSize, 0, new AsyncCallback(ReceiveCallback<T>), state); // Get the rest of the data.  
           }
@@ -221,10 +227,10 @@ namespace AsyncSocketLib
               case MessageType.mtChangeRequest: break;
               case MessageType.mtNewRequestNotification: break;
               case MessageType.mtLockOrder: break;
-              case MessageType.mtLockOrderResponse: /**/{ _lockOrderResponse = *((LockOrderResponse*)buffer); Report = $"\n      ■■■  Resp: {_loginResponse}·\n"; break; } 
-              case MessageType.mtLoginResponse:     /**/{ _loginResponse = *((LoginResponse*)buffer); Report = $"\n      ■■■  Resp: {_loginResponse}·\n"; break; }
-              case MessageType.mtChangeResponse:    /**/{ _changeResponse = *((ChangeResponse*)buffer); Report = $"\n      ■■■  Resp: {_changeResponse}·\n"; break; }
-              default: break;
+              case MessageType.mtLockOrderResponse: /**/{ _lockOrderResponse = *((LockOrderResponse*)buffer); /**/ Report = $"\n      ■■ Resp: {_lockOrderResponse}·\n"; break; } 
+              case MessageType.mtLoginResponse:     /**/{ _loginResponse = *((LoginResponse*)buffer);         /**/ Report = $"\n      ■■ Resp: {_loginResponse}·\n"; break; }
+              case MessageType.mtChangeResponse:    /**/{ _changeResponse = *((ChangeResponse*)buffer);       /**/ Report = $"\n      ■■ Resp: {_changeResponse}·\n"; break; }
+              default: Report = $"\n      ■■■  Resp: NEW message type in RecieveCallback(): {(*header).m_type}· add it here!!!\n"; break;
             }
 
             if (_bytesReceived >= header->m_size)
@@ -272,16 +278,18 @@ namespace AsyncSocketLib
     {
       switch (messageHeader->m_type)
       {
+        case MessageType.mtLockOrderResponse:      /**/ ProcessMessage((LockOrderResponse*)messageHeader); break;
         case MessageType.mtLoginResponse:          /**/ ProcessMessage((LoginResponse*)messageHeader); break;
         case MessageType.mtChangeResponse:         /**/ ProcessMessage((ChangeResponse*)messageHeader); break;
         case MessageType.mtResponse:               /**/ ProcessMessage((Response*)messageHeader); break;
         case MessageType.mtNewRequestNotification: /**/ ProcessMessage((NewRequestNotification*)messageHeader); break;
-        default: throw new Exception($"Message type  {messageHeader->m_type}  is unknown");
+        default: throw new Exception($"Message type  {messageHeader->m_type}  is unknown: add it to ProcessMessage() !!!");
       }
     }
     unsafe void ProcessMessage(LoginResponse* response) => Debug.WriteLine($"Todo: m_mainForm.OnNewRequest({response->m_code})");
     unsafe void ProcessMessage(ChangeResponse* response) => Debug.WriteLine($"Todo: m_mainForm.OnNewRequest({response->m_code})");
-    unsafe void ProcessMessage(NewRequestNotification* newRequestNotification) => Debug.WriteLine($"Todo: m_mainForm.OnNewRequest({newRequestNotification->m_requestID})");
+    unsafe void ProcessMessage(LockOrderResponse* response) => Debug.WriteLine($"Todo: m_mainForm.OnNewRequest({response->m_code})");
+    unsafe void ProcessMessage(NewRequestNotification* response) => Debug.WriteLine($"Todo: m_mainForm.OnNewRequest({response->m_requestID})");
     unsafe void ProcessMessage(Response* response)
     {
       switch (response->m_code)
@@ -289,7 +297,7 @@ namespace AsyncSocketLib
         case ResponseCode.rcUserNotFound: break;          //OnUserNotFound();
         case ResponseCode.rcChangeRequestError: break;
         case ResponseCode.rcOK: break;                    //m_mainForm.OnNewRequest(0);
-        default: throw new Exception($"Response code  {response->m_code}  is unknown");
+        default: throw new Exception($"Response code  {response->m_code}  is unknown: add it to ProcessMessage()!!!");
       }
     }
 

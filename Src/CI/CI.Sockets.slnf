@@ -1,0 +1,10 @@
+{
+  "solution": {
+    "path": "CI.sln",
+    "projects": [
+      "AsyncSocketLib\\AsyncSocketLib.csproj",
+      "AsyncSocketTester\\AsyncSocketTester.csproj",
+      "CI.GUI.Support.WpfLibrary\\CI.GUI.Support.WpfLibrary.csproj",
+    ]
+  }
+}
