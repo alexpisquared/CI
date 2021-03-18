@@ -15,17 +15,19 @@ namespace AsyncSocketLib
     readonly ManualResetEvent _connectDone = new(false), _sendingDone = new(false), _receiveDone = new(false);    // ManualResetEvent instances signal completion.  
     readonly DateTime _started;
     readonly object _theLock = new();
+    unsafe LockOrderResponse _lockOrderResponse;
     unsafe ChangeResponse _changeResponse;
     unsafe LoginResponse _loginResponse;
     const int _delay = 50;
-    string _report = "", _responseStrVer = ""; // The response from the remote device.  
+    string _report = "██\n", _responseStrVer = ""; // The response from the remote device.  
     int _bytesReceived;
 
     public AsynchronousClient() => _started = DateTime.Now;
 
     public string Report { get => _report; set { lock (_theLock) { _report += value; } } }
-    public LoginResponse LoginResponse => _loginResponse;
+    public LockOrderResponse LockOrderResponse => _lockOrderResponse;
     public ChangeResponse ChangeResponse => _changeResponse;
+    public LoginResponse LoginResponse => _loginResponse;
 
     public async Task<string> SendLockOrder(string uri, int port, string username, int requestID, bool isLock)
     {
@@ -65,7 +67,6 @@ namespace AsyncSocketLib
 
       return Report;
     }
-
     public async Task<string> SendChangeRequest(string uri, int port, string username, int requestID, RequestStatus status, int doneQty, double price, string note)
     {
       try
@@ -220,9 +221,9 @@ namespace AsyncSocketLib
               case MessageType.mtChangeRequest: break;
               case MessageType.mtNewRequestNotification: break;
               case MessageType.mtLockOrder: break;
-              case MessageType.mtLockOrderResponse: break;
-              case MessageType.mtLoginResponse:  /**/{ _loginResponse = *((LoginResponse*)buffer); Report = $"\n      ■■■  Resp: {_loginResponse}·\n"; break; }
-              case MessageType.mtChangeResponse: /**/{ _changeResponse = *((ChangeResponse*)buffer); Report = $"\n      ■■■  Resp: {_changeResponse}·\n"; break; }
+              case MessageType.mtLockOrderResponse: /**/{ _lockOrderResponse = *((LockOrderResponse*)buffer); Report = $"\n      ■■■  Resp: {_loginResponse}·\n"; break; } 
+              case MessageType.mtLoginResponse:     /**/{ _loginResponse = *((LoginResponse*)buffer); Report = $"\n      ■■■  Resp: {_loginResponse}·\n"; break; }
+              case MessageType.mtChangeResponse:    /**/{ _changeResponse = *((ChangeResponse*)buffer); Report = $"\n      ■■■  Resp: {_changeResponse}·\n"; break; }
               default: break;
             }
 
