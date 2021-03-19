@@ -8,7 +8,7 @@ namespace AsyncSocketLib.CI.Model
   {
     public int m_size;
     public MessageType m_type;
-    public override string ToString() => $" {m_type,-18}{m_size,4} b ";
+    public override string ToString() => $" {m_type,-20}{m_size,4} ";
   };
 
   [StructLayout(LayoutKind.Sequential, Pack = 1)]
@@ -111,7 +111,7 @@ namespace AsyncSocketLib.CI.Model
     public MessageHeader m_header;
     public ResponseCode m_code;
     public int m_userID;
-    public override string ToString() => $"{m_header}  {m_code,-16}    user:{m_userID,3}";
+    public override string ToString() => $"{m_header} ■ {m_code,-19} user:{m_userID,3}";
   }
   [StructLayout(LayoutKind.Sequential, Pack = 1)]
   public unsafe struct ChangeResponse
@@ -121,7 +121,7 @@ namespace AsyncSocketLib.CI.Model
     public int m_userID;
     public int m_orderID;
     public int m_updateID;
-    public override string ToString() => $"{m_header}  {m_code,-16}    user:{m_userID,3}    order:{m_orderID,6}    updateID:{m_updateID,4}";
+    public override string ToString() => $"{m_header} ■ {m_code,-19} user:{m_userID,3}    order:{m_orderID,6}    updateID:{m_updateID,4}";
   };
 
   [StructLayout(LayoutKind.Sequential, Pack = 1)]
@@ -195,6 +195,6 @@ namespace AsyncSocketLib.CI.Model
     public int m_orderID;
     public int m_userID;
     public bool m_isLock;
-    public override string ToString() => $"{m_header}  {m_code,-16}    user:{m_userID,3}    order:{m_orderID,6}    isLock:{m_isLock,4}";
+    public override string ToString() => $"{m_header} ■ {m_code,-19} user:{m_userID,3}    order:{m_orderID,6}    isLock:{m_isLock,4}";
   };
 }

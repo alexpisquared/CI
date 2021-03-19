@@ -45,7 +45,7 @@ namespace AsyncSocketLib
           }
         }
       }
-      catch (Exception e) { _report += $" ■ ■ ■ {e}\n\n"; }
+      catch (Exception e) { _report += $" ██  ██ {e}\n\n"; }
 
       return _report;
     }
@@ -109,7 +109,7 @@ namespace AsyncSocketLib
         handler.Shutdown(SocketShutdown.Both);
         handler.Close();
       }
-      catch (Exception e) { _report += $" ■ ■ ■ {e}\n\n"; }
+      catch (Exception e) { _report += $" ██  ██ {e}\n\n"; }
     }
 
     void IDisposable.Dispose() => ((IDisposable?)_listener)?.Dispose();

@@ -60,10 +60,10 @@
         <Button Content="_Str" Click="onMe" x:Name="b1" IsEnabled="False"/>
         <Button Content="._Lcl" Click="onRealHere" />
         <TextBlock Foreground="#ff0" Text="  RMS:" />
-        <Button Content="15_2:6" Click="onTag" Tag="10.10.19.152:6756:logInRmsC"/>
+        <Button Content="15_2:6" Click="onTag" Tag="10.10.19.152:6756:logInChRq"/>
         <Button Content="_u:6 Lck" Click="onTag" Tag="mtdevwebts01.bbssecurities.com:6756:lckOrRmsC" IsDefault="True" x:Name="dfltBtn" />
-        <Button Content="_d:6 Log" Click="onTag" Tag="mtdevwebts01.bbssecurities.com:6756:logInRmsC" ToolTip="Worked!!!"/>
-        <Button Content="_u:6 Log" Click="onTag" Tag="mtuatwebts01.bbssecurities.com:6756:logInRmsC" />
+        <Button Content="_d:6 Log" Click="onTag" Tag="mtdevwebts01.bbssecurities.com:6756:logInChRq" ToolTip="Worked!!!"/>
+        <Button Content="_u:6 Log" Click="onTag" Tag="mtuatwebts01.bbssecurities.com:6756:logInChRq" />
         <TextBlock Foreground="#ff0" Text="  risk:" />
         <Button Content="d_ev:2" Click="onTag" Tag="MTDEVTSAPP01.bbssecurities.com:22225:logInRisk"/>
         <Button Content="u_at:2" Click="onTag" Tag="MTUATTSAPP01.bbssecurities.com:22225:logInRisk"/>
