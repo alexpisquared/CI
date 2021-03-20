@@ -1,0 +1,58 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+  <SineEase    x:Key="sb"     EasingMode="EaseInOut" />
+
+  <Storyboard x:Key="SolidColorStoryboard" AutoReverse="True" RepeatBehavior="Forever" >
+    <ColorAnimation Storyboard.TargetProperty="(Fill).(SolidColorBrush.Color)" From="Red" To="Yellow" Duration="0:0:3.33"/>
+  </Storyboard>
+
+  <LinearGradientBrush x:Key="awesomeBkGrDiag" EndPoint="1,2" StartPoint="0,-1">
+    <GradientStop Color="#0000" Offset="0.5"/>
+    <GradientStop Color="#0000" Offset="0.0"/>
+    <GradientStop Color="#0000" Offset="1.0"/>
+  </LinearGradientBrush>
+  <LinearGradientBrush x:Key="awesomeBkGrVert" EndPoint=".5,1" StartPoint=".5,0">
+    <GradientStop Color="#0000" Offset="0.5"/>
+    <GradientStop Color="#0000" Offset="0.0"/>
+    <GradientStop Color="#0000" Offset="1.0"/>
+  </LinearGradientBrush>
+  <Storyboard x:Key="awesomeBkGrStoryboardDiag" RepeatBehavior="Forever" AutoReverse="True">
+    <DoubleAnimation Storyboard.TargetProperty="(Background).(GradientBrush.GradientStops)[0].(GradientStop.Offset)" From="0.01" To="0.99"  Duration="0:0:.5" EasingFunction="{StaticResource sb}" />
+    <ColorAnimation  Storyboard.TargetProperty="(Background).(GradientBrush.GradientStops)[0].(GradientStop.Color)"  From="#08f" To="#0f8"  Duration="0:0:.5" EasingFunction="{StaticResource sb}" />
+  </Storyboard>
+  <Storyboard x:Key="awesomeBkGrStoryboardVert" RepeatBehavior="Forever" AutoReverse="True">
+    <DoubleAnimation Storyboard.TargetProperty="(Background).(GradientBrush.GradientStops)[0].(GradientStop.Offset)" From="0.01" To="0.99"  Duration="0:0:1.5" EasingFunction="{StaticResource sb}" />
+    <ColorAnimation  Storyboard.TargetProperty="(Background).(GradientBrush.GradientStops)[0].(GradientStop.Color)"  From="#0c4" To="#08f"  Duration="0:0:1.5" EasingFunction="{StaticResource sb}" />
+  </Storyboard>
+  <Storyboard x:Key="awesomeBkGrStoryboardStop" FillBehavior="Stop">
+    <DoubleAnimation Storyboard.TargetProperty="(Background).(GradientBrush.GradientStops)[0].(GradientStop.Offset)"             To="0.50"  Duration="0:0:2" EasingFunction="{StaticResource sb}" />
+    <ColorAnimation  Storyboard.TargetProperty="(Background).(GradientBrush.GradientStops)[0].(GradientStop.Color)"              To="#0888" Duration="0:0:2" EasingFunction="{StaticResource sb}" />
+  </Storyboard>
+  <Style x:Key="awesomeDataGridCellStyle" TargetType="{x:Type DataGridCell}">
+    <Setter Property="Background" Value="{StaticResource awesomeBkGrDiag}" />
+    <Style.Triggers>
+      <DataTrigger Binding="{Binding Path=IsStatusOutstandingAndNoUser}" Value="True">
+        <DataTrigger.EnterActions>
+          <BeginStoryboard Storyboard="{StaticResource awesomeBkGrStoryboardDiag}"/>
+        </DataTrigger.EnterActions>
+        <DataTrigger.ExitActions>
+          <BeginStoryboard Storyboard="{StaticResource awesomeBkGrStoryboardStop}"/>
+        </DataTrigger.ExitActions>
+      </DataTrigger>
+    </Style.Triggers>
+  </Style>
+  <Style x:Key="awesomeDataGridRowStyle" TargetType="{x:Type DataGridRow}">
+    <Setter Property="Background" Value="{StaticResource awesomeBkGrVert}" />
+    <Style.Triggers>
+      <DataTrigger Binding="{Binding Path=IsStatusOutstandingAndNoUser}" Value="True">
+        <DataTrigger.EnterActions>
+          <BeginStoryboard Storyboard="{StaticResource awesomeBkGrStoryboardVert}"/>
+        </DataTrigger.EnterActions>
+        <DataTrigger.ExitActions>
+          <BeginStoryboard Storyboard="{StaticResource awesomeBkGrStoryboardStop}"/>
+        </DataTrigger.ExitActions>
+      </DataTrigger>
+    </Style.Triggers>
+  </Style>
+
+</ResourceDictionary>
