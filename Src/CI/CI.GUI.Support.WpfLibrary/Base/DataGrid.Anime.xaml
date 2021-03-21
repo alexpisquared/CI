@@ -28,17 +28,17 @@
     <DoubleAnimation Storyboard.TargetProperty="(Background).(GradientBrush.GradientStops)[2].(GradientStop.Offset)" From="-0.0" To=".5"    Duration="0:0:3" />
     <DoubleAnimation Storyboard.TargetProperty="(Background).(GradientBrush.GradientStops)[3].(GradientStop.Offset)" From="+0.3" To=".8"    Duration="0:0:3" />
     <DoubleAnimation Storyboard.TargetProperty="(Background).(GradientBrush.GradientStops)[4].(GradientStop.Offset)" From="+0.4" To=".9"    Duration="0:0:3" />
-    <DoubleAnimation Storyboard.TargetProperty="(Background).(GradientBrush.GradientStops)[5].(GradientStop.Offset)" From="+0.5" To=".99"   Duration="0:0:3" />
-    <ColorAnimation  Storyboard.TargetProperty="(Background).(GradientBrush.GradientStops)[1].(GradientStop.Color)"  From="#0c4" To="#08f"  Duration="0:0:1.5" EasingFunction="{StaticResource sb}" AutoReverse="True"/>
-    <ColorAnimation  Storyboard.TargetProperty="(Background).(GradientBrush.GradientStops)[4].(GradientStop.Color)"  From="#0c4" To="#08f"  Duration="0:0:1.5" EasingFunction="{StaticResource sb}" AutoReverse="True"/>
+    <DoubleAnimation Storyboard.TargetProperty="(Background).(GradientBrush.GradientStops)[5].(GradientStop.Offset)" From="+0.5" To="01"   Duration="0:0:3" />
+    <ColorAnimation  Storyboard.TargetProperty="(Background).(GradientBrush.GradientStops)[1].(GradientStop.Color)"  From="#c0c" To="#f0f"  Duration="0:0:1.5" EasingFunction="{StaticResource sb}" AutoReverse="True"/>
+    <ColorAnimation  Storyboard.TargetProperty="(Background).(GradientBrush.GradientStops)[4].(GradientStop.Color)"  From="#c0c" To="#f0f"  Duration="0:0:1.5" EasingFunction="{StaticResource sb}" AutoReverse="True"/>
   </Storyboard>
   <Storyboard x:Key="awesomeBkGrStoryboardDiag" RepeatBehavior="Forever" AutoReverse="True">
-    <DoubleAnimation Storyboard.TargetProperty="(Background).(GradientBrush.GradientStops)[0].(GradientStop.Offset)" From="0.01" To="0.99"  Duration="0:0:.5" EasingFunction="{StaticResource sb}" />
+    <DoubleAnimation Storyboard.TargetProperty="(Background).(GradientBrush.GradientStops)[0].(GradientStop.Offset)" From="0.20" To="0.80"  Duration="0:0:.5" EasingFunction="{StaticResource sb}" />
     <ColorAnimation  Storyboard.TargetProperty="(Background).(GradientBrush.GradientStops)[0].(GradientStop.Color)"  From="#08f" To="#0f8"  Duration="0:0:.5" EasingFunction="{StaticResource sb}" />
   </Storyboard>
   <Storyboard x:Key="awesomeBkGrStoryboardVert" RepeatBehavior="Forever" AutoReverse="True">
-    <DoubleAnimation Storyboard.TargetProperty="(Background).(GradientBrush.GradientStops)[0].(GradientStop.Offset)" From="0.01" To="0.99"  Duration="0:0:1.5" EasingFunction="{StaticResource sb}" />
-    <ColorAnimation  Storyboard.TargetProperty="(Background).(GradientBrush.GradientStops)[0].(GradientStop.Color)"  From="#0c4" To="#08f"  Duration="0:0:1.5" EasingFunction="{StaticResource sb}" />
+    <DoubleAnimation Storyboard.TargetProperty="(Background).(GradientBrush.GradientStops)[0].(GradientStop.Offset)" From="0.10" To="0.90"  Duration="0:0:1.5" EasingFunction="{StaticResource sb}" />
+    <ColorAnimation  Storyboard.TargetProperty="(Background).(GradientBrush.GradientStops)[0].(GradientStop.Color)"  From="#d20" To="#c40"  Duration="0:0:1.5" EasingFunction="{StaticResource sb}" />
   </Storyboard>
   <Storyboard x:Key="awesomeBkGrStoryboardStop" FillBehavior="Stop">
     <DoubleAnimation Storyboard.TargetProperty="(Background).(GradientBrush.GradientStops)[0].(GradientStop.Offset)"             To="0.50"  Duration="0:0:2" EasingFunction="{StaticResource sb}" />
