@@ -20,15 +20,20 @@ namespace CI.PermissionManager
 {
   public partial class MainWindow : Window
   {
-    InventoryContext _db;
     ICollectionView _cv;
+
+    readonly InventoryContext _context = new();
+    CollectionViewSource categoryViewSource;
+
     public MainWindow()
     {
       InitializeComponent();
 
-      _db = new InventoryContext();
 
-      _cv = CollectionViewSource.GetDefaultView(_db.Permissions.Local.ToObservableCollection());
+      categoryViewSource = (CollectionViewSource)FindResource(nameof(categoryViewSource));
+
+
+      _cv = CollectionViewSource.GetDefaultView(_context.Permissions.Local.ToObservableCollection());
       CV.Filter = filterPerms;
       //demo only - wrecks sorting -      CV.GroupDescriptions.Add(new PropertyGroupDescription(nameof(Permission.Name)));
       CV.SortDescriptions.Add(new SortDescription(nameof(Permission.Name), ListSortDirection.Ascending));
@@ -37,7 +42,7 @@ namespace CI.PermissionManager
 
       Loaded += onLoaded;
     }
-    public static readonly DependencyProperty PermissionsFilterProperty = DependencyProperty.Register("PermissionsFilter", typeof(string), typeof(MainWindow), new PropertyMetadata("", propChngdCallback));    public string PermissionsFilter { get { return (string)GetValue(PermissionsFilterProperty); } set { SetValue(PermissionsFilterProperty, value); } }
+    public static readonly DependencyProperty PermissionsFilterProperty = DependencyProperty.Register("PermissionsFilter", typeof(string), typeof(MainWindow), new PropertyMetadata("", propChngdCallback)); public string PermissionsFilter { get { return (string)GetValue(PermissionsFilterProperty); } set { SetValue(PermissionsFilterProperty, value); } }
     static void propChngdCallback(DependencyObject d, DependencyPropertyChangedEventArgs e) => ((MainWindow)d).RefreshView();
 
     public void RefreshView() => CV.Refresh();
@@ -50,16 +55,32 @@ namespace CI.PermissionManager
       {
         return permission.Name.Contains(PermissionsFilter, StringComparison.InvariantCultureIgnoreCase);
       }
-            
+
 
       return false;
     }
 
-     void onLoaded(object sender, RoutedEventArgs e)
+    void onLoaded(object sender, RoutedEventArgs e)
     {
-      _db.Permissions.Load();      //await _db.Permissions.LoadAsync();
-      Title = $"{_db.Permissions.Local.Count}";
+      _context.Permissions.Load();      //await _context.Permissions.LoadAsync();
+      Title = $"{_context.Permissions.Local.Count}";
+
+      //_context.Database.EnsureCreated();
+      categoryViewSource.Source = _context.Permissions.Local.ToObservableCollection();
+    }
+    void onSave(object s, RoutedEventArgs e)
+    {
+      _context.SaveChanges();
+
+      categoryDataGrid.Items.Refresh();      // this forces the grid to refresh to latest values
+      productsDataGrid.Items.Refresh();
     }
     void onExit(object s, RoutedEventArgs e) => Close();
+
+    protected override void OnClosing(CancelEventArgs e)
+    {
+      _context.Dispose();
+      base.OnClosing(e);
+    }
   }
 }
