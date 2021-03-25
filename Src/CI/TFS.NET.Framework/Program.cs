@@ -10,14 +10,19 @@ namespace TFS
 {
   class Program
   {
-    const string _srch = "select distinct upper(trader_id + ':' + shortname) from inventory..traderaccount_view2";
-    static readonly string[]
-      textPatterns = new[] { _srch },
-      filePatterns = new[] { "*.*" };//"*.?", "*.??", "*.???", "*.????", "*.?????", "*.??????" };// "*.cs", "*.xml", "*.config", "*.asp", "*.aspx", "*.js", "*.h", "*.cpp", "*.vb", "*.asax", "*.ashx", "*.asmx", "*.ascx", "*.master", "*.svc", "*.jar" }; //file extensions
-
     static void Main(string[] args)
     {
-      Console.ForegroundColor = ConsoleColor.Gray;
+
+      var _srch = args[0]; //  "traderaccount_view2"; // "select distinct upper(trader_id + ':' + shortname) from inventory..traderaccount_view2";
+      string[]
+        textPatterns = new[] { _srch },
+        filePatterns = args[1].Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);// new[] { "*.jar", "*.cs", "*.cpp" };//"*.?", "*.??", "*.???", "*.????", "*.?????", "*.??????" };// "*.cs", "*.xml", "*.config", "*.asp", "*.aspx", "*.js", "*.h", "*.cpp", "*.vb", "*.asax", "*.ashx", "*.asmx", "*.ascx", "*.master", "*.svc", "*.jar" }; //file extensions
+
+      Console.ForegroundColor = ConsoleColor.DarkCyan; Console.Write($"  Searching for  ");
+      Console.ForegroundColor = ConsoleColor.Cyan; Console.Write($"{_srch}");
+      Console.ForegroundColor = ConsoleColor.DarkCyan; Console.Write($"  in  ");
+      Console.ForegroundColor = ConsoleColor.Cyan; Console.Write($"{args[1]} \n");
+
       var now = DateTime.Now;
       var fnm = _srch.Replace(":", "-");
       var outputF = $@"C:\temp\Code Matches - {fnm} - {now:HHmm} - Filenames Only.txt";
@@ -36,24 +41,27 @@ namespace TFS
         File.AppendAllText(details, headerL);
 
         var allProjs = versionControl.GetAllTeamProjects(true);
-        Console.WriteLine($"{allProjs.Count()} team projects: ");
+        Console.ForegroundColor = ConsoleColor.Magenta;
+        //Console.WriteLine($"  {allProjs.Count():N0} team projects: {string.Join<TeamProject>(", ", allProjs)}");
+        Console.Write($"  {allProjs.Count():N0} team projects:  ");
 
         var i = 0;
         var f = 0;
         foreach (var teamProj in allProjs)
         {
+          Console.ForegroundColor = ConsoleColor.Gray;
           Console.WriteLine($"{teamProj.Name}");
 
           foreach (var filePattern in filePatterns)
           {
-            var files = versionControl.GetItems(teamProj.ServerItem + "/" + filePattern, RecursionType.Full).Items.Where(r => r.ItemType == ItemType.File && !r.ServerItem.Contains("_ReSharper"));  //skipping resharper stuff
-            Console.WriteLine($"{++f} / {filePatterns.Length} - {filePattern}  {files.Count()}:");
+            var files = versionControl.GetItems(teamProj.ServerItem + "/*." + filePattern, RecursionType.Full).Items.Where(r => r.ItemType == ItemType.File && !r.ServerItem.Contains("_ReSharper"));  //skipping resharper stuff
+            Console.WriteLine($"  {++f} / {filePatterns.Length} - *.{filePattern} - {files.Count():N0} files:");
             foreach (var item in files)
             {
-              if ((++i) % 1000 == 0)
-                Console.WriteLine($"{i,6} / {files.Count(),-6} {item.ServerItem}");
+              if ((++i) % 11 == 0)
+                Console.Write($"{i,8:N0} / {files.Count():N0} {item.ServerItem}                                                                                                          \r");
 
-              var lines = SearchInFile(item);
+              var lines = SearchInFile(item, textPatterns);
               if (lines.Count > 0)
               {
                 Console.ForegroundColor = ConsoleColor.DarkYellow;
@@ -87,7 +95,7 @@ namespace TFS
       Console.ReadKey();
     }
 
-    static List<string> SearchInFile(Item file)
+    static List<string> SearchInFile(Item file, string[] textPatterns)
     {
       var result = new List<string>();
 
