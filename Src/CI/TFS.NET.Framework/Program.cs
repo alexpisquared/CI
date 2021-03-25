@@ -24,10 +24,16 @@ namespace TFS
 
         var versionControl = tfs.GetService<VersionControlServer>();
 
-        var outputF = new StreamWriter(@"C:\temp\Code Matches - Files & Lines.txt");
-        var details = new StreamWriter(@"C:\temp\Code Matches - Filenames Only.txt");
+        var outputF = @"C:\temp\Code Matches - Filenames Only.txt";
+        var details = @"C:\temp\Code Matches - Files & Lines.txt";
+        var headerL = $"Times  Checked-in  Filename{Environment.NewLine}";
+
+        File.AppendAllText(outputF, headerL);
+        File.AppendAllText(details, headerL);
+
         var allProjs = versionControl.GetAllTeamProjects(true);
         Console.WriteLine($"{allProjs.Count()} team projects: ");
+
 
         var i = 0;
         var f = 0;
@@ -48,25 +54,22 @@ namespace TFS
               if (lines.Count > 0)
               {
                 Console.ForegroundColor = ConsoleColor.Yellow;
-                var header = $"{lines.Count} occurence(s) found in {item.ServerItem}   (last check-in: {item.CheckinDate:yyyy-MM-dd})";
-                Console.WriteLine(header);
-                outputF.WriteLine(header);
-                details.WriteLine(header);
+                var header = $"{lines.Count,5}  {item.CheckinDate:yyyy-MM-dd}  {item.ServerItem}   {Environment.NewLine}";
+                Console.Write(header);
+                File.AppendAllText(outputF, header);
+                File.AppendAllText(details, header);
 
                 foreach (var line in lines)
                 {
                   Console.ForegroundColor = ConsoleColor.Green;
                   Console.WriteLine($"  {line}");
-                  details.WriteLine($"  {line}");
+                  File.AppendAllText(details, $"  {line}{Environment.NewLine}");
                 }
 
-                outputF.WriteLine();
                 Console.ForegroundColor = ConsoleColor.Gray;
               }
             }
           }
-
-          outputF.Flush();
         }
       }
       catch (Exception ex) { Console.ForegroundColor = ConsoleColor.Red; Console.WriteLine($"{ex}"); Console.ForegroundColor = ConsoleColor.Gray; }
