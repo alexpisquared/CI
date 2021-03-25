@@ -10,7 +10,7 @@ namespace TFS
 {
   class Program
   {
-    const string _srch = "traderaccount_view";
+    const string _srch = "select distinct upper(trader_id + ':' + shortname) from inventory..traderaccount_view2";
     static readonly string[]
       textPatterns = new[] { _srch },
       filePatterns = new[] { "*.*" };//"*.?", "*.??", "*.???", "*.????", "*.?????", "*.??????" };// "*.cs", "*.xml", "*.config", "*.asp", "*.aspx", "*.js", "*.h", "*.cpp", "*.vb", "*.asax", "*.ashx", "*.asmx", "*.ascx", "*.master", "*.svc", "*.jar" }; //file extensions
@@ -18,6 +18,12 @@ namespace TFS
     static void Main(string[] args)
     {
       Console.ForegroundColor = ConsoleColor.Gray;
+      var now = DateTime.Now;
+      var fnm = _srch.Replace(":", "-");
+      var outputF = $@"C:\temp\Code Matches - {fnm} - {now:HHmm} - Filenames Only.txt";
+      var details = $@"C:\temp\Code Matches - {fnm} - {now:HHmm} - Files & Lines.txt";
+      var headerL = $"Times  Checked-in  Filename{Environment.NewLine}";
+
 
       try
       {
@@ -25,10 +31,6 @@ namespace TFS
         tfs.EnsureAuthenticated();
 
         var versionControl = tfs.GetService<VersionControlServer>();
-
-        var outputF = $@"C:\temp\Code Matches - {_srch} - {DateTime.Now:HHmm} - Filenames Only.txt";
-        var details = $@"C:\temp\Code Matches - {_srch} - {DateTime.Now:HHmm} - Files & Lines.txt";
-        var headerL = $"Times  Checked-in  Filename{Environment.NewLine}";
 
         File.AppendAllText(outputF, headerL);
         File.AppendAllText(details, headerL);
@@ -74,6 +76,10 @@ namespace TFS
         }
       }
       catch (Exception ex) { Console.ForegroundColor = ConsoleColor.Yellow; Console.WriteLine($"{ex}"); Console.ForegroundColor = ConsoleColor.Gray; }
+      finally
+      {
+        File.AppendAllText(details, $"\n from - to = took:  {now:HH:mm} - {DateTime.Now:HH:mm} = {(DateTime.Now - now).TotalMinutes:N1} min");
+      }
 
       Console.ForegroundColor = ConsoleColor.DarkGreen;
       Console.WriteLine("======== Press any key ");
