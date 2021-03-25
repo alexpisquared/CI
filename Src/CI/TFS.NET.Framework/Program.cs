@@ -1,72 +1,80 @@
-﻿using System;
+﻿using Microsoft.TeamFoundation.Client;
+using Microsoft.TeamFoundation.VersionControl.Client;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
-using Microsoft.TeamFoundation.Client;
-using Microsoft.TeamFoundation.VersionControl.Client;
-using Microsoft.TeamFoundation.Framework.Client;
-using System.IO;
 
 namespace TFS
 {
   class Program
   {
-    static string[] textPatterns = new[] { "traderaccount_view2" };  //Text to search
-    static string[] filePatterns = new[] { "*.cs", "*.xml", "*.config", "*.asp", "*.aspx", "*.js", "*.h", "*.cpp", "*.vb", "*.asax", "*.ashx", "*.asmx", "*.ascx", "*.master", "*.svc" }; //file extensions
+    static readonly string[] textPatterns = new[] { "traderaccount_view" };  //Text to search
+    static readonly string[] filePatterns = new[] { "*.cs", "*.xml", "*.config", "*.asp", "*.aspx", "*.js", "*.h", "*.cpp", "*.vb", "*.asax", "*.ashx", "*.asmx", "*.ascx", "*.master", "*.svc" }; //file extensions
 
     static void Main(string[] args)
     {
-      Console.WriteLine("Hello World!");
+      Console.ForegroundColor = ConsoleColor.Gray;
+
       try
       {
-        var tfs = TfsTeamProjectCollectionFactory.GetTeamProjectCollection(
-          new Uri("http://dev-tfs1.pariotech.com:8080/tfs")//, new ServiceIdentityCredentialsProvider(@"BBSSecurities\alex.pigida","")      
-          ); 
-
-      //tfs.EnsureAuthenticated();
+        var tfs = TfsTeamProjectCollectionFactory.GetTeamProjectCollection(new Uri("http://dev-tfs1.pariotech.com:8080/tfs/defaultcollection"));
+        tfs.EnsureAuthenticated();
 
         var versionControl = tfs.GetService<VersionControlServer>();
 
-
-        StreamWriter outputFile = new StreamWriter(@"C:\Find.txt");
+        var outputF = new StreamWriter(@"C:\temp\Code Matches - Files & Lines.txt");
+        var details = new StreamWriter(@"C:\temp\Code Matches - Filenames Only.txt");
         var allProjs = versionControl.GetAllTeamProjects(true);
+        Console.WriteLine($"{allProjs.Count()} team projects: ");
+
+        var i = 0;
+        var f = 0;
         foreach (var teamProj in allProjs)
         {
+          Console.WriteLine($"{teamProj.Name}");
+
           foreach (var filePattern in filePatterns)
           {
-            var items = versionControl.GetItems(teamProj.ServerItem + "/" + filePattern, RecursionType.Full).Items
-                        .Where(i => !i.ServerItem.Contains("_ReSharper"));  //skipping resharper stuff
+            var items = versionControl.GetItems(teamProj.ServerItem + "/" + filePattern, RecursionType.Full).Items.Where(r => !r.ServerItem.Contains("_ReSharper"));  //skipping resharper stuff
+            Console.WriteLine($"{++f} / {filePatterns.Length} - {filePattern}  {items.Count()}:");
             foreach (var item in items)
             {
-              List<string> lines = SearchInFile(item);
+              if ((++i) % 100 == 0)
+                Console.WriteLine($"{i,6} / {items.Count(),-6} {item.ServerItem}");
+
+              var lines = SearchInFile(item);
               if (lines.Count > 0)
               {
-                outputFile.WriteLine("FILE:" + item.ServerItem);
-                outputFile.WriteLine(lines.Count.ToString() + " occurence(s) found.");
-                outputFile.WriteLine();
-              }
-              foreach (string line in lines)
-              {
-                outputFile.WriteLine(line);
-              }
-              if (lines.Count > 0)
-              {
-                outputFile.WriteLine();
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                var header = $"{lines.Count} occurence(s) found in {item.ServerItem}   (last check-in: {item.CheckinDate:yyyy-MM-dd})";
+                Console.WriteLine(header);
+                outputF.WriteLine(header);
+                details.WriteLine(header);
+
+                foreach (var line in lines)
+                {
+                  Console.ForegroundColor = ConsoleColor.Green;
+                  Console.WriteLine($"  {line}");
+                  details.WriteLine($"  {line}");
+                }
+
+                outputF.WriteLine();
+                Console.ForegroundColor = ConsoleColor.Gray;
               }
             }
           }
-          outputFile.Flush();
+
+          outputF.Flush();
         }
       }
-      catch (Exception e)
-      {
-        string ex = e.Message;
-        Console.WriteLine("!!EXCEPTION: " + e.Message);
-        Console.WriteLine("Continuing... ");
-      }
-      Console.WriteLine("========");
-      Console.Read();
+      catch (Exception ex) { Console.ForegroundColor = ConsoleColor.Red; Console.WriteLine($"{ex}"); Console.ForegroundColor = ConsoleColor.Gray; }
+
+      Console.ForegroundColor = ConsoleColor.DarkGreen;
+      Console.WriteLine("======== Press any key ");
+      Console.ResetColor();
+      Console.ReadKey();
     }
 
     // Define other methods and classes here
@@ -84,19 +92,13 @@ namespace TFS
         while (!stream.EndOfStream)
         {
           if (textPatterns.Any(p => line.IndexOf(p, StringComparison.OrdinalIgnoreCase) >= 0))
-            result.Add("=== Line " + lineIndex + ": " + line.Trim());
+            result.Add($"{lineIndex}: {line.Trim()}");
 
           line = stream.ReadLine();
           lineIndex++;
         }
       }
-      catch (Exception e)
-      {
-        string ex = e.Message;
-        Console.WriteLine("!!EXCEPTION: " + e.Message);
-        Console.WriteLine("Continuing... ");
-      }
-
+      catch (Exception ex) { Console.ForegroundColor = ConsoleColor.Red; Console.WriteLine($"{ex}"); Console.ForegroundColor = ConsoleColor.Gray; }
       return result;
     }
   }

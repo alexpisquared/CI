@@ -51,5 +51,11 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\CI-Reimagined-Invention\Src\CI-RI\AAV.TfsManager\AAV.TfsManager.csproj">
+      <Project>{130ca348-e66e-405f-9527-36e61d99d15f}</Project>
+      <Name>AAV.TfsManager</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
