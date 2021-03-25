@@ -10,8 +10,10 @@ namespace TFS
 {
   class Program
   {
-    static readonly string[] textPatterns = new[] { "traderaccount_view" };  //Text to search
-    static readonly string[] filePatterns = new[] { "*.cs", "*.xml", "*.config", "*.asp", "*.aspx", "*.js", "*.h", "*.cpp", "*.vb", "*.asax", "*.ashx", "*.asmx", "*.ascx", "*.master", "*.svc" }; //file extensions
+    const string _srch = "traderaccount_view";
+    static readonly string[]
+      textPatterns = new[] { _srch },
+      filePatterns = new[] { "*.*" };//"*.?", "*.??", "*.???", "*.????", "*.?????", "*.??????" };// "*.cs", "*.xml", "*.config", "*.asp", "*.aspx", "*.js", "*.h", "*.cpp", "*.vb", "*.asax", "*.ashx", "*.asmx", "*.ascx", "*.master", "*.svc", "*.jar" }; //file extensions
 
     static void Main(string[] args)
     {
@@ -24,8 +26,8 @@ namespace TFS
 
         var versionControl = tfs.GetService<VersionControlServer>();
 
-        var outputF = @"C:\temp\Code Matches - Filenames Only.txt";
-        var details = @"C:\temp\Code Matches - Files & Lines.txt";
+        var outputF = $@"C:\temp\Code Matches - {_srch} - {DateTime.Now:HHmm} - Filenames Only.txt";
+        var details = $@"C:\temp\Code Matches - {_srch} - {DateTime.Now:HHmm} - Files & Lines.txt";
         var headerL = $"Times  Checked-in  Filename{Environment.NewLine}";
 
         File.AppendAllText(outputF, headerL);
@@ -33,7 +35,6 @@ namespace TFS
 
         var allProjs = versionControl.GetAllTeamProjects(true);
         Console.WriteLine($"{allProjs.Count()} team projects: ");
-
 
         var i = 0;
         var f = 0;
@@ -43,17 +44,17 @@ namespace TFS
 
           foreach (var filePattern in filePatterns)
           {
-            var items = versionControl.GetItems(teamProj.ServerItem + "/" + filePattern, RecursionType.Full).Items.Where(r => !r.ServerItem.Contains("_ReSharper"));  //skipping resharper stuff
-            Console.WriteLine($"{++f} / {filePatterns.Length} - {filePattern}  {items.Count()}:");
-            foreach (var item in items)
+            var files = versionControl.GetItems(teamProj.ServerItem + "/" + filePattern, RecursionType.Full).Items.Where(r => r.ItemType == ItemType.File && !r.ServerItem.Contains("_ReSharper"));  //skipping resharper stuff
+            Console.WriteLine($"{++f} / {filePatterns.Length} - {filePattern}  {files.Count()}:");
+            foreach (var item in files)
             {
-              if ((++i) % 100 == 0)
-                Console.WriteLine($"{i,6} / {items.Count(),-6} {item.ServerItem}");
+              if ((++i) % 1000 == 0)
+                Console.WriteLine($"{i,6} / {files.Count(),-6} {item.ServerItem}");
 
               var lines = SearchInFile(item);
               if (lines.Count > 0)
               {
-                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.ForegroundColor = ConsoleColor.DarkYellow;
                 var header = $"{lines.Count,5}  {item.CheckinDate:yyyy-MM-dd}  {item.ServerItem}   {Environment.NewLine}";
                 Console.Write(header);
                 File.AppendAllText(outputF, header);
@@ -72,7 +73,7 @@ namespace TFS
           }
         }
       }
-      catch (Exception ex) { Console.ForegroundColor = ConsoleColor.Red; Console.WriteLine($"{ex}"); Console.ForegroundColor = ConsoleColor.Gray; }
+      catch (Exception ex) { Console.ForegroundColor = ConsoleColor.Yellow; Console.WriteLine($"{ex}"); Console.ForegroundColor = ConsoleColor.Gray; }
 
       Console.ForegroundColor = ConsoleColor.DarkGreen;
       Console.WriteLine("======== Press any key ");
@@ -80,8 +81,7 @@ namespace TFS
       Console.ReadKey();
     }
 
-    // Define other methods and classes here
-    private static List<string> SearchInFile(Item file)
+    static List<string> SearchInFile(Item file)
     {
       var result = new List<string>();
 
@@ -101,7 +101,7 @@ namespace TFS
           lineIndex++;
         }
       }
-      catch (Exception ex) { Console.ForegroundColor = ConsoleColor.Red; Console.WriteLine($"{ex}"); Console.ForegroundColor = ConsoleColor.Gray; }
+      catch (Exception ex) { Console.ForegroundColor = ConsoleColor.Yellow; Console.WriteLine($"{ex}"); Console.ForegroundColor = ConsoleColor.Gray; }
       return result;
     }
   }
