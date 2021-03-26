@@ -34,7 +34,7 @@ namespace CI.PermissionManager
     public ICollectionView CV => _cv;
     bool filterPerms(object obj) => (obj is Permission permission) && permission.Name.Contains(PermissionsFilter, StringComparison.InvariantCultureIgnoreCase);
 
-    void onLoaded(object sender, RoutedEventArgs e)
+    void onLoaded(object s, RoutedEventArgs e)
     {
       _context.Applications.Load();           //await _context.Permissions.LoadAsync();
       _context.Permissions.Load();            //await _context.Permissions.LoadAsync();

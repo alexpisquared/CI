@@ -3,8 +3,7 @@
         Title="PAsUsersSelectorWindow" Height="450" Width="800">
   <Window.Resources>
     <CollectionViewSource x:Key="_userViewSource"/>
-    <CollectionViewSource x:Key="_userPermissionAssignmentsViewSource" 
-                                      Source="{Binding PermissionAssignments, Source={StaticResource _userViewSource}}"/>
+    <CollectionViewSource x:Key="_permViewSource"/>
   </Window.Resources>
   <Grid>
     <Grid.RowDefinitions>
@@ -26,20 +25,21 @@
         <ColumnDefinition Width="Auto"/>
       </Grid.ColumnDefinitions>
 
-      <DataGrid Grid.Column="1" x:Name="dg1" ItemsSource="{Binding Source={StaticResource _userViewSource}}" >
+      <DataGrid Grid.Column="1" x:Name="dgPerm" ItemsSource="{Binding Source={StaticResource _permViewSource}}" 
+                SelectionUnit="Cell" SelectedCellsChanged="dgPerm_SelectedCellsChanged">
         <DataGrid.Columns>
-          <DataGridTextColumn Binding="{Binding UserId}"  Header="User Name" Width="*"/>
+          <DataGridTextColumn     Binding="{Binding Name}"         Header="Permission Name" Width="*"/>
+          <DataGridCheckBoxColumn Binding="{Binding Granted}"      Header="Granted"    />
         </DataGrid.Columns>
       </DataGrid>
 
-      <DataGrid Grid.Column="2" x:Name="dg2" ItemsSource="{Binding Source={StaticResource _userPermissionAssignmentsViewSource}}"  >
+      <DataGrid Grid.Column="2" x:Name="dgUser" ItemsSource="{Binding Source={StaticResource _userViewSource}}" 
+                SelectionUnit="Cell" SelectedCellsChanged="dgUser_SelectedCellsChanged">
         <DataGrid.Columns>
-          <DataGridTextColumn Binding="{Binding Status}"                  Header="Status" Width="SizeToHeader"/>
-          <DataGridTextColumn Binding="{Binding Permission.Name}"         Header="Permission Name"    />
-          <DataGridTextColumn Binding="{Binding Permission.App.AppName}"  Header="App Name" Width="*" />
+          <DataGridTextColumn     Binding="{Binding UserId}"      Header="User Name" Width="*"/>
+          <DataGridCheckBoxColumn Binding="{Binding Granted}"     Header="Granted"    />
         </DataGrid.Columns>
       </DataGrid>
-
 
     </Grid>
   </Grid>

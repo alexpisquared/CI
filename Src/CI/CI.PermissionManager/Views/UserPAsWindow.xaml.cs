@@ -22,7 +22,7 @@ namespace CI.PermissionManager.Views
 
       Loaded += onLoaded;
     }
-    async void onLoaded(object sender, RoutedEventArgs e)
+    async void onLoaded(object s, RoutedEventArgs e)
     {
       await _context.Users.LoadAsync();
       await _context.PermissionAssignments.LoadAsync();

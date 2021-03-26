@@ -9,9 +9,10 @@ namespace CI.PermissionManager
     {
       base.OnStartup(e);
 
-      new MainWindow().Show();
-      new AppPermPAsWindow().Show();
-      new UserPAsWindow().Show();
+      //new MainWindow().Show();
+      //new AppPermPAsWindow().Show();
+      //new UserPAsWindow().Show();
+      new PAsUsersSelectorWindow().Show();
     }
   }
 }
