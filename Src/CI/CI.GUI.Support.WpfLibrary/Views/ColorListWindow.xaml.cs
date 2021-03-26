@@ -17,7 +17,7 @@ namespace CI.GUI.Support.WpfLibrary.Views
   /// <summary>
   /// Interaction logic for ColorListWindow.xaml
   /// </summary>
-  public partial class ColorListWindow : Window
+  public partial class ColorListWindow   : GUI.Support.WpfLibrary.Base.WindowBase
   {
     public ColorListWindow()
     {

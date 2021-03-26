@@ -7,7 +7,7 @@ using System.Windows.Data;
 
 namespace CI.PermissionManager
 {
-  public partial class MainWindow : Window
+  public partial class MainWindow  : GUI.Support.WpfLibrary.Base.WindowBase
   {
     readonly ICollectionView _cv;
     readonly InventoryContext _context = new();
@@ -51,7 +51,7 @@ namespace CI.PermissionManager
       _permissionDataGrid.Items.Refresh();      // this forces the grid to refresh to latest values
       _applicationPermissionsDataGrid.Items.Refresh();
     }
-    void onExit(object s, RoutedEventArgs e) => Close();
+    void onExit(object s, RoutedEventArgs e) => App.Current.Shutdown();
 
     protected override void OnClosing(CancelEventArgs e)
     {

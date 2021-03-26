@@ -1,7 +1,21 @@
 ﻿<Application x:Class="CI.PermissionManager.App" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="clr-namespace:CI.PermissionManager"
-             StartupUri="Views\AppPermPAsWindow.xaml">
+             xmlns:local="clr-namespace:CI.PermissionManager">
+  <!--StartupUri="Views\AppPermPAsWindow.xaml">-->
     <Application.Resources>
-         
-    </Application.Resources>
+
+    <Style TargetType="DataGrid">
+      <Setter Property="AutoGenerateColumns"      Value="False" />
+      <Setter Property="EnableRowVirtualization"  Value="True"  />
+      <Setter Property="CanUserAddRows"           Value="True"  />
+      <Setter Property="RowDetailsVisibilityMode" Value="VisibleWhenSelected"  />
+      <Setter Property="Margin"                   Value="5"  />
+      <Setter Property="AlternatingRowBackground" Value="#f0f8ff"  />
+    </Style>
+      
+    <LinearGradientBrush x:Key="GridBackground1" EndPoint="0.5,1" StartPoint="0.5,0">
+      <GradientStop Color="Black"/>
+      <GradientStop Color="White" Offset="1"/>
+    </LinearGradientBrush>
+
+  </Application.Resources>
 </Application>
