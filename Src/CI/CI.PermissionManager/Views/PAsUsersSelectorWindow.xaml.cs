@@ -7,16 +7,16 @@ using System.Windows.Data;
 
 namespace CI.PermissionManager.Views
 {
-  public partial class AppPermPAsWindow : GUI.Support.WpfLibrary.Base.WindowBase
+  public partial class PAsUsersSelectorWindow : GUI.Support.WpfLibrary.Base.WindowBase
   {
     readonly InventoryContext _context = new();
-    readonly CollectionViewSource _applicationViewSource;
+    readonly CollectionViewSource _userViewSource;
 
-    public AppPermPAsWindow()
+    public PAsUsersSelectorWindow()
     {
       InitializeComponent();
 
-      _applicationViewSource = (CollectionViewSource)FindResource(nameof(_applicationViewSource));
+      _userViewSource = (CollectionViewSource)FindResource(nameof(_userViewSource));
 
       DataContext = this;
 
@@ -24,14 +24,14 @@ namespace CI.PermissionManager.Views
     }
     async void onLoaded(object sender, RoutedEventArgs e)
     {
-      await _context.Applications.LoadAsync();
-      await _context.Permissions.LoadAsync();
-      await _context.PermissionAssignments.LoadAsync();
       await _context.Users.LoadAsync();
+      await _context.PermissionAssignments.LoadAsync();
+      await _context.Permissions.LoadAsync();
+      await _context.Applications.LoadAsync();
       Title = $"A:{_context.Applications.Local.Count} ◄ P:{_context.Permissions.Local.Count} ◄ pa:{_context.PermissionAssignments.Local.Count} ◄ u:{_context.Users.Local.Count}";
 
-      _applicationViewSource.Source = _context.Applications.Local.ToObservableCollection();//.OrderBy(r => r.AppName);
-      _applicationViewSource.SortDescriptions.Add(new SortDescription(nameof(DB.Inventory.Models.Application.AppName), ListSortDirection.Ascending));
+      _userViewSource.Source = _context.Users.Local.ToObservableCollection();//.OrderBy(r => r.UserId);
+      _userViewSource.SortDescriptions.Add(new SortDescription(nameof(User.UserId), ListSortDirection.Ascending));
       dg1.SelectedIndex = -1;
     }
     void onSave(object s, RoutedEventArgs e)
@@ -40,7 +40,6 @@ namespace CI.PermissionManager.Views
 
       dg1.Items.Refresh();      // this forces the grid to refresh to latest values
       dg2.Items.Refresh();
-      dg3.Items.Refresh();
     }
     void onExit(object s, RoutedEventArgs e) => App.Current.Shutdown();
 

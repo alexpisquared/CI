@@ -30,7 +30,9 @@ namespace CI.PermissionManager.Views
       await _context.Applications.LoadAsync();
       Title = $"A:{_context.Applications.Local.Count} ◄ P:{_context.Permissions.Local.Count} ◄ pa:{_context.PermissionAssignments.Local.Count} ◄ u:{_context.Users.Local.Count}";
 
-      _userViewSource.Source = _context.Users.Local.ToObservableCollection().OrderBy(r => r.UserId);
+      _userViewSource.Source = _context.Users.Local.ToObservableCollection();//.OrderBy(r => r.UserId);
+      _userViewSource.SortDescriptions.Add(new SortDescription(nameof(User.UserId), ListSortDirection.Ascending));
+      dg1.SelectedIndex = -1;
     }
     void onSave(object s, RoutedEventArgs e)
     {

@@ -20,4 +20,11 @@
     <ProjectReference Include="..\CI.GUI.Support.WpfLibrary\CI.GUI.Support.WpfLibrary.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Page Update="Views\PAsUsersSelectorWindow.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
+  </ItemGroup>
+
 </Project>
