@@ -27,7 +27,7 @@
         <Setter Property="BorderThickness"            Value="0"  />
         <Setter Property="Height"                     Value="20"  />
         <Setter Property="Margin"                     Value="0"  />
-        <Setter Property="Padding"                    Value="-16"  />
+        <Setter Property="Padding"                    Value="-22"  />
         <Setter Property="Background"                 Value="#aaa"  />
       </Style>
 

@@ -26,9 +26,5 @@
         <DropShadowEffect ShadowDepth="2" BlurRadius="12" Color="#faa" Opacity=".4" />
       </TextBlock.Effect>
     </TextBlock>
-    <Image Width="45" Source="/CI.PermissionManager;component/Clock4.ico" Margin="14 0" Grid.Column="2"/>
-    <Image Width="35" Source="/CI.PermissionManager;component/favicon.ico" Margin="14 0" Grid.Column="3"/>
-    <Image Width="25" Source="/CI.PermissionManager;component/Clock4.ico" Margin="14 0" Grid.Column="4"/>
-    <Image Width="15" Source="/CI.PermissionManager;component/favicon.ico" Margin="14 0" Grid.Column="5"/>
   </Grid>
 </UserControl>

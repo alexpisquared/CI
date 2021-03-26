@@ -74,8 +74,6 @@ namespace CI.PermissionManager.Views
       var prm = ((DB.Inventory.Models.Permission)e.AddedCells[0].Item);
       var pas = prm.PermissionAssignments;
 
-      Debug.WriteLine($" {prm.Name,-32} has {pas.Count,4} asignments.");
-
       var ps = (ObservableCollection<Permission>)_permViewSource.Source;
       ps.ToList().ForEach(r => r.Granted = false);
       var us = (ObservableCollection<User>)_userViewSource.Source;
@@ -89,6 +87,9 @@ namespace CI.PermissionManager.Views
       }
 
       dgUser.Items.Refresh();
+
+      pfu.Text = $"";
+      ufp.Text = $"{prm.Name}  assigned to  {pas.Count}  users:";
 
       //dgPerm.Items.Refresh();
       //dgPerm.CurrentCell = new DataGridCellInfo(dgPerm.Items[0], dgPerm.Columns[0]);
@@ -118,12 +119,12 @@ namespace CI.PermissionManager.Views
 
       dgPerm.Items.Refresh();
       //dgUser.Items.Refresh();
+
+      pfu.Text = $"{usr.UserId}  has  {pas.Count}  permissions:";
+      ufp.Text = $"";
     }
 
-    private void Button_Click(object sender, RoutedEventArgs e)
-    {
-
-    }
+    void Button_Click(object sender, RoutedEventArgs e) { }
     async void onAudio(object s, RoutedEventArgs e) { _audible = false; SystemSounds.Hand.Play(); await Task.Delay(300000); _audible = true; }
     void onWindowMinimize(object s, RoutedEventArgs e) => WindowState = WindowState.Minimized;
     void onWindowRestoree(object s, RoutedEventArgs e) { wr.Visibility = Visibility.Collapsed; wm.Visibility = Visibility.Visible; WindowState = WindowState.Normal; }
