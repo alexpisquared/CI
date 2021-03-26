@@ -63,20 +63,6 @@ namespace CI.PermissionManager.Views
       base.OnClosing(e);
     }
 
-    void dgPerm_SelectionChanged(object s, System.Windows.Controls.SelectionChangedEventArgs e)
-    {
-      if (!_loaded || e.AddedItems.Count < 1) return;
-
-      var prm = ((Permission)((object[])e.AddedItems)[0]);
-      var pas = prm.PermissionAssignments;
-    }
-
-    void dgUser_SelectionChanged(object s, System.Windows.Controls.SelectionChangedEventArgs e)
-    {
-      if (!_loaded || e.AddedItems.Count < 1) return;
-
-    }
-
     void dgPerm_SelectedCellsChanged(object sender, System.Windows.Controls.SelectedCellsChangedEventArgs e)
     {
       if (!_loaded || e.AddedCells.Count < 1 || !(e.AddedCells[0].Column is DataGridTextColumn)) return;
@@ -99,7 +85,10 @@ namespace CI.PermissionManager.Views
       }
 
       dgUser.Items.Refresh();
-      dgPerm.Items.Refresh();
+
+      //dgPerm.Items.Refresh();
+      //dgPerm.CurrentCell = new DataGridCellInfo(dgPerm.Items[0], dgPerm.Columns[0]);
+      //dgPerm.SelectedCells.Add(dgPerm.CurrentCell);
     }
 
     void dgUser_SelectedCellsChanged(object sender, SelectedCellsChangedEventArgs e)
@@ -124,7 +113,7 @@ namespace CI.PermissionManager.Views
       }
 
       dgPerm.Items.Refresh();
-      dgUser.Items.Refresh();
+      //dgUser.Items.Refresh();
     }
   }
 }
