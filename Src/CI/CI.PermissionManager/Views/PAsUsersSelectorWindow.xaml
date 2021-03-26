@@ -1,6 +1,6 @@
 ﻿<lnk:WindowBase xmlns:lnk="clr-namespace:CI.GUI.Support.WpfLibrary.Base;assembly=CI.GUI.Support.WpfLibrary" x:Name="wnd" x:Class="CI.PermissionManager.Views.PAsUsersSelectorWindow" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d"
                 xmlns:local="clr-namespace:CI.PermissionManager.Views"
-        Title="PAsUsersSelectorWindow" Height="450" Width="800">
+                xmlns:cnv="clr-namespace:CI.PermissionManager.Views" Title="PAsUsersSelectorWindow" Height="250" Width="800">
   <Window.Resources>
     <CollectionViewSource x:Key="_userViewSource"/>
     <CollectionViewSource x:Key="_permViewSource"/>
@@ -26,18 +26,18 @@
       </Grid.ColumnDefinitions>
 
       <DataGrid Grid.Column="1" x:Name="dgPerm" ItemsSource="{Binding Source={StaticResource _permViewSource}}" 
-                SelectionUnit="Cell" SelectedCellsChanged="dgPerm_SelectedCellsChanged">
+                SelectionUnit="Cell" SelectedCellsChanged="dgPerm_SelectedCellsChanged">        
         <DataGrid.Columns>
-          <DataGridTextColumn     Binding="{Binding Name}"         Header="Permission Name" Width="*"/>
-          <DataGridCheckBoxColumn Binding="{Binding Granted}"      Header="Granted"    />
+          <DataGridTextColumn     Header="Permission Name" Binding="{Binding Name}"  Width="*"/>
+          <DataGridTemplateColumn Header="Granted" CellTemplate="{StaticResource LookTemplate}" />
         </DataGrid.Columns>
       </DataGrid>
 
       <DataGrid Grid.Column="2" x:Name="dgUser" ItemsSource="{Binding Source={StaticResource _userViewSource}}" 
                 SelectionUnit="Cell" SelectedCellsChanged="dgUser_SelectedCellsChanged">
         <DataGrid.Columns>
-          <DataGridTextColumn     Binding="{Binding UserId}"      Header="User Name" Width="*"/>
-          <DataGridCheckBoxColumn Binding="{Binding Granted}"     Header="Granted"    />
+          <DataGridTextColumn     Header="User Name" Binding="{Binding UserId}"      Width="*"/>
+          <DataGridTemplateColumn Header="Granted" CellTemplate="{StaticResource LookTemplate}" />
         </DataGrid.Columns>
       </DataGrid>
 
