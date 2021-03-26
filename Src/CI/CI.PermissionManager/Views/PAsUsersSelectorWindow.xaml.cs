@@ -4,6 +4,8 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
+using System.Media;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -16,6 +18,8 @@ namespace CI.PermissionManager.Views
     readonly CollectionViewSource _userViewSource;
     readonly CollectionViewSource _permViewSource;
     bool _loaded;
+    private bool _audible;
+    public static readonly DependencyProperty BlurProperty = DependencyProperty.Register("Blur", typeof(double), typeof(PAsUsersSelectorWindow), new PropertyMetadata(.0)); public double Blur { get { return (double)GetValue(BlurProperty); } set { SetValue(BlurProperty, value); } }
 
     public PAsUsersSelectorWindow()
     {
@@ -115,5 +119,15 @@ namespace CI.PermissionManager.Views
       dgPerm.Items.Refresh();
       //dgUser.Items.Refresh();
     }
+
+    private void Button_Click(object sender, RoutedEventArgs e)
+    {
+
+    }
+    async void onAudio(object s, RoutedEventArgs e) { _audible = false; SystemSounds.Hand.Play(); await Task.Delay(300000); _audible = true; }
+    void onWindowMinimize(object s, RoutedEventArgs e) => WindowState = WindowState.Minimized;
+    void onWindowRestoree(object s, RoutedEventArgs e) { wr.Visibility = Visibility.Collapsed; wm.Visibility = Visibility.Visible; WindowState = WindowState.Normal; }
+    void onWindowMaximize(object s, RoutedEventArgs e) { wm.Visibility = Visibility.Collapsed; wr.Visibility = Visibility.Visible; WindowState = WindowState.Maximized; }
+
   }
 }

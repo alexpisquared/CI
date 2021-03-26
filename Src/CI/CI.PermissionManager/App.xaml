@@ -1,56 +1,65 @@
 ﻿<Application x:Class="CI.PermissionManager.App" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:CI.PermissionManager">
-  <!--StartupUri="Views\AppPermPAsWindow.xaml">-->
-    <Application.Resources>
+  <Application.Resources>
+    <ResourceDictionary>
+      <ResourceDictionary.MergedDictionaries>
 
-    <Style TargetType="DataGrid">
-      <Setter Property="AutoGenerateColumns"        Value="False" />
-      <Setter Property="EnableRowVirtualization"    Value="True"  />
-      <Setter Property="CanUserAddRows"             Value="True"  />
-      <Setter Property="RowDetailsVisibilityMode"   Value="VisibleWhenSelected"  />
-      <Setter Property="Margin"                     Value="5"  />
-      <Setter Property="AlternatingRowBackground"   Value="#f0f8ff"  />
-    </Style>
+        <!--ap:Backup theme + designer's:-->
+        <ResourceDictionary Source="/CI.GUI.Support.WpfLibrary;component/ColorScheme/Theme.Color.Lite.Gray.xaml" />
 
-    <Style TargetType="ToggleButton">
-      <Setter Property="VerticalAlignment"          Value="Center"  />
-      <Setter Property="HorizontalAlignment"        Value="Center"  />
-      <Setter Property="BorderThickness"            Value="0"  />
-      <Setter Property="Height"                     Value="20"  />
-      <Setter Property="Margin"                     Value="0"  />
-      <Setter Property="Padding"                    Value="-16"  />
-      <Setter Property="Background"                 Value="#aaa"  />
-    </Style>
+        <!--ap:Allows Style="{StaticResource WindowStyle_Aav0}"  (since it is on top of the visual tree over the Window) -->
+        <ResourceDictionary Source="/CI.GUI.Support.WpfLibrary;component/Base/BasicDefaultsLayout.xaml" />
 
-    <LinearGradientBrush x:Key="GridBackground1" EndPoint="0.5,1" StartPoint="0.5,0">
-      <GradientStop Color="Black"/>
-      <GradientStop Color="White" Offset="1"/>
-    </LinearGradientBrush>
+      </ResourceDictionary.MergedDictionaries>
 
-    <Style TargetType="DataGridRow">
-      <Setter Property="DetailsVisibility" Value="Collapsed"/>
-      <!--<Setter Property="Background" Value="Lavender"/>-->
-      <Style.Triggers>
-        <DataTrigger Binding="{Binding Granted}" Value="True">
-          <Setter Property="ToolTip" Value="Permissions granted. Click True to revoke."/>
-          <Setter Property="Background" Value="LightGreen"/>
-        </DataTrigger>
-        <DataTrigger Binding="{Binding Granted}" Value="False">
-          <Setter Property="ToolTip" Value="No permissions granted. Click False to grant."/>
-          <Setter Property="Background" Value="Transparent"/>
-        </DataTrigger>
-      </Style.Triggers>
-    </Style>
-    <DataTemplate x:Key="LookTemplate">
-      <Grid >
-        <!--
+      <Style TargetType="DataGrid">
+        <Setter Property="AutoGenerateColumns"        Value="False" />
+        <Setter Property="EnableRowVirtualization"    Value="True"  />
+        <Setter Property="CanUserAddRows"             Value="True"  />
+        <Setter Property="RowDetailsVisibilityMode"   Value="VisibleWhenSelected"  />
+        <Setter Property="Margin"                     Value="5"  />
+        <Setter Property="AlternatingRowBackground"   Value="#f0f8ff"  />
+      </Style>
+
+      <Style TargetType="ToggleButton">
+        <Setter Property="VerticalAlignment"          Value="Center"  />
+        <Setter Property="HorizontalAlignment"        Value="Center"  />
+        <Setter Property="BorderThickness"            Value="0"  />
+        <Setter Property="Height"                     Value="20"  />
+        <Setter Property="Margin"                     Value="0"  />
+        <Setter Property="Padding"                    Value="-16"  />
+        <Setter Property="Background"                 Value="#aaa"  />
+      </Style>
+
+      <LinearGradientBrush x:Key="GridBackground1" EndPoint="0.5,1" StartPoint="0.5,0">
+        <GradientStop Color="Black"/>
+        <GradientStop Color="White" Offset="1"/>
+      </LinearGradientBrush>
+
+      <Style TargetType="DataGridRow">
+        <Setter Property="DetailsVisibility" Value="Collapsed"/>
+        <!--<Setter Property="Background" Value="Lavender"/>-->
+        <Style.Triggers>
+          <DataTrigger Binding="{Binding Granted}" Value="True">
+            <Setter Property="ToolTip" Value="Permissions granted. Click True to revoke."/>
+            <Setter Property="Background" Value="LightGreen"/>
+          </DataTrigger>
+          <DataTrigger Binding="{Binding Granted}" Value="False">
+            <Setter Property="ToolTip" Value="No permissions granted. Click False to grant."/>
+            <Setter Property="Background" Value="Transparent"/>
+          </DataTrigger>
+        </Style.Triggers>
+      </Style>
+      <DataTemplate x:Key="LookTemplate">
+        <Grid >
+          <!--
                 <Grid          Background="{Binding Granted, UpdateSourceTrigger=PropertyChanged, Converter={cnv:BoolToColorConverter}}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                     <TextBlock     Text="{Binding Granted, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left"  Foreground="#fff" />-->
-        <ToggleButton IsChecked="{Binding Granted, UpdateSourceTrigger=PropertyChanged}" 
-                                  Content="{Binding Granted, UpdateSourceTrigger=PropertyChanged}" />
-      </Grid>
-    </DataTemplate>
+          <ToggleButton IsChecked="{Binding Granted, UpdateSourceTrigger=PropertyChanged}" 
+                        Content="{Binding Granted, UpdateSourceTrigger=PropertyChanged}" />
+        </Grid>
+      </DataTemplate>
 
-
+    </ResourceDictionary>
   </Application.Resources>
 </Application>
