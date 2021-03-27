@@ -17,8 +17,7 @@ namespace CI.PermissionManager.Views
     readonly InventoryContext _context = new();
     readonly CollectionViewSource _userViewSource;
     readonly CollectionViewSource _permViewSource;
-    bool _loaded;
-    private bool _audible;
+    bool _loaded, _audible;
     public static readonly DependencyProperty BlurProperty = DependencyProperty.Register("Blur", typeof(double), typeof(PAsUsersSelectorWindow), new PropertyMetadata(.0)); public double Blur { get { return (double)GetValue(BlurProperty); } set { SetValue(BlurProperty, value); } }
 
     public PAsUsersSelectorWindow()
@@ -31,6 +30,7 @@ namespace CI.PermissionManager.Views
       DataContext = this;
 
       Loaded += onLoaded;
+      themeSelector.ApplyTheme = ApplyTheme;
     }
     async void onLoaded(object s, RoutedEventArgs e)
     {
@@ -52,9 +52,19 @@ namespace CI.PermissionManager.Views
       dgUser.SelectedIndex = -1;
       _loaded = true;
     }
+   async void onFlush(object s, RoutedEventArgs e)
+    {
+      ufp.Text = pfu.Text = "■ ■ ■";
+      dgPermReset(s, e);
+      dgUserReset(s, e);
+      await Task.Yield();
+      SystemSounds.Asterisk.Play();
+    }
     void onSave(object s, RoutedEventArgs e)
     {
-      _context.SaveChanges();
+      onFlush(s, e);
+      //_context.SaveChanges();
+      MessageBox.Show(this, "Press any key to continue...\n\n\t...or any other key to quit", "Changes Saved", MessageBoxButton.OK, MessageBoxImage.Information);
 
       dgUser.Items.Refresh();      // this forces the grid to refresh to latest values
       dgPerm.Items.Refresh();
@@ -67,15 +77,16 @@ namespace CI.PermissionManager.Views
       base.OnClosing(e);
     }
 
-    void dgPerm_SelectedCellsChanged(object sender, System.Windows.Controls.SelectedCellsChangedEventArgs e)
+    void dgPermReset(object s, RoutedEventArgs e) { ((ObservableCollection<Permission>)_permViewSource.Source).ToList().ForEach(r => r.Granted = null); dgPerm.Items.Refresh(); }
+    void dgUserReset(object s, RoutedEventArgs e) { ((ObservableCollection<User>)_userViewSource.Source).ToList().ForEach(r => r.Granted = null); dgUser.Items.Refresh(); }
+    void dgPerm_SelectedCellsChanged(object sender, SelectedCellsChangedEventArgs e)
     {
       if (!_loaded || e.AddedCells.Count < 1 || !(e.AddedCells[0].Column is DataGridTextColumn)) return;
 
-      var prm = ((DB.Inventory.Models.Permission)e.AddedCells[0].Item);
+      var prm = ((Permission)e.AddedCells[0].Item);
       var pas = prm.PermissionAssignments;
 
-      var ps = (ObservableCollection<Permission>)_permViewSource.Source;
-      ps.ToList().ForEach(r => r.Granted = false);
+      ((ObservableCollection<Permission>)_permViewSource.Source).ToList().ForEach(r => r.Granted = false);
       var us = (ObservableCollection<User>)_userViewSource.Source;
       us.ToList().ForEach(r => r.Granted = false);
 
@@ -90,17 +101,12 @@ namespace CI.PermissionManager.Views
 
       pfu.Text = $"";
       ufp.Text = $"{prm.Name}  assigned to  {pas.Count}  users:";
-
-      //dgPerm.Items.Refresh();
-      //dgPerm.CurrentCell = new DataGridCellInfo(dgPerm.Items[0], dgPerm.Columns[0]);
-      //dgPerm.SelectedCells.Add(dgPerm.CurrentCell);
     }
-
     void dgUser_SelectedCellsChanged(object sender, SelectedCellsChangedEventArgs e)
     {
       if (!_loaded || e.AddedCells.Count < 1 || !(e.AddedCells[0].Column is DataGridTextColumn)) return;
 
-      var usr = ((DB.Inventory.Models.User)e.AddedCells[0].Item);
+      var usr = ((User)e.AddedCells[0].Item);
       var pas = usr.PermissionAssignments;
 
       Debug.WriteLine($" {usr.UserId,-32} has {pas.Count,4} asignments.");
@@ -118,7 +124,6 @@ namespace CI.PermissionManager.Views
       }
 
       dgPerm.Items.Refresh();
-      //dgUser.Items.Refresh();
 
       pfu.Text = $"{usr.UserId}  has  {pas.Count}  permissions:";
       ufp.Text = $"";
@@ -129,6 +134,7 @@ namespace CI.PermissionManager.Views
     void onWindowMinimize(object s, RoutedEventArgs e) => WindowState = WindowState.Minimized;
     void onWindowRestoree(object s, RoutedEventArgs e) { wr.Visibility = Visibility.Collapsed; wm.Visibility = Visibility.Visible; WindowState = WindowState.Normal; }
     void onWindowMaximize(object s, RoutedEventArgs e) { wm.Visibility = Visibility.Collapsed; wr.Visibility = Visibility.Visible; WindowState = WindowState.Maximized; }
+
 
   }
 }

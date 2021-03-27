@@ -194,13 +194,13 @@
           <RowDefinition Height="Auto"/>
           <RowDefinition Height="*"/>
           <RowDefinition Height="2"/>
-          <RowDefinition Height="100"/>
+          <RowDefinition Height="0"/>
           <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
         <Views:BrandTitleUserControl Margin="10"/>
 
-        <StackPanel Margin="26 0 0 0" HorizontalAlignment="Center" VerticalAlignment="Center">
+        <StackPanel Margin="6" HorizontalAlignment="Right" VerticalAlignment="Bottom">
           <StackPanel.Effect>
             <BlurEffect Radius="{Binding ElementName=wnd, Path=Blur}" />
           </StackPanel.Effect>
@@ -241,7 +241,7 @@
           </Rectangle.Fill>
         </Rectangle>
 
-        <StackPanel Grid.Row="1" Margin="18 18 8 8" Orientation="Horizontal" x:Name="spc1">
+        <StackPanel Grid.Row="1" Margin="18 18 8 8" Orientation="Horizontal" x:Name="spc1" Visibility="Collapsed">
           <StackPanel.Effect>
             <BlurEffect Radius="{Binding ElementName=wnd, Path=Blur}" />
           </StackPanel.Effect>
@@ -252,9 +252,13 @@
             <ComboBoxItem Content="All"     />
             <ComboBoxItem Content="Filled"  />
           </ComboBox>
-
           <Button Content="Find" IsDefault="True" x:Name="btnFind" Margin="20 0" />
         </StackPanel>
+
+        <Grid Grid.Row="1" Margin="18 18 8 8" Visibility="Visible">
+          <TextBlock x:Name="pfu" d:Text="Perm for User" Foreground="Blue" FontWeight="Medium" FontSize="18" Margin="30 0" HorizontalAlignment="Left" />
+          <TextBlock x:Name="ufp" d:Text="User for Perm" Foreground="Blue" FontWeight="Medium" FontSize="18" Margin="30 0" HorizontalAlignment="Right" />
+        </Grid>
 
         <Grid Grid.Row="2" Margin="10">
           <Grid.ColumnDefinitions>
@@ -266,15 +270,15 @@
           </Grid.ColumnDefinitions>
 
           <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="1"/>
             <RowDefinition Height="*"/>
           </Grid.RowDefinitions>
 
-          <TextBlock Grid.Column="1" x:Name="pfu" d:Text="Perm for User" Foreground="Blue" FontWeight="Medium" FontSize="18" HorizontalAlignment="Center" />
-          <TextBlock Grid.Column="3" x:Name="ufp" d:Text="user for perm" Foreground="Blue" FontWeight="Medium" FontSize="18" HorizontalAlignment="Center" />
+          <!--<TextBlock Grid.Column="1" x:Name="pfu" d:Text="Perm for User" Foreground="Blue" FontWeight="Medium" FontSize="18" HorizontalAlignment="Center" />
+          <TextBlock Grid.Column="3" x:Name="ufp" d:Text="user for perm" Foreground="Blue" FontWeight="Medium" FontSize="18" HorizontalAlignment="Center" />-->
 
           <DataGrid Grid.Row="1" Grid.Column="1" x:Name="dgPerm" ItemsSource="{Binding Source={StaticResource _permViewSource}}" 
-                SelectionUnit="Cell" SelectedCellsChanged="dgPerm_SelectedCellsChanged">
+                SelectionUnit="Cell" SelectedCellsChanged="dgPerm_SelectedCellsChanged" >
             <DataGrid.Columns>
               <DataGridTextColumn     Header="Permission Name" Binding="{Binding Name}"  Width="*"/>
               <DataGridTemplateColumn Header="Granted" CellTemplate="{StaticResource LookTemplate}" />
@@ -282,14 +286,14 @@
           </DataGrid>
 
           <DataGrid Grid.Row="1" Grid.Column="3" x:Name="dgUser" ItemsSource="{Binding Source={StaticResource _userViewSource}}" 
-                SelectionUnit="Cell" SelectedCellsChanged="dgUser_SelectedCellsChanged">
+                SelectionUnit="Cell" SelectedCellsChanged="dgUser_SelectedCellsChanged" >
             <DataGrid.Columns>
               <DataGridTextColumn     Header="User Name" Binding="{Binding UserId}"      Width="*"/>
               <DataGridTemplateColumn Header="Granted" CellTemplate="{StaticResource LookTemplate}" />
             </DataGrid.Columns>
           </DataGrid>
 
-          <GridSplitter Grid.Column="2" Margin="-0 12 " />
+          <GridSplitter Grid.Column="2" Grid.RowSpan="2" />
 
         </Grid>
 
@@ -306,12 +310,13 @@
         <StackPanel.Effect>
           <BlurEffect Radius="{Binding ElementName=wnd, Path=Blur}" />
         </StackPanel.Effect>
-        <Button Margin="10 0" Content="_Save" Click="onSave" />
-        <Button	Margin="10 0" Content=" _Settings " ToolTip="Adjust application settings" Click="Button_Click" VerticalAlignment="Stretch" />
+        <Button Margin="10 0" Content="_Flsh"  Click="onFlush" Opacity="0" />
+        <Button Margin="10 0" Content="_Save"  Click="onSave" />
+        <Button	Margin="10 0" Content=" Se_ttings " ToolTip="Adjust application settings" Click="Button_Click" VerticalAlignment="Stretch" Visibility="Collapsed" />
         <xui:ThemeToggleUsrCtrl x:Name="themeSelector" Margin="10 0" />
         <!-- More themes for later
         <xui:ThemeSelectorUsrCtrl x:Name="themeSelector"/>-->
-        <TextBlock  x:Name="tbkVer" Text="Version 0.3.4.12" Margin="10 0" Foreground="#07e" />
+        <TextBlock  x:Name="tbkVer" Text="V 0.3.26.12" Margin="10 0" Foreground="#07e" />
         <xui:Zoomer x:Name="ZoomSlider2" ZmValue="{Binding ZV, ElementName=wnd, Mode=TwoWay}"	VerticalAlignment="Top" Margin="10 0"/>
         <Button	Margin="2" Content="æ" FontFamily="Webdings"    FontSize="18" Height="26" Padding="0 -1" Width="26" Foreground="#F00" BorderThickness="0" ToolTip="Toggle Audio"      Click="onAudio"           Visibility="Collapsed"/>
         <Button	Margin="2" Content="-"                          FontSize="26" Height="26" Padding="2 -0" Width="26" Foreground="#111" BorderThickness="0" ToolTip="Minimize Window"   Click="onWindowMinimize"                                     />
