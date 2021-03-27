@@ -1,5 +1,5 @@
-﻿<Application x:Class="CI.PermissionManager.App" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="clr-namespace:CI.PermissionManager">
+﻿<Application x:Class="CI.PermissionManager.App" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"                
+             xmlns:cnv="clr-namespace:CI.PermissionManager.Views" xmlns:local="clr-namespace:CI.PermissionManager">
   <Application.Resources>
     <ResourceDictionary>
       <ResourceDictionary.MergedDictionaries>
@@ -41,22 +41,25 @@
         <!--<Setter Property="Background" Value="Lavender"/>-->
         <Style.Triggers>
           <DataTrigger Binding="{Binding Granted}" Value="True">
-            <Setter Property="ToolTip" Value="Permissions granted. Click True to revoke."/>
+            <Setter Property="ToolTip" Value="Permissions granted. Click check mark to revoke."/>
             <Setter Property="Background" Value="LightGreen"/>
           </DataTrigger>
           <DataTrigger Binding="{Binding Granted}" Value="False">
-            <Setter Property="ToolTip" Value="No permissions granted. Click False to grant."/>
-            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="ToolTip" Value="No permissions granted. Click  X  to grant."/>
+            <!--<Setter Property="Background" Value="Transparent"/>-->
           </DataTrigger>
         </Style.Triggers>
       </Style>
       <DataTemplate x:Key="LookTemplate">
         <Grid >
           <!--
-                <Grid          Background="{Binding Granted, UpdateSourceTrigger=PropertyChanged, Converter={cnv:BoolToColorConverter}}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-                    <TextBlock     Text="{Binding Granted, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left"  Foreground="#fff" />-->
-          <ToggleButton IsChecked="{Binding Granted, UpdateSourceTrigger=PropertyChanged}" 
-                        Content="{Binding Granted, UpdateSourceTrigger=PropertyChanged}" />
+        <Grid          Background="{Binding Granted, UpdateSourceTrigger=PropertyChanged, Converter={cnv:BoolToColorConverter}}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                          Content="{Binding Granted, UpdateSourceTrigger=PropertyChanged}"
+          -->
+          <ToggleButton IsChecked="{Binding Granted, UpdateSourceTrigger=PropertyChanged}" Click="ToggleButton_Click" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <TextBlock       Text="{Binding Granted, UpdateSourceTrigger=PropertyChanged, Converter={cnv:BoolToCharConverter}}" FontFamily="Wingdings" FontSize="26"
+                       Foreground="{Binding Granted, UpdateSourceTrigger=PropertyChanged, Converter={cnv:BoolToColorConverter}}" />
+          </ToggleButton>
         </Grid>
       </DataTemplate>
 

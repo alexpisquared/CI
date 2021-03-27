@@ -4,7 +4,7 @@
     "projects": [
       "..\\..\\..\\CI-Reimagined-Invention\\Src\\CI-RI\\DB.Inventory\\DB.Inventory.csproj",
       "CI.GUI.Support.WpfLibrary\\CI.GUI.Support.WpfLibrary.csproj",
-      "CI.PermissionManager\\CI.PermissionManager.csproj",
+      "CI.PermissionManager\\CI.PermissionManager.csproj"
     ]
   }
 }

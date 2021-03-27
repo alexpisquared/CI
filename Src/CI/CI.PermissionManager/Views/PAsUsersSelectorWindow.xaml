@@ -278,7 +278,7 @@
           <TextBlock Grid.Column="3" x:Name="ufp" d:Text="user for perm" Foreground="Blue" FontWeight="Medium" FontSize="18" HorizontalAlignment="Center" />-->
 
           <DataGrid Grid.Row="1" Grid.Column="1" x:Name="dgPerm" ItemsSource="{Binding Source={StaticResource _permViewSource}}" 
-                SelectionUnit="Cell" SelectedCellsChanged="dgPerm_SelectedCellsChanged" >
+                SelectionUnit="Cell" SelectedCellsChanged="dgPerm_SelectedCellsChanged" CanUserAddRows="True">
             <DataGrid.Columns>
               <DataGridTextColumn     Header="Permission Name" Binding="{Binding Name}"  Width="*"/>
               <DataGridTemplateColumn Header="Granted" CellTemplate="{StaticResource LookTemplate}" />
@@ -311,7 +311,7 @@
           <BlurEffect Radius="{Binding ElementName=wnd, Path=Blur}" />
         </StackPanel.Effect>
         <Button Margin="10 0" Content="_Flsh"  Click="onFlush" Opacity="0" />
-        <Button Margin="10 0" Content="_Save"  Click="onSave" />
+        <Button Margin="10 0" Content="_Save"  Click="onSave" Height="26" />
         <Button	Margin="10 0" Content=" Se_ttings " ToolTip="Adjust application settings" Click="Button_Click" VerticalAlignment="Stretch" Visibility="Collapsed" />
         <xui:ThemeToggleUsrCtrl x:Name="themeSelector" Margin="10 0" />
         <!-- More themes for later

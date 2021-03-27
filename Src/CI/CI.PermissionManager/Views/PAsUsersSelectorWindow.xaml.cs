@@ -17,6 +17,8 @@ namespace CI.PermissionManager.Views
   {
     readonly InventoryContext _context = new();
     readonly CollectionViewSource _userViewSource;
+
+
     readonly CollectionViewSource _permViewSource;
     bool _loaded, _audible;
     public static readonly DependencyProperty BlurProperty = DependencyProperty.Register("Blur", typeof(double), typeof(PAsUsersSelectorWindow), new PropertyMetadata(.0)); public double Blur { get { return (double)GetValue(BlurProperty); } set { SetValue(BlurProperty, value); } }
@@ -35,22 +37,23 @@ namespace CI.PermissionManager.Views
     }
     async void onLoaded(object s, RoutedEventArgs e)
     {
+      await Task.Delay(60);
       await _context.Users.LoadAsync();
       await _context.Permissions.LoadAsync();
       await _context.PermissionAssignments.LoadAsync();
-      await _context.Applications.LoadAsync();
       Title = $"A:{_context.Applications.Local.Count} ◄ P:{_context.Permissions.Local.Count} ◄ pa:{_context.PermissionAssignments.Local.Count} ◄ u:{_context.Users.Local.Count}";
 
       dgPerm.SelectedIndex = -1;
+      dgUser.SelectedIndex = -1;
 
-      _userViewSource.Source = _context.Users.Local.ToObservableCollection();//.OrderBy(r => r.UserId);
+      _userViewSource.Source = _context.Users.Local.ToObservableCollection();
       _userViewSource.SortDescriptions.Add(new SortDescription(nameof(User.UserId), ListSortDirection.Ascending));
 
-      _permViewSource.Source = _context.Permissions.Local.ToObservableCollection();//.OrderBy(r => r.UserId);
-      _permViewSource.SortDescriptions.Add(new SortDescription(nameof(Permission.Name), ListSortDirection.Ascending));
+      _permViewSource.Source = _context.Permissions.Local.ToObservableCollection();
+      _permViewSource.SortDescriptions.Add(new SortDescription(nameof(Permission.Name), ListSortDirection.Ascending)); //tu: instead of  .OrderBy(r => r.UserId); lest forfeit CanUserAddRows.
 
-      dgPerm.SelectedIndex = -1;
-      dgUser.SelectedIndex = -1;
+      ufp.Text = pfu.Text = "■ ■ ■";
+
       _loaded = true;
     }
     async void onFlush(object s, RoutedEventArgs e)
@@ -66,8 +69,8 @@ namespace CI.PermissionManager.Views
       if (Environment.MachineName == "RAZER1")
       {
         updateCrosRefTable();
-        //var rs = _context.SaveChanges();
-        //Title = $"{rs} saved to DB";
+        var rs = _context.SaveChanges();
+        Title = $"{rs} saved to DB";
       }
       else
         MessageBox.Show(this, "Press any key to continue...\n\n\t...or any other key to quit", "Changes Saved", MessageBoxButton.OK, MessageBoxImage.Information);
@@ -141,7 +144,7 @@ namespace CI.PermissionManager.Views
 
       dgUser.Items.Refresh();
 
-      pfu.Text = $"";
+      pfu.Text = $"· · ·";
       ufp.Text = $"{prm.Name}  assigned to  {pas.Count}  users:";
     }
     void dgUser_SelectedCellsChanged(object sender, SelectedCellsChangedEventArgs e)
@@ -170,7 +173,7 @@ namespace CI.PermissionManager.Views
       dgPerm.Items.Refresh();
 
       pfu.Text = $"{usr.UserId}  has  {pas.Count}  permissions:";
-      ufp.Text = $"";
+      ufp.Text = $"· · ·";
     }
 
     void Button_Click(object sender, RoutedEventArgs e) { }
@@ -179,6 +182,18 @@ namespace CI.PermissionManager.Views
     void onWindowRestoree(object s, RoutedEventArgs e) { wr.Visibility = Visibility.Collapsed; wm.Visibility = Visibility.Visible; WindowState = WindowState.Normal; }
     void onWindowMaximize(object s, RoutedEventArgs e) { wm.Visibility = Visibility.Collapsed; wr.Visibility = Visibility.Visible; WindowState = WindowState.Maximized; }
 
-
+    internal void Recalc(object s)
+    {
+      if (_userid > 0 && _permid < 0)
+      {
+        ufp.Text = $"· · ·";
+        pfu.Text = $"{_context.Users.Local.FirstOrDefault(r => r.UserIntId == _userid)?.UserId}  has  {_context.Permissions.Local.Where(r => r.Granted == true).Count()}  permissions:";
+      }
+      else if (_userid < 0 && _permid > 0)
+      {
+        pfu.Text = $"· · ·";
+        ufp.Text = $"{_context.Permissions.Local.FirstOrDefault(r => r.PermissionId == _permid)?.Name}  assigned to  {_context.Users.Local.Where(r => r.Granted == true).Count()}  users:";
+      }
+    }
   }
 }
