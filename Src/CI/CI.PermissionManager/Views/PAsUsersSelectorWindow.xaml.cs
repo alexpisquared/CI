@@ -1,5 +1,6 @@
 ﻿using DB.Inventory.Models;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -52,7 +53,7 @@ namespace CI.PermissionManager.Views
       dgUser.SelectedIndex = -1;
       _loaded = true;
     }
-   async void onFlush(object s, RoutedEventArgs e)
+    async void onFlush(object s, RoutedEventArgs e)
     {
       ufp.Text = pfu.Text = "■ ■ ■";
       dgPermReset(s, e);
@@ -62,13 +63,52 @@ namespace CI.PermissionManager.Views
     }
     void onSave(object s, RoutedEventArgs e)
     {
-      onFlush(s, e);
-      //_context.SaveChanges();
-      MessageBox.Show(this, "Press any key to continue...\n\n\t...or any other key to quit", "Changes Saved", MessageBoxButton.OK, MessageBoxImage.Information);
+      if (Environment.MachineName == "RAZER1")
+      {
+        updateCrosRefTable();
+        //var rs = _context.SaveChanges();
+        //Title = $"{rs} saved to DB";
+      }
+      else
+        MessageBox.Show(this, "Press any key to continue...\n\n\t...or any other key to quit", "Changes Saved", MessageBoxButton.OK, MessageBoxImage.Information);
 
+      onFlush(s, e);
       dgUser.Items.Refresh();      // this forces the grid to refresh to latest values
       dgPerm.Items.Refresh();
     }
+
+    int _userid, _permid;
+    void updateCrosRefTable()
+    {
+      if (_userid > 0 && _permid < 0)
+      {
+        Debug.WriteLine(
+          $"G:{_context.Permissions.Local.Where(r => r.Granted == true).Count()}  +  " +
+          $"f:{_context.Permissions.Local.Where(r => r.Granted == false).Count()}  +  " +
+          $"n:{_context.Permissions.Local.Where(r => r.Granted is null).Count()}  =  " +
+          $"n:{_context.Permissions.Local.Count()}" +
+          $"");
+
+        _context.Permissions.Local.Where(r => r.Granted == true).ToList().ForEach(p =>
+        {
+          var dbpa = _context.PermissionAssignments.Local.FirstOrDefault(r => r.UserId == _userid && r.PermissionId == p.PermissionId);
+          if (dbpa != null)
+            dbpa.Status = p.Granted == true ? "G" : "-";
+          else
+            _context.PermissionAssignments.Local.Add(new PermissionAssignment { UserId = _userid, PermissionId = p.PermissionId, Status = "G" });
+        });
+
+        _context.PermissionAssignments.Local.Where(r => r.UserId == _userid).ToList().ForEach(up =>
+                  {
+                    var ps = _context.Permissions.Local.Where(p => p.PermissionId == up.PermissionId);
+                    up.Status = ps.Count() > 0 ? "G" : "-";
+                  });
+      }
+      else
+      if (_userid < 0 && _permid > 0) { }
+
+    }
+
     void onExit(object s, RoutedEventArgs e) => App.Current.Shutdown();
 
     protected override void OnClosing(CancelEventArgs e)
@@ -85,6 +125,8 @@ namespace CI.PermissionManager.Views
 
       var prm = ((Permission)e.AddedCells[0].Item);
       var pas = prm.PermissionAssignments;
+      _permid = prm.PermissionId;
+      _userid = -1;
 
       ((ObservableCollection<Permission>)_permViewSource.Source).ToList().ForEach(r => r.Granted = false);
       var us = (ObservableCollection<User>)_userViewSource.Source;
@@ -108,6 +150,8 @@ namespace CI.PermissionManager.Views
 
       var usr = ((User)e.AddedCells[0].Item);
       var pas = usr.PermissionAssignments;
+      _userid = usr.UserIntId;
+      _permid = -1;
 
       Debug.WriteLine($" {usr.UserId,-32} has {pas.Count,4} asignments.");
 

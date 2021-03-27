@@ -24,3 +24,10 @@ FROM        GroupUsers INNER JOIN
                   Permissions ON Permissions.PermissionID = PermissionAssignments.PermissionID INNER JOIN
                   Application ON Application.AppID = Permissions.AppID
 ORDER BY PermissionAssignments.Status, PermissionName, Application.AppName, UserAsGroup, GU.UserID
+
+
+Hi Darryl,
+I have been bored and came up with this little something. 
+If this could be of any use for somebody, please let me know and I'll clean it up and publish somewhere.
+Regards,
+Alex
