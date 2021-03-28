@@ -56,7 +56,7 @@
         <Grid          Background="{Binding Granted, UpdateSourceTrigger=PropertyChanged, Converter={cnv:BoolToColorConverter}}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                           Content="{Binding Granted, UpdateSourceTrigger=PropertyChanged}"
           -->
-          <ToggleButton IsChecked="{Binding Granted, UpdateSourceTrigger=PropertyChanged}" Click="ToggleButton_Click" HorizontalAlignment="Center" VerticalAlignment="Center">
+          <ToggleButton IsChecked="{Binding Granted, UpdateSourceTrigger=PropertyChanged}" Click="onTogglePermission" HorizontalAlignment="Center" VerticalAlignment="Center">
             <TextBlock       Text="{Binding Granted, UpdateSourceTrigger=PropertyChanged, Converter={cnv:BoolToCharConverter}}" FontFamily="Wingdings" FontSize="26"
                        Foreground="{Binding Granted, UpdateSourceTrigger=PropertyChanged, Converter={cnv:BoolToColorConverter}}" />
           </ToggleButton>

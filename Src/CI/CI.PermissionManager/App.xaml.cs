@@ -5,7 +5,7 @@ namespace CI.PermissionManager
 {
   public partial class App : Application
   {
-    PAsUsersSelectorWindow __;
+    PAsUsersSelectorWindow? _mainWindow;
     protected override void OnStartup(StartupEventArgs e)
     {
       base.OnStartup(e);
@@ -13,13 +13,10 @@ namespace CI.PermissionManager
       //new MainWindow().Show();
       //new AppPermPAsWindow().Show();
       //new UserPAsWindow().Show();
-      __ = new PAsUsersSelectorWindow();
-      __.Show();
+      _mainWindow = new PAsUsersSelectorWindow();
+      _mainWindow.Show();
     }
 
-    void ToggleButton_Click(object s, RoutedEventArgs e)
-    {
-      __.Recalc(s);
-    }
+    void onTogglePermission(object s, RoutedEventArgs e) => _mainWindow?.Recalc(s);
   }
 }
