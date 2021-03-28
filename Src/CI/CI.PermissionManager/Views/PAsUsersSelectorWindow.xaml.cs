@@ -21,7 +21,7 @@ namespace CI.PermissionManager.Views
 
     readonly CollectionViewSource _permViewSource;
     bool _loaded, _audible;
-    public static readonly DependencyProperty BlurProperty = DependencyProperty.Register("Blur", typeof(double), typeof(PAsUsersSelectorWindow), new PropertyMetadata(.0)); public double Blur { get { return (double)GetValue(BlurProperty); } set { SetValue(BlurProperty, value); } }
+    public static readonly DependencyProperty BlurProperty = DependencyProperty.Register("Blur", typeof(double), typeof(PAsUsersSelectorWindow), new PropertyMetadata(.0)); public double Blur { get => (double)GetValue(BlurProperty); set => SetValue(BlurProperty, value); }
 
     public PAsUsersSelectorWindow()
     {
@@ -127,7 +127,6 @@ namespace CI.PermissionManager.Views
       if (!_loaded || e.AddedCells.Count < 1 || !(e.AddedCells[0].Column is DataGridTextColumn)) return;
 
       var prm = ((Permission)e.AddedCells[0].Item);
-      var pas = prm.PermissionAssignments;
       _permid = prm.PermissionId;
       _userid = -1;
 
@@ -135,7 +134,7 @@ namespace CI.PermissionManager.Views
       var us = (ObservableCollection<User>)_userViewSource.Source;
       us.ToList().ForEach(r => r.Granted = false);
 
-      foreach (var pa in pas)
+      foreach (var pa in prm.PermissionAssignments)
       {
         var u = us.FirstOrDefault(r => r.UserIntId == pa.UserId);
         if (u != null)
@@ -145,25 +144,21 @@ namespace CI.PermissionManager.Views
       dgUser.Items.Refresh();
 
       pfu.Text = $"· · ·";
-      ufp.Text = $"{prm.Name}  assigned to  {pas.Count}  users:";
+      ufp.Text = $"{prm.Name}  assigned to  {prm.PermissionAssignments.Count}  users:";
     }
     void dgUser_SelectedCellsChanged(object sender, SelectedCellsChangedEventArgs e)
     {
       if (!_loaded || e.AddedCells.Count < 1 || !(e.AddedCells[0].Column is DataGridTextColumn)) return;
 
       var usr = ((User)e.AddedCells[0].Item);
-      var pas = usr.PermissionAssignments;
       _userid = usr.UserIntId;
       _permid = -1;
 
-      Debug.WriteLine($" {usr.UserId,-32} has {pas.Count,4} asignments.");
-
-      var us = (ObservableCollection<User>)_userViewSource.Source;
-      us.ToList().ForEach(r => r.Granted = false);
+      ((ObservableCollection<User>)_userViewSource.Source).ToList().ForEach(r => r.Granted = false);
       var ps = (ObservableCollection<Permission>)_permViewSource.Source;
       ps.ToList().ForEach(r => r.Granted = false);
 
-      foreach (var pa in pas)
+      foreach (var pa in usr.PermissionAssignments)
       {
         var p = ps.FirstOrDefault(r => r.PermissionId == pa.PermissionId);
         if (p != null)
@@ -172,11 +167,11 @@ namespace CI.PermissionManager.Views
 
       dgPerm.Items.Refresh();
 
-      pfu.Text = $"{usr.UserId}  has  {pas.Count}  permissions:";
+      pfu.Text = $"{usr.UserId}  has  {usr.PermissionAssignments.Count}  permissions:";
       ufp.Text = $"· · ·";
     }
 
-    void Button_Click(object sender, RoutedEventArgs e) { }
+    void onSettings(object sender, RoutedEventArgs e) { }
     async void onAudio(object s, RoutedEventArgs e) { _audible = false; SystemSounds.Hand.Play(); await Task.Delay(300000); _audible = true; }
     void onWindowMinimize(object s, RoutedEventArgs e) => WindowState = WindowState.Minimized;
     void onWindowRestoree(object s, RoutedEventArgs e) { wr.Visibility = Visibility.Collapsed; wm.Visibility = Visibility.Visible; WindowState = WindowState.Normal; }
