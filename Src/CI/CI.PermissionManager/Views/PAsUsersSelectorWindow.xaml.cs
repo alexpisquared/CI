@@ -76,7 +76,6 @@ namespace CI.PermissionManager.Views
       dgUser.Items.Refresh();      // this forces the grid to refresh to latest values
       dgPerm.Items.Refresh();
     }
-    void onExit(object s, RoutedEventArgs e) => App.Current.Shutdown();
     void dgPermReset(object s, RoutedEventArgs e) { ((ObservableCollection<Permission>)_permViewSource.Source).ToList().ForEach(r => r.Granted = null); dgPerm.Items.Refresh(); }
     void dgUserReset(object s, RoutedEventArgs e) { ((ObservableCollection<User/*  */>)_userViewSource.Source).ToList().ForEach(r => r.Granted = null); dgUser.Items.Refresh(); }
     void dgPerm_SelectedCellsChanged(object s, SelectedCellsChangedEventArgs e)
@@ -129,20 +128,19 @@ namespace CI.PermissionManager.Views
     }
     void onSettings(object s, RoutedEventArgs e) { }
     async void onAudio(object s, RoutedEventArgs e) { _audible = false; SystemSounds.Hand.Play(); await Task.Delay(300000); _audible = true; }
-    void onWindowMinimize(object s, RoutedEventArgs e) => WindowState = WindowState.Minimized;
     void onWindowRestoree(object s, RoutedEventArgs e) { wr.Visibility = Visibility.Collapsed; wm.Visibility = Visibility.Visible; WindowState = WindowState.Normal; }
     void onWindowMaximize(object s, RoutedEventArgs e) { wm.Visibility = Visibility.Collapsed; wr.Visibility = Visibility.Visible; WindowState = WindowState.Maximized; }
     void updateCrosRefTable()
     {
+      Debug.WriteLine(
+        $"G:{_context.Permissions.Local.Where(r => r.Granted == true).Count()}  +  " +
+        $"f:{_context.Permissions.Local.Where(r => r.Granted == false).Count()}  +  " +
+        $"n:{_context.Permissions.Local.Where(r => r.Granted is null).Count()}  =  " +
+        $"n:{_context.Permissions.Local.Count()}" +
+        $"");
+
       if (_userid > 0 && _permid < 0)
       {
-        Debug.WriteLine(
-          $"G:{_context.Permissions.Local.Where(r => r.Granted == true).Count()}  +  " +
-          $"f:{_context.Permissions.Local.Where(r => r.Granted == false).Count()}  +  " +
-          $"n:{_context.Permissions.Local.Where(r => r.Granted is null).Count()}  =  " +
-          $"n:{_context.Permissions.Local.Count()}" +
-          $"");
-
         _context.Permissions.Local.ToList().ForEach(p =>
         {
           var dbpa = _context.PermissionAssignments.Local.FirstOrDefault(r => r.UserId == _userid && r.PermissionId == p.PermissionId);
