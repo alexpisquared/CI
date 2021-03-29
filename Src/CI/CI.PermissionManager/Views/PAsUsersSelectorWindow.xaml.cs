@@ -79,7 +79,7 @@ namespace CI.PermissionManager.Views
     void onExit(object s, RoutedEventArgs e) => App.Current.Shutdown();
     void dgPermReset(object s, RoutedEventArgs e) { ((ObservableCollection<Permission>)_permViewSource.Source).ToList().ForEach(r => r.Granted = null); dgPerm.Items.Refresh(); }
     void dgUserReset(object s, RoutedEventArgs e) { ((ObservableCollection<User/*  */>)_userViewSource.Source).ToList().ForEach(r => r.Granted = null); dgUser.Items.Refresh(); }
-    void dgPerm_SelectedCellsChanged(object sender, SelectedCellsChangedEventArgs e)
+    void dgPerm_SelectedCellsChanged(object s, SelectedCellsChangedEventArgs e)
     {
       if (!_loaded || e.AddedCells.Count < 1 || !(e.AddedCells[0].Column is DataGridTextColumn)) return;
 
@@ -103,7 +103,7 @@ namespace CI.PermissionManager.Views
       pfu.Text = $"· · ·";
       ufp.Text = $"{prm.Name}  assigned to  {prm.PermissionAssignments.Count}  users:";
     }
-    void dgUser_SelectedCellsChanged(object sender, SelectedCellsChangedEventArgs e)
+    void dgUser_SelectedCellsChanged(object s, SelectedCellsChangedEventArgs e)
     {
       if (!_loaded || e.AddedCells.Count < 1 || !(e.AddedCells[0].Column is DataGridTextColumn)) return;
 
@@ -143,23 +143,36 @@ namespace CI.PermissionManager.Views
           $"n:{_context.Permissions.Local.Count()}" +
           $"");
 
-        _context.Permissions.Local.Where(r => r.Granted == true).ToList().ForEach(p =>
+        _context.Permissions.Local.ToList().ForEach(p =>
         {
           var dbpa = _context.PermissionAssignments.Local.FirstOrDefault(r => r.UserId == _userid && r.PermissionId == p.PermissionId);
           if (dbpa != null)
-            dbpa.Status = p.Granted == true ? "G" : "-";
-          else
+          {
+            if (p.Granted == true)
+              dbpa.Status = "G";
+            else
+              _context.PermissionAssignments.Remove(dbpa);
+          }
+          else if (p.Granted == true)
             _context.PermissionAssignments.Local.Add(new PermissionAssignment { UserId = _userid, PermissionId = p.PermissionId, Status = "G" });
         });
-
-        _context.PermissionAssignments.Local.Where(r => r.UserId == _userid).ToList().ForEach(up =>
+      }
+      else if (_userid < 0 && _permid > 0)
+      {
+        _context.Users.Local.ToList().ForEach(u =>
         {
-          var ps = _context.Permissions.Local.Where(p => p.PermissionId == up.PermissionId);
-          up.Status = ps.Count() > 0 ? "G" : "-";
+          var dbpa = _context.PermissionAssignments.Local.FirstOrDefault(r => r.UserId == u.UserIntId && r.PermissionId == _permid);
+          if (dbpa != null)
+          {
+            if (u.Granted == true)
+              dbpa.Status = "G";
+            else
+              _context.PermissionAssignments.Remove(dbpa);
+          }
+          else if (u.Granted == true)
+            _context.PermissionAssignments.Local.Add(new PermissionAssignment { UserId = u.UserIntId, PermissionId = _permid, Status = "G" });
         });
       }
-      else
-      if (_userid < 0 && _permid > 0) { }
 
     }
     internal void Recalc(object s)
