@@ -25,8 +25,8 @@ namespace TFS
 
       var now = DateTime.Now;
       var fnm = _srch.Replace(":", "-");
-      var outputF = $@"C:\temp\Code Matches - {fnm} - {now:HHmm} - Filenames Only.txt";
-      var details = $@"C:\temp\Code Matches - {fnm} - {now:HHmm} - Files & Lines.txt";
+      var outputF = $@"C:\temp\TFS.Search\Code Matches - {fnm} - {now:HHmm} - Filenames Only.txt";
+      var details = $@"C:\temp\TFS.Search\Code Matches - {fnm} - {now:HHmm} - Files & Lines.txt";
       var headerL = $"Times  Checked-in  Filename{Environment.NewLine}";
 
 
