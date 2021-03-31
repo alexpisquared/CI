@@ -47,15 +47,15 @@ namespace CI.PermissionManager
         if (!File.Exists(aps))
           File.WriteAllText(aps, @"
 {
-  ""WhereAmI"": "" ??\\RMSClient\\appsettings.json"",
-  ""LogFolder"": ""Z:\\AlexPi\\Misc\\Logs\\RMS.aps.txt"",
-  ""LogFolder2"": ""\\\\bbsfile01\\Public\\AlexPi\\Misc\\Logs\\RMS.aps.txt"",
+  ""WhereAmI"": "" ??\\PermMgrClient\\appsettings.json"",
+  ""LogFolder"": ""Z:\\AlexPi\\Misc\\Logs\\PermMgr.aps.txt"",
+  ""LogFolder2"": ""\\\\bbsfile01\\Public\\AlexPi\\Misc\\Logs\\PermMgr.aps.txt"",
   ""AppSettings"": {
+    ""ServerList"": ""mtDEVsqldb mtUATsqldb mtPRDsqldb"",
     ""IpAddress"": ""10.10.19.152"",
     ""Port"": ""6756"",
-    ""RmsDbConStr"": ""Server=.\\sqlexpress;Database=RMS;Trusted_Connection=True;"",
-    ""RmsDbConStr"": ""Server=MTdevSQLDB;Database=RMS;Trusted_Connection=True;"",
-    ""BR"": ""Server=MTdevSQLDB;Database=BR;Trusted_Connection=True;"",
+    ""RmsDbConSt_"": ""Server=.\\sqlexpress;Database=RMS;Trusted_Connection=True;"",
+    ""RmsDbConStr"": ""Server={0};Database={1};Trusted_Connection=True;"",
     ""Inv"": ""Server=MTdevSQLDB;Database=Inventory;Trusted_Connection=True;"",
     ""ForceSocketReconnect"": true,
     ""ForceSocketReconnectTime"": 300000,
