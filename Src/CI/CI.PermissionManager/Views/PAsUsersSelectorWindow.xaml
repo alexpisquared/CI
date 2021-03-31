@@ -311,6 +311,7 @@
           <BlurEffect Radius="{Binding ElementName=wnd, Path=Blur}" />
         </StackPanel.Effect>
         <Button Margin="10 0" Content="_Flsh"  Click="onFlush" Opacity="0" />
+        <ComboBox x:Name="cbxServers" SelectionChanged="cbxServers_SelectionChanged" />
         <Button Margin="10 0" Content="_Save"  Click="onSave" Height="26" />
         <Button	Margin="10 0" Content=" Se_ttings " ToolTip="Adjust application settings" Click="onSettings" VerticalAlignment="Stretch" Visibility="Collapsed" />
         <xui:ThemeToggleUsrCtrl x:Name="themeSelector" Margin="10 0" />

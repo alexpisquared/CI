@@ -20,7 +20,7 @@ namespace CI.PermissionManager.Views
     bool _loaded, _audible;
     int _userid, _permid;
     public static readonly DependencyProperty BlurProperty = DependencyProperty.Register("Blur", typeof(double), typeof(PAsUsersSelectorWindow), new PropertyMetadata(.0)); public double Blur { get => (double)GetValue(BlurProperty); set => SetValue(BlurProperty, value); }
-    public PAsUsersSelectorWindow()
+    public PAsUsersSelectorWindow(Microsoft.Extensions.Logging.ILogger<PAsUsersSelectorWindow> _logger, Microsoft.Extensions.Configuration.IConfigurationRoot _config)
     {
       InitializeComponent();
 
@@ -130,6 +130,12 @@ namespace CI.PermissionManager.Views
     async void onAudio(object s, RoutedEventArgs e) { _audible = false; SystemSounds.Hand.Play(); await Task.Delay(300000); _audible = true; }
     void onWindowRestoree(object s, RoutedEventArgs e) { wr.Visibility = Visibility.Collapsed; wm.Visibility = Visibility.Visible; WindowState = WindowState.Normal; }
     void onWindowMaximize(object s, RoutedEventArgs e) { wm.Visibility = Visibility.Collapsed; wr.Visibility = Visibility.Visible; WindowState = WindowState.Maximized; }
+
+    private void cbxServers_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+
+    }
+
     void updateCrosRefTable()
     {
       Debug.WriteLine(
