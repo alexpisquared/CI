@@ -76,30 +76,17 @@ namespace CI.PermissionManager.Views
       await Task.Yield();
       SystemSounds.Asterisk.Play();
     }
-    void onSave(object s, RoutedEventArgs e)
-    {
-      try
-      {
-        if (Environment.MachineName == "RAZER1" || new[] { ".", @".\SqlExpress" }.Contains(cbxServers.SelectedValue))
-        {
-          updateCrosRefTable();
-          var rs = _context.SaveChanges();
-          Title = $"{rs} saved to DB";
-        }
-        else
-          MessageBox.Show(this, "Press any key to continue...\n\n\t...or any other key to quit", "Changes Saved", MessageBoxButton.OK, MessageBoxImage.Information);
-
-        onFlush(s, e);
-        dgUser.Items.Refresh();      // this forces the grid to refresh to latest values
-        dgPerm.Items.Refresh();
-      }
-      catch (Exception ex) { _logger.LogError($"{ex}"); ex.Pop(this); }
-    }
+    async void onSave(object s, RoutedEventArgs e) => await save();
     void dgPermReset(object s, RoutedEventArgs e) { ((ObservableCollection<Permission>)_permViewSource.Source).ToList().ForEach(r => r.Granted = null); dgPerm.Items.Refresh(); }
     void dgUserReset(object s, RoutedEventArgs e) { ((ObservableCollection<User/*  */>)_userViewSource.Source).ToList().ForEach(r => r.Granted = null); dgUser.Items.Refresh(); }
-    void dgPerm_SelectedCellsChanged(object s, SelectedCellsChangedEventArgs e)
+    async void dgPerm_SelectedCellsChanged(object s, SelectedCellsChangedEventArgs e)
     {
       if (!_loaded || e.AddedCells.Count < 1 || !(e.AddedCells[0].Column is DataGridTextColumn)) return;
+
+      await save();
+      colPG.Visibility = Visibility.Collapsed;
+      colUG.Visibility = Visibility.Visible;
+      Debug.WriteLine($"■  {((FrameworkElement)s).Name} \t SelectedCellsChanged  {((ObservableCollection<Permission>)_permViewSource.Source).Count(r => r.Granted == true)} selects here");
 
       var prm = ((Permission)e.AddedCells[0].Item);
       _permid = prm.PermissionId;
@@ -121,9 +108,14 @@ namespace CI.PermissionManager.Views
       pfu.Text = $"· · ·";
       ufp.Text = $"{prm.Name}  assigned to  {prm.PermissionAssignments.Count}  users:";
     }
-    void dgUser_SelectedCellsChanged(object s, SelectedCellsChangedEventArgs e)
+    async void dgUser_SelectedCellsChanged(object s, SelectedCellsChangedEventArgs e)
     {
       if (!_loaded || e.AddedCells.Count < 1 || !(e.AddedCells[0].Column is DataGridTextColumn)) return;
+
+      await save();
+      colPG.Visibility = Visibility.Visible;
+      colUG.Visibility = Visibility.Collapsed;
+      Debug.WriteLine($"■  {((FrameworkElement)s).Name} \t SelectedCellsChanged  {((ObservableCollection<User>)_userViewSource.Source).Count(r => r.Granted == true)} selects here");
 
       var usr = ((User)e.AddedCells[0].Item);
       _userid = usr.UserIntId;
@@ -149,19 +141,47 @@ namespace CI.PermissionManager.Views
     async void onAudio(object s, RoutedEventArgs e) { _audible = false; SystemSounds.Hand.Play(); await Task.Delay(300000); _audible = true; }
     void onWindowRestoree(object s, RoutedEventArgs e) { wr.Visibility = Visibility.Collapsed; wm.Visibility = Visibility.Visible; WindowState = WindowState.Normal; }
     void onWindowMaximize(object s, RoutedEventArgs e) { wm.Visibility = Visibility.Collapsed; wr.Visibility = Visibility.Visible; WindowState = WindowState.Maximized; }
-    void cbxServers_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    void cbxServers_SelectionChanged(object s, SelectionChangedEventArgs e)
     {
 
     }
 
+    void dgPerm_SelectionChanged(object s, SelectionChangedEventArgs e)   /**/{ Debug.WriteLine($"** {((FrameworkElement)s).Name} \t _SelectionChanged"); }
+    void dgUser_SelectionChanged(object s, SelectionChangedEventArgs e)   /**/{ Debug.WriteLine($"** {((FrameworkElement)s).Name} \t _SelectionChanged"); }
+    void dgUser_GotFocus(object s, RoutedEventArgs e)                     /**/{ Debug.WriteLine($"** {((FrameworkElement)s).Name} \t _GotFocus(object "); }
+    void dgUser_LostFocus(object s, RoutedEventArgs e)              /**/{ Debug.Write($"S■ {((FrameworkElement)s).Name} \t LostFocus(object"); }
+    void dgPerm_LostFocus(object s, RoutedEventArgs e)              /**/{ Debug.Write($"S■ {((FrameworkElement)s).Name} \t LostFocus(object"); }
+    void dgPerm_GotFocus(object s, RoutedEventArgs e)                     /**/{ Debug.WriteLine($"** {((FrameworkElement)s).Name} \t GotFocus(object "); }
+
+    async Task<int> save()
+    {
+      var rs = -1;
+      try
+      {
+        if (Environment.MachineName == "RAZER1" || new[] { ".", @".\SqlExpress" }.Contains(cbxServers.SelectedValue))
+        {
+          updateCrosRefTable();
+          rs = await _context.SaveChangesAsync();
+          if (rs > 0)
+          {
+            Title = $"{rs} saved to DB";
+            Debug.WriteLine(Title);
+          }
+        }
+        else
+          MessageBox.Show(this, "Press any key to continue...\n\n\t...or any other key to quit", "Changes Saved ...NOT!!!", MessageBoxButton.OK, MessageBoxImage.Information);
+      }
+      catch (Exception ex) { _logger.LogError($"{ex}"); ex.Pop(this); }
+      return rs;
+    }
     void updateCrosRefTable()
     {
-      Debug.WriteLine(
+      Debug.Write("    Upd xRef  " +
         $"G:{_context.Permissions.Local.Where(r => r.Granted == true).Count()}  +  " +
         $"f:{_context.Permissions.Local.Where(r => r.Granted == false).Count()}  +  " +
         $"n:{_context.Permissions.Local.Where(r => r.Granted is null).Count()}  =  " +
         $"n:{_context.Permissions.Local.Count()}" +
-        $"");
+        $"   ");
 
       if (_userid > 0 && _permid < 0)
       {

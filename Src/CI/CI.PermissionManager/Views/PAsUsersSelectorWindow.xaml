@@ -278,18 +278,20 @@
           <TextBlock Grid.Column="3" x:Name="ufp" d:Text="user for perm" Foreground="Blue" FontWeight="Medium" FontSize="18" HorizontalAlignment="Center" />-->
 
           <DataGrid Grid.Row="1" Grid.Column="1" x:Name="dgPerm" ItemsSource="{Binding Source={StaticResource _permViewSource}}" 
-                SelectionUnit="Cell" SelectedCellsChanged="dgPerm_SelectedCellsChanged" CanUserAddRows="True">
+                    SelectionUnit="Cell" SelectedCellsChanged="dgPerm_SelectedCellsChanged" 
+                    CanUserAddRows="True" SelectionChanged="dgPerm_SelectionChanged" GotFocus="dgPerm_GotFocus" LostFocus="dgPerm_LostFocus">
             <DataGrid.Columns>
               <DataGridTextColumn     Header="Permission Name" Binding="{Binding Name}"  Width="*"/>
-              <DataGridTemplateColumn Header="Granted" CellTemplate="{StaticResource LookTemplate}" />
+              <DataGridTemplateColumn Header="Granted" CellTemplate="{StaticResource LookTemplate}" x:Name="colPG"/>
             </DataGrid.Columns>
           </DataGrid>
 
           <DataGrid Grid.Row="1" Grid.Column="3" x:Name="dgUser" ItemsSource="{Binding Source={StaticResource _userViewSource}}" 
-                SelectionUnit="Cell" SelectedCellsChanged="dgUser_SelectedCellsChanged" >
+                    SelectionUnit="Cell" SelectedCellsChanged="dgUser_SelectedCellsChanged" 
+                    CanUserAddRows="True" SelectionChanged="dgUser_SelectionChanged" GotFocus="dgUser_GotFocus" LostFocus="dgUser_LostFocus" >
             <DataGrid.Columns>
               <DataGridTextColumn     Header="User Name" Binding="{Binding UserId}"      Width="*"/>
-              <DataGridTemplateColumn Header="Granted" CellTemplate="{StaticResource LookTemplate}" />
+              <DataGridTemplateColumn Header="Granted" CellTemplate="{StaticResource LookTemplate}" x:Name="colUG"/>
             </DataGrid.Columns>
           </DataGrid>
 
