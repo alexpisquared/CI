@@ -17,15 +17,13 @@ namespace CI.PermissionManager.Views
 {
   public partial class PAsUsersSelectorWindow : GUI.Support.WpfLibrary.Base.WindowBase
   {
-    readonly InventoryContext _context = new();
+    readonly InventoryContext _context;
     readonly CollectionViewSource _userViewSource, _permViewSource;
     bool _loaded, _audible;
     int _userid, _permid;
-    public static readonly DependencyProperty BlurProperty = DependencyProperty.Register("Blur", typeof(double), typeof(PAsUsersSelectorWindow), new PropertyMetadata(.0));
     readonly ILogger<PAsUsersSelectorWindow> _logger;
     readonly Microsoft.Extensions.Configuration.IConfigurationRoot _config;
-
-    public double Blur { get => (double)GetValue(BlurProperty); set => SetValue(BlurProperty, value); }
+    public static readonly DependencyProperty BlurProperty = DependencyProperty.Register("Blur", typeof(double), typeof(PAsUsersSelectorWindow), new PropertyMetadata(.0)); public double Blur { get => (double)GetValue(BlurProperty); set => SetValue(BlurProperty, value); }
     public PAsUsersSelectorWindow(Microsoft.Extensions.Logging.ILogger<PAsUsersSelectorWindow> logger, Microsoft.Extensions.Configuration.IConfigurationRoot config)
     {
       InitializeComponent();
@@ -37,8 +35,12 @@ namespace CI.PermissionManager.Views
 
       Loaded += onLoaded;
       themeSelector.ApplyTheme = ApplyTheme;
-      this._logger = logger;
+      _logger = logger;
       _config = config;
+
+      cbxServers.ItemsSource = _config["ServerList"].Split(" ").ToList(); ;
+      cbxServers.SelectedIndex = 0;
+      _context = new(string.Format(_config["SqlConStr"], cbxServers.SelectedValue));
     }
     async void onLoaded(object s, RoutedEventArgs e)
     {
@@ -53,7 +55,6 @@ namespace CI.PermissionManager.Views
         dgPerm.SelectedIndex = -1;
         dgUser.SelectedIndex = -1;
 
-        cbxServers.ItemsSource = _config["ServerList"].Split(" ").ToList(); ;
 
         _userViewSource.Source = _context.Users.Local.ToObservableCollection();
         _userViewSource.SortDescriptions.Add(new SortDescription(nameof(User.UserId), ListSortDirection.Ascending));
@@ -67,7 +68,7 @@ namespace CI.PermissionManager.Views
       }
       catch (Exception ex) { _logger.LogError($"{ex}"); ex.Pop(this); }
     }
-      async void onFlush(object s, RoutedEventArgs e)
+    async void onFlush(object s, RoutedEventArgs e)
     {
       ufp.Text = pfu.Text = "■ ■ ■";
       dgPermReset(s, e);
@@ -77,18 +78,22 @@ namespace CI.PermissionManager.Views
     }
     void onSave(object s, RoutedEventArgs e)
     {
-      if (Environment.MachineName == "RAZER1")
+      try
       {
-        updateCrosRefTable();
-        var rs = _context.SaveChanges();
-        Title = $"{rs} saved to DB";
-      }
-      else
-        MessageBox.Show(this, "Press any key to continue...\n\n\t...or any other key to quit", "Changes Saved", MessageBoxButton.OK, MessageBoxImage.Information);
+        if (Environment.MachineName == "RAZER1" || new[] { ".", @".\SqlExpress" }.Contains(cbxServers.SelectedValue))
+        {
+          updateCrosRefTable();
+          var rs = _context.SaveChanges();
+          Title = $"{rs} saved to DB";
+        }
+        else
+          MessageBox.Show(this, "Press any key to continue...\n\n\t...or any other key to quit", "Changes Saved", MessageBoxButton.OK, MessageBoxImage.Information);
 
-      onFlush(s, e);
-      dgUser.Items.Refresh();      // this forces the grid to refresh to latest values
-      dgPerm.Items.Refresh();
+        onFlush(s, e);
+        dgUser.Items.Refresh();      // this forces the grid to refresh to latest values
+        dgPerm.Items.Refresh();
+      }
+      catch (Exception ex) { _logger.LogError($"{ex}"); ex.Pop(this); }
     }
     void dgPermReset(object s, RoutedEventArgs e) { ((ObservableCollection<Permission>)_permViewSource.Source).ToList().ForEach(r => r.Granted = null); dgPerm.Items.Refresh(); }
     void dgUserReset(object s, RoutedEventArgs e) { ((ObservableCollection<User/*  */>)_userViewSource.Source).ToList().ForEach(r => r.Granted = null); dgUser.Items.Refresh(); }

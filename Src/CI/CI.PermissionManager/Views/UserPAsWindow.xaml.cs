@@ -9,7 +9,7 @@ namespace CI.PermissionManager.Views
 {
   public partial class UserPAsWindow : GUI.Support.WpfLibrary.Base.WindowBase
   {
-    readonly InventoryContext _context = new();
+    readonly InventoryContext _context = new(@"Server=.\sqlexpress;Database=Inventory;Trusted_Connection=True;");
     readonly CollectionViewSource _userViewSource;
 
     public UserPAsWindow()
