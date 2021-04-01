@@ -53,6 +53,8 @@ namespace CI.PermissionManager.Views
         dgPerm.SelectedIndex = -1;
         dgUser.SelectedIndex = -1;
 
+        cbxServers.ItemsSource = _config["ServerList"].Split(" ").ToList(); ;
+
         _userViewSource.Source = _context.Users.Local.ToObservableCollection();
         _userViewSource.SortDescriptions.Add(new SortDescription(nameof(User.UserId), ListSortDirection.Ascending));
 
