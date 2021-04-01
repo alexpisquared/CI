@@ -1,5 +1,7 @@
-﻿using DB.Inventory.Models;
+﻿using CI.GUI.Support.WpfLibrary.Extensions;
+using DB.Inventory.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -19,8 +21,12 @@ namespace CI.PermissionManager.Views
     readonly CollectionViewSource _userViewSource, _permViewSource;
     bool _loaded, _audible;
     int _userid, _permid;
-    public static readonly DependencyProperty BlurProperty = DependencyProperty.Register("Blur", typeof(double), typeof(PAsUsersSelectorWindow), new PropertyMetadata(.0)); public double Blur { get => (double)GetValue(BlurProperty); set => SetValue(BlurProperty, value); }
-    public PAsUsersSelectorWindow(Microsoft.Extensions.Logging.ILogger<PAsUsersSelectorWindow> _logger, Microsoft.Extensions.Configuration.IConfigurationRoot _config)
+    public static readonly DependencyProperty BlurProperty = DependencyProperty.Register("Blur", typeof(double), typeof(PAsUsersSelectorWindow), new PropertyMetadata(.0));
+    readonly ILogger<PAsUsersSelectorWindow> _logger;
+    readonly Microsoft.Extensions.Configuration.IConfigurationRoot _config;
+
+    public double Blur { get => (double)GetValue(BlurProperty); set => SetValue(BlurProperty, value); }
+    public PAsUsersSelectorWindow(Microsoft.Extensions.Logging.ILogger<PAsUsersSelectorWindow> logger, Microsoft.Extensions.Configuration.IConfigurationRoot config)
     {
       InitializeComponent();
 
@@ -31,29 +37,35 @@ namespace CI.PermissionManager.Views
 
       Loaded += onLoaded;
       themeSelector.ApplyTheme = ApplyTheme;
+      this._logger = logger;
+      _config = config;
     }
     async void onLoaded(object s, RoutedEventArgs e)
     {
-      await Task.Delay(60);
-      await _context.Users.LoadAsync();
-      await _context.Permissions.LoadAsync();
-      await _context.PermissionAssignments.LoadAsync();
-      Title = $"A:{_context.Applications.Local.Count} ◄ P:{_context.Permissions.Local.Count} ◄ pa:{_context.PermissionAssignments.Local.Count} ◄ u:{_context.Users.Local.Count}";
+      try
+      {
+        await Task.Delay(60);
+        await _context.Users.LoadAsync();
+        await _context.Permissions.LoadAsync();
+        await _context.PermissionAssignments.LoadAsync();
+        Title = $"A:{_context.Applications.Local.Count} ◄ P:{_context.Permissions.Local.Count} ◄ pa:{_context.PermissionAssignments.Local.Count} ◄ u:{_context.Users.Local.Count}";
 
-      dgPerm.SelectedIndex = -1;
-      dgUser.SelectedIndex = -1;
+        dgPerm.SelectedIndex = -1;
+        dgUser.SelectedIndex = -1;
 
-      _userViewSource.Source = _context.Users.Local.ToObservableCollection();
-      _userViewSource.SortDescriptions.Add(new SortDescription(nameof(User.UserId), ListSortDirection.Ascending));
+        _userViewSource.Source = _context.Users.Local.ToObservableCollection();
+        _userViewSource.SortDescriptions.Add(new SortDescription(nameof(User.UserId), ListSortDirection.Ascending));
 
-      _permViewSource.Source = _context.Permissions.Local.ToObservableCollection();
-      _permViewSource.SortDescriptions.Add(new SortDescription(nameof(Permission.Name), ListSortDirection.Ascending)); //tu: instead of  .OrderBy(r => r.UserId); lest forfeit CanUserAddRows.
+        _permViewSource.Source = _context.Permissions.Local.ToObservableCollection();
+        _permViewSource.SortDescriptions.Add(new SortDescription(nameof(Permission.Name), ListSortDirection.Ascending)); //tu: instead of  .OrderBy(r => r.UserId); lest forfeit CanUserAddRows.
 
-      ufp.Text = pfu.Text = "■ ■ ■";
+        ufp.Text = pfu.Text = "■ ■ ■";
 
-      _loaded = true;
+        _loaded = true;
+      }
+      catch (Exception ex) { _logger.LogError($"{ex}"); ex.Pop(this); }
     }
-    async void onFlush(object s, RoutedEventArgs e)
+      async void onFlush(object s, RoutedEventArgs e)
     {
       ufp.Text = pfu.Text = "■ ■ ■";
       dgPermReset(s, e);
@@ -130,8 +142,7 @@ namespace CI.PermissionManager.Views
     async void onAudio(object s, RoutedEventArgs e) { _audible = false; SystemSounds.Hand.Play(); await Task.Delay(300000); _audible = true; }
     void onWindowRestoree(object s, RoutedEventArgs e) { wr.Visibility = Visibility.Collapsed; wm.Visibility = Visibility.Visible; WindowState = WindowState.Normal; }
     void onWindowMaximize(object s, RoutedEventArgs e) { wm.Visibility = Visibility.Collapsed; wr.Visibility = Visibility.Visible; WindowState = WindowState.Maximized; }
-
-    private void cbxServers_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    void cbxServers_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
 
     }
