@@ -122,6 +122,8 @@ namespace CI.PermissionManager.Views
       _permid = -1;
 
       ((ObservableCollection<User>)_userViewSource.Source).ToList().ForEach(r => r.Granted = false);
+      dgUser.Refresh(); //todo:  search for  '//tu: '  in C:\c
+
       var ps = (ObservableCollection<Permission>)_permViewSource.Source;
       ps.ToList().ForEach(r => r.Granted = false);
 
@@ -146,12 +148,12 @@ namespace CI.PermissionManager.Views
 
     }
 
-    void dgPerm_SelectionChanged(object s, SelectionChangedEventArgs e)   /**/{ Debug.WriteLine($"** {((FrameworkElement)s).Name} \t _SelectionChanged"); }
-    void dgUser_SelectionChanged(object s, SelectionChangedEventArgs e)   /**/{ Debug.WriteLine($"** {((FrameworkElement)s).Name} \t _SelectionChanged"); }
-    void dgUser_GotFocus(object s, RoutedEventArgs e)                     /**/{ Debug.WriteLine($"** {((FrameworkElement)s).Name} \t _GotFocus(object "); }
-    void dgUser_LostFocus(object s, RoutedEventArgs e)              /**/{ Debug.Write($"S■ {((FrameworkElement)s).Name} \t LostFocus(object"); }
-    void dgPerm_LostFocus(object s, RoutedEventArgs e)              /**/{ Debug.Write($"S■ {((FrameworkElement)s).Name} \t LostFocus(object"); }
-    void dgPerm_GotFocus(object s, RoutedEventArgs e)                     /**/{ Debug.WriteLine($"** {((FrameworkElement)s).Name} \t GotFocus(object "); }
+    void dgPerm_SelectionChanged(object s, SelectionChangedEventArgs e)   /**/{; Debug.WriteLine($"** {((FrameworkElement)s).Name} \t _SelectionChanged"); }
+    void dgUser_SelectionChanged(object s, SelectionChangedEventArgs e)   /**/{; Debug.WriteLine($"** {((FrameworkElement)s).Name} \t _SelectionChanged"); }
+    void dgUser_GotFocus(object s, RoutedEventArgs e)                     /**/{; Debug.WriteLine($"** {((FrameworkElement)s).Name} \t _GotFocus(object "); }
+    void dgUser_LostFocus(object s, RoutedEventArgs e)                    /**/{; Debug.Write($"S■ {((FrameworkElement)s).Name} \t LostFocus(object"); }
+    void dgPerm_LostFocus(object s, RoutedEventArgs e)                    /**/{; Debug.Write($"S■ {((FrameworkElement)s).Name} \t LostFocus(object"); }
+    void dgPerm_GotFocus(object s, RoutedEventArgs e)                     /**/{; Debug.WriteLine($"** {((FrameworkElement)s).Name} \t GotFocus(object "); }
 
     async Task<int> save()
     {
