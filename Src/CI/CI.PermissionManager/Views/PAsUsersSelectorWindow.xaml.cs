@@ -21,6 +21,7 @@ namespace CI.PermissionManager.Views
     readonly CollectionViewSource _userViewSource, _permViewSource;
     bool _loaded, _audible;
     int _userid, _permid;
+    private bool _isDirty;
     readonly ILogger<PAsUsersSelectorWindow> _logger;
     readonly Microsoft.Extensions.Configuration.IConfigurationRoot _config;
     public static readonly DependencyProperty BlurProperty = DependencyProperty.Register("Blur", typeof(double), typeof(PAsUsersSelectorWindow), new PropertyMetadata(.0)); public double Blur { get => (double)GetValue(BlurProperty); set => SetValue(BlurProperty, value); }
@@ -154,6 +155,9 @@ namespace CI.PermissionManager.Views
     async Task<int> save()
     {
       var rs = -1;
+      if (!_isDirty)
+        return rs;
+
       try
       {
         if (Environment.MachineName == "RAZER1" || new[] { ".", @".\SqlExpress" }.Contains(cbxServers.SelectedValue))
@@ -167,6 +171,8 @@ namespace CI.PermissionManager.Views
           }
           else
             Title += $"-";
+
+          _isDirty = false;
         }
         else
           MessageBox.Show(this, "Press any key to continue...\n\n\t...or any other key to quit", "Changes Saved ...NOT!!!", MessageBoxButton.OK, MessageBoxImage.Information);
@@ -185,6 +191,7 @@ namespace CI.PermissionManager.Views
 
       if (_userid > 0 && _permid < 0)
       {
+#if false
         _context.Permissions.Local.ToList().ForEach(p =>
         {
           var dbpa = _context.PermissionAssignments.Local.FirstOrDefault(r => r.UserId == _userid && r.PermissionId == p.PermissionId);
@@ -193,11 +200,31 @@ namespace CI.PermissionManager.Views
             if (p.Granted == true)
               dbpa.Status = "G";
             else
-              _context.PermissionAssignments.Remove(dbpa);
+              _context.PermissionAssignments.Local.Remove(dbpa);
           }
           else if (p.Granted == true)
             _context.PermissionAssignments.Local.Add(new PermissionAssignment { UserId = _userid, PermissionId = p.PermissionId, Status = "G" });
         });
+#else
+        _context.Permissions.Local.Where(r => r.Granted == true).ToList().ForEach(p =>
+        {
+          var dbpa = _context.PermissionAssignments.Local.FirstOrDefault(r => r.UserId == _userid && r.PermissionId == p.PermissionId);
+          if (dbpa != null)
+          {
+            if (dbpa.Status != "G")
+              dbpa.Status = "G";
+          }
+          else
+            _context.PermissionAssignments.Local.Add(new PermissionAssignment { UserId = _userid, PermissionId = p.PermissionId, Status = "G" });
+        });
+
+        _context.Permissions.Local.Where(r => r.Granted == false).ToList().ForEach(p =>
+        {
+          var dbpa = _context.PermissionAssignments.Local.FirstOrDefault(r => r.UserId == _userid && r.PermissionId == p.PermissionId);
+          if (dbpa != null)
+            _context.PermissionAssignments.Local.Remove(dbpa);
+        });
+#endif
       }
       else if (_userid < 0 && _permid > 0)
       {
@@ -209,7 +236,7 @@ namespace CI.PermissionManager.Views
             if (u.Granted == true)
               dbpa.Status = "G";
             else
-              _context.PermissionAssignments.Remove(dbpa);
+              _context.PermissionAssignments.Local.Remove(dbpa);
           }
           else if (u.Granted == true)
             _context.PermissionAssignments.Local.Add(new PermissionAssignment { UserId = u.UserIntId, PermissionId = _permid, Status = "G" });
@@ -219,6 +246,7 @@ namespace CI.PermissionManager.Views
     }
     internal void Recalc(object s)
     {
+      _isDirty = true;
       if (_userid > 0 && _permid < 0)
       {
         ufp.Text = $"· · ·";
