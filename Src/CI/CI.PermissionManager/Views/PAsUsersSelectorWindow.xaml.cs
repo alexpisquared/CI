@@ -56,7 +56,6 @@ namespace CI.PermissionManager.Views
         dgPerm.SelectedIndex = -1;
         dgUser.SelectedIndex = -1;
 
-
         _userViewSource.Source = _context.Users.Local.ToObservableCollection();
         _userViewSource.SortDescriptions.Add(new SortDescription(nameof(User.UserId), ListSortDirection.Ascending));
 
@@ -64,6 +63,8 @@ namespace CI.PermissionManager.Views
         _permViewSource.SortDescriptions.Add(new SortDescription(nameof(Permission.Name), ListSortDirection.Ascending)); //tu: instead of  .OrderBy(r => r.UserId); lest forfeit CanUserAddRows.
 
         ufp.Text = pfu.Text = "■ ■ ■";
+
+        _logger.LogInformation($" +{(DateTime.Now - App.Started):mm\\:ss\\.ff}  {Environment.UserName}   ");
 
         _loaded = true;
       }
@@ -169,8 +170,9 @@ namespace CI.PermissionManager.Views
           rs = await _context.SaveChangesAsync();
           if (rs > 0)
           {
-            Title = $"{rs} saved to DB";
+            Title = $"{rs,3} rows saved to DB";
             Debug.WriteLine(Title);
+            _logger.LogInformation($" +{(DateTime.Now - App.Started):mm\\:ss\\.ff}  {Title}   ");
           }
           else
             Title += $"-";
