@@ -158,6 +158,9 @@ namespace CI.PermissionManager.Views
       if (!_isDirty)
         return rs;
 
+      Blur = 5; pnlBusy.Visibility = Visibility.Visible;
+      await Task.Delay(33);
+
       try
       {
         if (Environment.MachineName == "RAZER1" || new[] { ".", @".\SqlExpress" }.Contains(cbxServers.SelectedValue))
@@ -178,6 +181,10 @@ namespace CI.PermissionManager.Views
           MessageBox.Show(this, "Press any key to continue...\n\n\t...or any other key to quit", "Changes Saved ...NOT!!!", MessageBoxButton.OK, MessageBoxImage.Information);
       }
       catch (Exception ex) { _logger.LogError($"{ex}"); ex.Pop(this); }
+      finally
+      {
+        Blur = 0; pnlBusy.Visibility = Visibility.Hidden;
+      }
       return rs;
     }
     void updateCrosRefTable()
@@ -191,7 +198,7 @@ namespace CI.PermissionManager.Views
 
       if (_userid > 0 && _permid < 0)
       {
-#if false
+#if false // no difference
         _context.Permissions.Local.ToList().ForEach(p =>
         {
           var dbpa = _context.PermissionAssignments.Local.FirstOrDefault(r => r.UserId == _userid && r.PermissionId == p.PermissionId);
