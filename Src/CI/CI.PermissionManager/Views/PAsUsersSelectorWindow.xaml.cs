@@ -78,82 +78,80 @@ namespace CI.PermissionManager.Views
       await Task.Yield();
       SystemSounds.Asterisk.Play();
     }
-    async void onSave(object s, RoutedEventArgs e) => await save();
+    async void onSave(object s, RoutedEventArgs e) => await saveIfDirty();
     void dgPermReset(object s, RoutedEventArgs e) { ((ObservableCollection<Permission>)_permViewSource.Source).ToList().ForEach(r => r.Granted = null); dgPerm.Items.Refresh(); }
     void dgUserReset(object s, RoutedEventArgs e) { ((ObservableCollection<User/*  */>)_userViewSource.Source).ToList().ForEach(r => r.Granted = null); dgUser.Items.Refresh(); }
     async void dgPerm_SelectedCellsChanged(object s, SelectedCellsChangedEventArgs e)
     {
       if (!_loaded || e.AddedCells.Count < 1 || !(e.AddedCells[0].Column is DataGridTextColumn)) return;
 
-      await save();
+      //if (e.RemovedCells.Count > 0 && ((Permission)e.RemovedCells[0].Item).Selectd == true) ((Permission)e.RemovedCells[0].Item).Selectd = false;
+
+      await saveIfDirty();
       colPG.Visibility = Visibility.Collapsed;
       colUG.Visibility = Visibility.Visible;
       Debug.WriteLine($"■  {((FrameworkElement)s).Name} \t SelectedCellsChanged  {((ObservableCollection<Permission>)_permViewSource.Source).Count(r => r.Granted == true)} selects here");
 
       var prm = ((Permission)e.AddedCells[0].Item);
+      prm.Selectd = true;
       _permid = prm.PermissionId;
       _userid = -1;
 
-      ((ObservableCollection<Permission>)_permViewSource.Source).ToList().ForEach(r => r.Granted = false);
+      ((ObservableCollection<Permission>)_permViewSource.Source).ToList().ForEach(r => r.Granted = null);
       var us = (ObservableCollection<User>)_userViewSource.Source;
       us.ToList().ForEach(r => r.Granted = false);
 
-      foreach (var pa in prm.PermissionAssignments)
-      {
-        var u = us.FirstOrDefault(r => r.UserIntId == pa.UserId);
-        if (u != null)
-          u.Granted = true;
-      }
+      foreach (var pa in prm.PermissionAssignments) { var u = us.FirstOrDefault(r => r.UserIntId == pa.UserId); if (u != null) u.Granted = true; }
 
       dgUser.Items.Refresh();
 
-      pfu.Text = $"· · ·";
-      ufp.Text = $"{prm.Name}  assigned to  {prm.PermissionAssignments.Count}  users:";
+      pfu.Text = $"---"; ufp.Text = $"{prm.Name}  assigned to  {prm.PermissionAssignments.Count}  users:";
     }
     async void dgUser_SelectedCellsChanged(object s, SelectedCellsChangedEventArgs e)
     {
       if (!_loaded || e.AddedCells.Count < 1 || !(e.AddedCells[0].Column is DataGridTextColumn)) return;
 
-      await save();
+      //if (e.RemovedCells.Count > 0 && ((User)e.RemovedCells[0].Item).Selectd == true) ((User)e.RemovedCells[0].Item).Selectd = false;      
+
+      await saveIfDirty();
       colPG.Visibility = Visibility.Visible;
       colUG.Visibility = Visibility.Collapsed;
       Debug.WriteLine($"■  {((FrameworkElement)s).Name} \t SelectedCellsChanged  {((ObservableCollection<User>)_userViewSource.Source).Count(r => r.Granted == true)} selects here");
 
       var usr = ((User)e.AddedCells[0].Item);
+      usr.Selectd = true;
       _userid = usr.UserIntId;
       _permid = -1;
 
-      ((ObservableCollection<User>)_userViewSource.Source).ToList().ForEach(r => r.Granted = false);
-      //CollectionViewSource.GetDefaultView(dgUser.ItemsSource).Refresh(); //tu: refresh bound datagrid
+      ((ObservableCollection<User>)_userViewSource.Source).ToList().ForEach(r => r.Granted = null);      //CollectionViewSource.GetDefaultView(dgUser.ItemsSource).Refresh(); //tu: refresh bound datagrid
 
       var ps = (ObservableCollection<Permission>)_permViewSource.Source;
       ps.ToList().ForEach(r => r.Granted = false);
 
-      foreach (var pa in usr.PermissionAssignments)
-      {
-        var p = ps.FirstOrDefault(r => r.PermissionId == pa.PermissionId);
-        if (p != null)
-          p.Granted = true;
-      }
+      foreach (var pa in usr.PermissionAssignments) { var p = ps.FirstOrDefault(r => r.PermissionId == pa.PermissionId); if (p != null) p.Granted = true; }
 
-      dgPerm.Items.Refresh();
+      dgPerm.Items.Refresh();      //dgUser.Items.Refresh();
 
-      pfu.Text = $"{usr.UserId}  has  {usr.PermissionAssignments.Count}  permissions:";
-      ufp.Text = $"· · ·";
+      ufp.Text = $"---"; pfu.Text = $"{usr.UserId}  has  {usr.PermissionAssignments.Count}  permissions:";
     }
     void onSettings(object s, RoutedEventArgs e) { }
     async void onAudio(object s, RoutedEventArgs e) { _audible = false; SystemSounds.Hand.Play(); await Task.Delay(300000); _audible = true; }
     void onWindowRestoree(object s, RoutedEventArgs e) { wr.Visibility = Visibility.Collapsed; wm.Visibility = Visibility.Visible; WindowState = WindowState.Normal; }
     void onWindowMaximize(object s, RoutedEventArgs e) { wm.Visibility = Visibility.Collapsed; wr.Visibility = Visibility.Visible; WindowState = WindowState.Maximized; }
     void cbxServers_SelectionChanged(object s, SelectionChangedEventArgs e) { }
-    void dgPerm_SelectionChanged(object s, SelectionChangedEventArgs e)   /**/{; Debug.WriteLine($"** {((FrameworkElement)s).Name} \t _SelectionChanged"); }
-    void dgUser_SelectionChanged(object s, SelectionChangedEventArgs e)   /**/{; Debug.WriteLine($"** {((FrameworkElement)s).Name} \t _SelectionChanged"); }
-    void dgUser_GotFocus(object s, RoutedEventArgs e)                     /**/{; Debug.WriteLine($"** {((FrameworkElement)s).Name} \t _GotFocus(object "); }
-    void dgUser_LostFocus(object s, RoutedEventArgs e)                    /**/{; Debug.Write($"S■ {((FrameworkElement)s).Name} \t LostFocus(object"); }
-    void dgPerm_LostFocus(object s, RoutedEventArgs e)                    /**/{; Debug.Write($"S■ {((FrameworkElement)s).Name} \t LostFocus(object"); }
-    void dgPerm_GotFocus(object s, RoutedEventArgs e)                     /**/{; Debug.WriteLine($"** {((FrameworkElement)s).Name} \t GotFocus(object "); }
+    void dgPerm_SelectionChanged(object s, SelectionChangedEventArgs e)   /**/{; Debug.Write($"** {((FrameworkElement)s).Name} \t SelectionChanged"); }
+    void dgUser_SelectionChanged(object s, SelectionChangedEventArgs e)   /**/
+    {
+      Debug.Write($"** {((FrameworkElement)s).Name} \t SelectionChanged");
+      //if (_loaded && e.RemovedItems.Count > 0 && (e.RemovedItems[0] as User) != null && (e.RemovedItems[0] as User)?.Selectd == true)        (e.RemovedItems[0] as User).Selectd = false;
+    }
+    void dgUser_GotFocus(object s, RoutedEventArgs e)  /**/{; Debug.Write($"** {((FrameworkElement)s).Name} \t GotFocus"); if (isUser != true) { Debug.Write("░▒░▒░▒░▒"); ((ObservableCollection<User/*  */>)_userViewSource.Source).ToList().ForEach(r => r.Granted = null); } }
+    void dgPerm_GotFocus(object s, RoutedEventArgs e)  /**/{; Debug.Write($"** {((FrameworkElement)s).Name} \t GotFocus"); if (isUser == true) { Debug.Write("░▒░▒░▒░▒"); ((ObservableCollection<Permission>)_permViewSource.Source).ToList().ForEach(r => r.Granted = null); } }
+    void dgUser_LostFocus(object s, RoutedEventArgs e) /**/{; Debug.Write($"■▀▄ {((FrameworkElement)s).Name} \t LostFocus"); isUser = true; }
+    void dgPerm_LostFocus(object s, RoutedEventArgs e) /**/{; Debug.Write($"■▄▀ {((FrameworkElement)s).Name} \t LostFocus"); isUser = false; }
+    bool? isUser = null;
 
-    async Task<int> save()
+    async Task<int> saveIfDirty()
     {
       var rs = -1;
       if (!_isDirty)
@@ -258,12 +256,12 @@ namespace CI.PermissionManager.Views
       _isDirty = true;
       if (_userid > 0 && _permid < 0)
       {
-        ufp.Text = $"· · ·";
+        ufp.Text = $"---";
         pfu.Text = $"{_context.Users.Local.FirstOrDefault(r => r.UserIntId == _userid)?.UserId}  has  {_context.Permissions.Local.Where(r => r.Granted == true).Count()}  permissions:";
       }
       else if (_userid < 0 && _permid > 0)
       {
-        pfu.Text = $"· · ·";
+        pfu.Text = $"---";
         ufp.Text = $"{_context.Permissions.Local.FirstOrDefault(r => r.PermissionId == _permid)?.Name}  assigned to  {_context.Users.Local.Where(r => r.Granted == true).Count()}  users:";
       }
     }

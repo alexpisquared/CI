@@ -41,11 +41,16 @@
         <!--<Setter Property="Background" Value="Lavender"/>-->
         <Style.Triggers>
           <DataTrigger Binding="{Binding Granted}" Value="True">
-            <Setter Property="ToolTip" Value="Permissions granted. Click check mark to revoke."/>
+            <Setter Property="ToolTip" Value="Permissions granted. Click check-mark to revoke."/>
             <Setter Property="Background" Value="LightGreen"/>
           </DataTrigger>
+          <!--<DataTrigger Binding="{Binding Selectd}" Value="True">
+            <Setter Property="ToolTip" Value="▄▀▄▀▄▀▄▀▄▀▄▀"/>
+            <Setter Property="Background" Value="Red"/>
+            <Setter Property="Foreground" Value="Yellow"/>
+          </DataTrigger>-->
           <DataTrigger Binding="{Binding Granted}" Value="False">
-            <Setter Property="ToolTip" Value="No permissions granted. Click  X  to grant."/>
+            <Setter Property="ToolTip" Value="No permissions granted. Click  X-mark  to grant."/>
             <!--<Setter Property="Background" Value="Transparent"/>-->
           </DataTrigger>
         </Style.Triggers>
