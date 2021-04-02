@@ -122,7 +122,7 @@ namespace CI.PermissionManager.Views
       _permid = -1;
 
       ((ObservableCollection<User>)_userViewSource.Source).ToList().ForEach(r => r.Granted = false);
-      dgUser.Refresh(); //todo:  search for  '//tu: '  in C:\c
+      //CollectionViewSource.GetDefaultView(dgUser.ItemsSource).Refresh(); //tu: refresh bound datagrid
 
       var ps = (ObservableCollection<Permission>)_permViewSource.Source;
       ps.ToList().ForEach(r => r.Granted = false);
@@ -143,11 +143,7 @@ namespace CI.PermissionManager.Views
     async void onAudio(object s, RoutedEventArgs e) { _audible = false; SystemSounds.Hand.Play(); await Task.Delay(300000); _audible = true; }
     void onWindowRestoree(object s, RoutedEventArgs e) { wr.Visibility = Visibility.Collapsed; wm.Visibility = Visibility.Visible; WindowState = WindowState.Normal; }
     void onWindowMaximize(object s, RoutedEventArgs e) { wm.Visibility = Visibility.Collapsed; wr.Visibility = Visibility.Visible; WindowState = WindowState.Maximized; }
-    void cbxServers_SelectionChanged(object s, SelectionChangedEventArgs e)
-    {
-
-    }
-
+    void cbxServers_SelectionChanged(object s, SelectionChangedEventArgs e) { }
     void dgPerm_SelectionChanged(object s, SelectionChangedEventArgs e)   /**/{; Debug.WriteLine($"** {((FrameworkElement)s).Name} \t _SelectionChanged"); }
     void dgUser_SelectionChanged(object s, SelectionChangedEventArgs e)   /**/{; Debug.WriteLine($"** {((FrameworkElement)s).Name} \t _SelectionChanged"); }
     void dgUser_GotFocus(object s, RoutedEventArgs e)                     /**/{; Debug.WriteLine($"** {((FrameworkElement)s).Name} \t _GotFocus(object "); }
@@ -169,6 +165,8 @@ namespace CI.PermissionManager.Views
             Title = $"{rs} saved to DB";
             Debug.WriteLine(Title);
           }
+          else
+            Title += $"-";
         }
         else
           MessageBox.Show(this, "Press any key to continue...\n\n\t...or any other key to quit", "Changes Saved ...NOT!!!", MessageBoxButton.OK, MessageBoxImage.Information);
