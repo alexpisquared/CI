@@ -20,6 +20,7 @@ namespace CI.PermissionManager.Views
     readonly InventoryContext _context;
     readonly CollectionViewSource _userViewSource, _permViewSource;
     bool _loaded, _audible;
+    bool? _isUser = null;
     int _userid, _permid;
     private bool _isDirty;
     readonly ILogger<PAsUsersSelectorWindow> _logger;
@@ -145,26 +146,28 @@ namespace CI.PermissionManager.Views
       Debug.Write($"** {((FrameworkElement)s).Name} \t SelectionChanged");
       //if (_loaded && e.RemovedItems.Count > 0 && (e.RemovedItems[0] as User) != null && (e.RemovedItems[0] as User)?.Selectd == true)        (e.RemovedItems[0] as User).Selectd = false;
     }
-    void dgUser_GotFocus(object s, RoutedEventArgs e)  /**/{; Debug.Write($"** {((FrameworkElement)s).Name} \t GotFocus"); if (isUser != true) { Debug.Write("░▒░▒░▒░▒"); ((ObservableCollection<User/*  */>)_userViewSource.Source).ToList().ForEach(r => r.Granted = null); } }
-    void dgPerm_GotFocus(object s, RoutedEventArgs e)  /**/{; Debug.Write($"** {((FrameworkElement)s).Name} \t GotFocus"); if (isUser == true) { Debug.Write("░▒░▒░▒░▒"); ((ObservableCollection<Permission>)_permViewSource.Source).ToList().ForEach(r => r.Granted = null); } }
-    void dgUser_LostFocus(object s, RoutedEventArgs e) /**/{; Debug.Write($"■▀▄ {((FrameworkElement)s).Name} \t LostFocus"); isUser = true; }
-    void dgPerm_LostFocus(object s, RoutedEventArgs e) /**/{; Debug.Write($"■▄▀ {((FrameworkElement)s).Name} \t LostFocus"); isUser = false; }
-    bool? isUser = null;
+    void dgUser_GotFocus(object s, RoutedEventArgs e)  /**/{; Debug.Write($"** {((FrameworkElement)s).Name} \t GotFocus"); if (_isUser != true) { Debug.Write("░▒░▒░▒░▒"); ((ObservableCollection<User/*  */>)_userViewSource.Source).ToList().ForEach(r => r.Granted = null); } }
+    void dgPerm_GotFocus(object s, RoutedEventArgs e)  /**/{; Debug.Write($"** {((FrameworkElement)s).Name} \t GotFocus"); if (_isUser == true) { Debug.Write("░▒░▒░▒░▒"); ((ObservableCollection<Permission>)_permViewSource.Source).ToList().ForEach(r => r.Granted = null); } }
+    void dgUser_LostFocus(object s, RoutedEventArgs e) /**/{; Debug.Write($"■▀▄ {((FrameworkElement)s).Name} \t LostFocus"); _isUser = true; }
+    void dgPerm_LostFocus(object s, RoutedEventArgs e) /**/{; Debug.Write($"■▄▀ {((FrameworkElement)s).Name} \t LostFocus"); _isUser = false; }
 
-    async Task<int> saveIfDirty()
+    async Task<int> saveIfDirty(bool skipUdate = false)
     {
       var rs = -1;
       if (!_isDirty)
         return rs;
 
-      Blur = 5; pnlBusy.Visibility = Visibility.Visible;
-      await Task.Delay(33);
-
       try
       {
         if (Environment.MachineName == "RAZER1" || new[] { ".", @".\SqlExpress" }.Contains(cbxServers.SelectedValue))
         {
-          updateCrosRefTable();
+          if (!skipUdate)
+          {
+            Blur = 5; pnlBusy.Visibility = Visibility.Visible;
+            await Task.Delay(33);
+            updateCrosRefTable();
+          }
+
           rs = await _context.SaveChangesAsync();
           if (rs > 0)
           {
@@ -251,9 +254,40 @@ namespace CI.PermissionManager.Views
       }
 
     }
-    internal void Recalc(object s)
+    internal async Task Recalc(FrameworkElement s)
     {
-      _isDirty = true;
+      var dc = ((FrameworkElement)s.TemplatedParent).DataContext;
+      if (dc is Permission perm && _userid > 0)
+      {
+        var dbpa = _context.PermissionAssignments.Local.FirstOrDefault(r => r.UserId == _userid && r.PermissionId == perm.PermissionId);
+        if (dbpa == null && perm.Granted == true)
+        {
+          _context.PermissionAssignments.Local.Add(new PermissionAssignment { UserId = _userid, PermissionId = perm.PermissionId, Status = "G" });
+          _isDirty = true;
+        }
+        if (dbpa != null && perm.Granted == false)
+        {
+          _context.PermissionAssignments.Local.Remove(dbpa);
+          _isDirty = true;
+        }
+      }
+      else if (dc is User user && _permid > 0)
+      {
+        var dbpa = _context.PermissionAssignments.Local.FirstOrDefault(r => r.UserId == user.UserIntId && r.PermissionId == _permid);
+        if (dbpa == null && user.Granted == true)
+        {
+          _context.PermissionAssignments.Local.Add(new PermissionAssignment { UserId = user.UserIntId, PermissionId = _permid, Status = "G" });
+          _isDirty = true;
+        }
+        if (dbpa != null && user.Granted == false)
+        {
+          _context.PermissionAssignments.Local.Remove(dbpa);
+          _isDirty = true;
+        }
+      }
+
+      await saveIfDirty(true);
+
       if (_userid > 0 && _permid < 0)
       {
         ufp.Text = $"---";

@@ -88,6 +88,6 @@ namespace CI.PermissionManager
     }
     protected override void OnExit(ExitEventArgs e) { _logger.LogInformation($" +{(DateTime.Now - Started):mm\\:ss\\.ff} App.OnExit()          \n"); base.OnExit(e); }
 
-    void onTogglePermission(object s, RoutedEventArgs e) => ((PAsUsersSelectorWindow)MainWindow)?.Recalc(s);
+    async void onTogglePermission(object s, RoutedEventArgs e) => await ((PAsUsersSelectorWindow)MainWindow)?.Recalc((FrameworkElement)s);
   }
 }
