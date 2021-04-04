@@ -316,10 +316,11 @@
       </Grid>
 
       <StackPanel Grid.ColumnSpan="6" Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0">
-        <Button Margin="10 0" Content="_Flsh"  Click="onFlush" Opacity="0" />
-        <Button Margin="10 0" Content="_Save"  Click="onSave" Height="26" Visibility="Collapsed" />
-        <Button	Margin="10 0" Content=" Se_ttings " ToolTip="Adjust application settings" Click="onSettings" VerticalAlignment="Stretch" Visibility="Collapsed" />
+        <Button Margin="5 0" Content="_Flsh"  Click="onFlush" Opacity="0" />
+        <Button Margin="5 0" Content="_Save"  Click="onSave" Height="26" Visibility="Collapsed" />
+        <Button	Margin="5 0" Content=" Se_ttings " ToolTip="Adjust application settings" Click="onSettings" VerticalAlignment="Stretch" Visibility="Collapsed" />
 
+        <Button Margin="5 0" Content="_Add me"  Click="onAddMe" x:Name="btnAddMe"/>
         <ComboBox x:Name="cbxServers" SelectionChanged="cbxServers_SelectionChanged" Margin="5 0" />
         <xui:ThemeToggleUsrCtrl x:Name="themeSelector" Margin="5 0" />
         <!-- More themes for later

@@ -68,6 +68,8 @@ namespace CI.PermissionManager.Views
         _logger.LogInformation($" +{(DateTime.Now - App.Started):mm\\:ss\\.ff}  {Environment.UserName}   ");
 
         _loaded = true;
+
+        btnAddMe.Visibility = _context.Users.Local.Any(r => r.UserId == Environment.UserName) ? Visibility.Collapsed : Visibility.Visible;
       }
       catch (Exception ex) { _logger.LogError($"{ex}"); ex.Pop(this); }
     }
@@ -155,16 +157,16 @@ namespace CI.PermissionManager.Views
     }
     async Task resetUserUnselectPerm()
     {
-      await Task.Delay(100); 
-      ((ObservableCollection<User/*  */>)_userViewSource.Source).ToList().ForEach(r => r.Granted = null); 
-      ((ObservableCollection<Permission>)_permViewSource.Source).ToList().ForEach(r => r.Selectd = false); 
+      await Task.Delay(100);
+      ((ObservableCollection<User/*  */>)_userViewSource.Source).ToList().ForEach(r => r.Granted = null);
+      ((ObservableCollection<Permission>)_permViewSource.Source).ToList().ForEach(r => r.Selectd = false);
       dgUser.Items.Refresh(); dgPerm.Items.Refresh();
     }
     async Task resetPermUnselectUser()
     {
-      await Task.Delay(100); 
-      ((ObservableCollection<Permission>)_permViewSource.Source).ToList().ForEach(r => r.Granted = null); 
-      ((ObservableCollection<User/*  */>)_userViewSource.Source).ToList().ForEach(r => r.Selectd = false); 
+      await Task.Delay(100);
+      ((ObservableCollection<Permission>)_permViewSource.Source).ToList().ForEach(r => r.Granted = null);
+      ((ObservableCollection<User/*  */>)_userViewSource.Source).ToList().ForEach(r => r.Selectd = false);
       dgPerm.Items.Refresh(); dgUser.Items.Refresh();
     }
     async Task<int> saveIfDirty(bool skipUdate = false)
@@ -206,6 +208,15 @@ namespace CI.PermissionManager.Views
       }
       return rs;
     }
+
+    async void onAddMe(object s, RoutedEventArgs e)
+    {
+      _context.Users.Local.Add(new User { UserId = Environment.UserName, AdminAccess = 0, Type = "U", Status = "A" });
+      _isDirty = true;
+      await saveIfDirty(true);
+      btnAddMe.Visibility = Visibility.Collapsed;
+    }
+
     void updateCrosRefTable()
     {
       Debug.Write("    Upd xRef  " +
