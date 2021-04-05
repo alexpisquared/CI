@@ -23,6 +23,9 @@ namespace CI.PermissionManager
       Started = DateTime.Now;
       var aps = "appsettings.json";
       Again:
+
+      MessageBox.Show("■ ■ ■ ■ ■ ■ ");
+
       try
       {
         _config = new ConfigurationBuilder()
@@ -48,7 +51,9 @@ namespace CI.PermissionManager
           File.WriteAllText(aps, @"
 {
   ""WhereAmI"": "" ??\\PermMgrClient\\appsettings.json"",
-  ""LogFolder"": ""Z:\\AlexPi\\Misc\\Logs\\PermMgr.aps.txt"",
+  ""LogFolder"": ""\\\\bbsfile01\\Public\\AlexPi\\Misc\\Logs\\PermMgr..txt"",
+  ""ServerList"": ""mtDEVsqldb mtUATsqldb mtPRDsqldb"",
+  ""SqlConStr"": ""Server={0};Database=Inventory;Trusted_Connection=True;"",
   ""AppSettings"": {
     ""ServerList"": ""mtDEVsqldb mtUATsqldb mtPRDsqldb"",
     ""RmsDbConStr"": ""Server={0};Database={1};Trusted_Connection=True;"",
