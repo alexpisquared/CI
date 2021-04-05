@@ -45,7 +45,7 @@
             <Setter Property="Background" Value="LightGreen"/>
           </DataTrigger>
           <DataTrigger Binding="{Binding Selectd}" Value="True">
-            <Setter Property="ToolTip" Value="▄▀▄▀▄▀▄▀▄▀▄▀"/>
+            <Setter Property="ToolTip" Value="Adjust permissions by clicking V/X in the Granted column"/>
             <Setter Property="Background" Value="#04e"/>
             <Setter Property="Foreground" Value="Yellow"/>
           </DataTrigger>

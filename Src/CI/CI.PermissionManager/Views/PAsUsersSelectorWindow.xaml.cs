@@ -63,19 +63,19 @@ namespace CI.PermissionManager.Views
         _permViewSource.Source = _context.Permissions.Local.ToObservableCollection();
         _permViewSource.SortDescriptions.Add(new SortDescription(nameof(Permission.Name), ListSortDirection.Ascending)); //tu: instead of  .OrderBy(r => r.UserId); lest forfeit CanUserAddRows.
 
-        ufp.Text = pfu.Text = "■ ■ ■";
+        ufp.Text = pfu.Text = "";
 
-        _logger.LogInformation($" +{(DateTime.Now - App.Started):mm\\:ss\\.ff}  {Environment.UserName}   ");
+        _logger.LogInformation($" +{(DateTime.Now - App.Started):mm\\:ss\\.ff}  {Environment.UserDomainName}\\{Environment.UserName}");
 
         _loaded = true;
 
-        btnAddMe.Visibility = _context.Users.Local.Any(r => r.UserId == Environment.UserName) ? Visibility.Collapsed : Visibility.Visible;
+        btnAddMe.Visibility = _context.Users.Local.Any(r => r.UserId == $@"{Environment.UserDomainName}\{Environment.UserName}") ? Visibility.Collapsed : Visibility.Visible;
       }
       catch (Exception ex) { _logger.LogError($"{ex}"); ex.Pop(this); }
     }
     async void onFlush(object s, RoutedEventArgs e)
     {
-      ufp.Text = pfu.Text = "■ ■ ■";
+      ufp.Text = pfu.Text = "";
       dgPermReset(s, e);
       dgUserReset(s, e);
       await Task.Yield();
@@ -211,7 +211,7 @@ namespace CI.PermissionManager.Views
 
     async void onAddMe(object s, RoutedEventArgs e)
     {
-      _context.Users.Local.Add(new User { UserId = Environment.UserName, AdminAccess = 0, Type = "U", Status = "A" });
+      _context.Users.Local.Add(new User { UserId = $@"{Environment.UserDomainName}\{Environment.UserName}", AdminAccess = 0, Type = "U", Status = "A" });
       _isDirty = true;
       await saveIfDirty(true);
       btnAddMe.Visibility = Visibility.Collapsed;
