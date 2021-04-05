@@ -65,7 +65,7 @@
     <AppxBundlePlatforms>x64</AppxBundlePlatforms>
     <AppInstallerUri>\\bbsfile01\Public\AlexPi\PermissionManager\Installer.Small</AppInstallerUri>
     <HoursBetweenUpdateChecks>0</HoursBetweenUpdateChecks>
-    <EntryPointProjectUniqueName>..\WpfApp1\WpfApp1.csproj</EntryPointProjectUniqueName>
+    <EntryPointProjectUniqueName>..\CI.PermissionManager\CI.PermissionManager.csproj</EntryPointProjectUniqueName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <AppxBundle>Always</AppxBundle>
@@ -116,7 +116,7 @@
     <PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.19041.8" PrivateAssets="all" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\WpfApp1\WpfApp1.csproj">
+    <ProjectReference Include="..\CI.PermissionManager\CI.PermissionManager.csproj">
       <SkipGetTargetFrameworkProperties>True</SkipGetTargetFrameworkProperties>
     </ProjectReference>
   </ItemGroup>
