@@ -21,7 +21,7 @@ namespace CI.PermissionManager
     static App()
     {
       Started = DateTime.Now;
-      var aps = "appsettings.json";
+      var aps = @"C:\temp\appsettings.CI.PM.json";
       Again:
 
       MessageBox.Show("■ ■ ■ ■ ■ ■ ");
@@ -50,8 +50,8 @@ namespace CI.PermissionManager
         if (!File.Exists(aps))
           File.WriteAllText(aps, @"
 {
-  ""WhereAmI"": "" ??\\PermMgrClient\\appsettings.json"",
-  ""LogFolder"": ""\\\\bbsfile01\\Public\\AlexPi\\Misc\\Logs\\PermMgr..txt"",
+  ""WhereAmI"": "" ??\\PermMgrClient\\appsettings.CI.PM.dflt.json"",
+  ""LogFolder"": ""\\\\bbsfile01\\Public\\AlexPi\\Misc\\Logs\\PermMgr.dflt..txt"",
   ""ServerList"": ""mtDEVsqldb mtUATsqldb mtPRDsqldb"",
   ""SqlConStr"": ""Server={0};Database=Inventory;Trusted_Connection=True;"",
   ""AppSettings"": {
