@@ -19,14 +19,13 @@ namespace CI.PermissionManager.Views
   {
     readonly InventoryContext _context;
     readonly CollectionViewSource _userViewSource, _permViewSource;
-    bool _loaded, _audible;
+    bool _loaded, _isDbg, _isDirty;
     string? _last = null;
     int _userid, _permid;
-    bool _isDirty;
     readonly ILogger<PAsUsersSelectorWindow> _logger;
     readonly Microsoft.Extensions.Configuration.IConfigurationRoot _config;
     public static readonly DependencyProperty BlurProperty = DependencyProperty.Register("Blur", typeof(double), typeof(PAsUsersSelectorWindow), new PropertyMetadata(.0)); public double Blur { get => (double)GetValue(BlurProperty); set => SetValue(BlurProperty, value); }
-    public PAsUsersSelectorWindow(Microsoft.Extensions.Logging.ILogger<PAsUsersSelectorWindow> logger, Microsoft.Extensions.Configuration.IConfigurationRoot config)
+    public PAsUsersSelectorWindow(ILogger<PAsUsersSelectorWindow> logger, Microsoft.Extensions.Configuration.IConfigurationRoot config)
     {
       InitializeComponent();
 
@@ -40,6 +39,12 @@ namespace CI.PermissionManager.Views
       _logger = logger;
       _config = config;
 
+#if DEBUG
+      _isDbg = true;
+#else
+      _isDbg = false;
+#endif
+
       cbxServers.ItemsSource = _config["ServerList"].Split(" ").ToList(); ;
       cbxServers.SelectedIndex = 0;
       _context = new(string.Format(_config["SqlConStr"], cbxServers.SelectedValue));
@@ -52,7 +57,7 @@ namespace CI.PermissionManager.Views
         await _context.Users.LoadAsync();
         await _context.Permissions.LoadAsync();
         await _context.PermissionAssignments.LoadAsync();
-        Title = $"A:{_context.Applications.Local.Count} ◄ P:{_context.Permissions.Local.Count} ◄ pa:{_context.PermissionAssignments.Local.Count} ◄ u:{_context.Users.Local.Count}";
+        Title = _isDbg ? $"A:{_context.Applications.Local.Count} ◄ P:{_context.Permissions.Local.Count} ◄ pa:{_context.PermissionAssignments.Local.Count} ◄ u:{_context.Users.Local.Count}" : "";
 
         dgPerm.SelectedIndex = -1;
         dgUser.SelectedIndex = -1;
@@ -85,7 +90,7 @@ namespace CI.PermissionManager.Views
     void dgPermReset(object s, RoutedEventArgs e) { ((ObservableCollection<Permission>)_permViewSource.Source).ToList().ForEach(r => r.Granted = null); dgPerm.Items.Refresh(); }
     void dgUserReset(object s, RoutedEventArgs e) { ((ObservableCollection<User/*  */>)_userViewSource.Source).ToList().ForEach(r => r.Granted = null); dgUser.Items.Refresh(); }
     void onSettings(object s, RoutedEventArgs e) { }
-    async void onAudio(object s, RoutedEventArgs e) { _audible = false; SystemSounds.Hand.Play(); await Task.Delay(300000); _audible = true; }
+    async void onAudio(object s, RoutedEventArgs e) { _isDbg = false; SystemSounds.Hand.Play(); await Task.Delay(300000); _isDbg = true; }
     void onWindowRestoree(object s, RoutedEventArgs e) { wr.Visibility = Visibility.Collapsed; wm.Visibility = Visibility.Visible; WindowState = WindowState.Normal; }
     void onWindowMaximize(object s, RoutedEventArgs e) { wm.Visibility = Visibility.Collapsed; wr.Visibility = Visibility.Visible; WindowState = WindowState.Maximized; }
     void cbxServers_SelectionChanged(object s, SelectionChangedEventArgs e) { }
@@ -177,7 +182,7 @@ namespace CI.PermissionManager.Views
 
       try
       {
-        if (Environment.MachineName == "RAZER1" || new[] { ".", @".\SqlExpress" }.Contains(cbxServers.SelectedValue))
+        if (true)// Environment.MachineName == "RAZER1" || new[] { ".", @".\SqlExpress" }.Contains(cbxServers.SelectedValue))
         {
           if (!skipUdate)
           {
@@ -189,9 +194,8 @@ namespace CI.PermissionManager.Views
           rs = await _context.SaveChangesAsync();
           if (rs > 0)
           {
-            Title = $"{rs,3} rows saved to DB";
-            Debug.WriteLine(Title);
-            _logger.LogInformation($" +{(DateTime.Now - App.Started):mm\\:ss\\.ff}  {Title}   ");
+            var msg = _isDbg ? $"{rs,3} rows saved to DB" : "";
+            _logger.LogInformation($" +{(DateTime.Now - App.Started):mm\\:ss\\.ff}  {msg}   ");
           }
           else
             Title += $"-";

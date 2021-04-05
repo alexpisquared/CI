@@ -1,4 +1,5 @@
 ﻿using CI.GUI.Support.WpfLibrary.Extensions;
+using CI.PermissionManager.Views;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Serilog;
@@ -6,17 +7,15 @@ using System;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
-using CI.PermissionManager.Views;
-using System.Windows;
 
 namespace CI.PermissionManager
 {
   public partial class App : Application
   {
-    //PAsUsersSelectorWindow? _mainWindow;
+    //PAsUsersSelectorWindow? _mainWindow; //tu: use built-in MainWindow!!!!!!!!!!!!
     public static readonly DateTime Started;
-    static readonly IConfigurationRoot _config;
-    ILogger<PAsUsersSelectorWindow> _logger;
+    static readonly IConfigurationRoot? _config;
+    ILogger<PAsUsersSelectorWindow>? _logger;
 
     static App()
     {
@@ -24,7 +23,7 @@ namespace CI.PermissionManager
       var aps = @"C:\temp\appsettings.CI.PM.json";
       Again:
 
-      MessageBox.Show("■ ■ ■ ■ ■ ■ ");
+      //MessageBox.Show("...Desperate measures  :) \n\n■ ■ ■ ■ ■ ■ ", "Desperate Times...");
 
       try
       {
