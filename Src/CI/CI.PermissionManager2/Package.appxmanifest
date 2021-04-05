@@ -9,7 +9,7 @@
   <Identity
     Name="5b0bf21c-60db-4195-9e9f-2b39a5480e9a"
     Publisher="CN=alex.pigida"
-    Version="0.4.4.0" />
+    Version="0.4.5.0" />
 
   <Properties>
     <DisplayName>CI.PermissionManager2</DisplayName>
