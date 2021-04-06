@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -40,30 +39,30 @@ namespace WinMgr
     {
       DesktopWindowsStuff.GetDesktopWindowHandlesAndTitles(out var handles, out var titles);
 
-      Debug.WriteLine($"{titles.Count(),3}  windows with titles total:");
+      Console.WriteLine($"{titles.Count(),3}  windows with titles total:");
 
-        _allWindows.Clear();
+      _allWindows.Clear();
       for (var i = 0; i < titles.Count; i++)
       {
-        Debug.WriteLine($"{i,3}  {titles[i],-22}  ");
+        Console.WriteLine($"{i,3}  {titles[i],-22}  ");
         _allWindows.Add(new WindowInfo(titles[i], handles[i]));
       }
     }
 
     public void btnArrange_Click()
     {
-      foreach (var screen in WindowsFormsLib.WinFormHelper.GetAllScreens()) Debug.WriteLine(screen);
+      foreach (var screen in WindowsFormsLib.WinFormHelper.GetAllScreens()) Console.WriteLine(screen);
 
       var screen_top = Screen.PrimaryScreen.WorkingArea.Top;
       var screen_left = Screen.PrimaryScreen.WorkingArea.Left;
       var screen_width = Screen.PrimaryScreen.WorkingArea.Width;
       var screen_height = Screen.PrimaryScreen.WorkingArea.Height;
 
-      var rr = (int)(.5 + Math.Sqrt(_allWindows.Count()));
+      var rr = (int)(Math.Sqrt(_allWindows.Count) - .5);
       _rows = _cols = rr;
 
-      var window_width = screen_width / _cols;
-      var window_height = screen_height / _rows;
+      var window_width = screen_width / _cols - 20;
+      var window_height = screen_height / _rows - 20;
 
       var window_num = 0;
       var y = screen_top;
@@ -72,14 +71,9 @@ namespace WinMgr
         var x = screen_left;
         for (var col = 0; col < _cols; col++)
         {
-          // Restore the window.
-          var window_info = (WindowInfo)_allWindows[window_num];
-          DesktopWindowsStuff.SetWindowPlacement(window_info.Handle, DesktopWindowsStuff.ShowWindowCommands.Restore);
+          DesktopWindowsStuff.SetWindowPlacement(_allWindows[window_num].Handle, DesktopWindowsStuff.ShowWindowCommands.Restore);
+          DesktopWindowsStuff.SetWindowPos(_allWindows[window_num].Handle, x, y, window_width, window_height);
 
-          // Position window window_num;
-          DesktopWindowsStuff.SetWindowPos(window_info.Handle, x, y, window_width, window_height);
-
-          // If that was the last window, return.
           if (++window_num >= _allWindows.Count) return;
           x += window_width;
         }
@@ -165,10 +159,10 @@ namespace WinMgr
       {
         WindowHandles.Add(hWnd);
         WindowTitles.Add(title);
-        Debug.WriteLine($"■ {title,-22}");
+        Console.Write($"\n■ {title,-22}  ");
       }
       else
-        Debug.WriteLine($"- {title,-22}");
+        Console.Write($" {title} ");
 
       return true; // Return true to indicate that we should continue enumerating windows.
     }
