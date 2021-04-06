@@ -17,8 +17,8 @@ namespace CI.PermissionManager.Views
 {
   public partial class PAsUsersSelectorWindow : GUI.Support.WpfLibrary.Base.WindowBase
   {
-    readonly InventoryContext _context;
     readonly CollectionViewSource _userViewSource, _permViewSource;
+    InventoryContext _context;
     bool _loaded, _isDbg, _isDirty;
     string? _last = null;
     int _userid, _permid;
@@ -45,38 +45,18 @@ namespace CI.PermissionManager.Views
       _isDbg = false;
 #endif
 
-      cbxServers.ItemsSource = _config["ServerList"].Split(" ").ToList(); ;
-      cbxServers.SelectedIndex = 0;
-      _context = new(string.Format(_config["SqlConStr"], cbxServers.SelectedValue));
+      cbxSrvr.ItemsSource = _config["ServerList"].Split(" ").ToList(); ;
+      cbxSrvr.SelectedIndex = 0;
     }
     async void onLoaded(object s, RoutedEventArgs e)
     {
-      try
-      {
-        await Task.Delay(60);
-        await _context.Users.LoadAsync();
-        await _context.Permissions.LoadAsync();
-        await _context.PermissionAssignments.LoadAsync();
-        Title = _isDbg ? $"A:{_context.Applications.Local.Count} ◄ P:{_context.Permissions.Local.Count} ◄ pa:{_context.PermissionAssignments.Local.Count} ◄ u:{_context.Users.Local.Count}" : "";
+      await loadEF();
 
-        dgPerm.SelectedIndex = -1;
-        dgUser.SelectedIndex = -1;
+      ufp.Text = pfu.Text = "";
 
-        _userViewSource.Source = _context.Users.Local.ToObservableCollection();
-        _userViewSource.SortDescriptions.Add(new SortDescription(nameof(User.UserId), ListSortDirection.Ascending));
+      _logger.LogInformation($" +{(DateTime.Now - App.Started):mm\\:ss\\.ff}  {Environment.UserDomainName}\\{Environment.UserName}");
 
-        _permViewSource.Source = _context.Permissions.Local.ToObservableCollection();
-        _permViewSource.SortDescriptions.Add(new SortDescription(nameof(Permission.Name), ListSortDirection.Ascending)); //tu: instead of  .OrderBy(r => r.UserId); lest forfeit CanUserAddRows.
-
-        ufp.Text = pfu.Text = "";
-
-        _logger.LogInformation($" +{(DateTime.Now - App.Started):mm\\:ss\\.ff}  {Environment.UserDomainName}\\{Environment.UserName}");
-
-        _loaded = true;
-
-        btnAddMe.Visibility = _context.Users.Local.Any(r => r.UserId == $@"{Environment.UserDomainName}\{Environment.UserName}") ? Visibility.Collapsed : Visibility.Visible;
-      }
-      catch (Exception ex) { _logger.LogError($"{ex}"); ex.Pop(this); }
+      _loaded = true;
     }
     async void onFlush(object s, RoutedEventArgs e)
     {
@@ -93,7 +73,7 @@ namespace CI.PermissionManager.Views
     async void onAudio(object s, RoutedEventArgs e) { _isDbg = false; SystemSounds.Hand.Play(); await Task.Delay(300000); _isDbg = true; }
     void onWindowRestoree(object s, RoutedEventArgs e) { wr.Visibility = Visibility.Collapsed; wm.Visibility = Visibility.Visible; WindowState = WindowState.Normal; }
     void onWindowMaximize(object s, RoutedEventArgs e) { wm.Visibility = Visibility.Collapsed; wr.Visibility = Visibility.Visible; WindowState = WindowState.Maximized; }
-    void cbxServers_SelectionChanged(object s, SelectionChangedEventArgs e) { }
+    async void cbxSrvr_SelectionChanged(object s, SelectionChangedEventArgs e) { if (_loaded) await loadEF(); }
     void dgPerm_SelectionChanged(object s, SelectionChangedEventArgs e)   /**/{; Debug.Write($"** {((FrameworkElement)s).Name} \t SelectionChanged"); }
     void dgUser_SelectionChanged(object s, SelectionChangedEventArgs e)   /**/
     {
@@ -102,10 +82,8 @@ namespace CI.PermissionManager.Views
     }
     void dgUser_GotFocus(object s, RoutedEventArgs e)  /**/{ if (_last != "U") { Debug.Write(" p->U-▒▒▒▒ "); } }
     void dgPerm_GotFocus(object s, RoutedEventArgs e)  /**/{ if (_last != "P") { Debug.Write(" u->P-░░░░ "); } }
-
     void dgUser_LostFocus(object s, RoutedEventArgs e) /**/{; Debug.Write($"■▀▄ {((FrameworkElement)s).Name}  LostFocus  "); _last = "U"; }
     void dgPerm_LostFocus(object s, RoutedEventArgs e) /**/{; Debug.Write($"■▄▀ {((FrameworkElement)s).Name}  LostFocus  "); _last = "P"; }
-
     async void dgPerm_SelectedCellsChanged(object s, SelectedCellsChangedEventArgs e)
     {
       if (!_loaded || e.AddedCells.Count < 1 || !(e.AddedCells[0].Column is DataGridTextColumn)) return;
@@ -160,6 +138,7 @@ namespace CI.PermissionManager.Views
 
       ufp.Text = $"---"; pfu.Text = $"{usr.UserId}  has  {usr.PermissionAssignments.Count}  permissions:";
     }
+
     async Task resetUserUnselectPerm()
     {
       await Task.Delay(100);
@@ -182,7 +161,7 @@ namespace CI.PermissionManager.Views
 
       try
       {
-        if (true)// Environment.MachineName == "RAZER1" || new[] { ".", @".\SqlExpress" }.Contains(cbxServers.SelectedValue))
+        if (true)// Environment.MachineName == "RAZER1" || new[] { ".", @".\SqlExpress" }.Contains(cbxSrvr.SelectedValue))
         {
           if (!skipUdate)
           {
@@ -213,6 +192,30 @@ namespace CI.PermissionManager.Views
       return rs;
     }
 
+    async Task loadEF()
+    {
+      try
+      {
+        await Task.Delay(60);
+        _context = new(string.Format(_config["SqlConStr"], cbxSrvr.SelectedValue));
+        await _context.Users.LoadAsync();
+        await _context.Permissions.LoadAsync();
+        await _context.PermissionAssignments.LoadAsync();
+        Title = _isDbg ? $"A:{_context.Applications.Local.Count} ◄ P:{_context.Permissions.Local.Count} ◄ pa:{_context.PermissionAssignments.Local.Count} ◄ u:{_context.Users.Local.Count}" : "";
+
+        dgPerm.SelectedIndex = -1;
+        dgUser.SelectedIndex = -1;
+
+        _userViewSource.Source = _context.Users.Local.ToObservableCollection();
+        _userViewSource.SortDescriptions.Add(new SortDescription(nameof(User.UserId), ListSortDirection.Ascending));
+
+        _permViewSource.Source = _context.Permissions.Local.ToObservableCollection();
+        _permViewSource.SortDescriptions.Add(new SortDescription(nameof(Permission.Name), ListSortDirection.Ascending)); //tu: instead of  .OrderBy(r => r.UserId); lest forfeit CanUserAddRows.
+
+        btnAddMe.Visibility = _context.Users.Local.Any(r => r.UserId == $@"{Environment.UserDomainName}\{Environment.UserName}") ? Visibility.Collapsed : Visibility.Visible;
+      }
+      catch (Exception ex) { _logger.LogError($"{ex}"); ex.Pop(this); }
+    }
     async void onAddMe(object s, RoutedEventArgs e)
     {
       _context.Users.Local.Add(new User { UserId = $@"{Environment.UserDomainName}\{Environment.UserName}", AdminAccess = 0, Type = "U", Status = "A" });
@@ -220,7 +223,6 @@ namespace CI.PermissionManager.Views
       await saveIfDirty(true);
       btnAddMe.Visibility = Visibility.Collapsed;
     }
-
     void updateCrosRefTable()
     {
       Debug.Write("    Upd xRef  " +
@@ -284,6 +286,7 @@ namespace CI.PermissionManager.Views
         });
       }
     }
+
     internal async Task Recalc(FrameworkElement s)
     {
       var dc = ((FrameworkElement)s.TemplatedParent).DataContext;
