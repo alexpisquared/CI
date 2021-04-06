@@ -6,14 +6,19 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Windows.Forms;
 
-// http://csharphelper.com/blog/2016/12/tile-desktop-windows-in-rows-and-columns-in-c/
+/// http://csharphelper.com/blog/2016/12/tile-desktop-windows-in-rows-and-columns-in-c/
+/// also for Virt Desktop see:
+///   https://www.codeproject.com/Articles/7666/Desktop-Switching
+///   https://www.cyberforum.ru/blogs/105416/blog3671.html
+///   https://docs.microsoft.com/en-us/archive/blogs/winsdk/virtual-desktop-switching-in-windows-10
+///   https://github.com/MScholtes/VirtualDesktop
 
 namespace WinMgr
 {
   public class SmartTiler
   {
-    readonly List<WindowInfo> lstWindows = new();
-    readonly int? nudCols = 3, nudRows = 3;
+    readonly List<WindowInfo> _allWindows = new();
+    int _cols = 3, _rows = 3;
 
     public SmartTiler() => CollectDesktopWindows();
 
@@ -35,50 +40,47 @@ namespace WinMgr
     {
       DesktopWindowsStuff.GetDesktopWindowHandlesAndTitles(out var handles, out var titles);
 
-      // Display the window titles.
-      lstWindows.Clear();
+      Debug.WriteLine($"{titles.Count(),3}  windows with titles total:");
+
+        _allWindows.Clear();
       for (var i = 0; i < titles.Count; i++)
       {
-        Console.WriteLine(titles[i]);
-        lstWindows.Add(new WindowInfo(titles[i], handles[i]));
+        Debug.WriteLine($"{i,3}  {titles[i],-22}  ");
+        _allWindows.Add(new WindowInfo(titles[i], handles[i]));
       }
     }
 
     public void btnArrange_Click()
     {
-
       foreach (var screen in WindowsFormsLib.WinFormHelper.GetAllScreens()) Debug.WriteLine(screen);
 
-      // Get the form's location and dimensions.
       var screen_top = Screen.PrimaryScreen.WorkingArea.Top;
       var screen_left = Screen.PrimaryScreen.WorkingArea.Left;
       var screen_width = Screen.PrimaryScreen.WorkingArea.Width;
       var screen_height = Screen.PrimaryScreen.WorkingArea.Height;
 
-      // See how big the windows should be.
-      var window_width = screen_width / nudCols.Value;
-      var window_height = screen_height / nudRows.Value;
+      var rr = (int)(.5 + Math.Sqrt(_allWindows.Count()));
+      _rows = _cols = rr;
 
-      // Position the windows.
+      var window_width = screen_width / _cols;
+      var window_height = screen_height / _rows;
+
       var window_num = 0;
       var y = screen_top;
-      for (var row = 0; row < nudRows.Value; row++)
+      for (var row = 0; row < _rows; row++)
       {
         var x = screen_left;
-        for (var col = 0; col < nudCols.Value; col++)
+        for (var col = 0; col < _cols; col++)
         {
           // Restore the window.
-          var window_info = (WindowInfo)lstWindows[window_num];
-          DesktopWindowsStuff.SetWindowPlacement(
-              window_info.Handle,
-              DesktopWindowsStuff.ShowWindowCommands.Restore);
+          var window_info = (WindowInfo)_allWindows[window_num];
+          DesktopWindowsStuff.SetWindowPlacement(window_info.Handle, DesktopWindowsStuff.ShowWindowCommands.Restore);
 
           // Position window window_num;
-          DesktopWindowsStuff.SetWindowPos(window_info.Handle,
-              x, y, window_width, window_height);
+          DesktopWindowsStuff.SetWindowPos(window_info.Handle, x, y, window_width, window_height);
 
           // If that was the last window, return.
-          if (++window_num >= lstWindows.Count) return;
+          if (++window_num >= _allWindows.Count) return;
           x += window_width;
         }
         y += window_height;
@@ -96,8 +98,7 @@ namespace WinMgr
 
     [DllImport("user32.dll", EntryPoint = "GetWindowText",
     ExactSpelling = false, CharSet = CharSet.Auto, SetLastError = true)]
-    static extern int GetWindowText(IntPtr hWnd,
-        StringBuilder lpWindowText, int nMaxCount);
+    static extern int GetWindowText(IntPtr hWnd, StringBuilder lpWindowText, int nMaxCount);
 
     [DllImport("user32.dll", EntryPoint = "EnumDesktopWindows",
     ExactSpelling = false, CharSet = CharSet.Auto, SetLastError = true)]
@@ -133,8 +134,7 @@ namespace WinMgr
     static List<string> WindowTitles;
 
     // Return a list of the desktop windows' handles and titles.
-    public static void GetDesktopWindowHandlesAndTitles(
-        out List<IntPtr> handles, out List<string> titles)
+    public static void GetDesktopWindowHandlesAndTitles(out List<IntPtr> handles, out List<string> titles)
     {
       WindowHandles = new List<IntPtr>();
       WindowTitles = new List<string>();
@@ -160,16 +160,17 @@ namespace WinMgr
       var length = GetWindowText(hWnd, sb_title, sb_title.Capacity);
       var title = sb_title.ToString();
 
-      // If the window is visible and has a title, save it.
-      if (IsWindowVisible(hWnd) && string.IsNullOrEmpty(title) == false)
+
+      if (IsWindowVisible(hWnd) && string.IsNullOrEmpty(title) == false && !title.Contains("Microsoft Visual Studio"))
       {
         WindowHandles.Add(hWnd);
         WindowTitles.Add(title);
+        Debug.WriteLine($"■ {title,-22}");
       }
+      else
+        Debug.WriteLine($"- {title,-22}");
 
-      // Return true to indicate that we
-      // should continue enumerating windows.
-      return true;
+      return true; // Return true to indicate that we should continue enumerating windows.
     }
     #endregion "Find Desktop Windows"
 
