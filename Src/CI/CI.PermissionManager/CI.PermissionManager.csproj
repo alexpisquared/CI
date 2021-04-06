@@ -49,10 +49,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="AAV.Common\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Resource Include="favicon.ico">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>

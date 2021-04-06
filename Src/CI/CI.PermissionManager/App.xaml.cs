@@ -1,4 +1,5 @@
 ﻿using CI.GUI.Support.WpfLibrary.Extensions;
+using CI.PermissionManager.AAV.Common;
 using CI.PermissionManager.Views;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
@@ -49,8 +50,8 @@ namespace CI.PermissionManager
         if (!File.Exists(aps))
           File.WriteAllText(aps, @"
 {
-  ""WhereAmI"": "" ??\\PermMgrClient\\appsettings.CI.PM.dflt.json"",
-  ""LogFolder"": ""\\\\bbsfile01\\Public\\AlexPi\\Misc\\Logs\\PermMgr.dflt..txt"",
+  ""WhereAmI"": "" ??\\PermMgrClient\\appsettings.CI.PM.json  DFLT"",
+  ""LogFolder"": ""\\\\bbsfile01\\Public\\AlexPi\\Misc\\Logs\\PermMgr.DFLT..txt"",
   ""ServerList"": ""mtDEVsqldb mtUATsqldb mtPRDsqldb"",
   ""SqlConStr"": ""Server={0};Database=Inventory;Trusted_Connection=True;"",
   ""AppSettings"": {
@@ -84,6 +85,8 @@ namespace CI.PermissionManager
       //todo: Current.DispatcherUnhandledException += new RuntimeHelper(_logger, _config).Current_DispatcherUnhandledException;
       EventManager.RegisterClassHandler(typeof(TextBox), TextBox.GotFocusEvent, new RoutedEventHandler((s, re) => { (s as TextBox ?? new TextBox()).SelectAll(); })); //tu: TextBox
       ToolTipService.ShowDurationProperty.OverrideMetadata(typeof(DependencyObject), new FrameworkPropertyMetadata(int.MaxValue)); //tu: ToolTip ShowDuration !!!
+
+      new WindowManager().Arrange();
 
       MainWindow = new PAsUsersSelectorWindow(_logger, _config);
       MainWindow.Show();
