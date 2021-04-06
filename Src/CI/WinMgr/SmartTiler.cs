@@ -21,48 +21,24 @@ namespace WinMgr
 
     public SmartTiler() => CollectDesktopWindows();
 
-    struct WindowInfo
-    {
-      public string Title;
-      public IntPtr Handle;
-
-      public WindowInfo(string title, IntPtr handle)
-      {
-        Title = title;
-        Handle = handle;
-      }
-
-      public override string ToString() => Title;
-    }
-
-    void CollectDesktopWindows()
-    {
-      DesktopWindowsStuff.GetDesktopWindowHandlesAndTitles(out var handles, out var titles);
-
-      Console.WriteLine($"{titles.Count(),3}  windows with titles total:");
-
-      _allWindows.Clear();
-      for (var i = 0; i < titles.Count; i++)
-      {
-        Console.WriteLine($"{i,3}  {titles[i],-22}  ");
-        _allWindows.Add(new WindowInfo(titles[i], handles[i]));
-      }
-    }
-
     public void btnArrange_Click()
     {
-      foreach (var screen in WindowsFormsLib.WinFormHelper.GetAllScreens()) Console.WriteLine(screen);
+      Console.ForegroundColor = ConsoleColor.DarkYellow;
+      Console.WriteLine($"");
+      foreach (var screen in WindowsFormsLib.WinFormHelper.GetAllScreens()) Console.WriteLine($"{screen}");
 
       var screen_top = Screen.PrimaryScreen.WorkingArea.Top;
       var screen_left = Screen.PrimaryScreen.WorkingArea.Left;
       var screen_width = Screen.PrimaryScreen.WorkingArea.Width;
       var screen_height = Screen.PrimaryScreen.WorkingArea.Height;
 
-      var rr = (int)(Math.Sqrt(_allWindows.Count) - .5);
+      var rr = (int)(Math.Sqrt(_allWindows.Count) + .5);
       _rows = _cols = rr;
 
       var window_width = screen_width / _cols - 20;
-      var window_height = screen_height / _rows - 20;
+      var window_height = screen_height / _rows - 10;
+
+      Console.WriteLine($"\n== {_allWindows.Count}  ->  {rr}  ->  {_rows} x {_cols}  ->  {window_width} x {window_height}\n");
 
       var window_num = 0;
       var y = screen_top;
@@ -79,6 +55,34 @@ namespace WinMgr
         }
         y += window_height;
       }
+    }
+    void CollectDesktopWindows()
+    {
+      DesktopWindowsStuff.GetDesktopWindowHandlesAndTitles(out var handles, out var titles);
+
+      Console.ForegroundColor = ConsoleColor.Cyan;
+      Console.WriteLine($" ...Windows of interest with titles total:  {titles.Count,3}  ");
+
+      _allWindows.Clear();
+      for (var i = 0; i < titles.Count; i++)
+      {
+        Console.WriteLine($"{1+i,3}  {titles[i],-22}  ");
+        _allWindows.Add(new WindowInfo(titles[i], handles[i]));
+      }
+    }
+
+    struct WindowInfo
+    {
+      public string Title;
+      public IntPtr Handle;
+
+      public WindowInfo(string title, IntPtr handle)
+      {
+        Title = title;
+        Handle = handle;
+      }
+
+      public override string ToString() => Title;
     }
   }
 
@@ -149,20 +153,28 @@ namespace WinMgr
     // This version selects visible windows that have titles.
     static bool FilterCallback(IntPtr hWnd, int lParam)
     {
-      // Get the window's title.
-      var sb_title = new StringBuilder(1024);
-      var length = GetWindowText(hWnd, sb_title, sb_title.Capacity);
-      var title = sb_title.ToString();
+      var sb = new StringBuilder(1024);
+      _ = GetWindowText(hWnd, sb, sb.Capacity);
+      var title = sb.ToString();
 
-
-      if (IsWindowVisible(hWnd) && string.IsNullOrEmpty(title) == false && !title.Contains("Microsoft Visual Studio"))
+      if (IsWindowVisible(hWnd) && string.IsNullOrEmpty(title) == false
+        && !title.Contains("Microsoft Visual Studio")
+        && !title.Contains("Git")
+        && !title.Contains("Team")
+        && !title.Contains("Outlook")
+        && !title.Contains("Setup")
+        && !title.Contains("Program Manager")
+        && !title.Contains("Microsoft Text Input Application")
+        && !title.Contains("DiReq")   // scrsvr
+        && !title.Contains("WinMgr")  // us
+        )
       {
         WindowHandles.Add(hWnd);
         WindowTitles.Add(title);
-        Console.Write($"\n■ {title,-22}  ");
+        //Console.Write($"■ {title,-22}  \n");
       }
-      else
-        Console.Write($" {title} ");
+      //else
+      //  Console.Write($" {title} ");
 
       return true; // Return true to indicate that we should continue enumerating windows.
     }
@@ -185,8 +197,7 @@ namespace WinMgr
 
     [DllImport("user32.dll", SetLastError = true)]
     [return: MarshalAs(UnmanagedType.Bool)]
-    static extern bool SetWindowPlacement(IntPtr hWnd,
-       [In] ref WINDOWPLACEMENT lpwndpl);
+    static extern bool SetWindowPlacement(IntPtr hWnd, [In] ref WINDOWPLACEMENT lpwndpl);
 
     [Serializable]
     [StructLayout(LayoutKind.Sequential)]
