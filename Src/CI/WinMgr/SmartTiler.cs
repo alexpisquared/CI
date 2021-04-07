@@ -18,45 +18,91 @@ namespace WinMgr
   public class SmartTiler
   {
     readonly List<WindowInfo> _allWindows = new();
-    int _cols = 3, _rows = 3;
-    VDM _vdm = new();
+    readonly VDM _vdm = new();
 
-    public SmartTiler() => collectDesktopWindows();
+    //public SmartTiler() => collectDesktopWindows();
 
     public void Arrange()
     {
-      Console.ForegroundColor = ConsoleColor.DarkYellow;
-      Console.WriteLine($"");
-      foreach (var screen in WindowsFormsLib.WinFormHelper.GetAllScreens()) Console.WriteLine($"{screen}");
-
-      var screen_top = Screen.PrimaryScreen.WorkingArea.Top;
-      var screen_left = Screen.PrimaryScreen.WorkingArea.Left;
-      var screen_width = Screen.PrimaryScreen.WorkingArea.Width;
-      var screen_height = Screen.PrimaryScreen.WorkingArea.Height;
-
-      var rr = (int)(Math.Sqrt(_allWindows.Count) + .5);
-      _rows = _cols = rr;
-
-      var window_width = screen_width / _cols - 20;
-      var window_height = screen_height / _rows - 10;
-
-      Console.WriteLine($"\n== {_allWindows.Count}  ->  {rr}  ->  {_rows} x {_cols}  ->  {window_width} x {window_height}\n");
-
-      var window_num = 0;
-      var y = screen_top;
-      for (var row = 0; row < _rows; row++)
+      while (true)
       {
-        var x = screen_left;
-        for (var col = 0; col < _cols; col++)
+        collectDesktopWindows();
+        Console.ForegroundColor = ConsoleColor.DarkYellow; Console.WriteLine($"");
+        if (_allWindows.Count < 1)
         {
-          DesktopWindowsStuff.SetWindowPlacement(_allWindows[window_num].Handle, DesktopWindowsStuff.ShowWindowCommands.Restore);
-          DesktopWindowsStuff.SetWindowPos(_allWindows[window_num].Handle, x, y, window_width, window_height);
-          //todo: fix E_AccessDenied first: _vdm.MoveToCurrentDesktop(_allWindows[window_num].Handle);
-
-          if (++window_num >= _allWindows.Count) return;
-          x += window_width;
+          Console.WriteLine($"--- No valid windows found ---");
+          return;
         }
-        y += window_height;
+
+        var screen = Screen.PrimaryScreen;      //foreach (var screen in WindowsFormsLib.WinFormHelper.GetAllScreens()) Console.WriteLine($"{screen}");
+        int cols = 3, rows = 3, rp1 = 0;
+
+        if (_allWindows.Count < 4) { cols = 3; rows = 1; }
+        else if (_allWindows.Count < 07) { cols = 3; rows = 2; }
+        else if (_allWindows.Count < 10) { cols = 3; rows = 3; }
+        else if (_allWindows.Count < 13) { cols = 3; rows = 4; }
+        else if (_allWindows.Count < 17) { cols = 4; rows = 4; }
+        else if (_allWindows.Count < 21) { cols = 4; rows = 5; }
+        else if (_allWindows.Count < 26) { cols = 5; rows = 5; }
+        else if (_allWindows.Count < 31) { cols = 5; rows = 6; }
+        else if (_allWindows.Count < 36) { cols = 6; rows = 6; }
+        else if (_allWindows.Count < 64) { cols = 8; rows = 8; }
+        else { rp1 = 1 + (int)Math.Sqrt(_allWindows.Count); rows = cols = rp1; }
+
+
+
+        var window_width = screen.WorkingArea.Width / cols;
+        var window_height = screen.WorkingArea.Height / rows;
+
+        Console.WriteLine($"\n== {_allWindows.Count}  ->  {rp1}  ->  {rows} x {cols}  ->  {window_width} x {window_height}\n");
+
+
+        var y = screen.WorkingArea.Top;
+        var x = screen.WorkingArea.Left;
+        int c = 0, i = 0;
+        foreach (var w in _allWindows.OrderBy(r => r.Sorter))
+        {
+          DesktopWindowsStuff.SetWindowPlacement(w.Handle, DesktopWindowsStuff.ShowWindowCommands.Restore);
+          DesktopWindowsStuff.SetWindowPos(w.Handle, x, y, window_width, window_height);
+          i++;
+          x += window_width;
+          if (++c >= cols)
+          {
+            c = 0;
+            x = screen.WorkingArea.Left;
+            y += window_height;
+            var cl = _allWindows.Count - i;
+            if (cl < cols && cl != 0)
+            {
+              window_width = screen.WorkingArea.Width / cl;
+              window_height = screen.WorkingArea.Height - y;
+            }
+          }
+        }
+
+        Console.ForegroundColor = ConsoleColor.Green;
+        Console.WriteLine($"Enter\tRedo\n" +
+          $"E\tClose all Explorers  'This PC'\n" +
+          $"\n" +
+          $"\n" +
+          $"");
+
+
+        switch (Console.ReadKey().Key)
+        {
+          case ConsoleKey.Enter: break;
+          case ConsoleKey.E: closeAll("This PC"); break;
+          default: return;
+        }
+      }
+    }
+
+
+    void closeAll(string v)
+    {
+      foreach (var w in _allWindows.Where(r => r.Title.Contains(v)))
+      {
+        Externs.CloseWindow(w.Handle);
       }
     }
 
@@ -65,25 +111,26 @@ namespace WinMgr
       DesktopWindowsStuff.GetDesktopWindowHandlesAndTitles(out var handles, out var titles, _vdm);
 
       Console.ForegroundColor = ConsoleColor.Cyan;
-      Console.WriteLine($" ...Windows of interest with titles total:  {titles.Count,3}  ");
+      Console.WriteLine($" ... Found  {titles.Count}  Windows of interest: ");
 
       _allWindows.Clear();
-      for (var i = 0; i < titles.Count; i++)
-      {
-        Console.WriteLine($"{1 + i,3}  {titles[i],-22}  ");
-        _allWindows.Add(new WindowInfo(titles[i], handles[i]));
-      }
+      for (var i = 0; i < titles.Count; i++) _allWindows.Add(new WindowInfo(titles[i], handles[i]));
+
+      var c = 0;
+      foreach (var w in _allWindows.OrderBy(r => r.Sorter)) Console.WriteLine($"{++c,4}  {w.Sorter,-32}  {w.Title,-22}  ");
     }
 
     struct WindowInfo
     {
       public string Title;
+      public string Sorter;
       public IntPtr Handle;
 
       public WindowInfo(string title, IntPtr handle)
       {
         Title = title;
         Handle = handle;
+        Sorter = title.Split(" - ", StringSplitOptions.None).LastOrDefault() ?? "·";
       }
 
       public override string ToString() => Title;
@@ -156,7 +203,9 @@ namespace WinMgr
 
       if (IsWindowVisible(hWnd) && string.IsNullOrEmpty(title) == false
         && !title.Contains("Microsoft Visual Studio")
-        && !title.Contains("Git")
+        && !title.Contains("Windows Shell Experience Host")
+        && !title.Contains("GitHub")
+        && !title.Contains("Remote Desktop Connection")
         && !title.Contains("Team")
         && !title.Contains("Outlook")
         && !title.Contains("Setup")
