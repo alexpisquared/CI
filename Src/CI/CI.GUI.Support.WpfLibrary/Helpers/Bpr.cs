@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace CI.GUI.Support.WpfLibrary.Helpers
+﻿namespace CI.GUI.Support.WpfLibrary.Helpers
 {
   public class Bpr
   {
-    internal static void ErrorFaF() => System.Media.SystemSounds.Beep.Play();
+    public static void ErrorFaF() => NativeMethods.Beep(4444, 333);
+    public static void Beep(int freq, int dur) => NativeMethods.Beep(freq, dur);
   }
 }

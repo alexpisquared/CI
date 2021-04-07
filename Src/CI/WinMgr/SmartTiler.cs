@@ -117,7 +117,7 @@ namespace WinMgr
       for (var i = 0; i < titles.Count; i++) _allWindows.Add(new WindowInfo(titles[i], handles[i]));
 
       var c = 0;
-      foreach (var w in _allWindows.OrderBy(r => r.Sorter)) Console.WriteLine($"{++c,4}  {w.Sorter,-32}  {w.Title,-22}  ");
+      foreach (var w in _allWindows.OrderBy(r => r.Sorter)) Console.WriteLine($"{++c,4}  {w.Sorter,-20}{w.Title.Replace(w.Sorter, "")}  ");
     }
 
     struct WindowInfo
@@ -130,7 +130,8 @@ namespace WinMgr
       {
         Title = title;
         Handle = handle;
-        Sorter = title.Split(" - ", StringSplitOptions.None).LastOrDefault() ?? "·";
+        var s = title.Split(" - ");
+        Sorter = s.Length > 1 ? s.LastOrDefault() : "·";
       }
 
       public override string ToString() => Title;
