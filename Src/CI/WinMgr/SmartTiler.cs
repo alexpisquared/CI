@@ -7,10 +7,11 @@ using System.Windows.Forms;
 
 /// http://csharphelper.com/blog/2016/12/tile-desktop-windows-in-rows-and-columns-in-c/
 /// also for Virt Desktop see:
-///   https://www.codeproject.com/Articles/7666/Desktop-Switching
-///   https://www.cyberforum.ru/blogs/105416/blog3671.html
-///   https://docs.microsoft.com/en-us/archive/blogs/winsdk/virtual-desktop-switching-in-windows-10
+///   too little https://www.codeproject.com/Articles/7666/Desktop-Switching
+///   2004  https://www.cyberforum.ru/blogs/105416/blog3671.html
+///   rus  C++ https://docs.microsoft.com/en-us/archive/blogs/winsdk/virtual-desktop-switching-in-windows-10
 ///   https://github.com/MScholtes/VirtualDesktop
+///   
 
 namespace WinMgr
 {
@@ -18,10 +19,11 @@ namespace WinMgr
   {
     readonly List<WindowInfo> _allWindows = new();
     int _cols = 3, _rows = 3;
+    VDM _vdm = new();
 
-    public SmartTiler() => CollectDesktopWindows();
+    public SmartTiler() => collectDesktopWindows();
 
-    public void btnArrange_Click()
+    public void Arrange()
     {
       Console.ForegroundColor = ConsoleColor.DarkYellow;
       Console.WriteLine($"");
@@ -49,6 +51,7 @@ namespace WinMgr
         {
           DesktopWindowsStuff.SetWindowPlacement(_allWindows[window_num].Handle, DesktopWindowsStuff.ShowWindowCommands.Restore);
           DesktopWindowsStuff.SetWindowPos(_allWindows[window_num].Handle, x, y, window_width, window_height);
+          //todo: fix E_AccessDenied first: _vdm.MoveToCurrentDesktop(_allWindows[window_num].Handle);
 
           if (++window_num >= _allWindows.Count) return;
           x += window_width;
@@ -56,9 +59,10 @@ namespace WinMgr
         y += window_height;
       }
     }
-    void CollectDesktopWindows()
+
+    void collectDesktopWindows()
     {
-      DesktopWindowsStuff.GetDesktopWindowHandlesAndTitles(out var handles, out var titles);
+      DesktopWindowsStuff.GetDesktopWindowHandlesAndTitles(out var handles, out var titles, _vdm);
 
       Console.ForegroundColor = ConsoleColor.Cyan;
       Console.WriteLine($" ...Windows of interest with titles total:  {titles.Count,3}  ");
@@ -66,7 +70,7 @@ namespace WinMgr
       _allWindows.Clear();
       for (var i = 0; i < titles.Count; i++)
       {
-        Console.WriteLine($"{1+i,3}  {titles[i],-22}  ");
+        Console.WriteLine($"{1 + i,3}  {titles[i],-22}  ");
         _allWindows.Add(new WindowInfo(titles[i], handles[i]));
       }
     }
@@ -90,18 +94,9 @@ namespace WinMgr
   static class DesktopWindowsStuff
   {
     #region "Find Desktop Windows"
-    [DllImport("user32.dll")]
-    [return: MarshalAs(UnmanagedType.Bool)]
-    static extern bool IsWindowVisible(IntPtr hWnd);
-
-    [DllImport("user32.dll", EntryPoint = "GetWindowText",
-    ExactSpelling = false, CharSet = CharSet.Auto, SetLastError = true)]
-    static extern int GetWindowText(IntPtr hWnd, StringBuilder lpWindowText, int nMaxCount);
-
-    [DllImport("user32.dll", EntryPoint = "EnumDesktopWindows",
-    ExactSpelling = false, CharSet = CharSet.Auto, SetLastError = true)]
-    static extern bool EnumDesktopWindows(IntPtr hDesktop,
-        EnumDelegate lpEnumCallbackFunction, IntPtr lParam);
+    [DllImport("user32.dll")] [return: MarshalAs(UnmanagedType.Bool)] static extern bool IsWindowVisible(IntPtr hWnd);
+    [DllImport("user32.dll", EntryPoint = "GetWindowText", ExactSpelling = false, CharSet = CharSet.Auto, SetLastError = true)] static extern int GetWindowText(IntPtr hWnd, StringBuilder lpWindowText, int nMaxCount);
+    [DllImport("user32.dll", EntryPoint = "EnumDesktopWindows", ExactSpelling = false, CharSet = CharSet.Auto, SetLastError = true)] static extern bool EnumDesktopWindows(IntPtr hDesktop, EnumDelegate lpEnumCallbackFunction, IntPtr lParam);
 
     // Define the SetWindowPosFlags enumeration.
     [Flags()]
@@ -131,11 +126,13 @@ namespace WinMgr
     static List<IntPtr> WindowHandles;
     static List<string> WindowTitles;
 
-    // Return a list of the desktop windows' handles and titles.
-    public static void GetDesktopWindowHandlesAndTitles(out List<IntPtr> handles, out List<string> titles)
+    static VDM _vdm;
+
+    public static void GetDesktopWindowHandlesAndTitles(out List<IntPtr> handles, out List<string> titles, VDM vdm)
     {
       WindowHandles = new List<IntPtr>();
       WindowTitles = new List<string>();
+      _vdm = vdm;
 
       if (!EnumDesktopWindows(IntPtr.Zero, FilterCallback, IntPtr.Zero))
       {
@@ -167,6 +164,7 @@ namespace WinMgr
         && !title.Contains("Microsoft Text Input Application")
         && !title.Contains("DiReq")   // scrsvr
         && !title.Contains("WinMgr")  // us
+        && _vdm.IsWindowOnCurrentVirtualDesktop(hWnd)
         )
       {
         WindowHandles.Add(hWnd);
