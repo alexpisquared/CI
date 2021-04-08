@@ -1,19 +1,15 @@
-﻿using System.Drawing;
-using Console = Colorful.Console;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Windows.Forms;
+using Console = Colorful.Console;
 
 /// http://csharphelper.com/blog/2016/12/tile-desktop-windows-in-rows-and-columns-in-c/
 /// also for Virt Desktop see:
-///   too little https://www.codeproject.com/Articles/7666/Desktop-Switching
-///   2004  https://www.cyberforum.ru/blogs/105416/blog3671.html
-///   rus  C++ https://docs.microsoft.com/en-us/archive/blogs/winsdk/virtual-desktop-switching-in-windows-10
 ///   https://github.com/MScholtes/VirtualDesktop
-///   
 
 namespace WinMgr
 {
@@ -28,8 +24,8 @@ namespace WinMgr
     {
       while (true)
       {
+        Console.Clear();
         collectDesktopWindows();
-        Console.WriteLine($"");
         if (_allWindows.Count < 1)
         {
           Console.WriteLine($"--- No valid windows found ---");
