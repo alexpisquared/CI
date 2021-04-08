@@ -25,6 +25,7 @@ namespace WinMgr
       while (true)
       {
         Console.Clear();
+        Console.BackgroundColor = Color.FromArgb(32,16,0);
         collectDesktopWindows();
         if (_allWindows.Count < 1)
         {
@@ -33,9 +34,9 @@ namespace WinMgr
         }
 
         var screen = Screen.PrimaryScreen;      //foreach (var screen in WindowsFormsLib.WinFormHelper.GetAllScreens()) Console.WriteLine($"{screen}");
-        int cols = 3, rows = 3, rp1 = 0;
+        int cols = 3, rows = 3, rp1 = 1;
 
-        if (_allWindows.Count < 4) { cols = 3; rows = 1; }
+        if (_allWindows.Count < 4) { cols = 2; rows = 1; }
         else if (_allWindows.Count < 07) { cols = 3; rows = 2; }
         else if (_allWindows.Count < 10) { cols = 3; rows = 3; }
         else if (_allWindows.Count < 13) { cols = 3; rows = 4; }
@@ -46,8 +47,6 @@ namespace WinMgr
         else if (_allWindows.Count < 36) { cols = 6; rows = 6; }
         else if (_allWindows.Count < 64) { cols = 8; rows = 8; }
         else { rp1 = 1 + (int)Math.Sqrt(_allWindows.Count); rows = cols = rp1; }
-
-
 
         var window_width = screen.WorkingArea.Width / cols;
         var window_height = screen.WorkingArea.Height / rows;
@@ -97,7 +96,7 @@ namespace WinMgr
 
     void closeAll(string v)
     {
-      foreach (var w in _allWindows.Where(r => r.Title.Contains(v)))
+      foreach (var w in _allWindows.Where(r => r.WTitle.Contains(v)))
       {
         Externs.CloseWindow(w.Handle);
       }
@@ -107,30 +106,30 @@ namespace WinMgr
     {
       DesktopWindowsStuff.GetDesktopWindowHandlesAndTitles(out var handles, out var titles, _vdm);
 
-      Console.WriteLine($" ... Found  {titles.Count}  Windows of interest: ", Color.Green);
+      Console.WriteLine($" ... Found  {titles.Count}  Windows of interest: ", Color.Gray);
 
       _allWindows.Clear();
       for (var i = 0; i < titles.Count; i++) _allWindows.Add(new WindowInfo(titles[i], handles[i]));
 
       var c = 0;
-      foreach (var w in _allWindows.OrderBy(r => r.Sorter)) Console.WriteLine($"{++c,4}  {w.Sorter,-20}{w.Title.Replace(w.Sorter, "")}  ");
+      foreach (var w in _allWindows.OrderBy(r => r.Sorter)) Console.WriteLine($"{++c,4}  {w}  ");
     }
 
     struct WindowInfo
     {
-      public string Title;
+      public string WTitle;
       public string Sorter;
       public IntPtr Handle;
 
       public WindowInfo(string title, IntPtr handle)
       {
-        Title = title;
+        WTitle = title;
         Handle = handle;
-        var s = title.Split(" - ");
-        Sorter = s.Length > 1 ? s.LastOrDefault() : "·";
+        var appName = title.Split(" - ");
+        Sorter = appName.Length > 1 ? $"{appName.LastOrDefault()} · {appName.FirstOrDefault()}" : $"· {WTitle}";
       }
 
-      public override string ToString() => Title;
+      public override string ToString() => Sorter;
     }
   }
 
