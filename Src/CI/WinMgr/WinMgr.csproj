@@ -10,6 +10,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Colorful.Console" Version="1.2.15" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\..\..\..\ScSv\Src\AlexPi.Scr\WindowsFormsLib\WindowsFormsLib.csproj" />
   </ItemGroup>
 

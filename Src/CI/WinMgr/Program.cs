@@ -1,5 +1,4 @@
-﻿using System;
-using WinMgr;
+﻿using WinMgr;
 
 new SmartTiler().Arrange();
 

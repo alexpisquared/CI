@@ -1,4 +1,6 @@
-﻿using System;
+﻿using System.Drawing;
+using Console = Colorful.Console;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -27,7 +29,7 @@ namespace WinMgr
       while (true)
       {
         collectDesktopWindows();
-        Console.ForegroundColor = ConsoleColor.DarkYellow; Console.WriteLine($"");
+        Console.WriteLine($"");
         if (_allWindows.Count < 1)
         {
           Console.WriteLine($"--- No valid windows found ---");
@@ -54,7 +56,7 @@ namespace WinMgr
         var window_width = screen.WorkingArea.Width / cols;
         var window_height = screen.WorkingArea.Height / rows;
 
-        Console.WriteLine($"\n== {_allWindows.Count}  ->  {rp1}  ->  {rows} x {cols}  ->  {window_width} x {window_height}\n");
+        Console.WriteLine($"\n== {_allWindows.Count}  ->  {rp1}  ->  {rows} x {cols}  ->  {window_width} x {window_height}\n", Color.Cyan);
 
 
         var y = screen.WorkingArea.Top;
@@ -80,15 +82,14 @@ namespace WinMgr
           }
         }
 
-        Console.ForegroundColor = ConsoleColor.Green;
         Console.WriteLine($"Enter\tRedo\n" +
           $"E\tClose all Explorers  'This PC'\n" +
           $"\n" +
           $"\n" +
-          $"");
+          $"", Color.Cyan);
 
 
-        switch (Console.ReadKey().Key)
+        switch (Console.ReadKey(true).Key)
         {
           case ConsoleKey.Enter: break;
           case ConsoleKey.E: closeAll("This PC"); break;
@@ -110,8 +111,7 @@ namespace WinMgr
     {
       DesktopWindowsStuff.GetDesktopWindowHandlesAndTitles(out var handles, out var titles, _vdm);
 
-      Console.ForegroundColor = ConsoleColor.Cyan;
-      Console.WriteLine($" ... Found  {titles.Count}  Windows of interest: ");
+      Console.WriteLine($" ... Found  {titles.Count}  Windows of interest: ", Color.Green);
 
       _allWindows.Clear();
       for (var i = 0; i < titles.Count; i++) _allWindows.Add(new WindowInfo(titles[i], handles[i]));
@@ -205,6 +205,7 @@ namespace WinMgr
       if (IsWindowVisible(hWnd) && string.IsNullOrEmpty(title) == false
         && !title.Contains("Microsoft Visual Studio")
         && !title.Contains("Windows Shell Experience Host")
+        && !title.Contains("Settings")
         && !title.Contains("GitHub")
         && !title.Contains("Remote Desktop Connection")
         && !title.Contains("Team")
