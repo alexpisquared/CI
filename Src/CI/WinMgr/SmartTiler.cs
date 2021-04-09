@@ -25,7 +25,7 @@ namespace WinMgr
       while (true)
       {
         Console.Clear();
-        Console.BackgroundColor = Color.FromArgb(32,16,0);
+        Console.BackgroundColor = Color.FromArgb(32, 16, 0);
         collectDesktopWindows();
         if (_allWindows.Count < 1)
         {
@@ -36,7 +36,7 @@ namespace WinMgr
         var screen = Screen.PrimaryScreen;      //foreach (var screen in WindowsFormsLib.WinFormHelper.GetAllScreens()) Console.WriteLine($"{screen}");
         int cols = 3, rows = 3, rp1 = 1;
 
-        if (_allWindows.Count < 3) { cols = 3; rows = 1; }
+        if (_allWindows.Count < 3) { cols = 2; rows = 1; }
         else if (_allWindows.Count < 4) { cols = 3; rows = 1; }
         else if (_allWindows.Count < 07) { cols = 3; rows = 2; }
         else if (_allWindows.Count < 10) { cols = 3; rows = 3; }
@@ -64,15 +64,19 @@ namespace WinMgr
           DesktopWindowsStuff.SetWindowPos(w.Handle, x, y, window_width, window_height);
           i++;
           x += window_width;
-          if (++c >= cols)
+          if (++c >= cols) // ..to next row
           {
             c = 0;
             x = screen.WorkingArea.Left;
             y += window_height;
-            var cl = _allWindows.Count - i;
-            if (cl < cols && cl != 0)
+
+            var windowsLeft = _allWindows.Count - i;
+            //if (windowsLeft == 1)
+            //  window_width = screen.WorkingArea.Width - x;
+            //else
+            if (windowsLeft < cols && windowsLeft != 0)
             {
-              window_width = screen.WorkingArea.Width / cl;
+              window_width = screen.WorkingArea.Width / windowsLeft;
               window_height = screen.WorkingArea.Height - y;
             }
           }
