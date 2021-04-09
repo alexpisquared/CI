@@ -36,7 +36,8 @@ namespace WinMgr
         var screen = Screen.PrimaryScreen;      //foreach (var screen in WindowsFormsLib.WinFormHelper.GetAllScreens()) Console.WriteLine($"{screen}");
         int cols = 3, rows = 3, rp1 = 1;
 
-        if (_allWindows.Count < 4) { cols = 2; rows = 1; }
+        if (_allWindows.Count < 3) { cols = 3; rows = 1; }
+        else if (_allWindows.Count < 4) { cols = 3; rows = 1; }
         else if (_allWindows.Count < 07) { cols = 3; rows = 2; }
         else if (_allWindows.Count < 10) { cols = 3; rows = 3; }
         else if (_allWindows.Count < 13) { cols = 3; rows = 4; }
@@ -198,20 +199,20 @@ namespace WinMgr
       var title = sb.ToString();
 
       if (IsWindowVisible(hWnd) && string.IsNullOrEmpty(title) == false
-        && !title.Contains("Microsoft Visual Studio")
-        && !title.Contains("Windows Shell Experience Host")
-        && !title.Contains("Settings")
-        && !title.Contains("GitHub")
-        && !title.Contains("Remote Desktop Connection")
-        && !title.Contains("Team")
-        && !title.Contains("Outlook")
-        && !title.Contains("Setup")
-        && !title.Contains("Program Manager")
-        && !title.Contains("Microsoft Text Input Application")
         && !title.Contains("DiReq")   // scrsvr
+        && !title.Contains("GitHub")
+        && !title.Contains("Microsoft Text Input Application")
+        && !title.Contains("Microsoft Visual Studio")
+        && !title.Contains("Outlook")
+        && !title.Contains("Program Manager")
+        && !title.Contains("Remote Desktop Connection")
+        && !title.Contains("Settings")
+        && !title.Contains("Setup")
+        && !title.Contains("Task Manager") // un movable/sizeable
+        && !title.Contains("Team")
+        && !title.Contains("Windows Shell Experience Host")
         && !title.Contains("WinMgr")  // us
-        && _vdm.IsWindowOnCurrentVirtualDesktop(hWnd)
-        )
+        && _vdm.IsWindowOnCurrentVirtualDesktop(hWnd))
       {
         WindowHandles.Add(hWnd);
         WindowTitles.Add(title);
