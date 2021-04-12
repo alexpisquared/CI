@@ -205,6 +205,7 @@ namespace WinMgr
       if (IsWindowVisible(hWnd) && string.IsNullOrEmpty(title) == false
         && !title.Contains("DiReq")   // scrsvr
         && !title.Contains("GitHub")
+        && !title.Contains("Microsoft Store")
         && !title.Contains("Microsoft Text Input Application")
         && !title.Contains("Microsoft Visual Studio")
         && !title.Contains("Outlook")
