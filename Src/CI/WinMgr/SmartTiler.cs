@@ -16,7 +16,7 @@ namespace WinMgr
   public class SmartTiler
   {
     readonly List<WindowInfo> _allWindows = new();
-    readonly VDM _vdm = new();
+    readonly VirtDesktopMgr _vdm = new();
 
     //public SmartTiler() => collectDesktopWindows();
 
@@ -174,9 +174,9 @@ namespace WinMgr
     static List<IntPtr> WindowHandles;
     static List<string> WindowTitles;
 
-    static VDM _vdm;
+    static VirtDesktopMgr _vdm;
 
-    public static void GetDesktopWindowHandlesAndTitles(out List<IntPtr> handles, out List<string> titles, VDM vdm)
+    public static void GetDesktopWindowHandlesAndTitles(out List<IntPtr> handles, out List<string> titles, VirtDesktopMgr vdm)
     {
       WindowHandles = new List<IntPtr>();
       WindowTitles = new List<string>();

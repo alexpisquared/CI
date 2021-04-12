@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,19 +16,17 @@ using System.Windows.Shapes;
 
 namespace WinTiler
 {
-  /// <summary>
-  /// Interaction logic for MainWindow.xaml
-  /// </summary>
-  public partial class MainWindow : Window
+  public partial class MainWindow : CI.GUI.Support.WpfLibrary.Base.WindowBase
   {
+    public ObservableCollection<string> myTodoList{ get; set; }
+
     public MainWindow()
     {
       InitializeComponent();
+      DataContext = this;
     }
 
-    private void Button_Click(object sender, RoutedEventArgs e)
-    {
-
-    }
+    void Button_Click(object sender, RoutedEventArgs e)    {    }
+    void onExit(object sender, RoutedEventArgs e) { Close(); ; }
   }
 }

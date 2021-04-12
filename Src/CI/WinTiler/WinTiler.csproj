@@ -6,4 +6,9 @@
     <UseWPF>true</UseWPF>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\CI.GUI.Support.WpfLibrary\CI.GUI.Support.WpfLibrary.csproj" />
+    <ProjectReference Include="..\WinTiler.Lib\WinTiler.Lib.csproj" />
+  </ItemGroup>
+
 </Project>

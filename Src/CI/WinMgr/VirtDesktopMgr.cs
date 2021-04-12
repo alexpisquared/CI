@@ -13,7 +13,7 @@ using System.Windows.Forms;
 /// </summary>
 namespace WinMgr
 {
-  public class VDM
+  public class VirtDesktopMgr
   {
     readonly VirtualDesktopManager _vdm = new VirtualDesktopManager();
 
