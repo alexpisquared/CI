@@ -16,11 +16,11 @@ using System.Windows.Shapes;
 
 namespace WinTiler
 {
-  public partial class MainWindow : CI.GUI.Support.WpfLibrary.Base.WindowBase
+  public partial class TilerMainWindow : CI.GUI.Support.WpfLibrary.Base.WindowBase
   {
     public ObservableCollection<string> myTodoList{ get; set; }
 
-    public MainWindow()
+    public TilerMainWindow(Microsoft.Extensions.Logging.ILogger<TilerMainWindow> _logger, Microsoft.Extensions.Configuration.IConfigurationRoot _config)
     {
       InitializeComponent();
       DataContext = this;

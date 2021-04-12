@@ -6,7 +6,9 @@
       "..\\..\\..\\ScSv\\Src\\AlexPi.Scr\\WindowsFormsLib\\WindowsFormsLib.csproj",
       "CI.GUI.Support.WpfLibrary\\CI.GUI.Support.WpfLibrary.csproj",
       "CI.PermissionManager\\CI.PermissionManager.csproj",
-      "WinMgr\\WinMgr.csproj"
+      "WinMgr\\WinMgr.csproj",
+      "WinTiler.Lib\\WinTiler.Lib.csproj",
+      "WinTiler\\WinTiler.csproj"
     ]
   }
 }
