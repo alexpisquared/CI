@@ -8,7 +8,7 @@ namespace MainColorConsole
 {
   class Program
   {
-    static void Main(string[] args)
+    static void ___Main(string[] args)
     {
       ColorConsole.WriteWrappedHeader("Color Console Examples");
 

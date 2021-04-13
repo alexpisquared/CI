@@ -1,5 +1,5 @@
 ﻿using CI.GUI.Support.WpfLibrary.Extensions;
-using CI.PermissionManager.AAV.Common;
+using CI.GUI.Support.WpfLibrary.Helpers;
 using CI.PermissionManager.Views;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;

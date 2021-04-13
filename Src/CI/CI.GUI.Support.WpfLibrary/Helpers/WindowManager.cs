@@ -2,14 +2,13 @@
 using System.Diagnostics;
 using System.Linq;
 
-namespace CI.PermissionManager.AAV.Common
+namespace CI.GUI.Support.WpfLibrary.Helpers
 {
   public class WindowManager
   {
+    public void Arrange() { listProcesses(); ; }
 
-    internal void Arrange() { ListProcesses(); ; }
-
-    void ListProcesses()
+    void listProcesses()
     {
       var i = 0;
       var processCollection = Process.GetProcesses(".").Where(p => p.MainWindowHandle != IntPtr.Zero
@@ -18,9 +17,7 @@ namespace CI.PermissionManager.AAV.Common
       Debug.WriteLine($"{processCollection.Count(),3}  total:");
 
       foreach (var p in processCollection)
-      {
         Debug.WriteLine($"{++i,3}  {p.ProcessName,-22}  {p.MainWindowTitle}");
-      }
 
       Debug.WriteLine($"{processCollection.Count(),3}  total:");
     }

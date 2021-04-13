@@ -16,10 +16,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Include="..\..\..\..\CI-Reimagined-Invention\Src\CI-RI\RMSClient\AAV.Common\HighlightableTextBlock.cs" Link="AAV.Common\HighlightableTextBlock.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="5.0.4">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -58,6 +54,10 @@
     <None Update="appsettings.CI.PM.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="AAV.Common\" />
   </ItemGroup>
 
 </Project>

@@ -1,8 +1,8 @@
 ﻿<lnk:WindowBase xmlns:lnk="clr-namespace:CI.GUI.Support.WpfLibrary.Base;assembly=CI.GUI.Support.WpfLibrary" x:Name="wnd" x:Class="CI.PermissionManager.Views.PAsUsersSelectorWindow" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d"
                 xmlns:xui="clr-namespace:CI.GUI.Support.WpfLibrary.Views;assembly=CI.GUI.Support.WpfLibrary"                 
+                xmlns:stb="clr-namespace:CI.GUI.Support.WpfLibrary.Helpers;assembly=CI.GUI.Support.WpfLibrary" 
                 xmlns:Views="clr-namespace:CI.PermissionManager.Views"
                 xmlns:cnv="clr-namespace:CI.PermissionManager.Views" 
-                xmlns:stb="clr-namespace:AAV.Common"                                 
                 xmlns:system="clr-namespace:System;assembly=mscorlib"
                 Title="User Permission Editor" Height="380" Width="800"
                 Style="{DynamicResource WindowStyle_Aav0}">

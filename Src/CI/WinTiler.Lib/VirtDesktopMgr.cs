@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Runtime.InteropServices;
-using System.Windows.Forms;
-
+//todo: using WindowsFormsLib;
 /// <summary>
 /// also 
 ///  Move the window of another process to any Virtual Desktop (Support in version 2.0 or later) ???is it current? . https://github.com/Grabacr07/VirtualDesktop
@@ -11,13 +10,14 @@ using System.Windows.Forms;
 /// MoveWindow:<s|n>        move process with name <s> or id <n> to desktop with number in pipeline (short: /mw).
 /// MoveWindowHandle:<s|n>  move window with text <s> in title or handle <n> to desktop with number in pipeline (short: / mwh).
 /// </summary>
-namespace WinMgr
+
+namespace WinTiler.Lib
 {
   public class VirtDesktopMgr
   {
     readonly VirtualDesktopManager _vdm = new VirtualDesktopManager();
 
-    void PopupDetails(IntPtr _handle) => MessageBox.Show("Virtual Desktop ID: " + _vdm.GetWindowDesktopId(_handle).ToString("X") + Environment.NewLine + "IsCurrentVirtualDesktop: " + _vdm.IsWindowOnCurrentVirtualDesktop(_handle).ToString());
+    //todo: void PopupDetails(IntPtr _handle) => MessageBox.Show("Virtual Desktop ID: " + _vdm.GetWindowDesktopId(_handle).ToString("X") + Environment.NewLine + "IsCurrentVirtualDesktop: " + _vdm.IsWindowOnCurrentVirtualDesktop(_handle).ToString());
     public bool IsWindowOnCurrentVirtualDesktop(IntPtr _handle) => _vdm.IsWindowOnCurrentVirtualDesktop(_handle);
     public void MoveToCurrentDesktop(IntPtr _handle)
     {
@@ -25,9 +25,9 @@ namespace WinMgr
       {
         if (!_vdm.IsWindowOnCurrentVirtualDesktop(_handle))
         {
-          using var nw = new NewWindow();
-          nw.Show(null);
-          _vdm.MoveWindowToDesktop(_handle, _vdm.GetWindowDesktopId(nw.Handle));
+          //todo:       using var nw = new EmptyFormWindow();
+          //todo:       nw.Show(null);
+          //todo:       _vdm.MoveWindowToDesktop(_handle, _vdm.GetWindowDesktopId(nw.Handle));
         }
       }
       catch (Exception ex) { Console.WriteLine($" ■■■ {ex.Message}"); }
@@ -43,7 +43,7 @@ namespace WinMgr
     [PreserveSig] int MoveWindowToDesktop([In] IntPtr TopLevelWindow, [MarshalAs(UnmanagedType.LPStruct)][In] Guid CurrentDesktop);
   }
 
-  public class NewWindow : Form { }
+
 
   [ComImport, Guid("aa509086-5ca9-4c25-8f95-589d3c07b48a")] public class CVirtualDesktopManager { }
 
