@@ -1,11 +1,9 @@
-﻿<lnk:WindowBase xmlns:lnk="clr-namespace:CI.GUI.Support.WpfLibrary.Base;assembly=CI.GUI.Support.WpfLibrary" x:Name="wnd" x:Class="WinTiler.TilerMainWindow" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d"
+﻿<lnk:WindowBase xmlns:lnk="clr-namespace:CI.GUI.Support.WpfLibrary.Base;assembly=CI.GUI.Support.WpfLibrary" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                 xmlns:stb="clr-namespace:CI.GUI.Support.WpfLibrary.Helpers;assembly=CI.GUI.Support.WpfLibrary" 
                 xmlns:system="clr-namespace:System;assembly=mscorlib"
+                xmlns:Views="clr-namespace:WinTiler.Views" x:Name="wnd" x:Class="WinTiler.TilerMainWindow" mc:Ignorable="d"
                 Title="User Permission Editor" Height="380" Width="800"
                 Style="{DynamicResource WindowStyle_Aav0}" Loaded="wnd_Loaded">
-  <WindowChrome.WindowChrome>
-    <WindowChrome CaptionHeight="0" ResizeBorderThickness="10" />
-  </WindowChrome.WindowChrome>
   <lnk:WindowBase.Resources>
     <ResourceDictionary>
       <ResourceDictionary.MergedDictionaries>
@@ -18,11 +16,7 @@
       </ResourceDictionary.MergedDictionaries>
 
       <DataTemplate x:Key="myTaskTemplate">
-        <StackPanel>
-          <TextBlock Text="{Binding Path=WTitle}" x:Name="ttl"/>
-          <TextBlock Text="{Binding Path=Sorter}" x:Name="srt"/>
-          <TextBlock Text="{Binding}" x:Name="tos"/>
-        </StackPanel>
+        <Views:WinInfoTemplate Grid.Column="1" Margin="6" Grid.Row="1"/>
       </DataTemplate>
 
       <CollectionViewSource x:Key="_userViewSource"/>
@@ -115,7 +109,7 @@
 
       <Style x:Key="AnimOpacityDataGridRowStyle" TargetType="{x:Type DataGridRow}">
         <Style.Triggers>
-          <DataTrigger Binding="{Binding Path=IsStatusOutstandingAndNoUser}" Value="True">
+          <DataTrigger Binding="{Binding IsStatusOutstandingAndNoUser}" Value="True">
             <DataTrigger.EnterActions>
               <BeginStoryboard Storyboard="{StaticResource ColorFlashing}"/>
             </DataTrigger.EnterActions>
@@ -127,7 +121,7 @@
       </Style>
       <Style x:Key="AnimOpacityDataGridCellStyle" TargetType="{x:Type DataGridCell}">
         <Style.Triggers>
-          <DataTrigger Binding="{Binding Path=IsStatusOutstandingAndNoUser}" Value="True">
+          <DataTrigger Binding="{Binding IsStatusOutstandingAndNoUser}" Value="True">
             <DataTrigger.EnterActions>
               <BeginStoryboard Storyboard="{StaticResource ColorFlashing}"/>
             </DataTrigger.EnterActions>
@@ -141,7 +135,7 @@
       <Style x:Key="awesomeStyleRadlDiag" TargetType="{x:Type Control}">
         <Setter Property="Background" Value="{StaticResource awesomeBkGrRadl}" />
         <Style.Triggers>
-          <DataTrigger Binding="{Binding Path=IsStatusOutstandingAndNoUser}" Value="True">
+          <DataTrigger Binding="{Binding IsStatusOutstandingAndNoUser}" Value="True">
             <DataTrigger.EnterActions>
               <BeginStoryboard Storyboard="{StaticResource awesomeBkGrStoryboardRadl}"/>
             </DataTrigger.EnterActions>
@@ -154,7 +148,7 @@
       <Style x:Key="awesomeDataGridCellStyle" TargetType="{x:Type Control}">
         <Setter Property="Background" Value="{StaticResource awesomeBkGrDiag}" />
         <Style.Triggers>
-          <DataTrigger Binding="{Binding Path=IsStatusOutstandingAndNoUser}" Value="True">
+          <DataTrigger Binding="{Binding IsStatusOutstandingAndNoUser}" Value="True">
             <DataTrigger.EnterActions>
               <BeginStoryboard Storyboard="{StaticResource awesomeBkGrStoryboardDiag}"/>
             </DataTrigger.EnterActions>
@@ -167,7 +161,7 @@
       <Style x:Key="awesomeDataGridRowStyle" TargetType="{x:Type Control}">
         <Setter Property="Background" Value="{StaticResource awesomeBkGrVert}" />
         <Style.Triggers>
-          <DataTrigger Binding="{Binding Path=IsStatusOutstandingAndNoUser}" Value="True">
+          <DataTrigger Binding="{Binding IsStatusOutstandingAndNoUser}" Value="True">
             <DataTrigger.EnterActions>
               <BeginStoryboard Storyboard="{StaticResource awesomeBkGrStoryboardVert}"/>
             </DataTrigger.EnterActions>
@@ -180,6 +174,9 @@
 
     </ResourceDictionary>
   </lnk:WindowBase.Resources>
+  <WindowChrome.WindowChrome>
+    <WindowChrome CaptionHeight="0" ResizeBorderThickness="10" />
+  </WindowChrome.WindowChrome>
   <Border Style="{StaticResource BorderStyle_Aav0}">
     <Grid>
       <Grid x:Name="ZommablePanel" >
@@ -211,7 +208,6 @@
         </StackPanel>
 
         <ListBox Grid.Row="1" Margin="10" ItemsSource="{Binding _allWindows}" ItemTemplate="{StaticResource myTaskTemplate}"/>
-
       </Grid>
     </Grid>
   </Border>

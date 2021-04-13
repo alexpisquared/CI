@@ -52,6 +52,8 @@ namespace WinTiler
     {
       try
       {
+        if (!Directory.Exists(Path.GetDirectoryName(aps)))
+          Directory.CreateDirectory(Path.GetDirectoryName(aps));
         if (!File.Exists(aps))
           File.WriteAllText(aps, @"
 {
