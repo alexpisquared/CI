@@ -2,7 +2,7 @@
                 xmlns:stb="clr-namespace:CI.GUI.Support.WpfLibrary.Helpers;assembly=CI.GUI.Support.WpfLibrary" 
                 xmlns:system="clr-namespace:System;assembly=mscorlib"
                 xmlns:Views="clr-namespace:WinTiler.Views" x:Name="wnd" x:Class="WinTiler.Views.TilerMainWindow" mc:Ignorable="d"
-                Title="User Permission Editor" Height="380" Width="800"
+                Title="Window Tiler" Height="380" Width="800"
                 Style="{DynamicResource WindowStyle_Aav0}" Loaded="wnd_Loaded">
   <lnk:WindowBase.Resources>
     <ResourceDictionary>
@@ -209,7 +209,8 @@
           <Button Content="X" Click="onExit" IsCancel="True" />
         </StackPanel>
 
-        <ListBox Grid.Row="1" Grid.RowSpan="2" Margin="10" ItemsSource="{Binding St.AllWindows}" ItemTemplate="{StaticResource myTaskTemplate}"/>
+        <ListBox Grid.Row="1" Grid.RowSpan="2" Margin="10" BorderThickness="0"
+                 ItemsSource="{Binding St.AllWindows}" ItemTemplate="{StaticResource myTaskTemplate}" />
       </Grid>
     </Grid>
   </Border>

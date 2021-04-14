@@ -24,7 +24,7 @@ namespace WinTiler.Lib
       {
         Console.Clear();
         //Console.BackgroundColor = Color.FromArgb(32, 16, 0);
-        collectDesktopWindows();
+        CollectDesktopWindows();
         if (_allWindows.Count < 1)
         {
           Console.WriteLine($"--- No valid windows found ---");
@@ -34,7 +34,7 @@ namespace WinTiler.Lib
         Tile();
 
         Console.WriteLine($"Enter\tRedo\n" +
-          $"E\tClose all Explorers  'This PC'\n" +          $"");
+          $"E\tClose all Explorers  'This PC'\n" + $"");
 
 
         switch (Console.ReadKey(true).Key)
@@ -103,17 +103,16 @@ namespace WinTiler.Lib
         Externs.CloseWindow(w.Handle);
       }
     }
-    void collectDesktopWindows()
+    public string CollectDesktopWindows()
     {
-      DesktopWindowsStuff.GetDesktopWindowHandlesAndTitles(out var handles, out var titles, _vdm);
+      DesktopWindowsStuff.GetDesktopWindowHandlesAndTitles(out var handles, out var titles, out var epaths, _vdm);
 
-      Console.WriteLine($" ... Found  {titles.Count}  Windows of interest: ", Color.Gray);
+      _allWindows.Clear(); for (var i = 0; i < titles.Count; i++) _allWindows.Add(new WindowInfo(titles[i], epaths[i], handles[i]));
 
-      _allWindows.Clear();
-      for (var i = 0; i < titles.Count; i++) _allWindows.Add(new WindowInfo(titles[i], handles[i]));
+      //var c = 0;      foreach (var w in _st.AllWindows.OrderBy(r => r.Sorter)) Console.WriteLine($"{++c,4}  {w}  ");
 
-      var c = 0;
-      foreach (var w in _allWindows.OrderBy(r => r.Sorter)) Console.WriteLine($"{++c,4}  {w}  ");
+      return ($" ... Found  {titles.Count}  Windows of interest: ");
     }
+
   }
 }

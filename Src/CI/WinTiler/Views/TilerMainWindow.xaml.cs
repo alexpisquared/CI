@@ -23,20 +23,11 @@ namespace WinTiler.Views
     void onTile(object sender, RoutedEventArgs e) { _st.Tile(); ; }
     void onRestore(object sender, RoutedEventArgs e) { }
 
-    void wnd_Loaded(object sender, RoutedEventArgs e) => collectDesktopWindows();
-
-
-    void collectDesktopWindows()
+    void wnd_Loaded(object sender, RoutedEventArgs e)
     {
-      DesktopWindowsStuff.GetDesktopWindowHandlesAndTitles(out var handles, out var titles, _vdm);
-
-      Title = ($" ... Found  {titles.Count}  Windows of interest: ");
-
-      _st.AllWindows.Clear();
-      for (var i = 0; i < titles.Count; i++) _st.AllWindows.Add(new WindowInfo(titles[i], handles[i]));
-
-      var c = 0;
-      foreach (var w in _st.AllWindows.OrderBy(r => r.Sorter)) Console.WriteLine($"{++c,4}  {w}  ");
+      Title = _st.CollectDesktopWindows();
+      _st.Tile();
     }
+
   }
 }

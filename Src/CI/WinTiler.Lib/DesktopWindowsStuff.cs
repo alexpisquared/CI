@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Text;
 
@@ -12,9 +13,13 @@ namespace WinTiler.Lib
     [DllImport("user32.dll", EntryPoint = "GetWindowText", ExactSpelling = false, CharSet = CharSet.Auto, SetLastError = true)] static extern int GetWindowText(IntPtr hWnd, StringBuilder lpWindowText, int nMaxCount);
     [DllImport("user32.dll", EntryPoint = "EnumDesktopWindows", ExactSpelling = false, CharSet = CharSet.Auto, SetLastError = true)] static extern bool EnumDesktopWindows(IntPtr hDesktop, EnumDelegate lpEnumCallbackFunction, IntPtr lParam);
 
-    // Define the SetWindowPosFlags enumeration.
+    [DllImport("user32.dll", SetLastError = true)] static extern uint GetWindowThreadProcessId(IntPtr hWnd, out uint lpdwProcessId);
+    [DllImport("kernel32.dll", SetLastError = true)] static extern int GetModuleFileName(IntPtr hModule, StringBuilder lpFilename, int nSize);
+    [DllImport("psapi.dll")] static extern uint GetModuleFileNameEx(IntPtr hProcess, IntPtr hModule, [Out] StringBuilder lpBaseName, [In][MarshalAs(UnmanagedType.U4)] int nSize);    /// Retrieves the fully-qualified path for the file containing the specified module.    /// http://msdn.microsoft.com/en-us/library/ms683198(VS.85).aspx
+    [DllImport("user32.dll")] static extern IntPtr GetForegroundWindow();
+
     [Flags()]
-    public enum SetWindowPosFlags : uint
+    public enum SetWindowPosFlags : uint    // Define the SetWindowPosFlags enumeration.
     {
       SynchronousWindowPosition = 0x4000,
       DeferErase = 0x2000,
@@ -39,24 +44,28 @@ namespace WinTiler.Lib
     // Save window titles and handles in these lists.
     static List<IntPtr> WindowHandles;
     static List<string> WindowTitles;
+    static List<string> ExePaths;
 
     static VirtDesktopMgr _vdm;
 
-    public static void GetDesktopWindowHandlesAndTitles(out List<IntPtr> handles, out List<string> titles, VirtDesktopMgr vdm)
+    public static void GetDesktopWindowHandlesAndTitles(out List<IntPtr> handles, out List<string> titles, out List<string> epaths, VirtDesktopMgr vdm)
     {
       WindowHandles = new List<IntPtr>();
       WindowTitles = new List<string>();
+      ExePaths = new List<string>();
       _vdm = vdm;
 
       if (!EnumDesktopWindows(IntPtr.Zero, FilterCallback, IntPtr.Zero))
       {
         handles = null;
         titles = null;
+        epaths = null;
       }
       else
       {
         handles = WindowHandles;
         titles = WindowTitles;
+        epaths = ExePaths;
       }
     }
 
@@ -64,9 +73,15 @@ namespace WinTiler.Lib
     // This version selects visible windows that have titles.
     static bool FilterCallback(IntPtr hWnd, int lParam)
     {
-      var sb = new StringBuilder(1024);
-      _ = GetWindowText(hWnd, sb, sb.Capacity);
-      var title = sb.ToString();
+      var winText = new StringBuilder(1024);
+      _ = GetWindowText(hWnd, winText, winText.Capacity);
+      var title = winText.ToString();
+
+      _ = GetWindowThreadProcessId(hWnd, out var processID);
+
+      var p = Process.GetProcessById((int)processID);
+      var exePath = p.ProcessName;
+      //exePath =      p.MainModule.ModuleName;
 
       if (IsWindowVisible(hWnd) && string.IsNullOrEmpty(title) == false
         && !title.Contains("Calculator")
@@ -83,12 +98,12 @@ namespace WinTiler.Lib
         && !title.Contains("Task Manager") // un movable/sizeable
         && !title.Contains("Team")
         && !title.Contains("Windows Shell Experience Host")
-        && !title.Contains("WinMgr")  // us
+        && !title.Contains("Window Tiler")  // us
         && _vdm.IsWindowOnCurrentVirtualDesktop(hWnd))
       {
         WindowHandles.Add(hWnd);
         WindowTitles.Add(title);
-        //Console.Write($"■ {title,-22}  \n");
+        ExePaths.Add(exePath);
       }
       //else
       //  Console.Write($" {title} ");
