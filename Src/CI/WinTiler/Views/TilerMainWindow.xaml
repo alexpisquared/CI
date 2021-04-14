@@ -11,8 +11,9 @@
         <ResourceDictionary Source="/CI.GUI.Support.WpfLibrary;component/Base/DataGrid.Base.xaml" />
         <ResourceDictionary Source="/CI.GUI.Support.WpfLibrary;component/Base/ComboBox.Base.xaml" />
         <ResourceDictionary Source="/CI.GUI.Support.WpfLibrary;component/Base/DataGrid.Anime.xaml" />
+        <ResourceDictionary Source="/CI.GUI.Support.WpfLibrary;component/ColorScheme/Theme.Color.Dark.Gray.xaml" />
         <!--
-        <ResourceDictionary Source="/CI.GUI.Support.WpfLibrary;component/ColorScheme/Theme.Color.Dark.Gray.xaml" />-->
+        -->
       </ResourceDictionary.MergedDictionaries>
 
       <DataTemplate x:Key="myTaskTemplate">

@@ -74,8 +74,8 @@ namespace WinTiler.Lib
       int c = 0, i = 0;
       foreach (var w in _allWindows.OrderBy(r => r.Sorter))
       {
-        DesktopWindowsStuff.SetWindowPlacement(w.Handle, DesktopWindowsStuff.ShowWindowCommands.Restore);
-        DesktopWindowsStuff.SetWindowPos(w.Handle, x, y, window_width, window_height);
+        Externs.SetWindowPlacement(w.Handle, Externs.ShowWindowCommands.Restore);
+        Externs.SetWindowPos(w.Handle, x, y, window_width, window_height);
         i++;
         x += window_width;
         if (++c >= cols) // ..to next row

@@ -3,14 +3,15 @@
              Height="50" Width="400">
   <UserControl.Resources>
     <Style TargetType="TextBlock" >
-      <Setter Property="Foreground" Value="#04d" />
+      <Setter Property="Foreground" Value="#7af" />
       <Setter Property="Margin"     Value="4 0 0 2" />
     </Style>
     <Style TargetType="Button" >
       <Setter Property="Foreground" Value="#04d" />
-      <Setter Property="Width"      Value="22" />
-      <Setter Property="Height"     Value="22" />
+      <Setter Property="Width"      Value="26" />
+      <Setter Property="Height"     Value="26" />
       <Setter Property="Margin"     Value="02" />
+      <Setter Property="Padding"    Value="0 0 0 4" />
     </Style>
     <LinearGradientBrush x:Key="GridBackground2" EndPoint="0.5,1" StartPoint="0.5,0">
       <GradientStop Color="#2f00"/>
@@ -19,11 +20,26 @@
     </LinearGradientBrush>
   </UserControl.Resources>
   <Grid Background="{DynamicResource GridBackground2}">
-    <TextBlock Text="{Binding Path=ExePth}" d:Text="Notepad" x:Name="ttl" FontSize="16" VerticalAlignment="Top"/>
-    <TextBlock Text="{Binding Path=WTitle}" d:Text="Sorter " x:Name="srt" FontSize="11" VerticalAlignment="Bottom"/>
+    <TextBlock Text="{Binding ExePth}" d:Text="Notepad" x:Name="ttl" FontSize="16" VerticalAlignment="Top"/>
+    <TextBlock Text="{Binding WTitle}" d:Text="Sorter " x:Name="srt" FontSize="11" VerticalAlignment="Bottom"/>
     <!--<TextBlock Text="{Binding}" x:Name="tos"/>-->
-    <Button Content="+" HorizontalAlignment="Right" VerticalAlignment="Top"/>
-    <Button Content="-" HorizontalAlignment="Right" VerticalAlignment="Bottom"/>
+    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0 -4">
+      <Button Content="■" Click="onCloseSimilar" Tag="{Binding}" Padding="0 0 0 1"/>
+      <Button Content="+" Click="onCloseSimilar" Tag="{Binding}" />
+      <Button Content="-" Click="onCloseSimilar" Tag="{Binding}" />
+      <Button Content="x" Click="onCloseSimilar" Tag="{Binding}" />
+    </StackPanel>
+
+    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0 -4">
+      <Button Content="■" Click="onCloseSimilar" Tag="{Binding}" Padding="0 0 0 1"/>
+      <Button Content="+" Click="onCloseSimilar" Tag="{Binding}" />
+      <Button Content="-" Click="onCloseSimilar" Tag="{Binding}" />
+      <Button Content="x" Click="onCloseSimilar" Tag="{Binding}" />
+    </StackPanel>
+
+    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+      <Button Content="x" Click="onCloseThisOne" Tag="{Binding}" />
+    </StackPanel>
 
   </Grid>
 </UserControl>

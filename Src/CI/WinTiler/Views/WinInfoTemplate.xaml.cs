@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using WinTiler.Lib;
 
 namespace WinTiler.Views
 {
@@ -20,6 +21,25 @@ namespace WinTiler.Views
     public WinInfoTemplate()
     {
       InitializeComponent();
+    }
+
+    void onCloseSimilar(object s, RoutedEventArgs e)
+    {
+      var wi = ((WindowInfo)((Button)s).Tag);
+    }
+    void onCloseByExe(object s, RoutedEventArgs e)
+    {
+      var wi = ((WindowInfo)((Button)s).Tag);
+    }
+    void onCloseByTtl(object s, RoutedEventArgs e)
+    {
+      var wi = ((WindowInfo)((Button)s).Tag);
+    }
+    void onCloseThisOne(object s, RoutedEventArgs e)
+    {
+      var wi = ((WindowInfo)((Button)s).Tag);
+
+      Externs.CloseWindow(wi.Handle);
     }
   }
 }
