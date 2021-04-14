@@ -27,14 +27,14 @@
       <Button Content="■" Click="onCloseSimilar" Tag="{Binding}" Padding="0 0 0 1"/>
       <Button Content="+" Click="onCloseSimilar" Tag="{Binding}" />
       <Button Content="-" Click="onCloseSimilar" Tag="{Binding}" />
-      <Button Content="x" Click="onCloseSimilar" Tag="{Binding}" />
+      <Button Content="x" Click="onCloseByExe" Tag="{Binding}" />
     </StackPanel>
 
     <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0 -4">
       <Button Content="■" Click="onCloseSimilar" Tag="{Binding}" Padding="0 0 0 1"/>
       <Button Content="+" Click="onCloseSimilar" Tag="{Binding}" />
       <Button Content="-" Click="onCloseSimilar" Tag="{Binding}" />
-      <Button Content="x" Click="onCloseSimilar" Tag="{Binding}" />
+      <Button Content="x" Click="onCloseByTtl" Tag="{Binding}" />
     </StackPanel>
 
     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">

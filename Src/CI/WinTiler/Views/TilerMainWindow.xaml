@@ -17,7 +17,7 @@
       </ResourceDictionary.MergedDictionaries>
 
       <DataTemplate x:Key="myTaskTemplate">
-        <Views:WinInfoTemplate Margin="0"/>
+        <Views:WinInfoTemplate Margin="0" Tag="{Binding ElementName=wnd, Path=St}" />
       </DataTemplate>
 
       <CollectionViewSource x:Key="_userViewSource"/>

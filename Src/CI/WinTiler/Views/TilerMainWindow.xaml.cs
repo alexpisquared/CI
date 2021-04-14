@@ -27,6 +27,7 @@ namespace WinTiler.Views
     {
       Title = _st.CollectDesktopWindows();
       _st.Tile();
+      //wit1.SmartTiler = _st;
     }
 
   }

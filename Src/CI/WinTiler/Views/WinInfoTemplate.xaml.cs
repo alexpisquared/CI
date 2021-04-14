@@ -23,6 +23,8 @@ namespace WinTiler.Views
       InitializeComponent();
     }
 
+    public SmartTiler SmartTiler { get; set; }
+
     void onCloseSimilar(object s, RoutedEventArgs e)
     {
       var wi = ((WindowInfo)((Button)s).Tag);
@@ -30,16 +32,27 @@ namespace WinTiler.Views
     void onCloseByExe(object s, RoutedEventArgs e)
     {
       var wi = ((WindowInfo)((Button)s).Tag);
+      var st = ((SmartTiler)Tag);
+      foreach (var w in st.AllWindows.Where(r => r.WTitle.Contains(wi.ExePth)))
+        Externs.CloseWindow(w.Handle);
+
+      st.CollectDesktopWindows();
     }
     void onCloseByTtl(object s, RoutedEventArgs e)
     {
       var wi = ((WindowInfo)((Button)s).Tag);
+      var st = ((SmartTiler)Tag);
+      foreach (var w in st.AllWindows.Where(r => r.WTitle.Contains(wi.WTitle)))
+        Externs.CloseWindow(w.Handle);
+
+      st.CollectDesktopWindows();
     }
     void onCloseThisOne(object s, RoutedEventArgs e)
     {
       var wi = ((WindowInfo)((Button)s).Tag);
 
       Externs.CloseWindow(wi.Handle);
+      ((SmartTiler)Tag)?.CollectDesktopWindows();
     }
   }
 }
