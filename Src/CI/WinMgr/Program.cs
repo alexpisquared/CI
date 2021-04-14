@@ -1,6 +1,7 @@
 ﻿using WinMgr;
+using WinTiler.Lib;
 
-new SmartTiler().Arrange();
+new SmartTiler().DoAllConsole();
 
 //Class1.CloseWindow("explorer");
 //TileWindows2.Tile();

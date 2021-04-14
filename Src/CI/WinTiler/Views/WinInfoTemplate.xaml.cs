@@ -15,9 +15,6 @@ using System.Windows.Shapes;
 
 namespace WinTiler.Views
 {
-  /// <summary>
-  /// Interaction logic for WinInfoTemplate.xaml
-  /// </summary>
   public partial class WinInfoTemplate : UserControl
   {
     public WinInfoTemplate()

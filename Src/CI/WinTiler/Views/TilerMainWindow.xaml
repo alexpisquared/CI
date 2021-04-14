@@ -1,7 +1,7 @@
 ﻿<lnk:WindowBase xmlns:lnk="clr-namespace:CI.GUI.Support.WpfLibrary.Base;assembly=CI.GUI.Support.WpfLibrary" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                 xmlns:stb="clr-namespace:CI.GUI.Support.WpfLibrary.Helpers;assembly=CI.GUI.Support.WpfLibrary" 
                 xmlns:system="clr-namespace:System;assembly=mscorlib"
-                xmlns:Views="clr-namespace:WinTiler.Views" x:Name="wnd" x:Class="WinTiler.TilerMainWindow" mc:Ignorable="d"
+                xmlns:Views="clr-namespace:WinTiler.Views" x:Name="wnd" x:Class="WinTiler.Views.TilerMainWindow" mc:Ignorable="d"
                 Title="User Permission Editor" Height="380" Width="800"
                 Style="{DynamicResource WindowStyle_Aav0}" Loaded="wnd_Loaded">
   <lnk:WindowBase.Resources>
@@ -16,7 +16,7 @@
       </ResourceDictionary.MergedDictionaries>
 
       <DataTemplate x:Key="myTaskTemplate">
-        <Views:WinInfoTemplate Grid.Column="1" Margin="6" Grid.Row="1"/>
+        <Views:WinInfoTemplate Margin="0"/>
       </DataTemplate>
 
       <CollectionViewSource x:Key="_userViewSource"/>
@@ -197,17 +197,19 @@
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
           <RowDefinition Height="Auto"/>
-          <RowDefinition Height="243*"/>
-          <RowDefinition Height="78*"/>
+          <RowDefinition Height="*"/>
+          <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
+        <TextBlock Text="{Binding Title, ElementName=wnd}" FontSize="11" FontWeight="SemiBold" x:Name="tbkTitle" d:Text="(alex.pigida) - .\sqlexpress - Total 0 matches found in   2.76 sec."/>
+
         <StackPanel Grid.Column="1" Orientation="Horizontal">
-          <Button Content="_Tile"    Click="Button_Click" IsDefault="True" />
-          <Button Content="_Restore" Click="Button_Click" />
+          <Button Content="_Tile"    Click="onTile" IsDefault="True" />
+          <Button Content="_Restore" Click="onRestore" />
           <Button Content="X" Click="onExit" IsCancel="True" />
         </StackPanel>
 
-        <ListBox Grid.Row="1" Margin="10" ItemsSource="{Binding _allWindows}" ItemTemplate="{StaticResource myTaskTemplate}"/>
+        <ListBox Grid.Row="1" Grid.RowSpan="2" Margin="10" ItemsSource="{Binding St.AllWindows}" ItemTemplate="{StaticResource myTaskTemplate}"/>
       </Grid>
     </Grid>
   </Border>

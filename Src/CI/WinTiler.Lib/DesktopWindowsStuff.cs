@@ -69,6 +69,7 @@ namespace WinTiler.Lib
       var title = sb.ToString();
 
       if (IsWindowVisible(hWnd) && string.IsNullOrEmpty(title) == false
+        && !title.Contains("Calculator")
         && !title.Contains("DiReq")   // scrsvr
         && !title.Contains("GitHub")
         && !title.Contains("Microsoft Store")
