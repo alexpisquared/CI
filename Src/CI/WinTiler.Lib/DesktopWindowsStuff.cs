@@ -7,20 +7,22 @@ using System.Text;
 namespace WinTiler.Lib
 {
   public static class DesktopWindowsStuff
-  {    
+  {
     static List<IntPtr> WindowHandles;
     static List<string> WindowTitles;
     static List<string> ExePaths;
     static VirtDesktopMgr _vdm;
+    static UserPrefs _up;
 
-    public static void GetDesktopWindowHandlesAndTitles(out List<IntPtr> handles, out List<string> titles, out List<string> epaths, VirtDesktopMgr vdm)
+    public static void GetDesktopWindowHandlesAndTitles(out List<IntPtr> handles, out List<string> titles, out List<string> epaths, VirtDesktopMgr vdm, UserPrefs up)
     {
       WindowHandles = new List<IntPtr>();
       WindowTitles = new List<string>();
       ExePaths = new List<string>();
       _vdm = vdm;
+      _up = up;
 
-      if (!Externs.EnumDesktopWindows( filterCallback))
+      if (!Externs.EnumDesktopWindows(filterCallback))
       {
         handles = null;
         titles = null;
@@ -44,25 +46,29 @@ namespace WinTiler.Lib
 
       var p = Process.GetProcessById((int)processID);
       var exePath = p.ProcessName;
-      //exePath =      p.MainModule.ModuleName;
 
-      if (Externs.IsVisible(hWnd) && string.IsNullOrEmpty(title) == false
-        && !title.Contains("Calculator")
-        && !title.Contains("DiReq")   // scrsvr
-        && !title.Contains("GitHub")
-        && !title.Contains("Microsoft Store")
-        && !title.Contains("Microsoft Text Input Application")
-        && !title.Contains("Microsoft Visual Studio")
-        && !title.Contains("Outlook")
-        && !title.Contains("Program Manager")
-        && !title.Contains("Remote Desktop Connection")
-        && !title.Contains("Settings")
-        && !title.Contains("Setup")
-        && !title.Contains("Task Manager") // un movable/sizeable
-        && !title.Contains("Team")
-        && !title.Contains("Windows Shell Experience Host")
-        && !title.Contains("Window Tiler")  // us
-        && _vdm.IsWindowOnCurrentVirtualDesktop(hWnd))
+      if (
+        Externs.IsVisible(hWnd)
+        && _vdm.IsWindowOnCurrentVirtualDesktop(hWnd)
+        && !_up.ExestoIgnore.Contains(exePath)
+        && !string.IsNullOrEmpty(title) // lots of fun windows here
+        && !_up.TitlToIgnore.Contains(title)
+        //&& !title.Contains("Calculator")
+        //&& !title.Contains("DiReq")   // scrsvr
+        //&& !title.Contains("GitHub")
+        //&& !title.Contains("Microsoft Store")
+        //&& !title.Contains("Microsoft Text Input Application")
+        //&& !title.Contains("Microsoft Visual Studio")
+        //&& !title.Contains("Outlook")
+        //&& !title.Contains("Program Manager")
+        //&& !title.Contains("Remote Desktop Connection")
+        //&& !title.Contains("Settings")
+        //&& !title.Contains("Setup")
+        //&& !title.Contains("Task Manager") // un movable/sizeable
+        //&& !title.Contains("Team")
+        //&& !title.Contains("Windows Shell Experience Host")
+        //&& !title.Contains("Window Tiler")  // us
+        )
       {
         WindowHandles.Add(hWnd);
         WindowTitles.Add(title);

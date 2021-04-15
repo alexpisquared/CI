@@ -209,7 +209,8 @@ namespace CI.GUI.Support.WpfLibrary.Helpers
     {
       if (string.IsNullOrEmpty(str)) return (T)(Activator.CreateInstance(typeof(T)) ?? new T());
 
-      using (var ms = new MemoryStream(Encoding.UTF8.GetBytes(str))) return (T)new DataContractJsonSerializer(typeof(T)).ReadObject(ms);
+      using var ms = new MemoryStream(Encoding.UTF8.GetBytes(str));
+      return (T)new DataContractJsonSerializer(typeof(T)).ReadObject(ms);
       // if ....: return (T)new DataContractJsonSerializer(typeof(T)).ReadObject(new MemoryStream(Encoding.UTF8.GetBytes(str)));
     }
   }

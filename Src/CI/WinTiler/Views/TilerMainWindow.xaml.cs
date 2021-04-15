@@ -1,4 +1,6 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using WinTiler.Lib;
 
@@ -17,15 +19,67 @@ namespace WinTiler.Views
       DataContext = this;
     }
 
-   async void onLoaded(object sender, RoutedEventArgs e)
+#if true
+    async void onLoaded(object sender, RoutedEventArgs e)
     {
-      await Task.Yield(); // .Delay(33);
-      Title = _st.CollectDesktopWindows();//_st.Tile();
-
-      //Task.Run(() => { var rv = _st.CollectDesktopWindows(); return rv; }).ContinueWith(_ => Title = _.Result, TaskScheduler.FromCurrentSynchronizationContext());
+      ZommablePanel.IsEnabled = false;
+      Title = "Loading...";
+      try
+      {
+        await Task.Delay(33);
+        Title = _st.CollectDesktopWindows(); //         Task.Run(() => { var rv = _st.CollectDesktopWindows(); return rv; }).ContinueWith(_ => Title = _.Result, TaskScheduler.FromCurrentSynchronizationContext());
+      }
+      finally
+      {
+        ZommablePanel.IsEnabled = true;
+      }
     }
+#else
+    void onLoaded(object sender, RoutedEventArgs e)
+    {
+      ZommablePanel.IsEnabled = false;
+      Title = "Loading...";
+      try
+      {
+        //await Task.Delay(33);
+        //Title = _st.CollectDesktopWindows(); //         Task.Run(() => { var rv = _st.CollectDesktopWindows(); return rv; }).ContinueWith(_ => Title = _.Result, TaskScheduler.FromCurrentSynchronizationContext());
 
+        var context = TaskScheduler.FromCurrentSynchronizationContext();
+
+        Title = "Starting...";
+
+        // Start a task - this runs on the background thread...
+        Task task = Task.Factory.StartNew(() =>
+        {
+          //title += cdw();
+          Title += rnd();
+          Title += fff();
+
+          var token = Task.Factory.CancellationToken;
+          Task.Factory.StartNew(() =>
+          {
+            Title += " past first ";
+          }, token, TaskCreationOptions.None, context);
+
+          Thread.Sleep(1000);
+        })
+          //;        task.Wait();        task
+          .ContinueWith(_ => Title += $" ■", context); // More commonly, we'll continue a task with a new task on the UI thread, since this lets us update when our "work" completes.
+      }
+      finally
+      {
+        ZommablePanel.IsEnabled = true;
+      }
+    }
+#endif
+
+    string cdw() { var rv = _st.CollectDesktopWindows(); return rv; }
+    string fff() { Thread.Sleep(1000); return " Slept "; }
+    string rnd() { double j = 100; var rand = new Random(); for (var i = 0; i < 100000000; ++i) { j *= rand.NextDouble(); } return " Randm "; }
+
+    void onFind(object sender, RoutedEventArgs e) { onLoaded(sender, e); ; }
     void onTile(object sender, RoutedEventArgs e) { _st.Tile(); ; }
-    void onRestore(object sender, RoutedEventArgs e) { }
+    void onBoth(object sender, RoutedEventArgs e) { onFind(sender, e); onTile(sender, e); }
+    void onRstr(object sender, RoutedEventArgs e) { }
   }
 }

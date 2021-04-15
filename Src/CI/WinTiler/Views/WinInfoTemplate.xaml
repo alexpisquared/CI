@@ -26,16 +26,17 @@
     <TextBlock Text="{Binding WTitle}" d:Text="Sorter " x:Name="srt" FontSize="11" VerticalAlignment="Bottom"/>
     <!--<TextBlock Text="{Binding}" x:Name="tos"/>-->
     <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0 -2">
-      <Button Content="■" Click="onCloseSimilar" Tag="{Binding}" Padding="0 0 0 1" Foreground="#ff0" />
-      <Button Content="+" Click="onCloseSimilar" Tag="{Binding}" />
-      <Button Content="-" Click="onCloseSimilar" Tag="{Binding}" />
+      <!--<Button Content="■" Click="onCloseSimilar" Tag="{Binding}" Padding="0 0 0 1" Foreground="#ff0" />
+      <Button Content="+" Click="onCloseSimilar" Tag="{Binding}" />-->
+      <Button Content="-" Click="onIgnoreExe" Tag="{Binding}" />
       <Button Content="x" Click="onCloseByExe" Tag="{Binding}" />
     </StackPanel>
 
     <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0 -2">
       <!--<Button Content="■" Click="onCloseSimilar" Tag="{Binding}" Padding="0 0 0 1"/>
       <Button Content="+" Click="onCloseSimilar" Tag="{Binding}" />
-      <Button Content="-" Click="onCloseSimilar" Tag="{Binding}" />-->
+      -->
+      <Button Content="-" Click="onIgnoreTtl" Tag="{Binding}" />
       <Button Content="x" Click="onCloseByTtl" Tag="{Binding}" />
     </StackPanel>
 

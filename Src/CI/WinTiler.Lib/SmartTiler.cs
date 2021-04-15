@@ -1,5 +1,7 @@
-﻿using System;
+﻿using CI.GUI.Support.WpfLibrary.Helpers;
+using System;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 
@@ -13,38 +15,16 @@ namespace WinTiler.Lib
   {
     readonly ObservableCollection<WindowInfo> _allWindows = new();
     readonly VirtDesktopMgr _vdm = new();
+    readonly UserPrefs _up = JsonIsoFileSerializer.Load<UserPrefs>();
+
+    public SmartTiler()
+    {
+      Debug.WriteLine($"** {_up.ExestoIgnore.Count} app names loaded:  {string.Join(' ', _up.ExestoIgnore)}");
+      Debug.WriteLine($"** {_up.TitlToIgnore.Count} wi titles loaded:  {string.Join(' ', _up.TitlToIgnore)}");
+    }
 
     public ObservableCollection<WindowInfo> AllWindows => _allWindows;
 
-    //public SmartTiler() => collectDesktopWindows();
-
-    public void DoAllConsole()
-    {
-      while (true)
-      {
-        Console.Clear();
-        //Console.BackgroundColor = Color.FromArgb(32, 16, 0);
-        CollectDesktopWindows();
-        if (_allWindows.Count < 1)
-        {
-          Console.WriteLine($"--- No valid windows found ---");
-          return;
-        }
-
-        Tile();
-
-        Console.WriteLine($"Enter\tRedo\n" +
-          $"E\tClose all Explorers  'This PC'\n" + $"");
-
-
-        switch (Console.ReadKey(true).Key)
-        {
-          case ConsoleKey.Enter: break;
-          case ConsoleKey.E: closeAll("This PC"); break;
-          default: return;
-        }
-      }
-    }
     public void Tile()
     {
       var screen = WindowsFormsLib.WinFormHelper.PrimaryScreen;      //foreach (var screen in WindowsFormsLib.WinFormHelper.GetAllScreens()) Console.WriteLine($"{screen}");
@@ -96,6 +76,47 @@ namespace WinTiler.Lib
         }
       }
     }
+    public void AddToIgnoreByExeName(string exePth) { _up.ExestoIgnore.Add(exePth); JsonIsoFileSerializer.Save(_up); }
+    public void AddToIgnoreByWiTitle(string wTitle) { _up.TitlToIgnore.Add(wTitle); JsonIsoFileSerializer.Save(_up); }
+    public string CollectDesktopWindows()
+    {
+      var sw = Stopwatch.StartNew();
+      DesktopWindowsStuff.GetDesktopWindowHandlesAndTitles(out var handles, out var titles, out var epaths, _vdm, _up);
+
+      _allWindows.Clear(); for (var i = 0; i < titles.Count; i++) _allWindows.Add(new WindowInfo(titles[i], epaths[i], handles[i]));
+
+      //var c = 0;      foreach (var w in _st.AllWindows.OrderBy(r => r.Sorter)) Console.WriteLine($"{++c,4}  {w}  ");
+
+      return ($" ... Found {titles.Count} windows of interest in {sw.Elapsed.TotalSeconds:N1} s: ");
+    }
+    public void DoAllConsole()
+    {
+      while (true)
+      {
+        Console.Clear();
+        //Console.BackgroundColor = Color.FromArgb(32, 16, 0);
+        CollectDesktopWindows();
+        if (_allWindows.Count < 1)
+        {
+          Console.WriteLine($"--- No valid windows found ---");
+          return;
+        }
+
+        Tile();
+
+        Console.WriteLine($"Enter\tRedo\n" +
+          $"E\tClose all Explorers  'This PC'\n" + $"");
+
+
+        switch (Console.ReadKey(true).Key)
+        {
+          case ConsoleKey.Enter: break;
+          case ConsoleKey.E: closeAll("This PC"); break;
+          default: return;
+        }
+      }
+    }
+
     void closeAll(string v)
     {
       foreach (var w in _allWindows.Where(r => r.WTitle.Contains(v)))
@@ -103,16 +124,5 @@ namespace WinTiler.Lib
         Externs.CloseWindow(w.Handle);
       }
     }
-    public string CollectDesktopWindows()
-    {
-      DesktopWindowsStuff.GetDesktopWindowHandlesAndTitles(out var handles, out var titles, out var epaths, _vdm);
-
-      _allWindows.Clear(); for (var i = 0; i < titles.Count; i++) _allWindows.Add(new WindowInfo(titles[i], epaths[i], handles[i]));
-
-      //var c = 0;      foreach (var w in _st.AllWindows.OrderBy(r => r.Sorter)) Console.WriteLine($"{++c,4}  {w}  ");
-
-      return ($" ... Found  {titles.Count}  Windows of interest: ");
-    }
-
   }
 }
