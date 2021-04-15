@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Windows;
 
 namespace WinTiler.Lib
 {
@@ -25,6 +27,32 @@ namespace WinTiler.Lib
       placement.ShowCmd = show_command;
       SetWindowPlacement(handle, ref placement);
     }
+    public static WindowState GetPlacement(IntPtr hwnd)
+    {
+      var placement = new WINDOWPLACEMENT();
+      placement.Length = Marshal.SizeOf(placement);
+      GetWindowPlacement(hwnd, out placement);
+
+      Debug.WriteLine($"          {placement.ShowCmd,-26} ");
+
+      switch (placement.ShowCmd)
+      {
+        case ShowWindowCommands.Maximize:             /**/ return WindowState.Maximized;
+        case ShowWindowCommands.Normal:               /**/ return WindowState.Normal;
+        case ShowWindowCommands.ShowMinimized:        /**/ return WindowState.Minimized;
+        case ShowWindowCommands.Hide:                 /**/ return WindowState.Minimized;
+        case ShowWindowCommands.ShowNoActivate:       /**/ return WindowState.Minimized;
+        case ShowWindowCommands.Show:                 /**/ return WindowState.Minimized;
+        case ShowWindowCommands.Minimize:             /**/ return WindowState.Minimized;
+        case ShowWindowCommands.ShowMinNoActive:      /**/ return WindowState.Minimized;
+        case ShowWindowCommands.ShowNA:               /**/ return WindowState.Minimized;
+        case ShowWindowCommands.Restore:              /**/ return WindowState.Minimized;
+        case ShowWindowCommands.ShowDefault:          /**/ return WindowState.Minimized;
+        case ShowWindowCommands.ForceMinimize:        /**/ return WindowState.Minimized;
+        default:                                      /**/ return WindowState.Minimized;
+      }
+    }
+
 
     public delegate bool EnumDelegate(IntPtr hWnd, int lParam);
 
@@ -43,7 +71,7 @@ namespace WinTiler.Lib
 
     [Serializable]
     [StructLayout(LayoutKind.Sequential)]
-    internal struct WINDOWPLACEMENT
+    public struct WINDOWPLACEMENT
     {
       public int Length;
       public int Flags;

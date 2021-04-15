@@ -16,6 +16,7 @@ namespace WinTiler.Lib
     readonly ObservableCollection<WindowInfo> _allWindows = new();
     readonly VirtDesktopMgr _vdm = new();
     readonly UserPrefs _up = JsonIsoFileSerializer.Load<UserPrefs>();
+    bool _skipMinimized = true;
 
     public SmartTiler()
     {
@@ -25,8 +26,12 @@ namespace WinTiler.Lib
 
     public ObservableCollection<WindowInfo> AllWindows => _allWindows;
 
-    public void Tile()
+    public bool SkipMinimized { get => _skipMinimized; set => _skipMinimized = value; }
+
+    public void Tile(bool sm)
     {
+      SkipMinimized = sm;
+
       var screen = WindowsFormsLib.WinFormHelper.PrimaryScreen;      //foreach (var screen in WindowsFormsLib.WinFormHelper.GetAllScreens()) Console.WriteLine($"{screen}");
       int cols = 3, rows = 3, rp1 = 1;
 
@@ -47,7 +52,6 @@ namespace WinTiler.Lib
       var window_height = screen.WorkingArea.Height / rows;
 
       Console.WriteLine($"\n== {_allWindows.Count}  ->  {rp1}  ->  {rows} x {cols}  ->  {window_width} x {window_height}\n", Color.Cyan);
-
 
       var y = screen.WorkingArea.Top;
       var x = screen.WorkingArea.Left;
@@ -81,40 +85,13 @@ namespace WinTiler.Lib
     public string CollectDesktopWindows()
     {
       var sw = Stopwatch.StartNew();
-      DesktopWindowsStuff.GetDesktopWindowHandlesAndTitles(out var handles, out var titles, out var epaths, _vdm, _up);
+      DesktopWindowsStuff.GetDesktopWindowHandlesAndTitles(out var handles, out var titles, out var epaths, _vdm, _up, _skipMinimized);
 
       _allWindows.Clear(); for (var i = 0; i < titles.Count; i++) _allWindows.Add(new WindowInfo(titles[i], epaths[i], handles[i]));
 
       //var c = 0;      foreach (var w in _st.AllWindows.OrderBy(r => r.Sorter)) Console.WriteLine($"{++c,4}  {w}  ");
 
       return ($" ... Found {titles.Count} windows of interest in {sw.Elapsed.TotalSeconds:N1} s: ");
-    }
-    public void DoAllConsole()
-    {
-      while (true)
-      {
-        Console.Clear();
-        //Console.BackgroundColor = Color.FromArgb(32, 16, 0);
-        CollectDesktopWindows();
-        if (_allWindows.Count < 1)
-        {
-          Console.WriteLine($"--- No valid windows found ---");
-          return;
-        }
-
-        Tile();
-
-        Console.WriteLine($"Enter\tRedo\n" +
-          $"E\tClose all Explorers  'This PC'\n" + $"");
-
-
-        switch (Console.ReadKey(true).Key)
-        {
-          case ConsoleKey.Enter: break;
-          case ConsoleKey.E: closeAll("This PC"); break;
-          default: return;
-        }
-      }
     }
 
     void closeAll(string v)

@@ -1,8 +1,8 @@
-﻿using WinMgr;
+﻿using System.Diagnostics;
+using WinMgr;
 using WinTiler.Lib;
 
-new SmartTiler().DoAllConsole();
-
+Debug.WriteLine("Hello");
 //Class1.CloseWindow("explorer");
 //TileWindows2.Tile();
 

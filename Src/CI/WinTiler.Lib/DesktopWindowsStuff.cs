@@ -13,14 +13,16 @@ namespace WinTiler.Lib
     static List<string> ExePaths;
     static VirtDesktopMgr _vdm;
     static UserPrefs _up;
+    private static bool _skipMinimized = true;
 
-    public static void GetDesktopWindowHandlesAndTitles(out List<IntPtr> handles, out List<string> titles, out List<string> epaths, VirtDesktopMgr vdm, UserPrefs up)
+    public static void GetDesktopWindowHandlesAndTitles(out List<IntPtr> handles, out List<string> titles, out List<string> epaths, VirtDesktopMgr vdm, UserPrefs up, bool skipMinimized )
     {
       WindowHandles = new List<IntPtr>();
       WindowTitles = new List<string>();
       ExePaths = new List<string>();
       _vdm = vdm;
       _up = up;
+      _skipMinimized = skipMinimized;
 
       if (!Externs.EnumDesktopWindows(filterCallback))
       {
@@ -46,6 +48,11 @@ namespace WinTiler.Lib
 
       var p = Process.GetProcessById((int)processID);
       var exePath = p.ProcessName;
+
+      Debug.WriteLine($"*** {exePath,-26} {title} ");
+
+      if (_skipMinimized && Externs.GetPlacement(hWnd) == System.Windows.WindowState.Minimized)
+        return true;
 
       if (
         Externs.IsVisible(hWnd)

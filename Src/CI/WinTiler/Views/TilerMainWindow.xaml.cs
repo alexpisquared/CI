@@ -78,7 +78,8 @@ namespace WinTiler.Views
     string rnd() { double j = 100; var rand = new Random(); for (var i = 0; i < 100000000; ++i) { j *= rand.NextDouble(); } return " Randm "; }
 
     void onFind(object sender, RoutedEventArgs e) { onLoaded(sender, e); ; }
-    void onTile(object sender, RoutedEventArgs e) { _st.Tile(); ; }
+    void onTile(object sender, RoutedEventArgs e) { _st.Tile(false); ; }
+    void onNotM(object sender, RoutedEventArgs e) { _st.Tile(true); ; }
     void onBoth(object sender, RoutedEventArgs e) { onFind(sender, e); onTile(sender, e); }
     void onRstr(object sender, RoutedEventArgs e) { }
   }

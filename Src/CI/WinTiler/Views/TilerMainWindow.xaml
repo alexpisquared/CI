@@ -208,6 +208,7 @@
           <Button Content="_Find"    Click="onFind" />
           <Button Content="_Tile"    Click="onTile" />
           <Button Content="_Both"    Click="onTile" IsDefault="True" />
+          <Button Content="_NotM"    Click="onNotM" />
           <Button Content="_Restore" Click="onRstr" />
           <Button Click="onExit" IsCancel="True" />
         </StackPanel>
