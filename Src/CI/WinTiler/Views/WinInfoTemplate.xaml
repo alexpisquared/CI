@@ -4,10 +4,12 @@
   <UserControl.Resources>
     <Style TargetType="TextBlock" >
       <Setter Property="Foreground" Value="#7af" />
-      <Setter Property="Margin"     Value="4 0 0 2" />
+      <Setter Property="Margin"     Value="6 0 0 4" />
     </Style>
     <Style TargetType="Button" >
       <Setter Property="Foreground" Value="#04d" />
+      <Setter Property="Background" Value="Transparent" />
+      <Setter Property="BorderThickness" Value="0" />
       <Setter Property="Width"      Value="26" />
       <Setter Property="Height"     Value="26" />
       <Setter Property="Margin"     Value="02" />
@@ -15,25 +17,25 @@
     </Style>
     <LinearGradientBrush x:Key="GridBackground2" EndPoint="0.5,1" StartPoint="0.5,0">
       <!--<GradientStop Color="#2f00"/>-->
-      <GradientStop Color="#20f0" Offset="0"/>
-      <GradientStop Color="#200f" Offset="1"/>
+      <GradientStop Color="#555" Offset="0"/>
+      <GradientStop Color="#222" Offset="1"/>
     </LinearGradientBrush>
   </UserControl.Resources>
   <Grid Background="{DynamicResource GridBackground2}">
-    <TextBlock Text="{Binding ExePth}" d:Text="Notepad" x:Name="ttl" FontSize="16" VerticalAlignment="Top"/>
+    <TextBlock Text="{Binding ExePth}" d:Text="Notepad" x:Name="ttl" FontSize="20" VerticalAlignment="Top"/>
     <TextBlock Text="{Binding WTitle}" d:Text="Sorter " x:Name="srt" FontSize="11" VerticalAlignment="Bottom"/>
     <!--<TextBlock Text="{Binding}" x:Name="tos"/>-->
     <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0 -2">
-      <Button Content="■" Click="onCloseSimilar" Tag="{Binding}" Padding="0 0 0 1"/>
+      <Button Content="■" Click="onCloseSimilar" Tag="{Binding}" Padding="0 0 0 1" Foreground="#ff0" />
       <Button Content="+" Click="onCloseSimilar" Tag="{Binding}" />
       <Button Content="-" Click="onCloseSimilar" Tag="{Binding}" />
       <Button Content="x" Click="onCloseByExe" Tag="{Binding}" />
     </StackPanel>
 
     <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0 -2">
-      <Button Content="■" Click="onCloseSimilar" Tag="{Binding}" Padding="0 0 0 1"/>
+      <!--<Button Content="■" Click="onCloseSimilar" Tag="{Binding}" Padding="0 0 0 1"/>
       <Button Content="+" Click="onCloseSimilar" Tag="{Binding}" />
-      <Button Content="-" Click="onCloseSimilar" Tag="{Binding}" />
+      <Button Content="-" Click="onCloseSimilar" Tag="{Binding}" />-->
       <Button Content="x" Click="onCloseByTtl" Tag="{Binding}" />
     </StackPanel>
 

@@ -2,7 +2,7 @@
                 xmlns:stb="clr-namespace:CI.GUI.Support.WpfLibrary.Helpers;assembly=CI.GUI.Support.WpfLibrary" 
                 xmlns:system="clr-namespace:System;assembly=mscorlib"
                 xmlns:Views="clr-namespace:WinTiler.Views" x:Name="wnd" x:Class="WinTiler.Views.TilerMainWindow" mc:Ignorable="d"
-                Title="Window Tiler" Height="380" Width="800"
+                Title="Window Tiler - Loading ..." Height="380" Width="800"
                 Style="{DynamicResource WindowStyle_Aav0}" Loaded="onLoaded">
   <lnk:WindowBase.Resources>
     <ResourceDictionary>
@@ -11,7 +11,7 @@
         <ResourceDictionary Source="/CI.GUI.Support.WpfLibrary;component/Base/DataGrid.Base.xaml" />
         <ResourceDictionary Source="/CI.GUI.Support.WpfLibrary;component/Base/ComboBox.Base.xaml" />
         <ResourceDictionary Source="/CI.GUI.Support.WpfLibrary;component/Base/DataGrid.Anime.xaml" />
-        <ResourceDictionary Source="/CI.GUI.Support.WpfLibrary;component/ColorScheme/Theme.Color.Dark.Gray.xaml" />
+        <ResourceDictionary Source="/CI.GUI.Support.WpfLibrary;component/ColorScheme/Theme.Color.Dark.Google.xaml" />
         <!--
         -->
       </ResourceDictionary.MergedDictionaries>

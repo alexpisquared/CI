@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System.Threading.Tasks;
+using System.Windows;
 using WinTiler.Lib;
 
 namespace WinTiler.Views
@@ -16,7 +17,14 @@ namespace WinTiler.Views
       DataContext = this;
     }
 
-    void onLoaded(object sender, RoutedEventArgs e) => Title = _st.CollectDesktopWindows();//_st.Tile();
+   async void onLoaded(object sender, RoutedEventArgs e)
+    {
+      await Task.Yield(); // .Delay(33);
+      Title = _st.CollectDesktopWindows();//_st.Tile();
+
+      //Task.Run(() => { var rv = _st.CollectDesktopWindows(); return rv; }).ContinueWith(_ => Title = _.Result, TaskScheduler.FromCurrentSynchronizationContext());
+    }
+
     void onTile(object sender, RoutedEventArgs e) { _st.Tile(); ; }
     void onRestore(object sender, RoutedEventArgs e) { }
   }
