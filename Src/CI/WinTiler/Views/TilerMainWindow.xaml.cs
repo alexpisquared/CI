@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CI.GUI.Support.WpfLibrary.Helpers;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
@@ -9,7 +10,7 @@ namespace WinTiler.Views
   public partial class TilerMainWindow : CI.GUI.Support.WpfLibrary.Base.WindowBase
   {
     readonly VirtDesktopMgr _vdm = new();
-    readonly SmartTiler _st = new();
+    SmartTiler _st = new();
 
     public SmartTiler St => _st;
 
@@ -20,14 +21,16 @@ namespace WinTiler.Views
     }
 
 #if true
-    async void onLoaded(object sender, RoutedEventArgs e)
+    async void onLoaded(object sender, RoutedEventArgs e) { await collectWindows(); ; }
+
+    async Task collectWindows()
     {
       ZommablePanel.IsEnabled = false;
       Title = "Loading...";
       try
       {
         await Task.Delay(33);
-        Title = _st.CollectDesktopWindows(); //         Task.Run(() => { var rv = _st.CollectDesktopWindows(); return rv; }).ContinueWith(_ => Title = _.Result, TaskScheduler.FromCurrentSynchronizationContext());
+        Title = _st.CollectDesktopWindows(chkSM.IsChecked == true); //         Task.Run(() => { var rv = _st.CollectDesktopWindows(); return rv; }).ContinueWith(_ => Title = _.Result, TaskScheduler.FromCurrentSynchronizationContext());
       }
       finally
       {
@@ -37,50 +40,48 @@ namespace WinTiler.Views
 #else
     void onLoaded(object sender, RoutedEventArgs e)
     {
+      Bpr.Beep(9000, 100);
+      var token = Task.Factory.CancellationToken;
+      var context = TaskScheduler.FromCurrentSynchronizationContext();
+
       ZommablePanel.IsEnabled = false;
-      Title = "Loading...";
+      var ttl = "Loading...";
       try
       {
-        //await Task.Delay(33);
-        //Title = _st.CollectDesktopWindows(); //         Task.Run(() => { var rv = _st.CollectDesktopWindows(); return rv; }).ContinueWith(_ => Title = _.Result, TaskScheduler.FromCurrentSynchronizationContext());
-
-        var context = TaskScheduler.FromCurrentSynchronizationContext();
-
-        Title = "Starting...";
-
-        // Start a task - this runs on the background thread...
-        Task task = Task.Factory.StartNew(() =>
+        var task = Task.Factory.StartNew<SmartTiler>(() =>
         {
-          //title += cdw();
-          Title += rnd();
-          Title += fff();
+          var st = trg();
 
-          var token = Task.Factory.CancellationToken;
-          Task.Factory.StartNew(() =>
-          {
-            Title += " past first ";
-          }, token, TaskCreationOptions.None, context);
+          ttl += st.Report;
 
-          Thread.Sleep(1000);
-        })
-          //;        task.Wait();        task
-          .ContinueWith(_ => Title += $" ■", context); // More commonly, we'll continue a task with a new task on the UI thread, since this lets us update when our "work" completes.
+          return st;
+        }).ContinueWith(_ =>
+        {
+          ttl += $" ■";
+          Bpr.Beep(10000, 100); 
+          Title = ttl;
+          _st = _.Result;
+        }, context); 
       }
       finally
       {
         ZommablePanel.IsEnabled = true;
+        Bpr.Beep(5000, 100);
       }
     }
 #endif
 
-    string cdw() { var rv = _st.CollectDesktopWindows(); return rv; }
-    string fff() { Thread.Sleep(1000); return " Slept "; }
-    string rnd() { double j = 100; var rand = new Random(); for (var i = 0; i < 100000000; ++i) { j *= rand.NextDouble(); } return " Randm "; }
+    static SmartTiler trg()
+    {
+      var st = new SmartTiler();
+      var ttl = st.CollectDesktopWindows(true);
+      return st;
+    }
 
     void onFind(object sender, RoutedEventArgs e) { onLoaded(sender, e); ; }
-    void onTile(object sender, RoutedEventArgs e) { _st.Tile(false); ; }
-    void onNotM(object sender, RoutedEventArgs e) { _st.Tile(true); ; }
+    void onTile(object sender, RoutedEventArgs e) { _st.Tile(); ; }
     void onBoth(object sender, RoutedEventArgs e) { onFind(sender, e); onTile(sender, e); }
+    void onNotM(object sender, RoutedEventArgs e) { _st.Tile(); ; }
     void onRstr(object sender, RoutedEventArgs e) { }
   }
 }

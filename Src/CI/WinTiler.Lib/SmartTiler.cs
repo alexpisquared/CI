@@ -16,22 +16,21 @@ namespace WinTiler.Lib
     readonly ObservableCollection<WindowInfo> _allWindows = new();
     readonly VirtDesktopMgr _vdm = new();
     readonly UserPrefs _up = JsonIsoFileSerializer.Load<UserPrefs>();
-    bool _skipMinimized = true;
+    string _report;
 
     public SmartTiler()
     {
-      Debug.WriteLine($"** {_up.ExestoIgnore.Count} app names loaded:  {string.Join(' ', _up.ExestoIgnore)}");
+      Debug.WriteLine($"** {_up.ExesToIgnore.Count} app names loaded:  {string.Join(' ', _up.ExesToIgnore)}");
       Debug.WriteLine($"** {_up.TitlToIgnore.Count} wi titles loaded:  {string.Join(' ', _up.TitlToIgnore)}");
     }
 
     public ObservableCollection<WindowInfo> AllWindows => _allWindows;
 
-    public bool SkipMinimized { get => _skipMinimized; set => _skipMinimized = value; }
+    public bool SkipMinimized { get => _up.SkipMinimized; set => _up.SkipMinimized = value; }
+    public string Report { get => _report;  }
 
-    public void Tile(bool sm)
+    public void Tile()
     {
-      SkipMinimized = sm;
-
       var screen = WindowsFormsLib.WinFormHelper.PrimaryScreen;      //foreach (var screen in WindowsFormsLib.WinFormHelper.GetAllScreens()) Console.WriteLine($"{screen}");
       int cols = 3, rows = 3, rp1 = 1;
 
@@ -80,18 +79,19 @@ namespace WinTiler.Lib
         }
       }
     }
-    public void AddToIgnoreByExeName(string exePth) { _up.ExestoIgnore.Add(exePth); JsonIsoFileSerializer.Save(_up); }
+    public void AddToIgnoreByExeName(string exePth) { _up.ExesToIgnore.Add(exePth); JsonIsoFileSerializer.Save(_up); }
     public void AddToIgnoreByWiTitle(string wTitle) { _up.TitlToIgnore.Add(wTitle); JsonIsoFileSerializer.Save(_up); }
-    public string CollectDesktopWindows()
+    public string CollectDesktopWindows(bool? sm = null)
     {
+      if (sm is not null)
+        SkipMinimized = sm.Value;
+
       var sw = Stopwatch.StartNew();
-      DesktopWindowsStuff.GetDesktopWindowHandlesAndTitles(out var handles, out var titles, out var epaths, _vdm, _up, _skipMinimized);
+      DesktopWindowsStuff.GetDesktopWindowHandlesAndTitles(out var handles, out var titles, out var epaths, _vdm, _up, _up.SkipMinimized);
 
       _allWindows.Clear(); for (var i = 0; i < titles.Count; i++) _allWindows.Add(new WindowInfo(titles[i], epaths[i], handles[i]));
 
-      //var c = 0;      foreach (var w in _st.AllWindows.OrderBy(r => r.Sorter)) Console.WriteLine($"{++c,4}  {w}  ");
-
-      return ($" ... Found {titles.Count} windows of interest in {sw.Elapsed.TotalSeconds:N1} s: ");
+      return (_report = $" ... Found {titles.Count} windows of interest in {sw.Elapsed.TotalSeconds:N1} s: ");
     }
 
     void closeAll(string v)

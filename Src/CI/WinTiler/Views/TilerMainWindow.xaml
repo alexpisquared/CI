@@ -205,9 +205,10 @@
         <TextBlock Text="{Binding Title, ElementName=wnd}" FontSize="16" FontWeight="SemiBold" x:Name="tbkTitle" d:Text="(alex.pigida) - .\sqlexpress - Total 0 matches found in   2.76 sec."/>
 
         <StackPanel Grid.Column="1" Grid.RowSpan="2" Orientation="Vertical">
+          <CheckBox Content="_SkipMin" x:Name="chkSM" Margin="5"/>
           <Button Content="_Find"    Click="onFind" />
           <Button Content="_Tile"    Click="onTile" />
-          <Button Content="_Both"    Click="onTile" IsDefault="True" />
+          <Button Content="_Both"    Click="onBoth" IsDefault="True" />
           <Button Content="_NotM"    Click="onNotM" />
           <Button Content="_Restore" Click="onRstr" />
           <Button Click="onExit" IsCancel="True" />

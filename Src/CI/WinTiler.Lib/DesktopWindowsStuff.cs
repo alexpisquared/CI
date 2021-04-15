@@ -57,7 +57,7 @@ namespace WinTiler.Lib
       if (
         Externs.IsVisible(hWnd)
         && _vdm.IsWindowOnCurrentVirtualDesktop(hWnd)
-        && !_up.ExestoIgnore.Contains(exePath)
+        && !_up.ExesToIgnore.Contains(exePath)
         && !string.IsNullOrEmpty(title) // lots of fun windows here
         && !_up.TitlToIgnore.Contains(title)
         //&& !title.Contains("Calculator")

@@ -6,7 +6,8 @@ namespace WinTiler.Lib
   {
     List<string> _exestoIgnore = new();
 
-    public List<string> ExestoIgnore { get => _exestoIgnore; set => _exestoIgnore = value; }
+    public List<string> ExesToIgnore { get => _exestoIgnore; set => _exestoIgnore = value; }
     public List<string> TitlToIgnore { get; set; } = new();
+    public bool SkipMinimized { get; set; }
   }
 }
