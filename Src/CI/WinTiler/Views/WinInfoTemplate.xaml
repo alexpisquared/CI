@@ -14,8 +14,8 @@
       <Setter Property="Padding"    Value="0 0 0 4" />
     </Style>
     <LinearGradientBrush x:Key="GridBackground2" EndPoint="0.5,1" StartPoint="0.5,0">
-      <GradientStop Color="#2f00"/>
-      <GradientStop Color="#20f0" Offset=".5"/>
+      <!--<GradientStop Color="#2f00"/>-->
+      <GradientStop Color="#20f0" Offset="0"/>
       <GradientStop Color="#200f" Offset="1"/>
     </LinearGradientBrush>
   </UserControl.Resources>
@@ -23,14 +23,14 @@
     <TextBlock Text="{Binding ExePth}" d:Text="Notepad" x:Name="ttl" FontSize="16" VerticalAlignment="Top"/>
     <TextBlock Text="{Binding WTitle}" d:Text="Sorter " x:Name="srt" FontSize="11" VerticalAlignment="Bottom"/>
     <!--<TextBlock Text="{Binding}" x:Name="tos"/>-->
-    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0 -4">
+    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0 -2">
       <Button Content="■" Click="onCloseSimilar" Tag="{Binding}" Padding="0 0 0 1"/>
       <Button Content="+" Click="onCloseSimilar" Tag="{Binding}" />
       <Button Content="-" Click="onCloseSimilar" Tag="{Binding}" />
       <Button Content="x" Click="onCloseByExe" Tag="{Binding}" />
     </StackPanel>
 
-    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0 -4">
+    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0 -2">
       <Button Content="■" Click="onCloseSimilar" Tag="{Binding}" Padding="0 0 0 1"/>
       <Button Content="+" Click="onCloseSimilar" Tag="{Binding}" />
       <Button Content="-" Click="onCloseSimilar" Tag="{Binding}" />
