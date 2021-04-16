@@ -3,23 +3,16 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Serilog;
 using System;
+using System.Diagnostics;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
-using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Windows;
 using WinTiler.Views;
 
 namespace WinTiler
 {
   public partial class App : Application
   {
-    //TilerMainWindow? _mainWindow; //tu: use built-in MainWindow!!!!!!!!!!!!
     public static readonly DateTime Started;
     static readonly IConfigurationRoot? _config;
     ILogger<TilerMainWindow>? _logger;
@@ -102,7 +95,7 @@ namespace WinTiler
       base.OnStartup(e);
     }
     protected override void OnExit(ExitEventArgs e) { _logger.LogInformation($" +{(DateTime.Now - Started):mm\\:ss\\.ff} App.OnExit()          \n"); base.OnExit(e); }
-
-    //async void onTogglePermission(object s, RoutedEventArgs e) => await ((TilerMainWindow)MainWindow)?.Recalc((FrameworkElement)s);
+    protected override void OnDeactivated(EventArgs e) { Debug.WriteLine($"{DateTime.Now:yy.MM.dd HH:mm:ss.f} +{(DateTime.Now - Started):mm\\:ss\\.ff} ▄▀▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▀▀▄▀App.OnDeactivated()  "); base.OnDeactivated(e); }
+    protected override void OnActivated(EventArgs e) { Debug.WriteLine($"{DateTime.Now:yy.MM.dd HH:mm:ss.f} +{(DateTime.Now - Started):mm\\:ss\\.ff} ▄▀▄▄▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▄▀App.OnActivated()  "); base.OnActivated(e); ((TilerMainWindow)MainWindow).FindWindows(); }
   }
 }

@@ -11,6 +11,7 @@ namespace WinTiler.Views
   {
     readonly VirtDesktopMgr _vdm = new();
     SmartTiler _st = new();
+    DateTime _lastTime;
 
     public SmartTiler St => _st;
 
@@ -31,6 +32,7 @@ namespace WinTiler.Views
       {
         await Task.Delay(33);
         Title = _st.CollectDesktopWindows(chkSM.IsChecked == true); //         Task.Run(() => { var rv = _st.CollectDesktopWindows(); return rv; }).ContinueWith(_ => Title = _.Result, TaskScheduler.FromCurrentSynchronizationContext());
+        _lastTime = DateTime.Now;
       }
       finally
       {
@@ -69,7 +71,6 @@ namespace WinTiler.Views
         Bpr.Beep(5000, 100);
       }
     }
-#endif
 
     static SmartTiler trg()
     {
@@ -77,11 +78,20 @@ namespace WinTiler.Views
       var ttl = st.CollectDesktopWindows(true);
       return st;
     }
+#endif
 
     void onFind(object sender, RoutedEventArgs e) { onLoaded(sender, e); ; }
     void onTile(object sender, RoutedEventArgs e) { _st.Tile(); ; }
     void onBoth(object sender, RoutedEventArgs e) { onFind(sender, e); onTile(sender, e); }
     void onNotM(object sender, RoutedEventArgs e) { _st.Tile(); ; }
     void onRstr(object sender, RoutedEventArgs e) { }
+
+    internal void FindWindows()
+    {
+      if ((DateTime.Now - _lastTime).TotalMinutes > 1)
+      {
+        onLoaded(null, null);
+      }
+    }
   }
 }
