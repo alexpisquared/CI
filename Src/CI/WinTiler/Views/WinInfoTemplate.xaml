@@ -41,7 +41,9 @@
     </StackPanel>
 
     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
-      <Button Content="@" Click="onMaximThisOne" Tag="{Binding}" />
+      <Button Content="░" Click="onMaximThisOne" Tag="{Binding}" />
+      <Button Content="■" Click="onRestrThisOne" Tag="{Binding}" />
+      <Button Content="_" Click="onMinimThisOne" Tag="{Binding}" />
       <Button Content="x" Click="onCloseThisOne" Tag="{Binding}" />
     </StackPanel>
 

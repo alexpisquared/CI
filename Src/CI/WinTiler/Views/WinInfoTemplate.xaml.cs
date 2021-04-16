@@ -26,8 +26,10 @@ namespace WinTiler.Views
 
       _smartTiler.CollectDesktopWindows();
     }
+    void onMaximThisOne(object s, RoutedEventArgs e) { Externs.Maximize(((WindowInfo)((Button)s).Tag).Handle); }
+    void onRestrThisOne(object s, RoutedEventArgs e) { Externs.Restored(((WindowInfo)((Button)s).Tag).Handle); }
+    void onMinimThisOne(object s, RoutedEventArgs e) { Externs.Minimize(((WindowInfo)((Button)s).Tag).Handle); }
     void onCloseThisOne(object s, RoutedEventArgs e) { Externs.CloseWindow(((WindowInfo)((Button)s).Tag).Handle); _smartTiler.CollectDesktopWindows(); }
-    void onMaximThisOne(object s, RoutedEventArgs e) { Externs.Maximize(((WindowInfo)((Button)s).Tag).Handle); _smartTiler.CollectDesktopWindows(); }
     void onIgnoreExe(object s, RoutedEventArgs e) { _smartTiler.AddToIgnoreByExeName(((WindowInfo)((Button)s).Tag).AppNme); _smartTiler.CollectDesktopWindows(); }
     void onIgnoreTtl(object s, RoutedEventArgs e) { _smartTiler.AddToIgnoreByWiTitle(((WindowInfo)((Button)s).Tag).WTitle); _smartTiler.CollectDesktopWindows(); }
   }

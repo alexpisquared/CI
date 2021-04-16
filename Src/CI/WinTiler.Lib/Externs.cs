@@ -29,6 +29,8 @@ namespace WinTiler.Lib
     }
 
     public static void Maximize(IntPtr handle) { ShowWindow(handle, ShowWindowCommands.Maximize); ; }
+    public static void Minimize(IntPtr handle) { ShowWindow(handle, ShowWindowCommands.ShowMinimized); ; }
+    public static void Restored(IntPtr handle) { ShowWindow(handle, ShowWindowCommands.ShowDefault); ; }
 
     public static WindowState GetPlacement(IntPtr hwnd)
     {
