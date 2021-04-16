@@ -27,6 +27,9 @@ namespace WinTiler.Lib
       placement.ShowCmd = show_command;
       SetWindowPlacement(handle, ref placement);
     }
+
+    public static void Maximize(IntPtr handle) { ShowWindow(handle, ShowWindowCommands.Maximize); ; }
+
     public static WindowState GetPlacement(IntPtr hwnd)
     {
       var placement = new WINDOWPLACEMENT();
@@ -68,6 +71,8 @@ namespace WinTiler.Lib
     [DllImport("user32.dll")] [return: MarshalAs(UnmanagedType.Bool)] static extern bool SetWindowPos(IntPtr hWnd, IntPtr hWndInsertAfter, int X, int Y, int cx, int cy, SetWindowPosFlags uFlags);
     [DllImport("user32.dll", SetLastError = true)] [return: MarshalAs(UnmanagedType.Bool)] internal static extern bool GetWindowPlacement(IntPtr hWnd, out WINDOWPLACEMENT lpwndpl);
     [DllImport("user32.dll", SetLastError = true)] [return: MarshalAs(UnmanagedType.Bool)] static extern bool SetWindowPlacement(IntPtr hWnd, [In] ref WINDOWPLACEMENT lpwndpl);
+
+    [DllImport("user32.dll")] [return: MarshalAs(UnmanagedType.Bool)] static extern bool ShowWindow(IntPtr hWnd, ShowWindowCommands nCmdShow);
 
     [Serializable]
     [StructLayout(LayoutKind.Sequential)]

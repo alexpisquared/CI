@@ -22,7 +22,7 @@
     </LinearGradientBrush>
   </UserControl.Resources>
   <Grid Background="{DynamicResource GridBackground2}">
-    <TextBlock Text="{Binding ExePth}" d:Text="Notepad" x:Name="ttl" FontSize="20" VerticalAlignment="Top"/>
+    <TextBlock Text="{Binding AppNme}" d:Text="Notepad" x:Name="ttl" FontSize="20" VerticalAlignment="Top"/>
     <TextBlock Text="{Binding WTitle}" d:Text="Sorter " x:Name="srt" FontSize="11" VerticalAlignment="Bottom"/>
     <!--<TextBlock Text="{Binding}" x:Name="tos"/>-->
     <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0 -2">
@@ -41,6 +41,7 @@
     </StackPanel>
 
     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+      <Button Content="@" Click="onMaximThisOne" Tag="{Binding}" />
       <Button Content="x" Click="onCloseThisOne" Tag="{Binding}" />
     </StackPanel>
 

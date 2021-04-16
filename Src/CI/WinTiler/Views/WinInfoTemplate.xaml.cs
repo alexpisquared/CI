@@ -9,36 +9,26 @@ namespace WinTiler.Views
   {
     public WinInfoTemplate() => InitializeComponent();
 
-    public SmartTiler SmartTiler => ((SmartTiler)Tag);
+    SmartTiler _smartTiler => (SmartTiler)Tag;
 
-    void onCloseSimilar(object s, RoutedEventArgs e)
-    {
-      var wi = ((WindowInfo)((Button)s).Tag);
-    }
+    void onCloseSimilar(object s, RoutedEventArgs e) { var wi = ((WindowInfo)((Button)s).Tag); ; }
     void onCloseByExe(object s, RoutedEventArgs e)
     {
-      var wi = ((WindowInfo)((Button)s).Tag);
-      foreach (var w in SmartTiler.AllWindows.Where(r => r.ExePth.Contains(wi.ExePth)))
+      foreach (var w in _smartTiler.AllWindows.Where(r => r.AppNme.Contains(((WindowInfo)((Button)s).Tag).AppNme)))
         Externs.CloseWindow(w.Handle);
 
-      SmartTiler.CollectDesktopWindows();
+      _smartTiler.CollectDesktopWindows();
     }
     void onCloseByTtl(object s, RoutedEventArgs e)
     {
-      var wi = ((WindowInfo)((Button)s).Tag);
-      foreach (var w in SmartTiler.AllWindows.Where(r => r.WTitle.Contains(wi.WTitle)))
+      foreach (var w in _smartTiler.AllWindows.Where(r => r.WTitle.Contains(((WindowInfo)((Button)s).Tag).WTitle)))
         Externs.CloseWindow(w.Handle);
 
-      SmartTiler.CollectDesktopWindows();
+      _smartTiler.CollectDesktopWindows();
     }
-    void onCloseThisOne(object s, RoutedEventArgs e)
-    {
-      var wi = ((WindowInfo)((Button)s).Tag);
-
-      Externs.CloseWindow(wi.Handle);
-      SmartTiler.CollectDesktopWindows();
-    }
-    void onIgnoreExe(object s, RoutedEventArgs e) => SmartTiler.AddToIgnoreByExeName(((WindowInfo)((Button)s).Tag).ExePth);
-    void onIgnoreTtl(object s, RoutedEventArgs e) => SmartTiler.AddToIgnoreByWiTitle(((WindowInfo)((Button)s).Tag).WTitle);
+    void onCloseThisOne(object s, RoutedEventArgs e) { Externs.CloseWindow(((WindowInfo)((Button)s).Tag).Handle); _smartTiler.CollectDesktopWindows(); }
+    void onMaximThisOne(object s, RoutedEventArgs e) { Externs.Maximize(((WindowInfo)((Button)s).Tag).Handle); _smartTiler.CollectDesktopWindows(); }
+    void onIgnoreExe(object s, RoutedEventArgs e) { _smartTiler.AddToIgnoreByExeName(((WindowInfo)((Button)s).Tag).AppNme); _smartTiler.CollectDesktopWindows(); }
+    void onIgnoreTtl(object s, RoutedEventArgs e) { _smartTiler.AddToIgnoreByWiTitle(((WindowInfo)((Button)s).Tag).WTitle); _smartTiler.CollectDesktopWindows(); }
   }
 }

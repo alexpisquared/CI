@@ -1,5 +1,6 @@
 ﻿using CI.GUI.Support.WpfLibrary.Helpers;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Drawing;
@@ -27,8 +28,23 @@ namespace WinTiler.Lib
     public ObservableCollection<WindowInfo> AllWindows => _allWindows;
 
     public bool SkipMinimized { get => _up.SkipMinimized; set => _up.SkipMinimized = value; }
-    public string Report { get => _report;  }
+    public string Report { get => _report; }
 
+    public string CollectDesktopWindows(bool? sm = null)
+    {
+      if (sm is not null)
+        SkipMinimized = sm.Value;
+
+      var sw = Stopwatch.StartNew();
+      DesktopWindowsStuff.GetDesktopWindowHandlesAndTitles(out var handles, out var titles, out var epaths, _vdm, _up, _up.SkipMinimized);
+
+      var lst = new List<WindowInfo>();
+      _allWindows.Clear(); for (var i = 0; i < titles.Count; i++) lst.Add(new WindowInfo(titles[i], epaths[i], handles[i]));
+
+      lst.OrderBy(r => r.Sorter).ToList().ForEach(r =>        _allWindows.Add(new WindowInfo(r.WTitle, r.AppNme, r.Handle)));
+
+      return (_report = $" ... Found {titles.Count} windows of interest in {sw.Elapsed.TotalSeconds:N1} s: ");
+    }
     public void Tile()
     {
       var screen = WindowsFormsLib.WinFormHelper.PrimaryScreen;      //foreach (var screen in WindowsFormsLib.WinFormHelper.GetAllScreens()) Console.WriteLine($"{screen}");
@@ -81,18 +97,6 @@ namespace WinTiler.Lib
     }
     public void AddToIgnoreByExeName(string exePth) { _up.ExesToIgnore.Add(exePth); JsonIsoFileSerializer.Save(_up); }
     public void AddToIgnoreByWiTitle(string wTitle) { _up.TitlToIgnore.Add(wTitle); JsonIsoFileSerializer.Save(_up); }
-    public string CollectDesktopWindows(bool? sm = null)
-    {
-      if (sm is not null)
-        SkipMinimized = sm.Value;
-
-      var sw = Stopwatch.StartNew();
-      DesktopWindowsStuff.GetDesktopWindowHandlesAndTitles(out var handles, out var titles, out var epaths, _vdm, _up, _up.SkipMinimized);
-
-      _allWindows.Clear(); for (var i = 0; i < titles.Count; i++) _allWindows.Add(new WindowInfo(titles[i], epaths[i], handles[i]));
-
-      return (_report = $" ... Found {titles.Count} windows of interest in {sw.Elapsed.TotalSeconds:N1} s: ");
-    }
 
     void closeAll(string v)
     {
