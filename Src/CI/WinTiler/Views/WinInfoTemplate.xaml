@@ -41,10 +41,10 @@
     </StackPanel>
 
     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
-      <Button Content="░" Click="onMaximThisOne" Tag="{Binding}" />
-      <Button Content="■" Click="onRestrThisOne" Tag="{Binding}" />
-      <Button Content="_" Click="onMinimThisOne" Tag="{Binding}" />
-      <Button Content="x" Click="onCloseThisOne" Tag="{Binding}" />
+      <Button Content="░" Click="onMaximThis" Tag="{Binding}" />
+      <Button Content="■" Click="onRestrThis" Tag="{Binding}" />
+      <Button Content="_" Click="onMinimThis" Tag="{Binding}" />
+      <Button Content="x" Click="onCloseThis" Tag="{Binding}" />
     </StackPanel>
 
   </Grid>
