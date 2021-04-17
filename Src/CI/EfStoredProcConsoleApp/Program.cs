@@ -4,6 +4,7 @@ using System;
 Console.WriteLine("Hello World!");
 
 var c1 = new Class1();
+c1.Projection();
 c1.FromSql();
 c1.ExecuteSqlCommand();
 
