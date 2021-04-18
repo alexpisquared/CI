@@ -39,7 +39,7 @@ namespace WinTiler.Views
 
     async Task findWindows()
     {
-      ZommablePanel.IsEnabled = false;
+      ctrlPanel.IsEnabled = false;
       Title = "Finding...";
       try
       {
