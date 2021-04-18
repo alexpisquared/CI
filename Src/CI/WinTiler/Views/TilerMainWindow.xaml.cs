@@ -1,8 +1,7 @@
-﻿using CI.GUI.Support.WpfLibrary.Helpers;
-using System;
-using System.Threading;
+﻿using System;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Threading;
 using WinTiler.Lib;
 
 namespace WinTiler.Views
@@ -10,8 +9,9 @@ namespace WinTiler.Views
   public partial class TilerMainWindow : CI.GUI.Support.WpfLibrary.Base.WindowBase
   {
     readonly VirtDesktopMgr _vdm = new();
-    SmartTiler _st = new();
+    readonly SmartTiler _st = new();
     DateTime _lastTime;
+
 
     public SmartTiler St => _st;
 
@@ -22,12 +22,25 @@ namespace WinTiler.Views
     }
 
 #if true
-    async void onLoaded(object sender, RoutedEventArgs e) { await collectWindows(); ; }
+    async void onLoaded(object sender, RoutedEventArgs e)
+    {
+      await findWindows();
+      _ = new DispatcherTimer(TimeSpan.FromSeconds(1), DispatcherPriority.Background, new EventHandler((s, e) => tick(s, e)), Dispatcher.CurrentDispatcher);//tu: one-line timer
 
-    async Task collectWindows()
+    }
+
+    async void tick(object s, EventArgs e)
+    {
+      var dt = (DateTime.Now - _lastTime);
+      Title = $"  {(60 - dt.TotalSeconds):##}";
+      if (dt.TotalSeconds > 60)
+        await findWindows();
+    }
+
+    async Task findWindows()
     {
       ZommablePanel.IsEnabled = false;
-      Title = "Loading...";
+      Title = "Finding...";
       try
       {
         await Task.Delay(33);
@@ -80,18 +93,18 @@ namespace WinTiler.Views
     }
 #endif
 
-    void onFind(object sender, RoutedEventArgs e) { onLoaded(sender, e); ; }
-    void onTile(object sender, RoutedEventArgs e) { _st.Tile(); ; }
-    void onBoth(object sender, RoutedEventArgs e) { onFind(sender, e); onTile(sender, e); }
-    void onNotM(object sender, RoutedEventArgs e) { _st.Tile(); ; }
-    void onRstr(object sender, RoutedEventArgs e) { }
+    async void onFind(object sender, RoutedEventArgs e) => await findWindows();
+    async void onTile(object sender, RoutedEventArgs e) { Title = "Tileing..."; await Task.Delay(33); _st.Tile(); ; }
+    async void onBoth(object sender, RoutedEventArgs e) { onFind(sender, e); onTile(sender, e); }
+    async void onNotM(object sender, RoutedEventArgs e) { _st.Tile(); ; }
+    async void onRstr(object sender, RoutedEventArgs e) { }
 
-    internal void FindWindows()
+    internal async Task FindWindows()
     {
-      if ((DateTime.Now - _lastTime).TotalMinutes > 1)
-      {
-        onLoaded(null, null);
-      }
+      if ((DateTime.Now - _lastTime).TotalMinutes < 1)
+        Title = $"Too early .. until {_lastTime.AddMinutes(1):HH:mm:ss}";
+      else
+        await findWindows();
     }
   }
 }
