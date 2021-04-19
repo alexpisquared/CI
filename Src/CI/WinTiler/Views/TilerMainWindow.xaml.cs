@@ -10,10 +10,10 @@ namespace WinTiler.Views
   {
     readonly VirtDesktopMgr _vdm = new();
     readonly SmartTiler _st = new();
+    DispatcherTimer _timer;
     DateTime _lastTime;
 
-
-    public SmartTiler St => _st;
+    public SmartTiler St => _st; // binding
 
     public TilerMainWindow(Microsoft.Extensions.Logging.ILogger<TilerMainWindow> _logger, Microsoft.Extensions.Configuration.IConfigurationRoot _config)
     {
@@ -24,11 +24,9 @@ namespace WinTiler.Views
 #if true
     async void onLoaded(object sender, RoutedEventArgs e)
     {
+      _timer = new(TimeSpan.FromSeconds(1), DispatcherPriority.Background, new EventHandler((s, e) => tick(s, e)), Dispatcher.CurrentDispatcher);//tu: one-line timer
       await findWindows();
-      _ = new DispatcherTimer(TimeSpan.FromSeconds(1), DispatcherPriority.Background, new EventHandler((s, e) => tick(s, e)), Dispatcher.CurrentDispatcher);//tu: one-line timer
-
     }
-
     async void tick(object s, EventArgs e)
     {
       var dt = (DateTime.Now - _lastTime);
@@ -36,20 +34,22 @@ namespace WinTiler.Views
       if (dt.TotalSeconds > 60)
         await findWindows();
     }
-
     async Task findWindows()
     {
       ctrlPanel.IsEnabled = false;
       Title = "Finding...";
+      _timer.Stop();
       try
       {
         await Task.Delay(33);
         Title = _st.CollectDesktopWindows(chkSM.IsChecked == true); //         Task.Run(() => { var rv = _st.CollectDesktopWindows(); return rv; }).ContinueWith(_ => Title = _.Result, TaskScheduler.FromCurrentSynchronizationContext());
+        await Task.Delay(999);
         _lastTime = DateTime.Now;
       }
       finally
       {
-        ZommablePanel.IsEnabled = true;
+        ctrlPanel.IsEnabled = true;
+        _timer.Start();
       }
     }
 #else
@@ -59,7 +59,7 @@ namespace WinTiler.Views
       var token = Task.Factory.CancellationToken;
       var context = TaskScheduler.FromCurrentSynchronizationContext();
 
-      ZommablePanel.IsEnabled = false;
+      ctrlPanel.IsEnabled = false;
       var ttl = "Loading...";
       try
       {
@@ -80,7 +80,7 @@ namespace WinTiler.Views
       }
       finally
       {
-        ZommablePanel.IsEnabled = true;
+        ctrlPanel.IsEnabled = true;
         Bpr.Beep(5000, 100);
       }
     }
