@@ -1,6 +1,6 @@
 ﻿using CI.GUI.Support.WpfLibrary.Extensions;
 using CI.GUI.Support.WpfLibrary.Helpers;
-using CI.PermissionManager.Views;
+using EfStoredProcWpfApp.Views;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Serilog;
@@ -9,18 +9,18 @@ using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 
-namespace CI.PermissionManager
+namespace EfStoredProcWpfApp
 {
   public partial class App : Application
-  {    
+  {
     public static readonly DateTime Started;
     static readonly IConfigurationRoot? _config;
-    ILogger<PAsUsersSelectorWindow>? _logger;
+    ILogger<MainEfSpWindow>? _logger;
 
     static App()
     {
       Started = DateTime.Now;
-      var aps = @"C:\temp\appsettings.CI.PM.json";
+      var aps = @"C:\temp\appsettings.CI.ES.json";
       Again:
 
       //MessageBox.Show("...Desperate measures  :) \n\n■ ■ ■ ■ ■ ■ ", "Desperate Times...");
@@ -30,7 +30,7 @@ namespace CI.PermissionManager
         _config = new ConfigurationBuilder()
           .SetBasePath(AppContext.BaseDirectory)
           .AddJsonFile(aps)
-          .AddUserSecrets<PAsUsersSelectorWindow>()
+          .AddUserSecrets<MainEfSpWindow>()
           .Build();
       }
       catch (Exception ex)
@@ -46,6 +46,7 @@ namespace CI.PermissionManager
     {
       try
       {
+        Bpr.ErrorFaF();
         if (!File.Exists(aps))
           File.WriteAllText(aps, @"
 {
@@ -79,7 +80,7 @@ namespace CI.PermissionManager
         builder.AddSerilog(loggerConfiguration.CreateLogger());
       });
 
-      _logger = loggerFactory.CreateLogger<PAsUsersSelectorWindow>();
+      _logger = loggerFactory.CreateLogger<MainEfSpWindow>();
 
       //todo: Current.DispatcherUnhandledException += new RuntimeHelper(_logger, _config).Current_DispatcherUnhandledException;
       EventManager.RegisterClassHandler(typeof(TextBox), TextBox.GotFocusEvent, new RoutedEventHandler((s, re) => { (s as TextBox ?? new TextBox()).SelectAll(); })); //tu: TextBox
@@ -87,13 +88,13 @@ namespace CI.PermissionManager
 
       new WindowManager().Arrange();
 
-      MainWindow = new PAsUsersSelectorWindow(_logger, _config);
+      MainWindow = new MainEfSpWindow(_logger, _config);
       MainWindow.Show(); //tu: use built-in MainWindow!!!!!!!!!!!!
 
       base.OnStartup(e);
     }
     protected override void OnExit(ExitEventArgs e) { _logger.LogInformation($" +{(DateTime.Now - Started):mm\\:ss\\.ff} App.OnExit()          \n"); base.OnExit(e); }
 
-    async void onTogglePermission(object s, RoutedEventArgs e) => await ((PAsUsersSelectorWindow)MainWindow)?.Recalc((FrameworkElement)s);
+    //async void onTogglePermission(object s, RoutedEventArgs e) => await ((MainEfSpWindow)MainWindow)?.Recalc((FrameworkElement)s);
   }
 }
