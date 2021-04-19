@@ -7,7 +7,12 @@
     <Nullable>enable</Nullable>
     <LangVersion>latest</LangVersion>
     <UserSecretsId>b41f7cbd-788b-4329-9e92-2049c26eb938</UserSecretsId>
+    <ApplicationIcon>sql.ico</ApplicationIcon>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="sql.ico" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.5" />
@@ -21,6 +26,10 @@
   <ItemGroup>
     <ProjectReference Include="..\..\..\..\CI-Reimagined-Invention\Src\CI-RI\DB.Inventory\DB.Inventory.csproj" />
     <ProjectReference Include="..\CI.GUI.Support.WpfLibrary\CI.GUI.Support.WpfLibrary.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="sql.ico" />
   </ItemGroup>
 
 </Project>
