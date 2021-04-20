@@ -41,7 +41,7 @@ namespace CI.PermissionManager.Views
       dg1.Items.Refresh();      // this forces the grid to refresh to latest values
       dg2.Items.Refresh();
     }
-    void onExit(object s, RoutedEventArgs e) => App.Current.Shutdown();
+    //void onExit(object s, RoutedEventArgs e) => App.Current.Shutdown();
 
     protected override void OnClosing(CancelEventArgs e)
     {

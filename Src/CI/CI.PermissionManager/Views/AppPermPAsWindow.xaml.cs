@@ -42,7 +42,7 @@ namespace CI.PermissionManager.Views
       dg2.Items.Refresh();
       dg3.Items.Refresh();
     }
-    void onExit(object s, RoutedEventArgs e) => App.Current.Shutdown();
+    //void onExit(object s, RoutedEventArgs e) => App.Current.Shutdown();
 
     protected override void OnClosing(CancelEventArgs e)
     {

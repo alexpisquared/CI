@@ -4,6 +4,8 @@
     <OutputType>WinExe</OutputType>
     <TargetFramework>net5.0-windows</TargetFramework>
     <UseWPF>true</UseWPF>
+    <Nullable>enable</Nullable>
+    <LangVersion>latest</LangVersion>
     <UserSecretsId>ce68def6-d556-473d-af22-994586c1b4eb</UserSecretsId>
     <ApplicationIcon>favicon.ico</ApplicationIcon>
   </PropertyGroup>

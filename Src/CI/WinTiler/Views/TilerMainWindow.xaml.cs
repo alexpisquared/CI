@@ -8,7 +8,6 @@ namespace WinTiler.Views
 {
   public partial class TilerMainWindow : CI.GUI.Support.WpfLibrary.Base.WindowBase
   {
-    readonly VirtDesktopMgr _vdm = new();
     readonly SmartTiler _st = new();
     DispatcherTimer _timer;
     DateTime _lastTime;

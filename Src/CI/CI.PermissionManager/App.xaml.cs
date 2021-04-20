@@ -14,8 +14,8 @@ namespace CI.PermissionManager
   public partial class App : Application
   {    
     public static readonly DateTime Started;
-    static readonly IConfigurationRoot? _config;
-    ILogger<PAsUsersSelectorWindow>? _logger;
+    static readonly IConfigurationRoot _config;
+    ILogger<PAsUsersSelectorWindow> _logger;
 
     static App()
     {
