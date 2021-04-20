@@ -30,7 +30,7 @@ namespace WinTiler.Views
     async void tick(object s, EventArgs e)
     {
       var dt = (DateTime.Now - _lastTime);
-      Title = $"  {(60 - dt.TotalSeconds):##}";
+      tbkTitl2.Content = $"_{(60 - dt.TotalSeconds):##}";
       if (dt.TotalSeconds > 60)
         await findWindows();
     }
