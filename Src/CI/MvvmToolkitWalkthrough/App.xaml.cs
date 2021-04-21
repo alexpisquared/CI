@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Toolkit.Mvvm.DependencyInjection;
 using MvvmSample.Core.Services;
 using MvvmSample.Core.ViewModels.Widgets;
 using MvvmToolkitWalkthrough.Services;
@@ -18,6 +19,28 @@ namespace MvvmToolkitWalkthrough
   /// </summary>
   public partial class App : Application
   {
+    private bool _initialized;
+
+    public App()
+    {
+      //??InitializeComponent();
+
+      // Register services
+      if (!_initialized)
+      {
+        _initialized = true;
+        Ioc.Default.ConfigureServices(
+            new ServiceCollection()
+            ////.AddSingleton<IFilesService, FileService>()
+            //.AddSingleton<ISettingsService, SettingsService>()
+            .AddSingleton(RestService.For<IRedditService>("https://www.reddit.com/"))
+            .BuildServiceProvider());
+      }
+
+      MainWindow = new MainWindow();
+    }
+
+
     protected override void OnStartup(StartupEventArgs e)
     {
       base.OnStartup(e);
