@@ -2,6 +2,7 @@
 using Microsoft.Toolkit.Mvvm.DependencyInjection;
 using MvvmSample.Core.Services;
 using MvvmSample.Core.ViewModels.Widgets;
+using MvvmSampleXF.Services;
 using MvvmToolkitWalkthrough.Services;
 using Refit;
 using System;
@@ -31,13 +32,14 @@ namespace MvvmToolkitWalkthrough
         _initialized = true;
         Ioc.Default.ConfigureServices(
             new ServiceCollection()
-            ////.AddSingleton<IFilesService, FileService>()
-            //.AddSingleton<ISettingsService, SettingsService>()
+            .AddSingleton<IFilesService, FileService>()
+            .AddSingleton<ISettingsService, SettingsService>()
             .AddSingleton(RestService.For<IRedditService>("https://www.reddit.com/"))
             .BuildServiceProvider());
       }
 
       MainWindow = new MainWindow();
+      MainWindow.Show();
     }
 
 
@@ -45,6 +47,8 @@ namespace MvvmToolkitWalkthrough
     {
       base.OnStartup(e);
     }
+
+
 
     /// <summary>
     /// Gets the <see cref="IServiceProvider"/> instance to resolve application services.
