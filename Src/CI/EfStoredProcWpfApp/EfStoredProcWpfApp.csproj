@@ -8,6 +8,7 @@
     <LangVersion>latest</LangVersion>
     <UserSecretsId>b41f7cbd-788b-4329-9e92-2049c26eb938</UserSecretsId>
     <ApplicationIcon>sql.ico</ApplicationIcon>
+    <Platforms>AnyCPU;x64</Platforms>
   </PropertyGroup>
 
   <ItemGroup>

@@ -11,11 +11,12 @@ namespace EfStoredProcWpfApp.Views
 {
   public partial class SpDemoTableView : UserControl
   {
-    readonly InventoryContext context = new(@"Server=MTdevSQLDB;Database=Inventory;Trusted_Connection=True;");
     public SpDemoTableView() => InitializeComponent();
+
 
     async Task FromSql()           // https://www.entityframeworktutorial.net/efcore/working-with-stored-procedure-in-ef-core.aspx
     {
+      InventoryContext context = new(@"Server=MTdevSQLDB;Database=Inventory;Trusted_Connection=True;");
       try
       {
         ctrlPanel.IsEnabled = false;
