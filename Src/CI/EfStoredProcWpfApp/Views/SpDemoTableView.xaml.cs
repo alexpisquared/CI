@@ -38,7 +38,7 @@ namespace EfStoredProcWpfApp.Views
         dg1.ItemsSource = rows;
         tbkError.Text = $"{rows.Count} rows found";
       }
-      catch (System.Exception ex)
+      catch (Exception ex)
       {
         tbkError.Text = ex.Message;
       }

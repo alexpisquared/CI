@@ -12,5 +12,6 @@
   </Window.DataContext>
   <StackPanel>
     <TextBox Text="{Binding StringMayNotBeEmpty, UpdateSourceTrigger=PropertyChanged}" />
+    <local:AllCashByGroupView Height="360"/>
   </StackPanel>
 </Window>
