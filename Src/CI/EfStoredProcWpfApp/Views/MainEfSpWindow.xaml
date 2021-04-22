@@ -5,7 +5,7 @@
                 xmlns:local="clr-namespace:EfStoredProcWpfApp.Views" 
                 xmlns:Views="clr-namespace:EfStoredProcWpfApp.Views"
                 xmlns:system="clr-namespace:System;assembly=mscorlib"
-                Title="User Permission Editor" Height="280" Width="800"
+                Title="[App Name]" Height="280" Width="800"
                 Style="{DynamicResource WindowStyle_Aav0}">
   <WindowChrome.WindowChrome>
     <WindowChrome CaptionHeight="0" ResizeBorderThickness="10" />
