@@ -9,7 +9,7 @@
   <UserControl.Resources>
     <Style TargetType="TextBox">
       <Setter Property="FontWeight"         Value="SemiBold" />
-      <Setter Property="Width"              Value="40" />
+      <Setter Property="MinWidth"           Value="40" />
       <Setter Property="Padding"            Value="4" />
       <Setter Property="Margin"             Value="10 0" />
       <Setter Property="VerticalAlignment"  Value="Top" />
@@ -20,22 +20,25 @@
     <Grid.RowDefinitions>
       <RowDefinition Height="Auto"/>
       <RowDefinition />
+      <RowDefinition Height="Auto"/>
     </Grid.RowDefinitions>
-    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" x:Name="ctrlPanel">
       <Label Content="Group ID"  />
       <TextBox x:Name="t1" Text="2" />
-      <Label Content="DateType"  />
+      <Label Content="Date Type"  />
       <TextBox x:Name="t2" Text="2" />
-      <Label Content="StartDate" />
-      <TextBox x:Name="t3" Text="2" />
-      <Label Content="EndDate"   />
-      <TextBox x:Name="t4" Text="2" />
-      <Label Content="GroupName" />
+      <Label Content="Start" />
+      <TextBox x:Name="t3" Text="2020-01-01" />
+      <Label Content="End"   />
+      <TextBox x:Name="t4" Text="2022-01-01" />
+      <Label Content="Group" />
       <TextBox x:Name="t5" Text="2" />
-      <Button x:Name="button" Content="  _Get  " Height="30" Margin="20,0" Click="onGo" IsDefault="True"/>
+      <Button x:Name="btnGet" Content="  _Get  " Height="30" Margin="20,0" Click="onGo" IsDefault="True"/>
     </StackPanel>
-    
+
     <DataGrid x:Name="dg1" AutoGenerateColumns="True" Margin="5,5,5,5" Grid.Row="1" />
     
+    <TextBlock x:Name="tbkError" Margin="5,5,5,5" Grid.Row="2" Foreground="#d00"/>
+
   </Grid>
 </UserControl>

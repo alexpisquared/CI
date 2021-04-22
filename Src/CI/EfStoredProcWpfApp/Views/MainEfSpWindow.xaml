@@ -199,7 +199,7 @@
           <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <Views:BrandTitleUserControl Margin="10" Opacity=".025"/>
+        <Views:BrandTitleUserControl Margin="10" Opacity="1"/>
 
         <StackPanel Margin="6" HorizontalAlignment="Right" VerticalAlignment="Bottom">
           <StackPanel.Effect>
