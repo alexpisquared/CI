@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace MvvmToolkitWalkthrough
+namespace AllInOneMwtPOC
 {
   /// <summary>
   /// Interaction logic for MainWindow.xaml
@@ -23,11 +23,6 @@ namespace MvvmToolkitWalkthrough
     public MainWindow()
     {
       InitializeComponent();
-    }
-
-    private void Window_Loaded(object sender, RoutedEventArgs e)
-    {
-      //?? UWP ?? ViewModel.LoadDocsCommand.Execute("PuttingThingsTogether");
     }
   }
 }
