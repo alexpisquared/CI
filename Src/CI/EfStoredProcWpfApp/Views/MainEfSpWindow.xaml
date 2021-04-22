@@ -5,7 +5,7 @@
                 xmlns:local="clr-namespace:EfStoredProcWpfApp.Views" 
                 xmlns:Views="clr-namespace:EfStoredProcWpfApp.Views"
                 xmlns:system="clr-namespace:System;assembly=mscorlib"
-                Title="User Permission Editor" Height="380" Width="800"
+                Title="User Permission Editor" Height="280" Width="800"
                 Style="{DynamicResource WindowStyle_Aav0}">
   <WindowChrome.WindowChrome>
     <WindowChrome CaptionHeight="0" ResizeBorderThickness="10" />
@@ -199,7 +199,7 @@
           <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <Views:BrandTitleUserControl Margin="10"/>
+        <Views:BrandTitleUserControl Margin="10" Opacity=".025"/>
 
         <StackPanel Margin="6" HorizontalAlignment="Right" VerticalAlignment="Bottom">
           <StackPanel.Effect>
@@ -268,7 +268,7 @@
         </Grid>
       </Grid>
 
-      <StackPanel Grid.ColumnSpan="6" Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0">
+      <StackPanel Grid.ColumnSpan="6" Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0" Opacity=".1">
         <Button Margin="5 0" Content="_Flsh"     Height="26" Click="onFlush" Opacity="0" />
         <Button Margin="5 0" Content="_Save"     Height="26" Click="onSave"  Visibility="Collapsed" />
         <Button	Margin="5 0" Content="Se_ttings" Height="26" Click="onSettings" ToolTip="Adjust application settings" VerticalAlignment="Stretch" Visibility="Collapsed" />

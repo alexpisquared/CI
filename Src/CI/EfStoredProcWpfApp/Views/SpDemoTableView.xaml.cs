@@ -20,11 +20,11 @@ namespace EfStoredProcWpfApp.Views
       //CREATE PROCEDURE [dbo].[usp_Report_AllCashByGroup]  @pGroup_ID int = -1,  @pDateType char(1) = 'T', /*T = TradeDate S = SettlmntDate* /  @pStartDateInt int = 0, @pEndDateInt int = 0, @pGroupName varchar(50)        AS      select * from BookReport_view where  Book_ID in (select Book_ID from GroupMember where Group_ID = @pGroup_ID)
       var param = new SqlParameter("@FirstName", "Bill"); // new SqlParameter() { ParameterName = "@FirstName", SqlDbType =  System.Data.SqlDbType.VarChar, Direction = System.Data.ParameterDirection.Input, Size = 50, Value = "Bill" };
       var parms = new[] {
-        new SqlParameter("@pGroup_ID", 2),
-        new SqlParameter("@pDateType", "2"),
-        new SqlParameter("@pStartDateInt", "2"),
-        new SqlParameter("@pEndDateInt", 2),
-        new SqlParameter("@pGroupName", "2")        };
+        new SqlParameter("@pGroup_ID",      /**/ t1.Text),
+        new SqlParameter("@pDateType",      /**/ t2.Text),
+        new SqlParameter("@pStartDateInt",  /**/ t3.Text),
+        new SqlParameter("@pEndDateInt",    /**/ t4.Text),
+        new SqlParameter("@pGroupName",     /**/ t5.Text)        };
 
       var rows = await context.BookReportViews.FromSqlRaw("usp_Report_AllCashByGroup @pGroup_ID, @pDateType, @pStartDateInt, @pEndDateInt, @pGroupName", parms).ToListAsync();
       Debug.WriteLine($"** {rows.Count}  rows returned");
@@ -32,9 +32,6 @@ namespace EfStoredProcWpfApp.Views
       dg1.ItemsSource = rows;
     }
 
-    async void button_Click(object sender, RoutedEventArgs e)
-    {
-      await FromSql(); ;
-    }
+    async void onGo(object sender, RoutedEventArgs e) { await FromSql(); ; }
   }
 }
