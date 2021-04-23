@@ -9,14 +9,15 @@
   <Grid>
     <StackPanel Margin="20 10" >
       <TextBlock Text="Demo Vew - ViewModel" FontSize="26" Foreground="#f0f" Margin="20 10" />
-      <Label Content="String May Not be Empty:" Margin="20 20 0 0" Foreground="#ccc" />
+      
+      <Label Margin="10 20 0 0" Content="String May Not be Empty:" Foreground="#ccc" />
       <TextBox Text="{Binding StringMayNotBeEmpty, UpdateSourceTrigger=PropertyChanged}" Margin="20 0" />
-      <Label Content="String May Not be Empty:" Margin="20 20 0 0" Foreground="#ccc" />
-      <TextBox Text="{Binding StringMayNotBeEmpty, UpdateSourceTrigger=PropertyChanged}" Margin="20 0" />
-      <Label Content="SQL Conn String:" Margin="20 20 0 0" Foreground="#ccc" />
-      <TextBlock Text="{Binding SqlConStr}" Margin="20 0"  Foreground="#eee" d:Text="Milky Way" FontSize="18" />
-      <Label Content="Where am I:" Margin="20 20 0 0"      Foreground="#ccc" />
+      
+      <Label Margin="10 20 0 0" Content="Where am I:"      Foreground="#ccc" />
       <TextBlock Text="{Binding WhereAmI}" Margin="20 0"   Foreground="#eee" d:Text="Milky Way" FontSize="18" />
+      
+      <Label Margin="10 20 0 0" Content="SQL Conn String:" Foreground="#ccc" />
+      <TextBlock Text="{Binding SqlConStr}" Margin="20 0"  Foreground="#eee" d:Text="Milky Way" FontSize="18" />
     </StackPanel>
 
   </Grid>
