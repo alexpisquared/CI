@@ -12,12 +12,12 @@ using System.Windows.Controls;
 namespace CI.PermissionManager
 {
   public partial class App : Application
-  {    
+  {
     public static readonly DateTime Started;
     static readonly IConfigurationRoot _config;
     ILogger<PAsUsersSelectorWindow> _logger;
 
-    static App()
+    static App() // the one to base
     {
       Started = DateTime.Now;
       var aps = @"C:\temp\appsettings.CI.PM.json";

@@ -13,7 +13,15 @@ namespace CI.DS.ViewModel
 {
   public class AllCashByGroupVM : ObservableValidator
   {
-    public AllCashByGroupVM() => ValidateAllProperties();
+    readonly Microsoft.Extensions.Configuration.IConfigurationRoot _config;
+
+    public AllCashByGroupVM(Microsoft.Extensions.Configuration.IConfigurationRoot config)
+    {
+      _config = config;
+    
+      ValidateAllProperties();
+    }
+
 
     int _group_ID = 2, _startDat = 20200101, _endDateI = 20210505;
     string _dateType = "2", _groupNam = "2", _detailedReport = "";
@@ -38,7 +46,7 @@ namespace CI.DS.ViewModel
 
     async Task<string> FromSql()           // https://www.entityframeworktutorial.net/efcore/working-with-stored-procedure-in-ef-core.aspx
     {
-      InventoryContext context = new(@"Server=.\sqlexpress;Database=Inventory;Trusted_Connection=True;"); // MTdevSQLDB
+      InventoryContext context = new(_config["SqlConStr"]); // string.Format(_config["SqlConStr"], cbxSrvr.SelectedValue)); // @"Server=.\sqlexpress;Database=Inventory;Trusted_Connection=True;"); // MTdevSQLDB
       try
       {
         // USE [Inventory] GO        //DECLARE	@return_value int      EXEC	@return_value = [dbo].[usp_Report_AllCashByGroup]		@pGroup_ID = 2,		@pDateType = N'2',		@pStartDateInt = 2,		@pEndDateInt = 2,		@pGroupName = N'2'          SELECT	'Return Value' = @return_value        //CREATE PROCEDURE [dbo].[usp_Report_AllCashByGroup]  @pGroup_ID int = -1,  @pDateType char(1) = 'T', /*T = TradeDate S = SettlmntDate* /  @pStartDateInt int = 0, @pEndDateInt int = 0, @pGroupName varchar(50)        AS      select * from BookReport_view where  Book_ID in (select Book_ID from GroupMember where Group_ID = @pGroup_ID)
