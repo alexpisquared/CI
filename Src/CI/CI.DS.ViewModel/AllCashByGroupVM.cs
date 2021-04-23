@@ -21,10 +21,10 @@ namespace CI.DS.ViewModel
     List<BookReportView> _BookReports = new();
 
     public List<BookReportView> BookReports { get => _BookReports; set => SetProperty(ref _BookReports, value, true); }
-    [Required(AllowEmptyStrings = false, ErrorMessage = "This field {0} may not be empty.")] public int Group_ID { get => _Group_ID; set => SetProperty(ref _Group_ID, value, true); }
-    [Required(AllowEmptyStrings = false, ErrorMessage = "This field {0} may not be empty.")] public int StartDat { get => _StartDat; set => SetProperty(ref _StartDat, value, true); }
-    [Required(AllowEmptyStrings = false, ErrorMessage = "This field {0} may not be empty.")] public int EndDateI { get => _EndDateI; set => SetProperty(ref _EndDateI, value, true); }
+    [Required(AllowEmptyStrings = false, ErrorMessage = "This field {0} may not be empty.   ")] public int Group_ID { get => _Group_ID; set => SetProperty(ref _Group_ID, value, true); }
     [Required(AllowEmptyStrings = false, ErrorMessage = "This field {0} may not be empty.")] public string DateType { get => _DateType; set => SetProperty(ref _DateType, value, true); }
+    [Required(AllowEmptyStrings = false, ErrorMessage = "This field {0} may not be empty.   ")] public int StartDat { get => _StartDat; set => SetProperty(ref _StartDat, value, true); }
+    [Required(AllowEmptyStrings = false, ErrorMessage = "This field {0} may not be empty.   ")] public int EndDateI { get => _EndDateI; set => SetProperty(ref _EndDateI, value, true); }
     [Required(AllowEmptyStrings = false, ErrorMessage = "This field {0} may not be empty.")] public string GroupNam { get => _GroupNam; set => SetProperty(ref _GroupNam, value, true); }
 
     async Task<string> FromSql()           // https://www.entityframeworktutorial.net/efcore/working-with-stored-procedure-in-ef-core.aspx

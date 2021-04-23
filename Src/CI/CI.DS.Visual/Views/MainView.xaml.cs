@@ -14,14 +14,9 @@ using System.Windows.Shapes;
 
 namespace CI.DS.Visual.Views
 {
-  /// <summary>
-  /// Interaction logic for MainView.xaml
-  /// </summary>
   public partial class MainView : Window
   {
-    public MainView()
-    {
-      InitializeComponent();
-    }
+    public MainView() { InitializeComponent(); ; }
+    void onExit(object s, RoutedEventArgs e) { Close(); ; }
   }
 }

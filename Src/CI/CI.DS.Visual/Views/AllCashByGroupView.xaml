@@ -3,10 +3,41 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:CI.DS.Visual.Views"
+             xmlns:local="clr-namespace:CI.DS.Visual.Views" 
+             xmlns:vm="clr-namespace:CI.DS.ViewModel;assembly=CI.DS.ViewModel"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
-            
-    </Grid>
+             d:DesignHeight="250" d:DesignWidth="800">
+  <UserControl.DataContext>
+    <vm:AllCashByGroupVM />
+  </UserControl.DataContext>
+  <UserControl.Resources>
+    <Style TargetType="TextBox">
+      <Setter Property="FontWeight"         Value="SemiBold" />
+      <Setter Property="MinWidth"           Value="40" />
+      <Setter Property="Padding"            Value="4" />
+      <Setter Property="Margin"             Value="10 0" />
+      <Setter Property="VerticalAlignment"  Value="Top" />
+      <Setter Property="BorderBrush"        Value="#ccc" />
+    </Style>
+  </UserControl.Resources>
+  <Grid>
+    <Grid.RowDefinitions>
+      <RowDefinition Height="Auto"/>
+      <RowDefinition />
+      <RowDefinition Height="Auto"/>
+    </Grid.RowDefinitions>
+    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" x:Name="ctrlPanel">
+      <Label Content="Group ID"  />     <TextBox x:Name="t1" Text="{Binding Group_ID}" />
+      <Label Content="Date Type"  />    <TextBox x:Name="t2" Text="{Binding DateType}" />
+      <Label Content="Start" />         <TextBox x:Name="t3" Text="{Binding StartDat}" />
+      <Label Content="End"   />         <TextBox x:Name="t4" Text="{Binding EndDateI}" />
+      <Label Content="Group" />         <TextBox x:Name="t5" Text="{Binding GroupNam}" />
+      <Button x:Name="btnGet" Content="  _Get  " Height="30" Margin="20,0" IsDefault="True"/>
+    </StackPanel>
+
+    <DataGrid x:Name="dg1" AutoGenerateColumns="True" Margin="5,5,5,5" Grid.Row="1" ItemsSource="{Binding BookReports}" />
+
+    <TextBlock x:Name="tbkError" Margin="5,5,5,5" Grid.Row="2" Foreground="#d00"/>
+
+  </Grid>
 </UserControl>
