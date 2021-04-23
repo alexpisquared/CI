@@ -7,9 +7,31 @@
         xmlns:vm="clr-namespace:CI.DS.ViewModel;assembly=CI.DS.ViewModel"
         mc:Ignorable="d"
         Title="MainView" Height="450" Width="800">
-  <StackPanel>
-    <TextBox Text="{Binding StringMayNotBeEmpty, UpdateSourceTrigger=PropertyChanged}" />
-    <local:AllCashByGroupView Height="360"/>
-    <Button IsCancel="True" Click="onExit" />
-  </StackPanel>
+  <Window.DataContext>
+    <vm:MainVM/>
+  </Window.DataContext>
+  <Window.Resources>
+    <DataTemplate DataType="{x:Type vm:DemoVM}" >
+      <local:DemoView/>
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type vm:AllCashByGroupVM}" >
+      <local:AllCashByGroupView/>
+    </DataTemplate>
+  </Window.Resources>
+  <Grid>
+    <Grid.RowDefinitions>
+      <RowDefinition Height="Auto"/>
+      <RowDefinition Height="261*"/>
+    </Grid.RowDefinitions>
+
+    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Grid.Row="0">
+      <Button IsCancel="True" Click="onExit" Margin="10" />
+      <Button Content="_Demo" Command="{Binding UpdateViewCommand}" CommandParameter="Demo" Margin="5"/>
+      <Button Content="_Acbg" Command="{Binding UpdateViewCommand}" CommandParameter="Acbg" Margin="5"/>
+      <Button Content="_Acbg" Command="{Binding UpdateViewCommand}" CommandParameter="Acbg" Margin="5"/>
+      <Button Content="_Acbg" Command="{Binding UpdateViewCommand}" CommandParameter="Acbg" Margin="5"/>
+    </StackPanel>
+
+    <ContentControl Content="{Binding SelectedVM}" Grid.Row="11" />
+  </Grid>
 </Window>
