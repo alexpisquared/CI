@@ -10,7 +10,7 @@ namespace CI.DS.ViewModel
   {
     readonly ILogger _logger;
     readonly IConfigurationRoot _config;
-    ObservableValidator _selectedVM ;
+    ObservableValidator _selectedVM;
 
     public MainVM(Microsoft.Extensions.Logging.ILogger logger, Microsoft.Extensions.Configuration.IConfigurationRoot config)
     {

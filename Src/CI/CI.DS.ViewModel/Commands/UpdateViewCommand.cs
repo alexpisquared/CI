@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace CI.DS.ViewModel.Commands
@@ -13,7 +9,6 @@ namespace CI.DS.ViewModel.Commands
 
     public UpdateViewCommand(MainVM mainVM) => _mainVM = mainVM;
 
-
     public event EventHandler? CanExecuteChanged;
 
     public bool CanExecute(object? parameter) => true;
@@ -23,7 +18,7 @@ namespace CI.DS.ViewModel.Commands
       {
         case "Demo": _mainVM.SelectedVM = new DemoVM(_mainVM.Logger, _mainVM.Config); break;
         case "Acbg": _mainVM.SelectedVM = new AllCashByGroupVM(_mainVM.Config); break;
-        default: throw new MissingFieldException(parameter.ToString());          break;
+        default: throw new MissingFieldException(parameter?.ToString()); break;
       }
     }
   }
