@@ -32,12 +32,12 @@
       <Label Content="Start" />         <TextBox x:Name="t3" Text="{Binding StartDat}" />
       <Label Content="End"   />         <TextBox x:Name="t4" Text="{Binding EndDateI}" />
       <Label Content="Group" />         <TextBox x:Name="t5" Text="{Binding GroupNam}" />
-      <Button x:Name="btnGet" Content="  _Get  " Height="30" Margin="20,0" IsDefault="True"/>
+      <Button Content="  _Get  " Height="30" Margin="20,0" IsDefault="True" Command="{Binding SearchCommand}"/>
     </StackPanel>
 
     <DataGrid x:Name="dg1" AutoGenerateColumns="True" Margin="5,5,5,5" Grid.Row="1" ItemsSource="{Binding BookReports}" />
 
-    <TextBlock x:Name="tbkError" Margin="5,5,5,5" Grid.Row="2" Foreground="#d00"/>
+    <TextBlock Text="{Binding DetailedReport}" d:Text="All is good!" Margin="5,5,5,5" Grid.Row="2" Foreground="#d00" HorizontalAlignment="Right"/>
 
   </Grid>
 </UserControl>
