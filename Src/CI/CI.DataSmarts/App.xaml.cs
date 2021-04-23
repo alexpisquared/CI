@@ -19,9 +19,29 @@ namespace CI.DataSmarts
     static App() // the one to base
     {
       Started = DateTime.Now;
-      _config = doit(@"C:\temp\appsettings.CI.DS.json");
+      _config = StartUpHelper.InitConfig(@"C:\temp\appsettings.CI.DS.json");
     }
-    static IConfigurationRoot doit(string aps)
+
+    protected override void OnStartup(StartupEventArgs e)
+    {
+      _logger = StartUpHelper.InitLoggerFactory(_config["LogFolder"]).CreateLogger<MainView>();
+
+      //todo: Current.DispatcherUnhandledException += new RuntimeHelper(_logger, _config).Current_DispatcherUnhandledException;
+      EventManager.RegisterClassHandler(typeof(TextBox), TextBox.GotFocusEvent, new RoutedEventHandler((s, re) => { (s as TextBox ?? new TextBox()).SelectAll(); })); //tu: TextBox
+      ToolTipService.ShowDurationProperty.OverrideMetadata(typeof(DependencyObject), new FrameworkPropertyMetadata(int.MaxValue)); //tu: ToolTip ShowDuration !!!
+
+      MainWindow = new MainView(_logger, _config);
+      MainWindow.Show();
+
+      base.OnStartup(e);
+    }
+
+    protected override void OnExit(ExitEventArgs e) { _logger.LogInformation($" +{(DateTime.Now - Started):mm\\:ss\\.ff} App.OnExit()          \n"); base.OnExit(e); }
+  }
+
+  public class StartUpHelper
+  {
+    public static IConfigurationRoot InitConfig(string appsettingsFile)
     {
       try
       {
@@ -31,7 +51,7 @@ namespace CI.DataSmarts
           {
             return new ConfigurationBuilder()
               .SetBasePath(AppContext.BaseDirectory)
-              .AddJsonFile(aps)
+              .AddJsonFile(appsettingsFile)
               .AddUserSecrets<MainView>()
               .Build();
           }
@@ -41,27 +61,35 @@ namespace CI.DataSmarts
           }
           catch (Exception ex)
           {
-            if (!tryToCreateDefaultFile(aps))
+            if (!tryToCreateDefaultFile(appsettingsFile))
               ex.Pop(null, optl: "The default values will be used  ...maybe");
           }
         }
 
-        throw new Exception($"Unable to create default  {aps}  file");
+        throw new Exception($"Unable to create default  {appsettingsFile}  file");
       }
       catch (Exception ex)
       {
         ex.Pop(null, optl: "The default values will be used  ...maybe");
       }
 
-      throw new Exception($"Unable to create default  {aps}  file");
+      throw new Exception($"Unable to create default  {appsettingsFile}  file");
     }
+    public static ILoggerFactory InitLoggerFactory(string logFolder) => LoggerFactory.Create(builder =>
+    {
+      var loggerConfiguration = new LoggerConfiguration()
+        .WriteTo.File(logFolder, rollingInterval: RollingInterval.Day)
+        .MinimumLevel.Information();
 
-    static bool tryToCreateDefaultFile(string aps)
+      builder.AddSerilog(loggerConfiguration.CreateLogger());
+    });
+
+    static bool tryToCreateDefaultFile(string appsettingsFile)
     {
       try
       {
-        if (!File.Exists(aps))
-          File.WriteAllText(aps, @"
+        if (!File.Exists(appsettingsFile))
+          File.WriteAllText(appsettingsFile, @"
 {
   ""WhereAmI"": "" ??\\PermMgrClient\\appsettings.CI.PM.json  DFLT"",
   ""LogFolder"": ""\\\\bbsfile01\\Public\\AlexPi\\Misc\\Logs\\PermMgr.DFLT..txt"",
@@ -81,29 +109,5 @@ namespace CI.DataSmarts
         return false;
       }
     }
-
-    protected override void OnStartup(StartupEventArgs e)
-    {
-      var loggerFactory = LoggerFactory.Create(builder =>
-      {
-        var loggerConfiguration = new LoggerConfiguration()
-          .WriteTo.File(_config["LogFolder"], rollingInterval: RollingInterval.Day)
-          .MinimumLevel.Information();
-
-        builder.AddSerilog(loggerConfiguration.CreateLogger());
-      });
-
-      _logger = loggerFactory.CreateLogger<MainView>();
-
-      //todo: Current.DispatcherUnhandledException += new RuntimeHelper(_logger, _config).Current_DispatcherUnhandledException;
-      EventManager.RegisterClassHandler(typeof(TextBox), TextBox.GotFocusEvent, new RoutedEventHandler((s, re) => { (s as TextBox ?? new TextBox()).SelectAll(); })); //tu: TextBox
-      ToolTipService.ShowDurationProperty.OverrideMetadata(typeof(DependencyObject), new FrameworkPropertyMetadata(int.MaxValue)); //tu: ToolTip ShowDuration !!!
-
-      MainWindow = new MainView(_logger, _config);
-      MainWindow.Show();
-
-      base.OnStartup(e);
-    }
-    protected override void OnExit(ExitEventArgs e) { _logger.LogInformation($" +{(DateTime.Now - Started):mm\\:ss\\.ff} App.OnExit()          \n"); base.OnExit(e); }
   }
 }
