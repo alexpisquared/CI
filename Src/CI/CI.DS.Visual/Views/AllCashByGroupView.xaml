@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:CI.DS.Visual.Views" 
              xmlns:vm="clr-namespace:CI.DS.ViewModel;assembly=CI.DS.ViewModel"
              mc:Ignorable="d" 
-             d:DesignHeight="250" d:DesignWidth="800">
+             d:DesignHeight="250" d:DesignWidth="800" Background="{DynamicResource MenuItemBackground2}" >
   <!--<UserControl.DataContext>
     <vm:AllCashByGroupVM />
   </UserControl.DataContext>-->
@@ -20,7 +20,7 @@
       <Setter Property="BorderBrush"        Value="#ccc" />
     </Style>
   </UserControl.Resources>
-  <Grid>
+  <Grid Margin="10">
     <Grid.RowDefinitions>
       <RowDefinition Height="Auto"/>
       <RowDefinition />

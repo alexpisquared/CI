@@ -21,17 +21,12 @@
         <ResourceDictionary Source="/CI.GUI.Support.WpfLibrary;component/ColorScheme/Theme.Color.Dark.Gray.xaml" />-->
       </ResourceDictionary.MergedDictionaries>
 
-
       <DataTemplate DataType="{x:Type vm:DemoVM}" >
         <local:DemoView/>
       </DataTemplate>
       <DataTemplate DataType="{x:Type vm:AllCashByGroupVM}" >
         <local:AllCashByGroupView/>
       </DataTemplate>
-
-
-      <CollectionViewSource x:Key="_userViewSource"/>
-      <CollectionViewSource x:Key="_permViewSource"/>
 
       <system:Double x:Key="blur">0</system:Double>
 
@@ -49,9 +44,6 @@
           </Setter.Value>
         </Setter>
       </Style>
-
-      <CollectionViewSource x:Key="_accountRequestViewSource"/>
-      <!--<CollectionViewSource x:Key="categoryProductsViewSource" Source="{Binding Products, Source={StaticResource _accountRequestViewSource}}"/>-->
 
       <Style x:Key="RightAlignStyle"   TargetType="{x:Type TextBlock}">
         <Setter Property="TextAlignment" Value="Right"	/>
@@ -255,9 +247,6 @@
           <Grid.Effect>
             <BlurEffect Radius="{Binding ElementName=wnd, Path=Blur, FallbackValue=0}" />
           </Grid.Effect>
-
-
-
           <Grid>
             <Grid.RowDefinitions>
               <RowDefinition Height="Auto"/>
@@ -265,14 +254,24 @@
             </Grid.RowDefinitions>
 
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Grid.Row="0">
-              <Button IsCancel="True" Click="onExit" Margin="10" />
-              <Button Content="_Demo" Command="{Binding UpdateViewCommand}" CommandParameter="Demo" Margin="5"/>
-              <Button Content="_Acbg" Command="{Binding UpdateViewCommand}" CommandParameter="Acbg" Margin="5"/>
-              <Button Content="_Acbg" Command="{Binding UpdateViewCommand}" CommandParameter="Acbg" Margin="5"/>
-              <Button Content="_Acbg" Command="{Binding UpdateViewCommand}" CommandParameter="Acbg" Margin="5"/>
+              <Menu Background="Transparent" VerticalAlignment="Center" BorderThickness="0">
+                <Menu.Resources>
+                  <Style TargetType="{x:Type MenuItem}">
+                    <Setter Property="Foreground" Value="#080" />
+                    <Setter Property="FontSize" Value="16" />
+                    <Setter Property="Margin"   Value="5 5 5 0" />
+                    <Setter Property="Padding"  Value="16 5" />
+                    <Setter Property="BorderThickness"  Value="0" />
+                  </Style>
+                </Menu.Resources>
+                <MenuItem Header="_Demo" Command="{Binding UpdateViewCommand}" CommandParameter="Demo" Foreground="#08f" Background="{DynamicResource MenuItemBackground1}" />
+                <MenuItem Header="_Acbg" Command="{Binding UpdateViewCommand}" CommandParameter="Acbg" Foreground="#a08" Background="{DynamicResource MenuItemBackground2}" />
+                <MenuItem Header="_Acbg" Command="{Binding UpdateViewCommand}" CommandParameter="Acbg" Foreground="#0a0" Background="{DynamicResource MenuItemBackground3}" />
+              </Menu>
             </StackPanel>
 
-            <ContentControl Content="{Binding SelectedVM}" Grid.Row="11" />
+            <ContentControl Content="{Binding SelectedVM}" Grid.Row="1" />
+            
           </Grid>
 
 

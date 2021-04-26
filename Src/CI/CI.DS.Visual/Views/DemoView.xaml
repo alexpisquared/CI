@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:CI.DS.Visual.Views"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800" Background="#505">
+             d:DesignHeight="450" d:DesignWidth="800" Background="{DynamicResource MenuItemBackground1}">
   <Grid>
     <StackPanel Margin="20 10" >
       <TextBlock Text="Demo Vew - ViewModel" FontSize="26" Foreground="#f0f" Margin="20 10" />
