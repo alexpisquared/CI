@@ -9,7 +9,7 @@
   <Identity
     Name="63354AlexPigida.CI.POC.A"
     Publisher="CN=alexp"
-    Version="21.4.8.0" />
+    Version="21.4.9.0" />
 
   <Properties>
     <DisplayName>CI.POC.A</DisplayName>

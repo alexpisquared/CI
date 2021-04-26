@@ -5,8 +5,22 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CI.POC.App.A"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
+        Title="CI.POC - Main Window" Height="450" Width="800">
+  <Viewbox Margin="80" RenderTransformOrigin="0.5,0.5">
+    <Viewbox.RenderTransform>
+      <TransformGroup>
+        <ScaleTransform/>
+        <SkewTransform/>
+        <RotateTransform Angle="-26.809"/>
+        <TranslateTransform/>
+      </TransformGroup>
+    </Viewbox.RenderTransform>
+    <StackPanel >
+      <Button IsCancel="True" Click="onClose" Opacity="0"/>
+      <TextBlock Text="An attempt to convince management to switch to the Microsoft App Store deployment" FontSize="7"/>
+      <TextBlock Text="POC / Demo" FontSize="32" HorizontalAlignment="Center"/>
+      <TextBlock Text="Actual content is TBD" HorizontalAlignment="Right"/>
+    </StackPanel>
 
-    </Grid>
+  </Viewbox>
 </Window>
