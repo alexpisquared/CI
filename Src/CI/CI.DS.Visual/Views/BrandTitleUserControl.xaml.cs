@@ -13,8 +13,11 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace EfStoredProcWpfApp.Views
+namespace CI.DS.Visual.Views
 {
+  /// <summary>
+  /// Interaction logic for BrandTitleUserControl.xaml
+  /// </summary>
   public partial class BrandTitleUserControl : UserControl
   {
     public BrandTitleUserControl()
