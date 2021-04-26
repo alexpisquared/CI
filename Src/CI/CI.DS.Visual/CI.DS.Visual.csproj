@@ -5,7 +5,7 @@
     <UseWPF>true</UseWPF>
     <Nullable>enable</Nullable>
     <LangVersion>latest</LangVersion>
-    <Platforms>AnyCPU;x64</Platforms>
+    <Platforms>AnyCPU;x64;x86</Platforms>
     <UserSecretsId>836300e0-43fb-45f3-a74c-037a982893f4</UserSecretsId>
   </PropertyGroup>
 

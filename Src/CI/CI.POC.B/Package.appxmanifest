@@ -9,7 +9,7 @@
   <Identity
     Name="63354AlexPigida.CI.POC.B"
     Publisher="CN=81F983B4-CDCE-4B1F-A675-58280664A119"
-    Version="21.4.1.0" />
+    Version="21.4.2.0" />
 
   <Properties>
     <DisplayName>CI.POC.B</DisplayName>

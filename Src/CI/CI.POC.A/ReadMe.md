@@ -8,3 +8,9 @@ https://partner.microsoft.com/en-us/dashboard/products/9NN8P0NMCRCD/submissions/
 https://privacypolicies.z13.web.core.windows.net/CI.POC.A.html
 
 
+##Submission options  <- Notes for
+###Notes for certification
+This is just an attempt to convince our architects to chose Microsoft Store for the appropriate app deployment.
+###Restricted capabilities
+This is a Windows Application Packaging Project - the only way to use the Store to publish a regular .NET 5.0 WPF (non-UWP) app.
+
