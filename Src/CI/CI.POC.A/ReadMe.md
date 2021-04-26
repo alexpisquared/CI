@@ -1,16 +1,2 @@
-﻿#A public publish mode counterpart for the CI.POC.B
-  ..since there is no way to un-Public it, CI.POC.B is created to be Private.
-
-
-#2021-04-25 Submitted to the MS Store:
-https://partner.microsoft.com/en-us/dashboard/products/9NN8P0NMCRCD/submissions/1152921505693426462/CertificationStatus
-
-https://privacypolicies.z13.web.core.windows.net/CI.POC.A.html
-
-
-##Submission options  <- Notes for
-###Notes for certification
-This is just an attempt to convince our architects to chose Microsoft Store for the appropriate app deployment.
-###Restricted capabilities
-This is a Windows Application Packaging Project - the only way to use the Store to publish a regular .NET 5.0 WPF (non-UWP) app.
-
+﻿https://onedrive.live.com/view.aspx?resid=869AFB15787C9269%21427703&id=documents&wd=target%28Iress.one%7CA249A707-5A8D-4D3A-AC4B-06EE1A08D9C1%2FChrono%20Log%7C76217854-B4B7-4BD5-85AB-3F8D05680413%2F%29
+onenote:https://d.docs.live.net/869afb15787c9269/Documents/_Unsorted/AP1N/Iress.one#Chrono%20Log&section-id={A249A707-5A8D-4D3A-AC4B-06EE1A08D9C1}&page-id={76217854-B4B7-4BD5-85AB-3F8D05680413}&end

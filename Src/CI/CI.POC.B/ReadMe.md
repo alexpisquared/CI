@@ -1,14 +1,2 @@
-﻿#A private publish mode counterpart for the CI.POC.A 
-  ..since there is no way to un-Public it
-
-<PackageInfoList LandingUrl="https://developer.microsoft.com/dashboard/Application?appId=9N54B6P0RDV9" />
-                                          https://www.microsoft.com/en-us/store/r/cipocb/9n54b6p0rdv9?rtc=1&activetab=pivot:overviewtab
-
-<PackageInfoList LandingUrl="https://developer.microsoft.com/dashboard/Application?appId=9NN8P0NMCRCD" />
-                                          https://www.microsoft.com/en-us/store/r/cipocb/9NN8P0NMCRCD?rtc=1&activetab=pivot:overviewtab
-
-
-# x86 + x64 
- IPP  Submitted #7
- CPA  Submitted #5
- CPB  Submitted #3~
+﻿https://onedrive.live.com/view.aspx?resid=869AFB15787C9269%21427703&id=documents&wd=target%28Iress.one%7CA249A707-5A8D-4D3A-AC4B-06EE1A08D9C1%2FChrono%20Log%7C76217854-B4B7-4BD5-85AB-3F8D05680413%2F%29
+onenote:https://d.docs.live.net/869afb15787c9269/Documents/_Unsorted/AP1N/Iress.one#Chrono%20Log&section-id={A249A707-5A8D-4D3A-AC4B-06EE1A08D9C1}&page-id={76217854-B4B7-4BD5-85AB-3F8D05680413}&end
