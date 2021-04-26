@@ -15,6 +15,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\CI.DS.ViewModel\CI.DS.ViewModel.csproj" />
+    <ProjectReference Include="..\CI.GUI.Support.WpfLibrary\CI.GUI.Support.WpfLibrary.csproj" />
   </ItemGroup>
 
 </Project>
