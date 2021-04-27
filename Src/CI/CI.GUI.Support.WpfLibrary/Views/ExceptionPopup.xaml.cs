@@ -9,13 +9,13 @@ namespace CI.GUI.Support.WpfLibrary.Views
   public partial class ExceptionPopup : WindowBase
   {
     public ExceptionPopup() => InitializeComponent();
-    public ExceptionPopup(Exception ex, string optl, string cmn, string cfp, int cln, Window owner) : this()
+    public ExceptionPopup(Exception ex, string optl, string cmn, string cfp, int cln, Window? owner) : this()
     {
       IgnoreWindowPlacement = true;
       Owner = owner;
       WindowStartupLocation = owner != null ? WindowStartupLocation.CenterOwner : WindowStartupLocation.CenterScreen;
       InitializeComponent();
-      
+
       Loaded += (s, e) =>
       {
         ExType.Text = ex?.GetType().Name;

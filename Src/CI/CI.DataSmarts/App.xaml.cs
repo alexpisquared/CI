@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using System;
+using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -16,7 +17,7 @@ namespace CI.DataSmarts
     static App() // the one to base ... after finishing refactoring into the helper classes.
     {
       Started = DateTime.Now;
-      _config = ConfigHelper.InitConfig(@"C:\temp\appsettings.CI.DS.json");
+      _config = ConfigHelper.InitConfig(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), "appsettings.CI.DS.json"));
     }
 
     protected override void OnStartup(StartupEventArgs e)
