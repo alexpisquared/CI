@@ -17,8 +17,8 @@ namespace CI.DS.ViewModel.Commands
       switch (parameter)
       {
         case "Demo": _mainVM.SelectedVM = new DemoVM(_mainVM.Logger, _mainVM.Config); break;
-        case "Acbg": _mainVM.SelectedVM = new AllCashByGroupVM(_mainVM.Config); break;
-        default: throw new MissingFieldException(parameter?.ToString()); break;
+        case "Acbg": _mainVM.SelectedVM = new AllCashByGroupVM(_mainVM.Logger, _mainVM.Config); break;
+        default: throw new MissingFieldException(parameter?.ToString()); 
       }
     }
   }

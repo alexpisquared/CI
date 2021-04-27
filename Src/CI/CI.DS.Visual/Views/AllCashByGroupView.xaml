@@ -6,12 +6,24 @@
              xmlns:local="clr-namespace:CI.DS.Visual.Views" 
              xmlns:vm="clr-namespace:CI.DS.ViewModel;assembly=CI.DS.ViewModel"
              mc:Ignorable="d" 
-             d:DesignHeight="250" d:DesignWidth="800" Background="{DynamicResource MenuItemBackground2}" >
+             d:DesignHeight="250" d:DesignWidth="900" Background="{DynamicResource MenuItemBackground2}" >
   <!--<UserControl.DataContext>    <vm:AllCashByGroupVM />  </UserControl.DataContext>-->
   <UserControl.Resources>
     <Style TargetType="TextBox">
       <Setter Property="FontWeight"         Value="SemiBold" />
+      <Setter Property="FontSize"           Value="15" />
       <Setter Property="MinWidth"           Value="40" />
+      <Setter Property="MinHeight"          Value="30" />
+      <Setter Property="Padding"            Value="4" />
+      <Setter Property="Margin"             Value="10 0" />
+      <Setter Property="VerticalAlignment"  Value="Top" />
+      <Setter Property="BorderBrush"        Value="#ccc" />
+    </Style>
+    <Style TargetType="ComboBox">
+      <Setter Property="FontWeight"         Value="SemiBold" />
+      <Setter Property="FontSize"           Value="15" />
+      <Setter Property="MinWidth"           Value="100" />
+      <Setter Property="MinHeight"          Value="30" />
       <Setter Property="Padding"            Value="4" />
       <Setter Property="Margin"             Value="10 0" />
       <Setter Property="VerticalAlignment"  Value="Top" />
@@ -25,15 +37,26 @@
       <RowDefinition />
       <RowDefinition Height="Auto"/>
     </Grid.RowDefinitions>
-    
+
     <TextBlock Text="All Cash by Group" FontSize="26" Foreground="#44f" Margin="10 0 0 10" />
 
     <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center" x:Name="ctrlPanel">
-      <Label Content="Group ID"  />     <TextBox x:Name="t1" Text="{Binding Group_ID}" />
-      <Label Content="Date Type"  />    <TextBox x:Name="t2" Text="{Binding DateType}" />
-      <Label Content="Start" />         <TextBox x:Name="t3" Text="{Binding StartDat}" />
-      <Label Content="End"   />         <TextBox x:Name="t4" Text="{Binding EndDateI}" />
-      <Label Content="Group" />         <TextBox x:Name="t5" Text="{Binding GroupNam}" />
+      <Label Content="Group"  />
+      <ComboBox ItemsSource="{Binding BookGroups}" DisplayMemberPath="Name" SelectedValuePath="GroupId" SelectedValue="{Binding Group_ID}" />
+      <TextBlock Text="{Binding Group_ID}" />
+
+      <Label Content="Date Type"  />
+      <TextBox x:Name="t2" Text="{Binding DateType}" />
+      
+      <Label Content="Start" />
+      <TextBox x:Name="t3" Text="{Binding StartDat}" />
+      
+      <Label Content="End"   />
+      <TextBox x:Name="t4" Text="{Binding EndDateI}" />
+      
+      <Label Content="Group" />
+      <TextBox x:Name="t5" Text="{Binding GroupNam}" />
+      
       <Button Content="  _Get  " Height="30" Margin="20,0" IsDefault="True" Command="{Binding SearchCommand}"/>
     </StackPanel>
 

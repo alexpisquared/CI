@@ -16,7 +16,7 @@ namespace CI.DS.ViewModel
     {
       _logger = logger;
       _config = config;
-      _selectedVM = new DemoVM(logger, config);
+      _selectedVM = new AllCashByGroupVM(logger, config);
       UpdateViewCommand = new UpdateViewCommand(this);
     }
 
