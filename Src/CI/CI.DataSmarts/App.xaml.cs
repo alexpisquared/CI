@@ -1,4 +1,5 @@
 ﻿using CI.DS.Visual.Views;
+using CI.GUI.Support.WpfLibrary.Helpers;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using System;
