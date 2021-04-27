@@ -243,7 +243,7 @@
           </Rectangle.Fill>
         </Rectangle>
 
-        <Grid Grid.Row="1" Grid.RowSpan="4" Margin="18 18 8 8" Visibility="Visible">
+        <Grid Grid.Row="1" Grid.RowSpan="4" Margin="9 11" Visibility="Visible" >
           <Grid.Effect>
             <BlurEffect Radius="{Binding ElementName=wnd, Path=Blur, FallbackValue=0}" />
           </Grid.Effect>
@@ -266,16 +266,13 @@
                 </Menu.Resources>
                 <MenuItem Header="_Demo" Command="{Binding UpdateViewCommand}" CommandParameter="Demo" Foreground="#08f" Background="{DynamicResource MenuItemBackground1}" />
                 <MenuItem Header="_Acbg" Command="{Binding UpdateViewCommand}" CommandParameter="Acbg" Foreground="#a08" Background="{DynamicResource MenuItemBackground2}" />
-                <MenuItem Header="_Acbg" Command="{Binding UpdateViewCommand}" CommandParameter="Acbg" Foreground="#0a0" Background="{DynamicResource MenuItemBackground3}" />
+                <MenuItem Header="Acbg"  Command="{Binding UpdateViewCommand}" CommandParameter="Acbg" Foreground="#0a0" Background="{DynamicResource MenuItemBackground3}" />
               </Menu>
             </StackPanel>
 
             <ContentControl Content="{Binding SelectedVM}" Grid.Row="1" />
             
           </Grid>
-
-
-
 
         </Grid>
 

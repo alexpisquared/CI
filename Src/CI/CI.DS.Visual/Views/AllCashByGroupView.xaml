@@ -7,9 +7,7 @@
              xmlns:vm="clr-namespace:CI.DS.ViewModel;assembly=CI.DS.ViewModel"
              mc:Ignorable="d" 
              d:DesignHeight="250" d:DesignWidth="800" Background="{DynamicResource MenuItemBackground2}" >
-  <!--<UserControl.DataContext>
-    <vm:AllCashByGroupVM />
-  </UserControl.DataContext>-->
+  <!--<UserControl.DataContext>    <vm:AllCashByGroupVM />  </UserControl.DataContext>-->
   <UserControl.Resources>
     <Style TargetType="TextBox">
       <Setter Property="FontWeight"         Value="SemiBold" />
@@ -23,10 +21,14 @@
   <Grid Margin="10">
     <Grid.RowDefinitions>
       <RowDefinition Height="Auto"/>
+      <RowDefinition Height="Auto"/>
       <RowDefinition />
       <RowDefinition Height="Auto"/>
     </Grid.RowDefinitions>
-    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" x:Name="ctrlPanel">
+    
+    <TextBlock Text="All Cash by Group" FontSize="26" Foreground="#44f" Margin="10 0 0 10" />
+
+    <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center" x:Name="ctrlPanel">
       <Label Content="Group ID"  />     <TextBox x:Name="t1" Text="{Binding Group_ID}" />
       <Label Content="Date Type"  />    <TextBox x:Name="t2" Text="{Binding DateType}" />
       <Label Content="Start" />         <TextBox x:Name="t3" Text="{Binding StartDat}" />
@@ -35,9 +37,9 @@
       <Button Content="  _Get  " Height="30" Margin="20,0" IsDefault="True" Command="{Binding SearchCommand}"/>
     </StackPanel>
 
-    <DataGrid x:Name="dg1" AutoGenerateColumns="True" Margin="5,5,5,5" Grid.Row="1" ItemsSource="{Binding BookReports}" />
+    <DataGrid Grid.Row="2" x:Name="dg1" AutoGenerateColumns="True" Margin="5,5,5,5" ItemsSource="{Binding BookReports}" />
 
-    <TextBlock Text="{Binding DetailedReport}" d:Text="All is good!" Margin="5,5,5,5" Grid.Row="2" Foreground="#d00" HorizontalAlignment="Right"/>
+    <TextBlock Grid.Row="3" Text="{Binding DetailedReport}" d:Text="All is good!" Margin="5,5,5,5" Foreground="#d00" HorizontalAlignment="Right"/>
 
   </Grid>
 </UserControl>
