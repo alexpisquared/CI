@@ -22,7 +22,7 @@
     <Style TargetType="ComboBox">
       <Setter Property="FontWeight"         Value="SemiBold" />
       <Setter Property="FontSize"           Value="15" />
-      <Setter Property="MinWidth"           Value="100" />
+      <Setter Property="Width"              Value="148" />
       <Setter Property="MinHeight"          Value="30" />
       <Setter Property="Padding"            Value="4" />
       <Setter Property="Margin"             Value="10 0" />
@@ -43,10 +43,14 @@
     <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center" x:Name="ctrlPanel">
       <Label Content="Group"  />
       <ComboBox ItemsSource="{Binding BookGroups}" DisplayMemberPath="Name" SelectedValuePath="GroupId" SelectedValue="{Binding Group_ID}" />
-      <TextBlock Text="{Binding Group_ID}" />
+      <!--<TextBlock Text="{Binding Group_ID}" />-->
 
       <Label Content="Date Type"  />
-      <TextBox x:Name="t2" Text="{Binding DateType}" />
+      <ComboBox SelectedValue="{Binding DateType}" SelectedValuePath="Tag">
+        <ComboBoxItem Tag="T">Trade Date</ComboBoxItem>
+        <ComboBoxItem Tag="S">Settlement Date</ComboBoxItem>
+      </ComboBox>
+      <!--<TextBox x:Name="t2" Text="{Binding DateType}" />-->
       
       <Label Content="Start" />
       <TextBox x:Name="t3" Text="{Binding StartDat}" />

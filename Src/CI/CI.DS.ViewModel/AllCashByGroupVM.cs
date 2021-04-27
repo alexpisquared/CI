@@ -1,8 +1,11 @@
 ﻿using DB.Inventory.Models;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Mvvm.Input;
+using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
@@ -14,31 +17,30 @@ namespace CI.DS.ViewModel
 {
   public class AllCashByGroupVM : ObservableValidator
   {
+    readonly ILogger _logger;
     readonly Microsoft.Extensions.Configuration.IConfigurationRoot _config;
     readonly InventoryContext _context;
+    int _group_ID = 2, _startDat = 20200101, _endDateI = 20210505;
+    string _dateType = "T", _groupNam = "2", _detailedReport = "";
+    ObservableCollection<BookReportView> _bookReports = new();
+    ObservableCollection<BookGroup> _bookGroups = new();
+    ICommand? _searchCommand;
 
     public AllCashByGroupVM(Microsoft.Extensions.Logging.ILogger logger, Microsoft.Extensions.Configuration.IConfigurationRoot config)
     {
+      _logger = logger;
       _config = config;
       _context = new(_config["SqlConStr"]); // string.Format(_config["SqlConStr"], cbxSrvr.SelectedValue)); // @"Server=.\sqlexpress;Database=Inventory;Trusted_Connection=True;"); // MTdevSQLDB
 
       ValidateAllProperties();
 
-      var rows = _context.BookGroups.OrderBy(r => r.Name).ToList();
-
-      BookGroups.Clear();
-      rows.ForEach(row => BookGroups.Add(row));
-
-      Debug.WriteLine($"** {rows.Count}  rows returned");
+      Task<List<BookGroup>>.Run(() => _context.BookGroups.OrderBy(r => r.Name).ToList()).ContinueWith(_ =>
+      {
+        Debug.WriteLine($"** {_.Result.Count}  rows returned");
+        BookGroups.Clear();
+        _.Result.ForEach(row => BookGroups.Add(row));
+      }, TaskScheduler.FromCurrentSynchronizationContext());
     }
-
-
-
-    int _group_ID = 2, _startDat = 20200101, _endDateI = 20210505;
-    string _dateType = "2", _groupNam = "2", _detailedReport = "";
-    ObservableCollection<BookReportView> _bookReports = new();
-    ObservableCollection<BookGroup> _bookGroups = new();
-    ICommand? _searchCommand;
 
     public ObservableCollection<BookReportView> BookReports { get => _bookReports; set => SetProperty(ref _bookReports, value, true); }
     public ObservableCollection<BookGroup> BookGroups { get => _bookGroups; set => SetProperty(ref _bookGroups, value, true); }
@@ -52,12 +54,11 @@ namespace CI.DS.ViewModel
 
     public ICommand? SearchCommand => _searchCommand ?? (_searchCommand = new RelayCommand(async () =>
     {
-      DetailedReport = await FromSql();       //BookReports.Clear(); await foreach (BookReports result in searchClient.SearchAsync(SearchText)) { BookReports.Add(result); }      //RaisePropertyChanged(() => DetailedReport);
+      DetailedReport = await runRawSqlQuery();       //BookReports.Clear(); await foreach (BookReports result in searchClient.SearchAsync(SearchText)) { BookReports.Add(result); }      //RaisePropertyChanged(() => DetailedReport);
     }
     , () => (!string.IsNullOrEmpty(DateType) && !string.IsNullOrEmpty(GroupNam))));
 
-
-    async Task<string> FromSql()           // https://www.entityframeworktutorial.net/efcore/working-with-stored-procedure-in-ef-core.aspx
+    async Task<string> runRawSqlQuery() // https://www.entityframeworktutorial.net/efcore/working-with-stored-procedure-in-ef-core.aspx
     {
       try
       {
@@ -79,7 +80,7 @@ namespace CI.DS.ViewModel
 
         return $"{rows.Count} rows found";
       }
-      catch (System.Exception ex) { return ex.Message; }
+      catch (Exception ex) { _logger.LogError(ex.ToString()); return ex.Message; }
       finally { }
     }
   }
