@@ -52,11 +52,11 @@ namespace CI.DS.ViewModel
 
     public string DetailedReport { get => _detailedReport; set => SetProperty(ref _detailedReport, value, true); }
 
-    public ICommand? SearchCommand => _searchCommand ?? (_searchCommand = new RelayCommand(async () =>
+    public ICommand? SearchCommand => _searchCommand ??= new RelayCommand(async () =>
     {
       DetailedReport = await runRawSqlQuery();       //BookReports.Clear(); await foreach (BookReports result in searchClient.SearchAsync(SearchText)) { BookReports.Add(result); }      //RaisePropertyChanged(() => DetailedReport);
     }
-    , () => (!string.IsNullOrEmpty(DateType) && !string.IsNullOrEmpty(GroupNam))));
+    , () => (!string.IsNullOrEmpty(DateType) && !string.IsNullOrEmpty(GroupNam)));
 
     async Task<string> runRawSqlQuery() // https://www.entityframeworktutorial.net/efcore/working-with-stored-procedure-in-ef-core.aspx
     {

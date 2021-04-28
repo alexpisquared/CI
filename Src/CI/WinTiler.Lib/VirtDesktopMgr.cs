@@ -49,8 +49,8 @@ namespace WinTiler.Lib
 
   public class VirtualDesktopManager
   {
-    CVirtualDesktopManager cmanager = null;
-    IVirtualDesktopManager manager;
+    CVirtualDesktopManager? cmanager = null;
+    IVirtualDesktopManager? manager;
 
     public VirtualDesktopManager()
     {

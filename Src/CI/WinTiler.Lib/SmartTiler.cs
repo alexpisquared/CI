@@ -17,7 +17,7 @@ namespace WinTiler.Lib
     readonly ObservableCollection<WindowInfo> _allWindows = new();
     readonly VirtDesktopMgr _vdm = new();
     readonly UserPrefs _up = JsonIsoFileSerializer.Load<UserPrefs>();
-    string _report;
+    string _report = "";
 
     public SmartTiler()
     {
@@ -39,11 +39,11 @@ namespace WinTiler.Lib
       DesktopWindowsStuff.GetDesktopWindowHandlesAndTitles(out var handles, out var titles, out var epaths, _vdm, _up, _up.SkipMinimized);
 
       var lst = new List<WindowInfo>();
-      _allWindows.Clear(); for (var i = 0; i < titles.Count; i++) lst.Add(new WindowInfo(titles[i], epaths[i], handles[i]));
+      _allWindows.Clear(); for (var i = 0; i < titles?.Count; i++) lst.Add(new WindowInfo(titles[i], epaths[i], handles[i]));
 
-      lst.OrderBy(r => r.Sorter).ToList().ForEach(r =>        _allWindows.Add(new WindowInfo(r.WTitle, r.AppNme, r.Handle)));
+      lst.OrderBy(r => r.Sorter).ToList().ForEach(r => _allWindows.Add(new WindowInfo(r.WTitle, r.AppNme, r.Handle)));
 
-      return (_report = $" ... Found {titles.Count} windows of interest in {sw.Elapsed.TotalSeconds:N1} s: ");
+      return (_report = $" ... Found {titles?.Count} windows of interest in {sw.Elapsed.TotalSeconds:N1} s: ");
     }
     public void Tile()
     {

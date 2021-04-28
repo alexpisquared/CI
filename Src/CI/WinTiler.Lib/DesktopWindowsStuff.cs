@@ -8,14 +8,14 @@ namespace WinTiler.Lib
 {
   public static class DesktopWindowsStuff
   {
-    static List<IntPtr> WindowHandles;
-    static List<string> WindowTitles;
-    static List<string> ExePaths;
-    static VirtDesktopMgr _vdm;
-    static UserPrefs _up;
+    static List<IntPtr>? WindowHandles;
+    static List<string>? WindowTitles;
+    static List<string>? ExePaths;
+    static VirtDesktopMgr? _vdm;
+    static UserPrefs? _up;
     private static bool _skipMinimized = true;
 
-    public static void GetDesktopWindowHandlesAndTitles(out List<IntPtr> handles, out List<string> titles, out List<string> epaths, VirtDesktopMgr vdm, UserPrefs up, bool skipMinimized )
+    public static void GetDesktopWindowHandlesAndTitles(out List<IntPtr>? handles, out List<string>? titles, out List<string>? epaths, VirtDesktopMgr vdm, UserPrefs up, bool skipMinimized)
     {
       WindowHandles = new List<IntPtr>();
       WindowTitles = new List<string>();
@@ -56,10 +56,13 @@ namespace WinTiler.Lib
 
       if (
         Externs.IsVisible(hWnd)
-        && _vdm.IsWindowOnCurrentVirtualDesktop(hWnd)
-        && !_up.ExesToIgnore.Contains(exePath)
+        && (_vdm?.IsWindowOnCurrentVirtualDesktop(hWnd) ?? false)
+        && !(_up?.ExesToIgnore.Contains(exePath) ?? false)
         && !string.IsNullOrEmpty(title) // lots of fun windows here
-        && !_up.TitlToIgnore.Contains(title)
+        && !(_up?.TitlToIgnore.Contains(title) ?? false)
+        && WindowHandles != null
+        && WindowTitles != null
+        && ExePaths != null
         //&& !title.Contains("Calculator")
         //&& !title.Contains("DiReq")   // scrsvr
         //&& !title.Contains("GitHub")
