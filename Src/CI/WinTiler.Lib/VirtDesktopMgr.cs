@@ -83,7 +83,7 @@ namespace WinTiler.Lib
     public void MoveWindowToDesktop(IntPtr TopLevelWindow, Guid CurrentDesktop)
     {
       int hr;
-      if ((hr = manager.MoveWindowToDesktop(TopLevelWindow, CurrentDesktop)) != 0)
+      if ((hr = manager?.MoveWindowToDesktop(TopLevelWindow, CurrentDesktop) ?? 0) != 0)
       {
         Marshal.ThrowExceptionForHR(hr);
       }
