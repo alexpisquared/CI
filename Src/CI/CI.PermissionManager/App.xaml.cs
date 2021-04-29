@@ -39,7 +39,7 @@ namespace CI.PermissionManager
       var loggerFactory = LoggerFactory.Create(builder =>
       {
         var loggerConfiguration = new LoggerConfiguration()
-          .WriteTo.File(_config["LogFolder"], rollingInterval: RollingInterval.Day)
+          .WriteTo.File(_config?["LogFolder"] ?? "..\\Logs", rollingInterval: RollingInterval.Day)
           .MinimumLevel.Information();
 
         builder.AddSerilog(loggerConfiguration.CreateLogger());

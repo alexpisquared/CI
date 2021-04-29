@@ -23,7 +23,7 @@ namespace CI.DataSmarts
 
     protected override void OnStartup(StartupEventArgs e)
     {
-      _logger = SeriLogHelper.InitLoggerFactory(_config["LogFolder"]).CreateLogger<MainView>();
+      _logger = SeriLogHelper.InitLoggerFactory(_config?["LogFolder"] ?? "..\\Logs").CreateLogger<MainView>();
 
       //todo: Current.DispatcherUnhandledException += new RuntimeHelper(_logger, _config).Current_DispatcherUnhandledException;
       EventManager.RegisterClassHandler(typeof(TextBox), TextBox.GotFocusEvent, new RoutedEventHandler((s, re) => { (s as TextBox ?? new TextBox()).SelectAll(); })); //tu: TextBox
