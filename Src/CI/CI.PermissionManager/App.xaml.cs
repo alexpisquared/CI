@@ -20,52 +20,18 @@ namespace CI.PermissionManager
     static App() // the one to base
     {
       Started = DateTime.Now;
-      var aps = @"C:\temp\appsettings.CI.PM.json";
-      Again:
-
-      //MessageBox.Show("...Desperate measures  :) \n\n■ ■ ■ ■ ■ ■ ", "Desperate Times...");
-
-      try
-      {
-        _config = new ConfigurationBuilder()
-          .SetBasePath(AppContext.BaseDirectory)
-          .AddJsonFile(aps)
-          .AddUserSecrets<PAsUsersSelectorWindow>()
-          .Build();
-      }
-      catch (Exception ex)
-      {
-        if (tryToCreateDefaultFile(aps))
-          goto Again;
-
-        ex.Pop(null, optl: "The default values will be used  ...maybe"); //  MessageBox.Show($"{ex.Message}", "Exception", MessageBoxButton.OK, MessageBoxImage.Error);
-      }
-    }
-
-    static bool tryToCreateDefaultFile(string aps)
-    {
-      try
-      {
-        if (!File.Exists(aps))
-          File.WriteAllText(aps, @"
-{
+      _config = ConfigHelper.InitConfig(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), "appsettings.CI.PM.json"), @"
+{{
   ""WhereAmI"": "" ??\\PermMgrClient\\appsettings.CI.PM.json  DFLT"",
   ""LogFolder"": ""\\\\bbsfile01\\Public\\AlexPi\\Misc\\Logs\\PermMgr.DFLT..txt"",
   ""ServerList"": ""mtDEVsqldb mtUATsqldb mtPRDsqldb"",
-  ""SqlConStr"": ""Server={0};Database=Inventory;Trusted_Connection=True;"",
-  ""AppSettings"": {
+  ""SqlConStr"": ""Server={{0}};Database=Inventory;Trusted_Connection=True;"",
+  ""AppSettings"": {{
     ""ServerList"": ""mtDEVsqldb mtUATsqldb mtPRDsqldb"",
-    ""RmsDbConStr"": ""Server={0};Database={1};Trusted_Connection=True;"",
+    ""RmsDbConStr"": ""Server={{0}};Database={{1}};Trusted_Connection=True;"",
     ""KeyVaultURL"": ""<moved to a safer place>""
-  }
-}");
-        return true;
-      }
-      catch (Exception ex)
-      {
-        ex.Pop(null); //  MessageBox.Show($"{ex.Message}", "Exception", MessageBoxButton.OK, MessageBoxImage.Error);
-        return false;
-      }
+  }}
+}}");
     }
 
     protected override void OnStartup(StartupEventArgs e)

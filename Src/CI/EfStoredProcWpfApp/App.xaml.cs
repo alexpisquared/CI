@@ -20,35 +20,7 @@ namespace EfStoredProcWpfApp
     static App()
     {
       Started = DateTime.Now;
-      var aps = @"C:\temp\appsettings.CI.ES.json";
-      Again:
-
-      //MessageBox.Show("...Desperate measures  :) \n\n■ ■ ■ ■ ■ ■ ", "Desperate Times...");
-
-      try
-      {
-        _config = new ConfigurationBuilder()
-          .SetBasePath(AppContext.BaseDirectory)
-          .AddJsonFile(aps)
-          .AddUserSecrets<MainEfSpWindow>()
-          .Build();
-      }
-      catch (Exception ex)
-      {
-        if (tryToCreateDefaultFile(aps))
-          goto Again;
-
-        ex.Pop(null, optl: "The default values will be used  ...maybe"); //  MessageBox.Show($"{ex.Message}", "Exception", MessageBoxButton.OK, MessageBoxImage.Error);
-      }
-    }
-
-    static bool tryToCreateDefaultFile(string aps)
-    {
-      try
-      {
-        Bpr.ErrorFaF();
-        if (!File.Exists(aps))
-          File.WriteAllText(aps, @"
+      _config = ConfigHelper.InitConfig(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), "appsettings.CI.ES.json"), @"
 {
   ""WhereAmI"": "" ??\\PermMgrClient\\appsettings.CI.PM.json  DFLT"",
   ""LogFolder"": ""\\\\bbsfile01\\Public\\AlexPi\\Misc\\Logs\\PermMgr.DFLT..txt"",
@@ -60,13 +32,6 @@ namespace EfStoredProcWpfApp
     ""KeyVaultURL"": ""<moved to a safer place>""
   }
 }");
-        return true;
-      }
-      catch (Exception ex)
-      {
-        ex.Pop(null); //  MessageBox.Show($"{ex.Message}", "Exception", MessageBoxButton.OK, MessageBoxImage.Error);
-        return false;
-      }
     }
 
     protected override void OnStartup(StartupEventArgs e)
