@@ -10,7 +10,7 @@ namespace CI.GUI.Support.WpfLibrary.Helpers
   {
     const string _defaultValues = @"{{
       ""WhereAmI"": ""{0}"",
-      ""LogFolder"": ""\\\\bbsfile01\\Public\\AlexPi\\Misc\\Logs\\PermMgr.DFLT..txt"",
+      ""LogFolder"": ""\\\\bbsfile01\\Public\\AlexPi\\Misc\\Logs\\[RenameMe].DFLT..txt"",
       ""ServerList"": ""mtDEVsqldb mtUATsqldb mtPRDsqldb"",
       ""SqlConStr"": ""Server=mtDEVsqldb;Database=Inventory;Trusted_Connection=True;"",
       ""AppSettings"": {{
@@ -20,7 +20,7 @@ namespace CI.GUI.Support.WpfLibrary.Helpers
       }}
 }}";
 
-    public class WhatIsThatForType { public string MyProperty { get; set; } = "<Default Value of Nothing SPecial>"; }
+    public class WhatIsThatForType { public string MyProperty { get; set; } = "<Default Value of Nothing Special>"; }
     public static IConfigurationRoot InitConfig(string appsettingsFile, string defaultValues = _defaultValues)
     {
       try

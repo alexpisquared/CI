@@ -1,4 +1,7 @@
-﻿using System;
+﻿using CI.GUI.Support.WpfLibrary.Extensions;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
+using System;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
@@ -9,24 +12,28 @@ namespace WinTiler.Views
   public partial class TilerMainWindow : CI.GUI.Support.WpfLibrary.Base.WindowBase
   {
     readonly SmartTiler _st = new();
+    private readonly ILogger<TilerMainWindow> _logger;
+    private readonly IConfigurationRoot? _config;
     DispatcherTimer _timer;
     DateTime _lastTime;
 
     public SmartTiler St => _st; // binding
 
-    public TilerMainWindow(Microsoft.Extensions.Logging.ILogger<TilerMainWindow> _logger, Microsoft.Extensions.Configuration.IConfigurationRoot _config)
+    public TilerMainWindow(ILogger<TilerMainWindow> logger, IConfigurationRoot? config)
     {
       InitializeComponent();
       DataContext = this;
+      _logger = logger;
+      _config = config;
+      _timer = new(TimeSpan.FromSeconds(1), DispatcherPriority.Background, new EventHandler((s, e) => tick(s, e)), Dispatcher.CurrentDispatcher);//tu: one-line timer
     }
 
 #if true
-    async void onLoaded(object sender, RoutedEventArgs e)
+    async void onLoaded(object s, RoutedEventArgs e)
     {
-      _timer = new(TimeSpan.FromSeconds(1), DispatcherPriority.Background, new EventHandler((s, e) => tick(s, e)), Dispatcher.CurrentDispatcher);//tu: one-line timer
-      await findWindows();
+      await findWindows(); ;
     }
-    async void tick(object s, EventArgs e)
+    async void tick(object? s, EventArgs e)
     {
       var dt = (DateTime.Now - _lastTime);
       tbkTitl2.Content = $"_{(60 - dt.TotalSeconds):##}";
@@ -45,6 +52,7 @@ namespace WinTiler.Views
         await Task.Delay(999);
         _lastTime = DateTime.Now;
       }
+      catch (Exception ex) { _logger.LogError(ex, $""); ex.Pop(this); }
       finally
       {
         ctrlPanel.IsEnabled = true;

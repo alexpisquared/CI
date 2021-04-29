@@ -1,4 +1,5 @@
 ﻿using CI.GUI.Support.WpfLibrary.Extensions;
+using CI.GUI.Support.WpfLibrary.Helpers;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Serilog;
@@ -20,54 +21,18 @@ namespace WinTiler
     static App()
     {
       Started = DateTime.Now;
-      var aps = @"C:\temp\appsettings\WinTiler.json";
-      Again:
-
-      //MessageBox.Show("...Desperate measures  :) \n\n■ ■ ■ ■ ■ ■ ", "Desperate Times...");
-
-      try
-      {
-        _config = new ConfigurationBuilder()
-          .SetBasePath(AppContext.BaseDirectory)
-          .AddJsonFile(aps)
-          .AddUserSecrets<TilerMainWindow>()
-          .Build();
-      }
-      catch (Exception ex)
-      {
-        if (tryToCreateDefaultFile(aps))
-          goto Again;
-
-        ex.Pop(null, optl: "The default values will be used  ...maybe"); //  MessageBox.Show($"{ex.Message}", "Exception", MessageBoxButton.OK, MessageBoxImage.Error);
-      }
-    }
-
-    static bool tryToCreateDefaultFile(string aps)
-    {
-      try
-      {
-        if (!Directory.Exists(Path.GetDirectoryName(aps)))
-          Directory.CreateDirectory(Path.GetDirectoryName(aps));
-        if (!File.Exists(aps))
-          File.WriteAllText(aps, @"
-{
+      _config = ConfigHelper.InitConfig(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), "appsettings.WinTiler.json"), @"
+{{
   ""WhereAmI"": "" ??\\PermMgrClient\\appsettings.CI.PM.json  DFLT"",
-  ""LogFolder"": ""\\\\bbsfile01\\Public\\AlexPi\\Misc\\Logs\\PermMgr.DFLT..txt"",
+  ""LogFolder"": ""\\\\bbsfile01\\Public\\AlexPi\\Misc\\Logs\\WinTiler.DFLT..txt"",
   ""ServerList"": ""mtDEVsqldb mtUATsqldb mtPRDsqldb"",
-  ""SqlConStr"": ""Server={0};Database=Inventory;Trusted_Connection=True;"",
-  ""AppSettings"": {
+  ""SqlConStr"": ""Server={{0}};Database=Inventory;Trusted_Connection=True;"",
+  ""AppSettings"": {{
     ""ServerList"": ""mtDEVsqldb mtUATsqldb mtPRDsqldb"",
-    ""RmsDbConStr"": ""Server={0};Database={1};Trusted_Connection=True;"",
+    ""RmsDbConStr"": ""Server={{0}};Database={{1}};Trusted_Connection=True;"",
     ""KeyVaultURL"": ""<moved to a safer place>""
-  }
-}");
-        return true;
-      }
-      catch (Exception ex)
-      {
-        ex.Pop(null); //  MessageBox.Show($"{ex.Message}", "Exception", MessageBoxButton.OK, MessageBoxImage.Error);
-        return false;
-      }
+  }}
+}}");
     }
 
     protected override void OnStartup(StartupEventArgs e)
@@ -75,7 +40,7 @@ namespace WinTiler
       var loggerFactory = LoggerFactory.Create(builder =>
       {
         var loggerConfiguration = new LoggerConfiguration()
-          .WriteTo.File(_config["LogFolder"], rollingInterval: RollingInterval.Day)
+          .WriteTo.File(_config?["LogFolder"] ?? "..\\Logs", rollingInterval: RollingInterval.Day)
           .MinimumLevel.Information();
 
         builder.AddSerilog(loggerConfiguration.CreateLogger());
