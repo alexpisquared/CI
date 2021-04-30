@@ -6,21 +6,10 @@ using System.IO;
 
 namespace CI.GUI.Support.WpfLibrary.Helpers
 {
-  public class ConfigHelper //todo: Copy to the main Shared resourse and reuse for 'new ConfigurationBuilder()'.
+  public class ConfigHelper //todo: Copy to the main Shared.WPF and replace all 'new ConfigurationBuilder()' with it.
   {
-    const string _defaultValues = @"{{
-      ""WhereAmI"": ""{0}"",
-      ""LogFolder"": ""\\\\bbsfile01\\Public\\AlexPi\\Misc\\Logs\\[RenameMe].DFLT..txt"",
-      ""ServerList"": ""mtDEVsqldb mtUATsqldb mtPRDsqldb"",
-      ""SqlConStr"": ""Server=mtDEVsqldb;Database=Inventory;Trusted_Connection=True;"",
-      ""AppSettings"": {{
-        ""ServerList"": ""mtDEVsqldb mtUATsqldb mtPRDsqldb"",
-        ""RmsDbConStr"": ""Server={{0}};Database={{1}};Trusted_Connection=True;"",
-        ""KeyVaultURL"": ""<moved to a safer place>""
-      }}
-}}";
+    public static IConfigurationRoot AutoInitConfig(string defaultValues = _defaultValues) => InitConfig(@$"AppSettings\{AppDomain.CurrentDomain.FriendlyName}.json", defaultValues);
 
-    public class WhatIsThatForType { public string MyProperty { get; set; } = "<Default Value of Nothing Special>"; }
     public static IConfigurationRoot InitConfig(string appsettingsFile, string defaultValues = _defaultValues)
     {
       try
@@ -41,12 +30,12 @@ namespace CI.GUI.Support.WpfLibrary.Helpers
           catch (FileNotFoundException ex)
           {
             if (!tryCreateDefaultFile(appsettingsFile, defaultValues))
-              ex.Pop(null, optl: "The default values (instead of appSettings') will be used  ...maybe, when implemented");
+              ex.Log("Retrying 3 times ...");
           }
           catch (FormatException ex)
           {
             new Process { StartInfo = new ProcessStartInfo("Notepad.exe", $"\"{appsettingsFile}\"") { RedirectStandardError = true, UseShellExecute = false } }.Start();
-            ex.Pop(null, optl: $"Try to edit the errors out from {appsettingsFile}");
+            ex.Pop(null, optl: $"Try to edit the errors out from \n\t {appsettingsFile}");
           }
           catch (Exception ex)
           {
@@ -68,6 +57,9 @@ namespace CI.GUI.Support.WpfLibrary.Helpers
     {
       try
       {
+        if (Directory.Exists(Path.GetDirectoryName(appsettingsFile)) != true)
+          Directory.CreateDirectory(Path.GetDirectoryName(appsettingsFile));
+
         if (!File.Exists(appsettingsFile))
           File.WriteAllText(appsettingsFile, string.Format(defaultValues, appsettingsFile.Replace(@"\", @"\\")));
 
@@ -79,5 +71,17 @@ namespace CI.GUI.Support.WpfLibrary.Helpers
         return false;
       }
     }
+    class WhatIsThatForType { public string MyProperty { get; set; } = "<Default Value of Nothing Special>"; }
+    const string _defaultValues = @"{{
+      ""WhereAmI"": ""{0}"",
+      ""LogFolder"": ""\\\\bbsfile01\\Public\\AlexPi\\Misc\\Logs\\[RenameMe].DFLT..txt"",
+      ""ServerList"": ""mtDEVsqldb mtUATsqldb mtPRDsqldb"",
+      ""SqlConStr"": ""Server=mtDEVsqldb;Database=Inventory;Trusted_Connection=True;"",
+      ""AppSettings"": {{
+        ""ServerList"": ""mtDEVsqldb mtUATsqldb mtPRDsqldb"",
+        ""RmsDbConStr"": ""Server={{0}};Database={{1}};Trusted_Connection=True;"",
+        ""KeyVaultURL"": ""<moved to a safer place>""
+      }}
+}}";
   }
 }
