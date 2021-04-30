@@ -34,7 +34,6 @@ namespace CI.DS.Visual.Views
     async void onAddMe(object s, RoutedEventArgs e) { }
     async void cbxSrvr_SelectionChanged(object s, RoutedEventArgs e) { }
     async void onSettings(object s, RoutedEventArgs e) { }
-    void onExit(object s, RoutedEventArgs e) { Close(); ; }
-
+    //void onExit(object s, RoutedEventArgs e) { Close(); ; }
   }
 }
