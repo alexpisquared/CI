@@ -28,16 +28,16 @@
     <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0 -2">
       <!--<Button Content="■" Click="onCloseSimilar" Tag="{Binding}" Padding="0 0 0 1" Foreground="#ff0" />
       <Button Content="+" Click="onCloseSimilar" Tag="{Binding}" />-->
-      <Button Content="-" Click="onIgnoreExe" Tag="{Binding}" />
-      <Button Content="x" Click="onCloseByExe" Tag="{Binding}" />
+      <Button Content="i" Click="onIgnoreExe"   Tag="{Binding}" ToolTip="Add Exe to Ignores" />
+      <Button Content="x" Click="onCloseByExe"  Tag="{Binding}" ToolTip="Close all by Exe" />
     </StackPanel>
 
     <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0 -2">
       <!--<Button Content="■" Click="onCloseSimilar" Tag="{Binding}" Padding="0 0 0 1"/>
       <Button Content="+" Click="onCloseSimilar" Tag="{Binding}" />
       -->
-      <Button Content="-" Click="onIgnoreTtl" Tag="{Binding}" />
-      <Button Content="x" Click="onCloseByTtl" Tag="{Binding}" />
+      <Button Content="i" Click="onIgnoreTtl"  Tag="{Binding}" ToolTip="Add title to Ignores" />
+      <Button Content="x" Click="onCloseByTtl" Tag="{Binding}" ToolTip="Close all by Title" />
     </StackPanel>
 
     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
