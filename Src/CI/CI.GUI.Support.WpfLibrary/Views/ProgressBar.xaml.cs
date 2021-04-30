@@ -11,6 +11,7 @@ namespace CI.GUI.Support.WpfLibrary.Views
     static void reflect(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
       var pb = (d as ProgressBar);
+      if (pb == null) return;
       pb.Progress = pb.ActualWidth * pb.PBValue / pb.Maximum;
     }
 

@@ -1,11 +1,9 @@
-﻿using CI.GUI.Support.WpfLibrary.Extensions;
-using CI.GUI.Support.WpfLibrary.Helpers;
+﻿using CI.GUI.Support.WpfLibrary.Helpers;
 using EfStoredProcWpfApp.Views;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Serilog;
 using System;
-using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -20,18 +18,7 @@ namespace EfStoredProcWpfApp
     static App()
     {
       Started = DateTime.Now;
-      _config = ConfigHelper.InitConfig(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), "appsettings.CI.ES.json"), @"
-{
-  ""WhereAmI"": "" ??\\PermMgrClient\\appsettings.CI.PM.json  DFLT"",
-  ""LogFolder"": ""\\\\bbsfile01\\Public\\AlexPi\\Misc\\Logs\\PermMgr.DFLT..txt"",
-  ""ServerList"": ""mtDEVsqldb mtUATsqldb mtPRDsqldb"",
-  ""SqlConStr"": ""Server={0};Database=Inventory;Trusted_Connection=True;"",
-  ""AppSettings"": {
-    ""ServerList"": ""mtDEVsqldb mtUATsqldb mtPRDsqldb"",
-    ""RmsDbConStr"": ""Server={0};Database={1};Trusted_Connection=True;"",
-    ""KeyVaultURL"": ""<moved to a safer place>""
-  }
-}");
+      _config = ConfigHelper.AutoInitConfig();
     }
 
     protected override void OnStartup(StartupEventArgs e)

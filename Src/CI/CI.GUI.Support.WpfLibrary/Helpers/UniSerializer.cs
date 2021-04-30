@@ -33,30 +33,27 @@ namespace CI.GUI.Support.WpfLibrary.Helpers
 
   public static class XmlFileSerializer // ~~: IFileSerialiser
   {
-    public static void Save<T>(T o, string filename)
+    public static void Save<T>(T obj, string filename)
     {
       try
       {
         if (!FSHelper.ExistsOrCreated(Path.GetDirectoryName(filename)))
           throw new DirectoryNotFoundException(Path.GetDirectoryName(filename));
 
-        using (var streamWriter = new StreamWriter(filename))
-        {
-          new XmlSerializer(o?.GetType()).Serialize(streamWriter, o);
-          //                    streamWriter.Close();
-        }
+        using var streamWriter = new StreamWriter(filename);
+        new XmlSerializer(obj?.GetType()).Serialize(streamWriter, obj);
       }
       catch (Exception ex) { ex.Log(); throw; }
     }
 
-    public static T Load<T>(string filename) where T : new()
+    public static T? Load<T>(string filename) where T : new()
     {
       try
       {
         if (File.Exists(filename))
           using (var streamReader = /*new StreamReader*/XmlReader.Create(filename))
           {
-            return (T)new XmlSerializer(typeof(T)).Deserialize(streamReader);
+            return (T?)new XmlSerializer(typeof(T))?.Deserialize(streamReader);
           }
       }
       catch (InvalidOperationException ex) { if (ex.HResult != -2146233079) ex.Log(); throw; } // "Root element is missing." ==> create new at the bottom
@@ -83,14 +80,14 @@ namespace CI.GUI.Support.WpfLibrary.Helpers
       catch (Exception ex) { ex.Log(); throw; }
     }
 
-    public static T Load<T>(string filename) where T : new()
+    public static T? Load<T>(string filename) where T : new()
     {
       try
       {
         if (File.Exists(filename))
           using (var streamReader = new StreamReader /* todo: XmlReader.Create*/(filename))
           {
-            var o = (T)(new DataContractJsonSerializer(typeof(T)).ReadObject(streamReader.BaseStream));
+            var o = (T?)(new DataContractJsonSerializer(typeof(T)).ReadObject(streamReader.BaseStream));
             streamReader.Close();
             return o;
           }
@@ -121,7 +118,7 @@ namespace CI.GUI.Support.WpfLibrary.Helpers
       catch (Exception ex) { ex.Log(); throw; }
     }
 
-    public static T Load<T>(string? filenameONLY = null, IsolatedStorageScope iss = IsoConst.PdFls) where T : new()
+    public static T? Load<T>(string? filenameONLY = null, IsolatedStorageScope iss = IsoConst.PdFls) where T : new()
     {
       try
       {
@@ -130,12 +127,10 @@ namespace CI.GUI.Support.WpfLibrary.Helpers
         if (isoStore.FileExists(IsoHelper.GetSetFilename<T>(filenameONLY ?? typeof(T).Name, "json")))
           using (var isoStream = new IsolatedStorageFileStream(IsoHelper.GetSetFilename<T>(filenameONLY ?? typeof(T).Name, "json"), FileMode.Open, FileAccess.Read, FileShare.Read, isoStore))
           {
-            using (var streamReader = new StreamReader(isoStream))
-            {
-              var o = (T)(new DataContractJsonSerializer(typeof(T)).ReadObject(streamReader.BaseStream)); // var o = (T)(new XmlSerializer(typeof(T)).Deserialize(streamReader));
-              streamReader.Close();
-              return o;
-            }
+            using var streamReader = new StreamReader(isoStream);
+            var obj = (T?)(new DataContractJsonSerializer(typeof(T)).ReadObject(streamReader.BaseStream)); // var o = (T)(new XmlSerializer(typeof(T)).Deserialize(streamReader));
+            streamReader.Close();
+            return obj;
           }
       }
       catch (InvalidOperationException /**/ ex) { if (ex.HResult != -2146233079) { ex.Log(); throw; } }  // "Root element is missing." ==> create new at the bottom
@@ -157,11 +152,8 @@ namespace CI.GUI.Support.WpfLibrary.Helpers
         {
           //IsoHelper.DevDbgLookup(isoStore, isoStream);
 
-          using (var streamWriter = new StreamWriter(isoStream))
-          {
-            new XmlSerializer(o?.GetType()).Serialize(streamWriter, o);
-            streamWriter.Close();
-          }
+          using var streamWriter = new StreamWriter(isoStream);
+          new XmlSerializer(o?.GetType())?.Serialize(streamWriter, o);
         }
       }
       catch (Exception ex) { ex.Log(); throw; }
@@ -179,7 +171,7 @@ namespace CI.GUI.Support.WpfLibrary.Helpers
           {
             using (var streamReader = XmlReader.Create(stream))//ing (var streamReader = new StreamReader(stream))
             {
-              var o = (T)(new XmlSerializer(typeof(T)).Deserialize(streamReader));
+              var o = (T?)(new XmlSerializer(typeof(T)).Deserialize(streamReader));
               streamReader.Close();
               return o;
             }
@@ -205,12 +197,12 @@ namespace CI.GUI.Support.WpfLibrary.Helpers
       }
     }
 
-    public static T Load<T>(string str) where T : new() //catch ... : lets the caller handle the failure: it knows better what to do
+    public static T? Load<T>(string str) where T : new() //catch ... : lets the caller handle the failure: it knows better what to do
     {
       if (string.IsNullOrEmpty(str)) return (T)(Activator.CreateInstance(typeof(T)) ?? new T());
 
       using var ms = new MemoryStream(Encoding.UTF8.GetBytes(str));
-      return (T)new DataContractJsonSerializer(typeof(T)).ReadObject(ms);
+      return (T?)new DataContractJsonSerializer(typeof(T))?.ReadObject(ms);
       // if ....: return (T)new DataContractJsonSerializer(typeof(T)).ReadObject(new MemoryStream(Encoding.UTF8.GetBytes(str)));
     }
   }

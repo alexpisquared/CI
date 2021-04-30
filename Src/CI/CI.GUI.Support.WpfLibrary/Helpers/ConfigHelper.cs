@@ -8,10 +8,11 @@ namespace CI.GUI.Support.WpfLibrary.Helpers
 {
   public class ConfigHelper //todo: Copy to the main Shared.WPF and replace all 'new ConfigurationBuilder()' with it.
   {
-    public static IConfigurationRoot AutoInitConfig(string defaultValues = _defaultValues) => InitConfig(@$"AppSettings\{AppDomain.CurrentDomain.FriendlyName}.json", defaultValues);
+    public static IConfigurationRoot AutoInitConfig(string defaultValues = _defaultValues) => InitConfig(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), @$"AppSettings\{AppDomain.CurrentDomain.FriendlyName}.json"), defaultValues);
 
-    public static IConfigurationRoot InitConfig(string appsettingsFile, string defaultValues = _defaultValues)
+    static IConfigurationRoot InitConfig(string appsettingsFile, string defaultValues = _defaultValues)
     {
+      tryCreateDefaultFile(appsettingsFile, defaultValues);
       try
       {
         for (var i = 0; i < 3; i++)
@@ -47,7 +48,7 @@ namespace CI.GUI.Support.WpfLibrary.Helpers
       }
       catch (Exception ex)
       {
-        ex.Pop(null, optl: "The default values will be used  ...maybe");
+        ex.Pop(null, optl: $"Instead of {appsettingsFile}, \n\t the default values will be used  ...maybe");
       }
 
       throw new Exception($"Unable to create default  {appsettingsFile}  file");
@@ -57,29 +58,40 @@ namespace CI.GUI.Support.WpfLibrary.Helpers
     {
       try
       {
-        if (Directory.Exists(Path.GetDirectoryName(appsettingsFile)) != true)
-          Directory.CreateDirectory(Path.GetDirectoryName(appsettingsFile));
+        var dir = Path.GetDirectoryName(appsettingsFile) ?? @"Logs";
+        if (string.IsNullOrEmpty(dir))
+        {
+          dir = "Logs\\";
+          appsettingsFile = Path.Combine(dir, appsettingsFile);
+        }
+
+        if (Directory.Exists(dir) != true)
+          Directory.CreateDirectory(dir);
 
         if (!File.Exists(appsettingsFile))
-          File.WriteAllText(appsettingsFile, string.Format(defaultValues, appsettingsFile.Replace(@"\", @"\\")));
+        {
+          var json = string.Format(defaultValues, appsettingsFile.Replace(@"\", @"\\"));
+          File.WriteAllText(appsettingsFile, json);
+        }
 
         return true;
       }
-      catch (Exception ex)
+      catch (FormatException ex)
       {
-        ex.Pop(null);
+        new Process { StartInfo = new ProcessStartInfo("Notepad.exe", $"\"{appsettingsFile}\"") { RedirectStandardError = true, UseShellExecute = false } }.Start();
+        ex.Pop(null, optl: $"Try to edit the errors out from \n\t {appsettingsFile}");
         return false;
       }
+      catch (Exception ex) { ex.Pop(null); return false; }
     }
     class WhatIsThatForType { public string MyProperty { get; set; } = "<Default Value of Nothing Special>"; }
     const string _defaultValues = @"{{
-      ""WhereAmI"": ""{0}"",
+      ""WhereAmI"": ""{{0}}"",
       ""LogFolder"": ""\\\\bbsfile01\\Public\\AlexPi\\Misc\\Logs\\[RenameMe].DFLT..txt"",
       ""ServerList"": ""mtDEVsqldb mtUATsqldb mtPRDsqldb"",
       ""SqlConStr"": ""Server=mtDEVsqldb;Database=Inventory;Trusted_Connection=True;"",
       ""AppSettings"": {{
         ""ServerList"": ""mtDEVsqldb mtUATsqldb mtPRDsqldb"",
-        ""RmsDbConStr"": ""Server={{0}};Database={{1}};Trusted_Connection=True;"",
         ""KeyVaultURL"": ""<moved to a safer place>""
       }}
 }}";

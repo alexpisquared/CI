@@ -6,11 +6,14 @@ namespace CI.GUI.Support.WpfLibrary.Helpers
 {
   public static class FSHelper
   {
-    public static bool ExistsOrCreated(string folder) // true if created or exists; false if unable to create.
+    public static bool ExistsOrCreated(string? folder) // true if created or exists; false if unable to create.
     {
+      if (folder is null)
+        throw new ArgumentNullException("Provide non-null folder value");
+
       try
       {
-        if (!Directory.Exists(folder))
+        if (folder is not null && !Directory.Exists(folder))
           Directory.CreateDirectory(folder);
 
         return true;

@@ -15,13 +15,12 @@ namespace CI.PermissionManager
   {
     public static readonly DateTime Started;
     static readonly IConfigurationRoot _config;
-    ILogger<PAsUsersSelectorWindow> _logger;
+    ILogger<PAsUsersSelectorWindow>? _logger;
 
     static App() // the one to base
     {
       Started = DateTime.Now;
-      _config = ConfigHelper.InitConfig(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), "appsettings.CI.PM.json"), @"
-{{
+      _config = ConfigHelper.AutoInitConfig(@"{{
   ""WhereAmI"": "" ??\\PermMgrClient\\appsettings.CI.PM.json  DFLT"",
   ""LogFolder"": ""\\\\bbsfile01\\Public\\AlexPi\\Misc\\Logs\\PermMgr.DFLT..txt"",
   ""ServerList"": ""mtDEVsqldb mtUATsqldb mtPRDsqldb"",
@@ -60,6 +59,6 @@ namespace CI.PermissionManager
     }
     protected override void OnExit(ExitEventArgs e) { _logger.LogInformation($" +{(DateTime.Now - Started):mm\\:ss\\.ff} App.OnExit()          \n"); base.OnExit(e); }
 
-    async void onTogglePermission(object s, RoutedEventArgs e) => await ((PAsUsersSelectorWindow)MainWindow)?.Recalc((FrameworkElement)s);
+    async void onTogglePermission(object s, RoutedEventArgs e) => await ((PAsUsersSelectorWindow)MainWindow).Recalc((FrameworkElement)s);
   }
 }

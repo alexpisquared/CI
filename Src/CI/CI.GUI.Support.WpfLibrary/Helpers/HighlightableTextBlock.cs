@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Media;
@@ -31,7 +32,10 @@ namespace CI.GUI.Support.WpfLibrary.Helpers
         return;
       }
 
-      var textBlock = Template.FindName("PART_TEXT", this) as TextBlock; // Define a TextBlock to hold the search result.
+      // Define a TextBlock to hold the search result.
+      if (Template.FindName("PART_TEXT", this) is not TextBlock textBlock)
+        throw new ArgumentNullException("Hey! PART_TEXT is not defined");
+      
       textBlock.TextWrapping = TextWrapping;
 
       if (!IsHighlight)
@@ -47,7 +51,7 @@ namespace CI.GUI.Support.WpfLibrary.Helpers
       var compareText = IsMatchCase ? Text : Text.ToUpperInvariant();
       var displayText = Text;
 
-      Run run;
+      Run? run;
 
       //foreach (var searchstring in searchstrings.Split(_delim, System.StringSplitOptions.RemoveEmptyEntries))
       {
@@ -77,7 +81,7 @@ namespace CI.GUI.Support.WpfLibrary.Helpers
       base.OnRender(drawingContext);
     }
 
-    Run generateRun(string searchedString, bool isHighlight)
+    Run? generateRun(string searchedString, bool isHighlight)
     {
       if (string.IsNullOrEmpty(searchedString))
         return null;
@@ -88,7 +92,7 @@ namespace CI.GUI.Support.WpfLibrary.Helpers
     }
     static int posOfNearestMatch(string compareText, string[] searchstrings, out string searchstring)
     {
-      searchstring = null;
+      searchstring = "";
       var pos = compareText.Length;
       foreach (var ss in searchstrings)
       {

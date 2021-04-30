@@ -10,11 +10,11 @@ namespace EfStoredProcWpfApp.Views
 
     void onWindowRestoree(object s, RoutedEventArgs e) { wr.Visibility = Visibility.Collapsed; wm.Visibility = Visibility.Visible; WindowState = WindowState.Normal; }
     void onWindowMaximize(object s, RoutedEventArgs e) { wm.Visibility = Visibility.Collapsed; wr.Visibility = Visibility.Visible; WindowState = WindowState.Maximized; }
-    async void onSave(object s, RoutedEventArgs e) { }
-    async void onAudio(object s, RoutedEventArgs e) { }
-    async void onFlush(object s, RoutedEventArgs e) { }
-    async void onAddMe(object s, RoutedEventArgs e) { }
-    async void cbxSrvr_SelectionChanged(object s, RoutedEventArgs e) { }
-    async void onSettings(object s, RoutedEventArgs e) { }
+    void onSave(object s, RoutedEventArgs e) { }
+    void onAudio(object s, RoutedEventArgs e) { }
+    void onFlush(object s, RoutedEventArgs e) { }
+    void onAddMe(object s, RoutedEventArgs e) { }
+    void cbxSrvr_SelectionChanged(object s, RoutedEventArgs e) { }
+    void onSettings(object s, RoutedEventArgs e) { }
   }
 }

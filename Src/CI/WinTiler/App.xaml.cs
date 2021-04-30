@@ -21,8 +21,7 @@ namespace WinTiler
     static App()
     {
       Started = DateTime.Now;
-      _config = ConfigHelper.InitConfig(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), "appsettings.WinTiler.json"), @"
-{{
+      _config = ConfigHelper.AutoInitConfig(@"{{
   ""WhereAmI"": "" ??\\PermMgrClient\\appsettings.CI.PM.json  DFLT"",
   ""LogFolder"": ""\\\\bbsfile01\\Public\\AlexPi\\Misc\\Logs\\WinTiler.DFLT..txt"",
   ""ServerList"": ""mtDEVsqldb mtUATsqldb mtPRDsqldb"",

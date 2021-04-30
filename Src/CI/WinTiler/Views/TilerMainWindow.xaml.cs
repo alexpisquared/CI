@@ -43,13 +43,13 @@ namespace WinTiler.Views
     async Task findWindows()
     {
       ctrlPanel.IsEnabled = false;
-      Title = "Finding...";
+      Title = "Finding ...";
       _timer.Stop();
       try
       {
         await Task.Delay(33);
         Title = _st.CollectDesktopWindows(chkSM.IsChecked == true); //         Task.Run(() => { var rv = _st.CollectDesktopWindows(); return rv; }).ContinueWith(_ => Title = _.Result, TaskScheduler.FromCurrentSynchronizationContext());
-        await Task.Delay(999);
+        await Task.Delay(33);
         _lastTime = DateTime.Now;
       }
       catch (Exception ex) { _logger.LogError(ex, $""); ex.Pop(this); }
@@ -101,10 +101,10 @@ namespace WinTiler.Views
 #endif
 
     async void onFind(object sender, RoutedEventArgs e) => await findWindows();
-    async void onTile(object sender, RoutedEventArgs e) { Title = "Tileing..."; await Task.Delay(33); _st.Tile(); ; }
-    async void onBoth(object sender, RoutedEventArgs e) { onFind(sender, e); onTile(sender, e); }
-    async void onNotM(object sender, RoutedEventArgs e) { _st.Tile(); ; }
-    async void onRstr(object sender, RoutedEventArgs e) { }
+    async void onTile(object sender, RoutedEventArgs e) { Title = "Tile-ing ..."; await Task.Delay(33); _st.Tile(); ; }
+    async void onBoth(object sender, RoutedEventArgs e) { await findWindows(); onTile(sender, e); }
+    void onNotM(object sender, RoutedEventArgs e) { _st.Tile(); ; }
+    void onRstr(object sender, RoutedEventArgs e) { }
 
     internal async Task FindWindows()
     {

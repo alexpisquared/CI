@@ -36,7 +36,7 @@ namespace CI.GUI.Support.WpfLibrary.Views
       return 100.0 * (double)value;
     }
 
-    public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture) { throw new NotImplementedException(string.Format("Under construction: {0}.{1}()", System.Reflection.MethodInfo.GetCurrentMethod().DeclaringType.Name, System.Reflection.MethodInfo.GetCurrentMethod().Name)); ; }
+    public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture) { throw new NotImplementedException(string.Format("Under construction: {0}.{1}()", System.Reflection.MethodInfo.GetCurrentMethod()?.DeclaringType?.Name, System.Reflection.MethodInfo.GetCurrentMethod()?.Name)); ; }
     public override object ProvideValue(IServiceProvider serviceProvider) => this;
   }
 }
