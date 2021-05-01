@@ -8,7 +8,7 @@
 
   <Identity
     Name="63354AlexPigida.CI.POC.B"
-    Publisher="CN=81F983B4-CDCE-4B1F-A675-58280664A119"
+    Publisher="CN=Alex.Pigida@CI"
     Version="21.4.2.0" />
 
   <Properties>

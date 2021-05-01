@@ -8,7 +8,7 @@
 
   <Identity
     Name="5b0bf21c-60db-4195-9e9f-2b39a5480e9a"
-    Publisher="CN=alex.pigida"
+    Publisher="CN=Alex.Pigida@CI"
     Version="0.4.5.0" />
 
   <Properties>

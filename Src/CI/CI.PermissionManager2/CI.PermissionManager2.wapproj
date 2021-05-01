@@ -56,7 +56,7 @@
     <DefaultLanguage>en-US</DefaultLanguage>
     <AppxPackageSigningEnabled>True</AppxPackageSigningEnabled>
     <GenerateAppInstallerFile>True</GenerateAppInstallerFile>
-    <PackageCertificateThumbprint>1B5F4EA8FC00FA22F7593F5F445E43826F7C1AF3</PackageCertificateThumbprint>
+    <PackageCertificateThumbprint>F583A2482FD4D8ABC57C6A7C690F7436C061BE7C</PackageCertificateThumbprint>
     <AppxPackageSigningTimestampDigestAlgorithm>SHA256</AppxPackageSigningTimestampDigestAlgorithm>
     <AppxAutoIncrementPackageRevision>True</AppxAutoIncrementPackageRevision>
     <AppxPackageDir>Z:\AlexPi\RMSClient\Installer.Small\</AppxPackageDir>
