@@ -12,14 +12,11 @@ namespace CI.DS.ViewModel.Commands
     public event EventHandler? CanExecuteChanged;
 
     public bool CanExecute(object? parameter) => true;
-    public void Execute(object? parameter)
+    public void Execute(object? parameter) => _mainVM.SelectedVM = parameter switch
     {
-      switch (parameter)
-      {
-        case "Demo": _mainVM.SelectedVM = new DemoVM(_mainVM.Logger, _mainVM.Config); break;
-        case "Acbg": _mainVM.SelectedVM = new AllCashByGroupVM(_mainVM.Logger, _mainVM.Config); break;
-        default: throw new MissingFieldException(parameter?.ToString()); 
-      }
-    }
+      "Demo" => new DemoVM(_mainVM.Logger, _mainVM.Config),
+      "Acbg" => new AllCashByGroupVM(_mainVM.Logger, _mainVM.Config),
+      _ => throw new MissingFieldException(parameter?.ToString()),
+    };
   }
 }

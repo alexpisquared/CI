@@ -19,13 +19,10 @@ namespace CI.DataSmarts
     {
       Started = DateTime.Now;
       _config = ConfigHelper.AutoInitConfig();
-      _logger = SeriLogHelper.InitLoggerFactory(_config?["LogFolder"] ?? "..\\Logs").CreateLogger<MainView>();
+      _logger = SeriLogHelper.InitLoggerFactory(_config["LogFolder"] ?? "..\\Logs").CreateLogger<MainView>();
 
-      var audit =
-        $"** Audit - WhereAmI:  {_config?["WhereAmI"] }  \r\n" +
-        $"** Audit - SqlConSt:  {_config?["SqlConStr"]}  \r\n" +
-        $"** Audit - LogFolde:  {_config?["LogFolder"]}  \r\n";
-      
+      var audit = $"** WhereAmI:  {_config?["WhereAmI"]}    {_config?["SqlConStr"]}    {_config?["LogFolder"] ?? "..\\Logs"}";
+
       Debug.WriteLine(audit);
       _logger.LogInformation($" +{(DateTime.Now - Started):mm\\:ss\\.ff}  {audit}");
     }
@@ -34,7 +31,8 @@ namespace CI.DataSmarts
     {
       _logger.LogInformation($" +{(DateTime.Now - Started):mm\\:ss\\.ff}  App.OnStartup()");
 
-      //todo: Current.DispatcherUnhandledException += new RuntimeHelper(_logger, _config).Current_DispatcherUnhandledException;
+      Current.DispatcherUnhandledException += UnhandledExceptionHndlr.OnCurrentDispatcherUnhandledException;
+
       EventManager.RegisterClassHandler(typeof(TextBox), TextBox.GotFocusEvent, new RoutedEventHandler((s, re) => { (s as TextBox ?? new TextBox()).SelectAll(); })); //tu: TextBox
       ToolTipService.ShowDurationProperty.OverrideMetadata(typeof(DependencyObject), new FrameworkPropertyMetadata(int.MaxValue)); //tu: ToolTip ShowDuration !!!
 
