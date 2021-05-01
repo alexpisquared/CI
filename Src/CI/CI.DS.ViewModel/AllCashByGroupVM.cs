@@ -36,9 +36,13 @@ namespace CI.DS.ViewModel
 
       Task<List<BookGroup>>.Run(() => _context.BookGroups.OrderBy(r => r.Name).ToList()).ContinueWith(_ =>
       {
-        Debug.WriteLine($"** {_.Result.Count}  rows returned");
-        BookGroups.Clear();
-        _.Result.ForEach(row => BookGroups.Add(row));
+        try
+        {
+          Debug.WriteLine($"** {_.Result.Count}  rows returned");
+          BookGroups.Clear();
+          _.Result.ForEach(row => BookGroups.Add(row));
+        }
+        catch (Exception ex) { _logger.LogError(ex, "Really?"); }
       }, TaskScheduler.FromCurrentSynchronizationContext());
     }
 
