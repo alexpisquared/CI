@@ -42,6 +42,6 @@ namespace CI.DataSmarts
       base.OnStartup(e);
     }
 
-    protected override void OnExit(ExitEventArgs e) { _logger.LogInformation($" +{(DateTime.Now - Started):mm\\:ss\\.ff}  App.OnExit()          \n"); base.OnExit(e); }
+    protected override void OnExit(ExitEventArgs e) { _logger.LogInformation($" +{(DateTime.Now - Started):mm\\:ss\\.ff}  App.OnExit()\n"); base.OnExit(e); }
   }
 }
