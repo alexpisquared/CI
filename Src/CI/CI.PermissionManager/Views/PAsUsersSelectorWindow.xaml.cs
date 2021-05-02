@@ -45,8 +45,10 @@ namespace CI.PermissionManager.Views
       _isDbg = false;
 #endif
 
-      cbxSrvr.ItemsSource = _config["ServerList"].Split(" ").ToList(); ;
+      var svrs = _config["ServerList"].Split(" ").ToList(); 
+      cbxSrvr.ItemsSource = svrs; 
       cbxSrvr.SelectedIndex = 0;
+      _context = new(string.Format(_config["SqlConStr"], svrs.First()));
     }
     async void onLoaded(object s, RoutedEventArgs e)
     {

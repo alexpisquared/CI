@@ -10,7 +10,6 @@ namespace RdpFacility
   public class IdleTimeoutAnalizer
   {
     static readonly string _itaFile;
-    readonly bool _ready = false;
 
     static IdleTimeoutAnalizer() => _itaFile = @$"RdpFacility.{Environment.MachineName}.ita.json";
 
@@ -23,7 +22,7 @@ namespace RdpFacility
         try
         {
           var jsonString = File.ReadAllText(_itaFile);
-          ita = JsonSerializer.Deserialize<IdleTimeoutAnalizer>(jsonString);
+          ita = JsonSerializer.Deserialize<IdleTimeoutAnalizer>(jsonString) ?? createDefault(started);
           ita.MinTimeout = TimeSpan.FromMinutes(ita.MinTimeoutMin);
           ita.ThisStart = started;
           ita.reCalc();
@@ -32,27 +31,21 @@ namespace RdpFacility
         catch (Exception ex) { report = ex.Message; }
       }
 
-      ita = new IdleTimeoutAnalizer
-      {
-        LastClose = DateTimeOffset.MinValue,
-        MinTimeout = TimeSpan.MaxValue,
-        ThisStart = started
-      };
-
+      ita = createDefault(started);
       ita.reCalc();
 
       return (ita, report);
     }
 
-
     public DateTimeOffset LastClose { get; set; }
     public double MinTimeoutMin { get; set; }
     public bool SkipLoggingOnSelf { get; set; }
-    public string Note { get; set; }
+    public string Note { get; set; } = "";
     [JsonIgnore] public DateTimeOffset ThisStart { get; set; }
     [JsonIgnore] public TimeSpan MinTimeout { get; set; }
     [JsonIgnore] public bool RanByTaskScheduler => Environment.GetCommandLineArgs().Any(r => r.Contains("Task"));
 
+    static IdleTimeoutAnalizer createDefault(DateTimeOffset started) => new() { LastClose = DateTimeOffset.MinValue, MinTimeout = TimeSpan.MaxValue, ThisStart = started };
     void reCalc()
     {
       var thisTimeout = ThisStart - LastClose;

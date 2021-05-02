@@ -41,7 +41,7 @@ namespace CI.GUI.Support.WpfLibrary.Helpers
           throw new DirectoryNotFoundException(Path.GetDirectoryName(filename));
 
         using var streamWriter = new StreamWriter(filename);
-        new XmlSerializer(obj?.GetType()).Serialize(streamWriter, obj);
+        new XmlSerializer(typeof(T)).Serialize(streamWriter, obj);
       }
       catch (Exception ex) { ex.Log(); throw; }
     }
@@ -153,7 +153,7 @@ namespace CI.GUI.Support.WpfLibrary.Helpers
           //IsoHelper.DevDbgLookup(isoStore, isoStream);
 
           using var streamWriter = new StreamWriter(isoStream);
-          new XmlSerializer(o?.GetType())?.Serialize(streamWriter, o);
+          new XmlSerializer(typeof(T))?.Serialize(streamWriter, o);
         }
       }
       catch (Exception ex) { ex.Log(); throw; }
@@ -173,7 +173,7 @@ namespace CI.GUI.Support.WpfLibrary.Helpers
             {
               var o = (T?)(new XmlSerializer(typeof(T)).Deserialize(streamReader));
               streamReader.Close();
-              return o;
+              return o ?? (T)(Activator.CreateInstance(typeof(T)) ?? new T());
             }
           }
       }
@@ -221,6 +221,6 @@ namespace CI.GUI.Support.WpfLibrary.Helpers
       return sb.ToString();
     }
 
-    public static T Load<T>(string str) => (T)new XmlSerializer(typeof(T)).Deserialize(new StringReader(str));
+    public static T? Load<T>(string str) => (T?)new XmlSerializer(typeof(T)).Deserialize(new StringReader(str));
   }
 }

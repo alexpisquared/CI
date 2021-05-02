@@ -16,7 +16,7 @@ namespace WinTiler.Lib
   {
     readonly ObservableCollection<WindowInfo> _allWindows = new();
     readonly VirtDesktopMgr _vdm = new();
-    readonly UserPrefs _up = JsonIsoFileSerializer.Load<UserPrefs>();
+    readonly UserPrefs _up = JsonIsoFileSerializer.Load<UserPrefs>() ?? new UserPrefs();
     string _report = "";
 
     public SmartTiler()
@@ -39,7 +39,7 @@ namespace WinTiler.Lib
       DesktopWindowsStuff.GetDesktopWindowHandlesAndTitles(out var handles, out var titles, out var epaths, _vdm, _up, _up.SkipMinimized);
 
       var lst = new List<WindowInfo>();
-      _allWindows.Clear(); for (var i = 0; i < titles?.Count; i++) lst.Add(new WindowInfo(titles[i], epaths[i], handles[i]));
+      _allWindows.Clear(); for (var i = 0; i < titles?.Count; i++) lst.Add(new WindowInfo(titles[i], epaths?[i] ?? "..epaths is null", handles?[i] ?? IntPtr.Zero));
 
       lst.OrderBy(r => r.Sorter).ToList().ForEach(r => _allWindows.Add(new WindowInfo(r.WTitle, r.AppNme, r.Handle)));
 

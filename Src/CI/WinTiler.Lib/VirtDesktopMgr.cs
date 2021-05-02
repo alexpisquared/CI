@@ -49,8 +49,8 @@ namespace WinTiler.Lib
 
   public class VirtualDesktopManager
   {
-    CVirtualDesktopManager? cmanager = null;
-    IVirtualDesktopManager? manager;
+    CVirtualDesktopManager cmanager ;
+    IVirtualDesktopManager manager;
 
     public VirtualDesktopManager()
     {
@@ -59,8 +59,8 @@ namespace WinTiler.Lib
     }
     ~VirtualDesktopManager()
     {
-      manager = null;
-      cmanager = null;
+      //manager = null;
+      //cmanager = null;
     }
     public bool IsWindowOnCurrentVirtualDesktop(IntPtr TopLevelWindow)
     {
