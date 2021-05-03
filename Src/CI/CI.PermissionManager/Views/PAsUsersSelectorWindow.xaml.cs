@@ -45,8 +45,8 @@ namespace CI.PermissionManager.Views
       _isDbg = false;
 #endif
 
-      var svrs = _config["ServerList"].Split(" ").ToList(); 
-      cbxSrvr.ItemsSource = svrs; 
+      var svrs = _config["ServerList"].Split(" ").ToList();
+      cbxSrvr.ItemsSource = svrs;
       cbxSrvr.SelectedIndex = 0;
       _context = new(string.Format(_config["SqlConStr"], svrs.First()));
     }
@@ -157,41 +157,37 @@ namespace CI.PermissionManager.Views
     }
     async Task<int> saveIfDirty(bool skipUdate = false)
     {
-      var rs = -1;
+      var rowsSaved = -1;
+      
       if (!_isDirty)
-        return rs;
+        return rowsSaved;
 
       try
       {
-        if (true)// Environment.MachineName == "RAZER1" || new[] { ".", @".\SqlExpress" }.Contains(cbxSrvr.SelectedValue))
+        if (!skipUdate)
         {
-          if (!skipUdate)
-          {
-            Blur = 5; pnlBusy.Visibility = Visibility.Visible;
-            await Task.Delay(33);
-            updateCrosRefTable();
-          }
-
-          rs = await _context.SaveChangesAsync();
-          if (rs > 0)
-          {
-            var msg = _isDbg ? $"{rs,3} rows saved to DB" : "";
-            _logger.LogInformation($" +{(DateTime.Now - App.Started):mm\\:ss\\.ff}  {msg}   ");
-          }
-          else
-            Title += $"-";
-
-          _isDirty = false;
+          Blur = 5; pnlBusy.Visibility = Visibility.Visible;
+          await Task.Delay(33);
+          updateCrosRefTable();
         }
+
+#if SaveForDevOnly //         if (true)// Environment.MachineName == "RAZER1" || new[] { ".", @".\SqlExpress" }.Contains(cbxSrvr.SelectedValue))
+        MessageBox.Show(this, "Press any key to continue...\n\n\t...or any other key to quit", "Changes Saved ...NOT!!! (SaveForDevOnly is ON) :(", MessageBoxButton.OK, MessageBoxImage.Information);
+#else
+        rowsSaved = await _context.SaveChangesAsync();
+#endif
+
+        if (rowsSaved > 0)
+          _logger.LogInformation($" +{(DateTime.Now - App.Started):mm\\:ss\\.ff}  {(_isDbg ? $"{rowsSaved,3} rows saved to DB" : "")}   ");
         else
-          MessageBox.Show(this, "Press any key to continue...\n\n\t...or any other key to quit", "Changes Saved ...NOT!!!", MessageBoxButton.OK, MessageBoxImage.Information);
+          Title += $"-";
+
+        _isDirty = false;
       }
       catch (Exception ex) { _logger.LogError($"{ex}"); ex.Pop(this); }
-      finally
-      {
-        Blur = 0; pnlBusy.Visibility = Visibility.Hidden;
-      }
-      return rs;
+      finally { Blur = 0; pnlBusy.Visibility = Visibility.Hidden; }
+
+      return rowsSaved;
     }
 
     async Task loadEF()
