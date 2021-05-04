@@ -32,9 +32,7 @@ namespace CI.DS.Visual.Views
     async void onSave(object s, RoutedEventArgs e) { await Task.Yield(); ; }
     async void onAudio(object s, RoutedEventArgs e) { await Task.Yield(); ;}
     async void onFlush(object s, RoutedEventArgs e) { await Task.Yield(); ;}
-    async void onAddMe(object s, RoutedEventArgs e) { await Task.Yield(); ; }
     async void onSettings(object s, RoutedEventArgs e) { await Task.Yield(); ; }
-    async void cbxSrvr_SelectionChanged(object s, RoutedEventArgs e) { await Task.Yield(); ; }
     //void onExit(object s, RoutedEventArgs e) { Close(); ; }
   }
 }

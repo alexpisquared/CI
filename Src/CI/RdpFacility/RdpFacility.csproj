@@ -31,7 +31,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Include="C:\g\AAV.Shared\Src\AsLink\PlatformNeutral\EvLogHelperBase.cs" Link="EvLogHelperBase.cs" />
+    <Compile Include="\g\AAV.Shared\Src\AsLink\PlatformNeutral\EvLogHelperBase.cs" Link="EvLogHelperBase.cs" />
   </ItemGroup>
 
 </Project>

@@ -192,7 +192,8 @@
           <ScaleTransform ScaleX="{Binding ZV, ElementName=wnd, FallbackValue=1}" ScaleY="{Binding ZV, ElementName=wnd, FallbackValue=1}" />
         </Grid.LayoutTransform>
         <Grid.RowDefinitions>
-          <RowDefinition Height="Auto"/>
+          <RowDefinition Height="7.475"/>
+          <RowDefinition Height="57.525"/>
           <RowDefinition Height="Auto"/>
           <RowDefinition Height="*"/>
           <RowDefinition Height="2"/>
@@ -200,16 +201,16 @@
           <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <Views:BrandTitleUserControl Margin="10" Opacity="1"/>
+        <Views:BrandTitleUserControl Margin="10,3,10,10" Opacity="1" Grid.Row="1" />
 
-        <StackPanel Margin="6" HorizontalAlignment="Right" VerticalAlignment="Bottom">
+        <StackPanel Margin="0,0,6,6" HorizontalAlignment="Right" VerticalAlignment="Bottom" Grid.Row="1">
           <StackPanel.Effect>
             <BlurEffect Radius="{Binding ElementName=wnd, Path=Blur, FallbackValue=0}" />
           </StackPanel.Effect>
           <TextBlock Text="{Binding Title, ElementName=wnd}" FontSize="11" FontWeight="SemiBold" x:Name="tbkTitle" d:Text="(alex.pigida) - .\sqlexpress - Total 0 matches found in   2.76 sec."/>
         </StackPanel>
 
-        <Grid Grid.Row="1" Grid.RowSpan="2" Margin="8">
+        <Grid Grid.Row="2" Grid.RowSpan="2" Margin="8,8,8,8">
           <Border>
             <Border.Effect>
               <DropShadowEffect ShadowDepth="2" Color="#000" BlurRadius="6" />
@@ -221,7 +222,7 @@
             </Border.Effect>
           </Border>
         </Grid>
-        <Grid Grid.Row="4" Grid.RowSpan="1" Margin="8">
+        <Grid Grid.Row="6" Grid.RowSpan="1" Margin="8,8,8,-8">
           <Border>
             <Border.Effect>
               <DropShadowEffect ShadowDepth="2" Color="#000" BlurRadius="6" />
@@ -234,7 +235,7 @@
           </Border>
         </Grid>
 
-        <Rectangle Grid.Row="1" Margin="8 10 8 0" >
+        <Rectangle Grid.Row="3" Margin="8,0,8,238" >
           <Rectangle.Fill>
             <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
               <GradientStop Color="#2fff" Offset="0"/>
@@ -243,7 +244,7 @@
           </Rectangle.Fill>
         </Rectangle>
 
-        <Grid Grid.Row="1" Grid.RowSpan="4" Margin="9 11" Visibility="Visible" >
+        <Grid Grid.Row="3" Margin="9,1,9,9" Visibility="Visible" >
           <Grid.Effect>
             <BlurEffect Radius="{Binding ElementName=wnd, Path=Blur, FallbackValue=0}" />
           </Grid.Effect>
@@ -271,12 +272,12 @@
             </StackPanel>
 
             <ContentControl Content="{Binding SelectedVM}" Grid.Row="1" />
-            
+
           </Grid>
 
         </Grid>
 
-        <Grid Grid.Row="1" Grid.RowSpan="4" x:Name="pnlBusy" Background="#dd84" Margin="8" Visibility="Collapsed" d:Visibility="Collapsed">
+        <Grid Grid.Row="2" Grid.RowSpan="2" x:Name="pnlBusy" Background="#dd84" Margin="8,8,8,6" Visibility="Collapsed" d:Visibility="Collapsed">
           <Grid.Effect>
             <BlurEffect Radius="0" />
           </Grid.Effect>
@@ -286,15 +287,14 @@
         </Grid>
       </Grid>
 
-      <StackPanel Grid.ColumnSpan="6" Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0" Opacity=".1">
-        <Button Margin="5 0" Content="_Flsh"     Height="26" Click="onFlush" Opacity="0" />
-        <Button Margin="5 0" Content="_Save"     Height="26" Click="onSave"  Visibility="Collapsed" />
-        <Button	Margin="5 0" Content="Se_ttings" Height="26" Click="onSettings" ToolTip="Adjust application settings" VerticalAlignment="Stretch" Visibility="Collapsed" />
-        <Button Margin="5 0" Content="_Add me"   Height="26" Click="onAddMe" x:Name="btnAddMe" />
-        <ComboBox x:Name="cbxSrvr" Margin="5 0"  Height="26" SelectionChanged="cbxSrvr_SelectionChanged" MinWidth="40"/>
-        <xui:ThemeToggleUsrCtrl x:Name="themeSelector" Margin="5 0" />
+      <StackPanel Grid.ColumnSpan="6" Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0" Opacity="1">
+        <Button   Margin="5 0" Content="_Flsh"     Height="26" Click="onFlush" Opacity="0" />
+        <Button   Margin="5 0" Content="_Save"     Height="26" Click="onSave"  Visibility="Collapsed" />
+        <Button	  Margin="5 0" Content="Se_ttings" Height="26" Click="onSettings" ToolTip="Adjust application settings" VerticalAlignment="Stretch" Visibility="Collapsed" />
+        <ComboBox Margin="5 0" MinWidth="80" Height="26" ItemsSource="{Binding SqlServers}" SelectedItem="{Binding SqlServer}"/>
+        <xui:ThemeSelectorUsrCtrl x:Name="themeSelector" Margin="5 0" />
         <!-- More themes for later
-        <xui:ThemeSelectorUsrCtrl x:Name="themeSelector"/>
+        <xui:ThemeToggleUsrCtrl x:Name="themeSelector" Margin="5 0" />
         <TextBlock  x:Name="tbkVer" Text="V 0.3.26.12" Margin="10 0" Foreground="#07e" />
         -->
         <xui:Zoomer x:Name="ZoomSlider2" ZmValue="{Binding ZV, ElementName=wnd, Mode=TwoWay}"	VerticalAlignment="Top" Margin="5 0"/>
