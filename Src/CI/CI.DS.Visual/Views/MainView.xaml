@@ -264,9 +264,9 @@
                     <Setter Property="BorderThickness"  Value="0" />
                   </Style>
                 </Menu.Resources>
-                <MenuItem Header="_Demo" Command="{Binding UpdateViewCommand}" CommandParameter="Demo" Foreground="#08f" Background="{DynamicResource MenuItemBackground1}" />
-                <MenuItem Header="_Acbg" Command="{Binding UpdateViewCommand}" CommandParameter="Acbg" Foreground="#a08" Background="{DynamicResource MenuItemBackground2}" />
-                <MenuItem Header="Acbg"  Command="{Binding UpdateViewCommand}" CommandParameter="Acbg" Foreground="#0a0" Background="{DynamicResource MenuItemBackground3}" />
+                <MenuItem Header="_Demo" Command="{Binding UpdateViewCommand}" CommandParameter="Demo" Background="{DynamicResource MenuItemBackground1}" />
+                <MenuItem Header="_Acbg" Command="{Binding UpdateViewCommand}" CommandParameter="Acbg" Background="{DynamicResource MenuItemBackground2}" />
+                <MenuItem Header="Acbg"  Command="{Binding UpdateViewCommand}" CommandParameter="Acbg" Background="{DynamicResource MenuItemBackground3}" />
               </Menu>
             </StackPanel>
 

@@ -35,7 +35,7 @@ namespace CI.PermissionManager.Views
       DataContext = this;
 
       Loaded += onLoaded;
-      themeSelector.ApplyTheme = ApplyTheme;
+      themeSelector.ThemeApplier = ApplyTheme;
       _logger = logger;
       _config = config;
 

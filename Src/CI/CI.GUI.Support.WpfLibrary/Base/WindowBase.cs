@@ -81,7 +81,7 @@ namespace CI.GUI.Support.WpfLibrary.Base
           return;
         }
 
-        //~Trace.Write($"    ~> ApplyTheme()   '{themeName}'  to  '{_isoFilenameONLY}' ... Dicts --/++:\r\n");
+        //~Trace.Write($"    ~> ThemeApplier()   '{themeName}'  to  '{_isoFilenameONLY}' ... Dicts --/++:\r\n");
         //~Application.Current.Resources.MergedDictionaries.ToList().ForEach(r => Trace.WriteLine($"    ~> -- Removing: {((System.Windows.Markup.IUriContext)r)?.BaseUri?.AbsolutePath.Replace(pref, "..."/*, StringComparison.OrdinalIgnoreCase*/)}"));
 
         var suri = $"{pref}{themeName}.xaml";
@@ -101,7 +101,7 @@ namespace CI.GUI.Support.WpfLibrary.Base
         Thm = themeName;
 
         //~Application.Current.Resources.MergedDictionaries.ToList().ForEach(r => Trace.WriteLine($"    ~> ++ Adding:   {((System.Windows.Markup.IUriContext)r)?.BaseUri?.AbsolutePath.Replace(pref, "..."/*, StringComparison.OrdinalIgnoreCase*/)}"));
-        //~Trace.Write($"    ~> ApplyTheme()   '{themeName}'  to  '{_isoFilenameONLY}' is done. \r\n");
+        //~Trace.Write($"    ~> ThemeApplier()   '{themeName}'  to  '{_isoFilenameONLY}' is done. \r\n");
       }
       catch (Exception ex) { _logger.LogError(ex, $""); ex.Pop(this); throw; }
     }

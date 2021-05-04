@@ -55,9 +55,9 @@
         </Style.Triggers>
       </Style>
 
-      <SolidColorBrush x:Key="MenuItemBackground1" Color="#ece"/>
-      <SolidColorBrush x:Key="MenuItemBackground2" Color="#ccf"/>
-      <SolidColorBrush x:Key="MenuItemBackground3" Color="#cdc"/>
+      <SolidColorBrush x:Key="MenuItemBackground1" Color="#10d0"/>
+      <SolidColorBrush x:Key="MenuItemBackground2" Color="#100b"/>
+      <SolidColorBrush x:Key="MenuItemBackground3" Color="#1d00"/>
 
     </ResourceDictionary>
   </Application.Resources>

@@ -6,6 +6,7 @@
     <UseWPF>true</UseWPF>
     <Platforms>AnyCPU;x64;x86</Platforms>
     <UserSecretsId>4ac5c3b3-e7ff-488e-89be-5a01fb7a4c89</UserSecretsId>
+    <ApplicationIcon>sql.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>

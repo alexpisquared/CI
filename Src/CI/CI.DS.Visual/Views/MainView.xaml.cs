@@ -20,6 +20,7 @@ namespace CI.DS.Visual.Views
     public MainView(Microsoft.Extensions.Logging.ILogger<MainView> logger, Microsoft.Extensions.Configuration.IConfigurationRoot config)
     {
       InitializeComponent(); ;
+      themeSelector.ThemeApplier = ApplyTheme;
 
       DataContext = new MainVM(logger, config);
     }
