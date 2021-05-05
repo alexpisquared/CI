@@ -1,6 +1,7 @@
 ﻿using DB.Inventory.Models;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Mvvm.Input;
@@ -18,7 +19,7 @@ namespace CI.DS.ViewModel
   public class AllCashByGroupVM : ObservableValidator
   {
     readonly ILogger _logger;
-    readonly Microsoft.Extensions.Configuration.IConfigurationRoot _config;
+    readonly IConfigurationRoot _config;
     readonly InventoryContext _context;
     int _group_ID = 2, _startDat = 20200101, _endDateI = 20210505;
     string _dateType = "T", _groupNam = "2", _detailedReport = "";
@@ -26,7 +27,7 @@ namespace CI.DS.ViewModel
     ObservableCollection<BookGroup> _bookGroups = new();
     ICommand? _searchCommand;
 
-    public AllCashByGroupVM(Microsoft.Extensions.Logging.ILogger logger, Microsoft.Extensions.Configuration.IConfigurationRoot config)
+    public AllCashByGroupVM(ILogger logger, IConfigurationRoot config)
     {
       _logger = logger;
       _config = config;

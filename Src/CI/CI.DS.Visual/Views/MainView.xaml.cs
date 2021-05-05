@@ -33,6 +33,5 @@ namespace CI.DS.Visual.Views
     async void onAudio(object s, RoutedEventArgs e) { await Task.Yield(); ;}
     async void onFlush(object s, RoutedEventArgs e) { await Task.Yield(); ;}
     async void onSettings(object s, RoutedEventArgs e) { await Task.Yield(); ; }
-    //void onExit(object s, RoutedEventArgs e) { Close(); ; }
   }
 }

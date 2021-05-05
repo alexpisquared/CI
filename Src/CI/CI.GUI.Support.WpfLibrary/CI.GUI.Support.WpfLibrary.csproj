@@ -25,6 +25,10 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\CI.Standard.Lib\CI.Standard.Lib.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
         <Resource Include="Assets\Watermark.png" />
     </ItemGroup>
 

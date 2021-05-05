@@ -14,6 +14,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\..\CI-Reimagined-Invention\Src\CI-RI\DB.Inventory\DB.Inventory.csproj" />
+    <ProjectReference Include="..\CI.Standard.Lib\CI.Standard.Lib.csproj" />
   </ItemGroup>
 
 </Project>

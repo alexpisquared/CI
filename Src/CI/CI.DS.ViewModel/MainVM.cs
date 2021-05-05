@@ -13,6 +13,7 @@ namespace CI.DS.ViewModel
   {
     readonly ILogger _logger;
     readonly IConfigurationRoot _config;
+    readonly UserPrefs _userPrefs;
     ObservableValidator _selectedVM;
     ObservableCollection<string> _sqlServers = new();
     string _sqlServer = "T";
@@ -25,6 +26,7 @@ namespace CI.DS.ViewModel
       UpdateViewCommand = new UpdateViewCommand(this);
 
       _config["ServerList"].Split(" ").ToList().ForEach(r => _sqlServers.Add(r));
+      _userPrefs = new UserPrefs();
     }
 
     public ObservableCollection<string> SqlServers { get => _sqlServers; set => SetProperty(ref _sqlServers, value, true); }

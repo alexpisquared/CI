@@ -15,7 +15,7 @@ namespace WinTiler.Lib
     static UserPrefs? _userPrefs;
     static bool _skipMinimized = true;
 
-    public static void GetDesktopWindowHandlesAndTitles(out List<IntPtr>? handles, out List<string>? titles, out List<string>? epaths, VirtDesktopMgr vdm, UserPrefs up, bool skipMinimized)
+    public static void GetDesktopWindowHandlesAndTitles(out List<IntPtr>? handles, out List<string>? wtitles, out List<string>? expaths, VirtDesktopMgr vdm, UserPrefs up, bool skipMinimized)
     {
       WindowHandles = new List<IntPtr>();
       WindowTitles = new List<string>();
@@ -27,14 +27,14 @@ namespace WinTiler.Lib
       if (!Externs.EnumDesktopWindows(filterCallback))
       {
         handles = null;
-        titles = null;
-        epaths = null;
+        wtitles = null;
+        expaths = null;
       }
       else
       {
         handles = WindowHandles;
-        titles = WindowTitles;
-        epaths = ExePaths;
+        wtitles = WindowTitles;
+        expaths = ExePaths;
       }
     }
 

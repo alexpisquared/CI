@@ -16,18 +16,18 @@ namespace WinTiler.Lib
   {
     readonly ObservableCollection<WindowInfo> _allWindows = new();
     readonly VirtDesktopMgr _vdm = new();
-    readonly UserPrefs _up = JsonIsoFileSerializer.Load<UserPrefs>() ?? new UserPrefs();
+    readonly UserPrefs _userPrefs = JsonIsoFileSerializer.Load<UserPrefs>() ?? new UserPrefs();
     string _report = "";
 
     public SmartTiler()
     {
-      Debug.WriteLine($"** {_up.ExesToIgnore.Count} app names loaded:  {string.Join(' ', _up.ExesToIgnore)}");
-      Debug.WriteLine($"** {_up.TitlToIgnore.Count} wi titles loaded:  {string.Join(' ', _up.TitlToIgnore)}");
+      Debug.WriteLine($"** {_userPrefs.ExesToIgnore.Count} app names loaded:  {string.Join(' ', _userPrefs.ExesToIgnore)}");
+      Debug.WriteLine($"** {_userPrefs.TitlToIgnore.Count} wi titles loaded:  {string.Join(' ', _userPrefs.TitlToIgnore)}");
     }
 
     public ObservableCollection<WindowInfo> AllWindows => _allWindows;
 
-    public bool SkipMinimized { get => _up.SkipMinimized; set => _up.SkipMinimized = value; }
+    public bool SkipMinimized { get => _userPrefs.SkipMinimized; set => _userPrefs.SkipMinimized = value; }
     public string Report { get => _report; }
 
     public string CollectDesktopWindows(bool? sm = null)
@@ -36,7 +36,7 @@ namespace WinTiler.Lib
         SkipMinimized = sm.Value;
 
       var sw = Stopwatch.StartNew();
-      DesktopWindowsStuff.GetDesktopWindowHandlesAndTitles(out var handles, out var titles, out var epaths, _vdm, _up, _up.SkipMinimized);
+      DesktopWindowsStuff.GetDesktopWindowHandlesAndTitles(out var handles, out var titles, out var epaths, _vdm, _userPrefs, _userPrefs.SkipMinimized);
 
       var lst = new List<WindowInfo>();
       _allWindows.Clear(); for (var i = 0; i < titles?.Count; i++) lst.Add(new WindowInfo(titles[i], epaths?[i] ?? "..epaths is null", handles?[i] ?? IntPtr.Zero));
@@ -95,8 +95,8 @@ namespace WinTiler.Lib
         }
       }
     }
-    public void AddToIgnoreByExeName(string exePth) { _up.ExesToIgnore.Add(exePth); JsonIsoFileSerializer.Save(_up); }
-    public void AddToIgnoreByWiTitle(string wTitle) { _up.TitlToIgnore.Add(wTitle); JsonIsoFileSerializer.Save(_up); }
+    public void AddToIgnoreByExeName(string exePth) { _userPrefs.ExesToIgnore.Add(exePth); JsonIsoFileSerializer.Save(_userPrefs); }
+    public void AddToIgnoreByWiTitle(string wTitle) { _userPrefs.TitlToIgnore.Add(wTitle); JsonIsoFileSerializer.Save(_userPrefs); }
 
     void closeAll(string v)
     {
