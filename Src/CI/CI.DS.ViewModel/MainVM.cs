@@ -16,7 +16,7 @@ namespace CI.DS.ViewModel
     readonly UserPrefs _userPrefs;
     ObservableValidator _selectedVM;
     ObservableCollection<string> _sqlServers = new();
-    string _sqlServer = "T";
+    string _sqlServer = "Unknown";
 
     public MainVM(ILogger logger, IConfigurationRoot config)
     {
@@ -26,12 +26,21 @@ namespace CI.DS.ViewModel
       UpdateViewCommand = new UpdateViewCommand(this);
 
       _config["ServerList"].Split(" ").ToList().ForEach(r => _sqlServers.Add(r));
-      _userPrefs = new UserPrefs();
+      _userPrefs = UserPrefs.Load<UserPrefs>();
+      SqlServer = _userPrefs.SqlServer;
     }
 
     public ObservableCollection<string> SqlServers { get => _sqlServers; set => SetProperty(ref _sqlServers, value, true); }
 
-    [Required(AllowEmptyStrings = false, ErrorMessage = "This field {0} may not be empty.")] public string SqlServer { get => _sqlServer; set => SetProperty(ref _sqlServer, value, true); /*(SearchCommand as Command).RaiseCanExecuteChanged(); */ }
+    [Required(AllowEmptyStrings = false, ErrorMessage = "This field {0} may not be empty.")] public string SqlServer
+    {
+      get => _sqlServer; set
+      {
+        SetProperty(ref _sqlServer, value, true); /*(SearchCommand as Command).RaiseCanExecuteChanged(); */
+        _userPrefs.SqlServer = value;
+        UserPrefs.Save<UserPrefs>(_userPrefs);
+      }
+    }
 
     public ObservableValidator SelectedVM { get => _selectedVM; set => SetProperty(ref _selectedVM, value); }
 
