@@ -7,16 +7,16 @@
              mc:Ignorable="d" 
              d:DesignHeight="48" d:DesignWidth="80">
 
-  <Menu x:Name="menu1" VerticalAlignment="Center" Background="Transparent" BorderThickness="0">
-    <MenuItem   Header="_Theme"                   Background="Transparent" BorderThickness="0">
-      <MenuItem Header="Dark.Google"        Tag="Dark.Google"       Click="onMenuClick" IsCheckable="True" />
-      <MenuItem Header="Dark.Gray"          Tag="Dark.Gray"         Click="onMenuClick" IsCheckable="True" />
-      <MenuItem Header="Dark.Iress"         Tag="Dark.Iress"        Click="onMenuClick" IsCheckable="True" />
-      <MenuItem Header="Lite.Iress"         Tag="Lite.Iress"        Click="onMenuClick" IsCheckable="True" />
-      <MenuItem Header="Lite.Bootstrap"     Tag="Lite.Bootstrap"    Click="onMenuClick" IsCheckable="True" />
-      <MenuItem Header="Lite.Google"        Tag="Lite.Google"       Click="onMenuClick" IsCheckable="True" />
-      <MenuItem Header="Lite.Gray"          Tag="Lite.Gray"         Click="onMenuClick" IsCheckable="True" />
-      <MenuItem Header="Lite.VaporWave"     Tag="Lite.VaporWave"    Click="onMenuClick" IsCheckable="True" />
+  <Menu x:Name="menu1" VerticalAlignment="Center"   Background="Transparent" BorderThickness="0">
+    <MenuItem   Header="ð" FontFamily="Wingdings 2" Background="Transparent" BorderThickness="0">
+      <MenuItem Header="Dark Google"        Tag="Dark.Google"       Click="onMenuClick" IsCheckable="True" FontFamily="Arial" />
+      <MenuItem Header="Dark Gray"          Tag="Dark.Gray"         Click="onMenuClick" IsCheckable="True" FontFamily="Arial" />
+      <MenuItem Header="Dark Iress"         Tag="Dark.Iress"        Click="onMenuClick" IsCheckable="True" FontFamily="Arial" />
+      <MenuItem Header="Lite Iress"         Tag="Lite.Iress"        Click="onMenuClick" IsCheckable="True" FontFamily="Arial" />
+      <MenuItem Header="Lite Bootstrap"     Tag="Lite.Bootstrap"    Click="onMenuClick" IsCheckable="True" FontFamily="Arial" />
+      <MenuItem Header="Lite Google"        Tag="Lite.Google"       Click="onMenuClick" IsCheckable="True" FontFamily="Arial" />
+      <MenuItem Header="Lite Gray"          Tag="Lite.Gray"         Click="onMenuClick" IsCheckable="True" FontFamily="Arial" />
+      <MenuItem Header="Lite VaporWave"     Tag="Lite.VaporWave"    Click="onMenuClick" IsCheckable="True" FontFamily="Arial" />
     </MenuItem>
   </Menu>
 </UserControl>
