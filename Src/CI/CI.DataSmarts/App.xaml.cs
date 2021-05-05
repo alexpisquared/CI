@@ -11,7 +11,7 @@ namespace CI.DataSmarts
 {
   public partial class App : Application
   {
-    public readonly DateTime Started;
+    public  DateTime Started { get; private set; }
     readonly IConfigurationRoot _config;
     readonly ILogger<MainView> _logger;
 
@@ -27,8 +27,11 @@ namespace CI.DataSmarts
       _logger.LogInformation($" +{(DateTime.Now - Started):mm\\:ss\\.ff}  {audit}");
     }
 
-    protected override void OnStartup(StartupEventArgs e)
+    protected override async void OnStartup(StartupEventArgs e)
     {
+      //Visual.Lib.Helpers.Bpr.Test();
+      await Visual.Lib.Helpers.Bpr.Start();
+
       _logger.LogInformation($" +{(DateTime.Now - Started):mm\\:ss\\.ff}  App.OnStartup()");
 
       Current.DispatcherUnhandledException += UnhandledExceptionHndlr.OnCurrentDispatcherUnhandledException;
@@ -42,6 +45,10 @@ namespace CI.DataSmarts
       base.OnStartup(e);
     }
 
-    protected override void OnExit(ExitEventArgs e) { _logger.LogInformation($" +{(DateTime.Now - Started):mm\\:ss\\.ff}  App.OnExit()\n"); base.OnExit(e); }
+    protected override async void OnExit(ExitEventArgs e)
+    {
+      await Visual.Lib.Helpers.Bpr.Finish();
+      _logger.LogInformation($" +{(DateTime.Now - Started):mm\\:ss\\.ff}  App.OnExit()\n"); base.OnExit(e);
+    }
   }
 }

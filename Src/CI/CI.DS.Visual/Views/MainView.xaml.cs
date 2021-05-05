@@ -1,17 +1,6 @@
 ﻿using CI.DS.ViewModel;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace CI.DS.Visual.Views
 {
@@ -19,9 +8,9 @@ namespace CI.DS.Visual.Views
   {
     public MainView(Microsoft.Extensions.Logging.ILogger<MainView> logger, Microsoft.Extensions.Configuration.IConfigurationRoot config)
     {
-      InitializeComponent(); ;
-      themeSelector.ThemeApplier = ApplyTheme;
+      InitializeComponent();
 
+      themeSelector.ThemeApplier = ApplyTheme;
       DataContext = new MainVM(logger, config);
     }
 
@@ -30,8 +19,8 @@ namespace CI.DS.Visual.Views
     void onWindowRestoree(object s, RoutedEventArgs e) { wr.Visibility = Visibility.Collapsed; wm.Visibility = Visibility.Visible; WindowState = WindowState.Normal; }
     void onWindowMaximize(object s, RoutedEventArgs e) { wm.Visibility = Visibility.Collapsed; wr.Visibility = Visibility.Visible; WindowState = WindowState.Maximized; }
     async void onSave(object s, RoutedEventArgs e) { await Task.Yield(); ; }
-    async void onAudio(object s, RoutedEventArgs e) { await Task.Yield(); ;}
-    async void onFlush(object s, RoutedEventArgs e) { await Task.Yield(); ;}
+    async void onAudio(object s, RoutedEventArgs e) { await Task.Yield(); ; }
+    async void onFlush(object s, RoutedEventArgs e) { await Task.Yield(); ; }
     async void onSettings(object s, RoutedEventArgs e) { await Task.Yield(); ; }
   }
 }

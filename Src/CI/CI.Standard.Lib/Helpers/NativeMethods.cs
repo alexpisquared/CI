@@ -18,8 +18,6 @@ namespace CI.Standard.Lib.Helpers
     public static int Beep(int freq, int dur) => freq + dur;
 #endif
 
-
-
     #region Win32 API declarations to set and get window placement
     public static bool SetWindowPlacement_(IntPtr hWnd, [In] ref WindowPlacement lpwndpl) => SetWindowPlacement(hWnd, ref lpwndpl);
     public static bool GetWindowPlacement_(IntPtr hWnd, out WindowPlacement lpwndpl) => GetWindowPlacement(hWnd, out lpwndpl);
