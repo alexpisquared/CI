@@ -1,4 +1,4 @@
-﻿using CI.GUI.Support.WpfLibrary.Extensions;
+﻿using CI.Standard.Lib.Extensions;
 using System;
 using System.IO;
 using System.IO.IsolatedStorage;
@@ -8,7 +8,7 @@ using System.Text;
 using System.Xml;
 using System.Xml.Serialization;
 
-namespace CI.GUI.Support.WpfLibrary.Helpers
+namespace CI.Standard.Lib.Helpers
 {
   interface IFileSerialiser
   {

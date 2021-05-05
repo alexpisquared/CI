@@ -1,10 +1,10 @@
-﻿<lnk:WindowBase xmlns:lnk="clr-namespace:CI.GUI.Support.WpfLibrary.Base" x:Name="wnd" 
-                x:Class="CI.GUI.Support.WpfLibrary.Views.ExceptionPopup"
+﻿<lnk:WindowBase xmlns:lnk="clr-namespace:CI.Visual.Lib.Base" x:Name="wnd" 
+                x:Class="CI.Standard.Lib.Views.ExceptionPopup"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:CI.GUI.Support.WpfLibrary.Views"
+        xmlns:local="clr-namespace:CI.Standard.Lib.Views"
         mc:Ignorable="d"
         Title="Exception Popup" Height="600" Width="900"
         Style="{DynamicResource WindowStyle_Aav0}" Loaded="onLoaded">
@@ -15,11 +15,11 @@
     <ResourceDictionary >
       <ResourceDictionary.MergedDictionaries>
         <!--
-        <ResourceDictionary Source="/CI.GUI.Support.WpfLibrary;component/AsLink/Theme.Color.Lite.VaporWave.xaml" />
-        <ResourceDictionary Source="/CI.GUI.Support.WpfLibrary;component/Base/DataGrid.Base.xaml" />
+        <ResourceDictionary Source="/CI.Visual.Lib;component/AsLink/Theme.Color.Lite.VaporWave.xaml" />
+        <ResourceDictionary Source="/CI.Visual.Lib;component/Base/DataGrid.Base.xaml" />
         -->
-        <ResourceDictionary Source="/CI.GUI.Support.WpfLibrary;component/ColorScheme/Theme.Color.Dark.Gray.xaml" />
-        <ResourceDictionary Source="/CI.GUI.Support.WpfLibrary;component/Base/BasicDefaultsLayout.xaml" />
+        <ResourceDictionary Source="/CI.Visual.Lib;component/ColorScheme/Theme.Color.Dark.Gray.xaml" />
+        <ResourceDictionary Source="/CI.Visual.Lib;component/Base/BasicDefaultsLayout.xaml" />
       </ResourceDictionary.MergedDictionaries>
     </ResourceDictionary>
   </lnk:WindowBase.Resources>

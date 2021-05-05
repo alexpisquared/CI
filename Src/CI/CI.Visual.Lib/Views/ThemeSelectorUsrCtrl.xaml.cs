@@ -2,7 +2,7 @@
 using System.Windows;
 using System.Windows.Controls;
 
-namespace CI.GUI.Support.WpfLibrary.Views
+namespace CI.Standard.Lib.Views
 {
   public partial class ThemeSelectorUsrCtrl : UserControl
   {

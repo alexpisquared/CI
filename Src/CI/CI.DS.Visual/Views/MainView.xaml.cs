@@ -15,7 +15,7 @@ using System.Windows.Shapes;
 
 namespace CI.DS.Visual.Views
 {
-  public partial class MainView : CI.GUI.Support.WpfLibrary.Base.WindowBase
+  public partial class MainView : CI.Visual.Lib.Base.WindowBase
   {
     public MainView(Microsoft.Extensions.Logging.ILogger<MainView> logger, Microsoft.Extensions.Configuration.IConfigurationRoot config)
     {

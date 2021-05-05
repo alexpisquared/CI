@@ -1,4 +1,4 @@
-﻿using CI.GUI.Support.WpfLibrary.Helpers;
+﻿using CI.Standard.Lib.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;

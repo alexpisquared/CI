@@ -2,7 +2,7 @@
 using System.Windows.Controls;
 using System.Windows.Media;
 
-namespace CI.GUI.Support.WpfLibrary.Views
+namespace CI.Standard.Lib.Views
 {
   public partial class ProgressBar : UserControl
   {

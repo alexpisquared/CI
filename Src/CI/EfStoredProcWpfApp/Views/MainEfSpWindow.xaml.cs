@@ -2,7 +2,7 @@
 
 namespace EfStoredProcWpfApp.Views
 {
-  public partial class MainEfSpWindow : CI.GUI.Support.WpfLibrary.Base.WindowBase
+  public partial class MainEfSpWindow : CI.Visual.Lib.Base.WindowBase
   {
     public MainEfSpWindow(Microsoft.Extensions.Logging.ILogger<MainEfSpWindow> _logger, Microsoft.Extensions.Configuration.IConfigurationRoot? _config) => InitializeComponent();
 

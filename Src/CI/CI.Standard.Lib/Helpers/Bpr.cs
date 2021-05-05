@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace CI.GUI.Support.WpfLibrary.Helpers
+namespace CI.Standard.Lib.Helpers
 {
   public class Bpr
   {

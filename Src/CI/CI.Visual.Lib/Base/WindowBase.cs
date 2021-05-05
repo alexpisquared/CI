@@ -1,5 +1,5 @@
-﻿using CI.GUI.Support.WpfLibrary.Extensions;
-using CI.GUI.Support.WpfLibrary.Helpers;
+﻿using CI.Standard.Lib.Extensions;
+using CI.Standard.Lib.Helpers;
 using Microsoft.Extensions.Logging;
 using System;
 using System.ComponentModel;
@@ -10,7 +10,7 @@ using System.Windows;
 using System.Windows.Input;
 using System.Windows.Interop;
 
-namespace CI.GUI.Support.WpfLibrary.Base
+namespace CI.Visual.Lib.Base
 {
   public partial class WindowBase : Window
   {
@@ -72,7 +72,7 @@ namespace CI.GUI.Support.WpfLibrary.Base
 
     protected void ApplyTheme(string themeName)
     {
-      const string pref = "/CI.GUI.Support.WpfLibrary;component/ColorScheme/Theme.Color.";
+      const string pref = "/CI.Visual.Lib;component/ColorScheme/Theme.Color.";
 
       try
       {

@@ -2,7 +2,7 @@
 using System.Diagnostics;
 using System.Linq;
 
-namespace CI.GUI.Support.WpfLibrary.Helpers
+namespace CI.Standard.Lib.Helpers
 {
   public class WindowManager
   {

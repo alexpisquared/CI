@@ -4,7 +4,7 @@
     "projects": [
       "..\\..\\..\\CI-Reimagined-Invention\\Src\\CI-RI\\DB.Inventory\\DB.Inventory.csproj",
       "..\\..\\..\\ScSv\\Src\\AlexPi.Scr\\WindowsFormsLib\\WindowsFormsLib.csproj",
-      "CI.GUI.Support.WpfLibrary\\CI.GUI.Support.WpfLibrary.csproj",
+      "CI.Visual.Lib\\CI.Visual.Lib.csproj",
       "CI.PermissionManager\\CI.PermissionManager.csproj",
       "WinMgr\\WinMgr.csproj",
       "WinTiler.Lib\\WinTiler.Lib.csproj",

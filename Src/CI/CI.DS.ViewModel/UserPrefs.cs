@@ -1,5 +1,5 @@
 ﻿
-using CI.GUI.Support.WpfLibrary.Helpers;
+using CI.Standard.Lib.Helpers;
 
 namespace CI.DS.ViewModel
 {

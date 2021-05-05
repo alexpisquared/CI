@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Text;
 
-namespace CI.GUI.Support.WpfLibrary.Helpers
+namespace CI.Standard.Lib.Helpers
 {
   public static class NativeMethods
   {

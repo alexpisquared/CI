@@ -1,5 +1,5 @@
-﻿using CI.GUI.Support.WpfLibrary.Extensions;
-using CI.GUI.Support.WpfLibrary.Helpers;
+﻿using CI.Visual.Lib.Extensions;
+using CI.Visual.Lib.Helpers;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Serilog;

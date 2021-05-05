@@ -1,4 +1,4 @@
-﻿using CI.GUI.Support.WpfLibrary.Extensions;
+﻿using CI.Standard.Lib.Extensions;
 using DB.Inventory.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -15,7 +15,7 @@ using System.Windows.Data;
 
 namespace CI.PermissionManager.Views
 {
-  public partial class PAsUsersSelectorWindow : GUI.Support.WpfLibrary.Base.WindowBase
+  public partial class PAsUsersSelectorWindow : Visual.Lib.Base.WindowBase
   {
     readonly CollectionViewSource _userViewSource, _permViewSource;
     InventoryContext _context;

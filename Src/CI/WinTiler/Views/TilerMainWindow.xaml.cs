@@ -1,4 +1,4 @@
-﻿using CI.GUI.Support.WpfLibrary.Extensions;
+﻿using CI.Visual.Lib.Extensions;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using System;
@@ -9,7 +9,7 @@ using WinTiler.Lib;
 
 namespace WinTiler.Views
 {
-  public partial class TilerMainWindow : CI.GUI.Support.WpfLibrary.Base.WindowBase
+  public partial class TilerMainWindow : CI.Visual.Lib.Base.WindowBase
   {
     readonly SmartTiler _st = new();
     private readonly ILogger<TilerMainWindow> _logger;

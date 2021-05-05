@@ -1,6 +1,6 @@
-﻿<lnk:WindowBase xmlns:lnk="clr-namespace:CI.GUI.Support.WpfLibrary.Base;assembly=CI.GUI.Support.WpfLibrary" x:Name="wnd" x:Class="CI.DS.Visual.Views.MainView" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d"
-                xmlns:xui="clr-namespace:CI.GUI.Support.WpfLibrary.Views;assembly=CI.GUI.Support.WpfLibrary"                 
-                xmlns:stb="clr-namespace:CI.GUI.Support.WpfLibrary.Helpers;assembly=CI.GUI.Support.WpfLibrary" 
+﻿<lnk:WindowBase xmlns:lnk="clr-namespace:CI.Visual.Lib.Base;assembly=CI.Visual.Lib" x:Name="wnd" x:Class="CI.DS.Visual.Views.MainView" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d"
+                xmlns:xui="clr-namespace:CI.Standard.Lib.Views;assembly=CI.Visual.Lib"                 
+                xmlns:stb="clr-namespace:CI.Standard.Lib.Helpers;assembly=CI.Visual.Lib" 
                 xmlns:vm="clr-namespace:CI.DS.ViewModel;assembly=CI.DS.ViewModel" 
                 xmlns:Views="clr-namespace:CI.DS.Visual.Views"
                 xmlns:local="clr-namespace:CI.DS.Visual.Views"
@@ -13,12 +13,12 @@
   <lnk:WindowBase.Resources>
     <ResourceDictionary>
       <ResourceDictionary.MergedDictionaries>
-        <ResourceDictionary Source="/CI.GUI.Support.WpfLibrary;component/Base/BasicDefaultsLayout.xaml" />
-        <ResourceDictionary Source="/CI.GUI.Support.WpfLibrary;component/Base/DataGrid.Base.xaml" />
-        <ResourceDictionary Source="/CI.GUI.Support.WpfLibrary;component/Base/ComboBox.Base.xaml" />
-        <ResourceDictionary Source="/CI.GUI.Support.WpfLibrary;component/Base/DataGrid.Anime.xaml" />
+        <ResourceDictionary Source="/CI.Visual.Lib;component/Base/BasicDefaultsLayout.xaml" />
+        <ResourceDictionary Source="/CI.Visual.Lib;component/Base/DataGrid.Base.xaml" />
+        <ResourceDictionary Source="/CI.Visual.Lib;component/Base/ComboBox.Base.xaml" />
+        <ResourceDictionary Source="/CI.Visual.Lib;component/Base/DataGrid.Anime.xaml" />
         <!--
-        <ResourceDictionary Source="/CI.GUI.Support.WpfLibrary;component/ColorScheme/Theme.Color.Dark.Gray.xaml" />-->
+        <ResourceDictionary Source="/CI.Visual.Lib;component/ColorScheme/Theme.Color.Dark.Gray.xaml" />-->
       </ResourceDictionary.MergedDictionaries>
 
       <DataTemplate DataType="{x:Type vm:DemoVM}" >

@@ -34,7 +34,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\..\CI-Reimagined-Invention\Src\CI-RI\DB.Inventory\DB.Inventory.csproj" />
-    <ProjectReference Include="..\CI.GUI.Support.WpfLibrary\CI.GUI.Support.WpfLibrary.csproj" />
+    <ProjectReference Include="..\CI.Visual.Lib\CI.Visual.Lib.csproj" />
+    <ProjectReference Include="..\CI.Standard.Lib\CI.Standard.Lib.csproj" />
     <PackageReference Include="Microsoft.Data.SqlClient.SNI.runtime" Version="2.1.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.5" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="5.0.5" />

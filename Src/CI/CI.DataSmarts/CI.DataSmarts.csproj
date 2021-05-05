@@ -17,7 +17,9 @@
 
   <ItemGroup>
     <ProjectReference Include="..\CI.DS.Visual\CI.DS.Visual.csproj" />
-    <ProjectReference Include="..\CI.GUI.Support.WpfLibrary\CI.GUI.Support.WpfLibrary.csproj" />
+    <ProjectReference Include="..\CI.Standard.Lib\CI.Standard.Lib.csproj" />
+    <ProjectReference Include="..\CI.Visual.Lib\CI.Visual.Lib.csproj" />
+
   </ItemGroup>
 
 </Project>

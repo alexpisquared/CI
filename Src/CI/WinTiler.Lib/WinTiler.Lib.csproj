@@ -9,7 +9,9 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\..\ScSv\Src\AlexPi.Scr\WindowsFormsLib\WindowsFormsLib.csproj" />
-    <ProjectReference Include="..\CI.GUI.Support.WpfLibrary\CI.GUI.Support.WpfLibrary.csproj" />
+    <ProjectReference Include="..\CI.Standard.Lib\CI.Standard.Lib.csproj" />
+    <ProjectReference Include="..\CI.Visual.Lib\CI.Visual.Lib.csproj" />
+
   </ItemGroup>
 
 </Project>

@@ -1,10 +1,10 @@
-﻿using CI.GUI.Support.WpfLibrary.Helpers;
+﻿using CI.Standard.Lib.Helpers;
 using System;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Text;
 
-namespace CI.GUI.Support.WpfLibrary.Extensions
+namespace CI.Standard.Lib.Extensions
 {
   public static class ExnLogr // the one and only .net core 3 (Dec2019)
   {

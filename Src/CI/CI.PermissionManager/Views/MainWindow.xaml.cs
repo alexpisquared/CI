@@ -7,7 +7,7 @@ using System.Windows.Data;
 
 namespace CI.PermissionManager
 {
-  public partial class MainWindow : GUI.Support.WpfLibrary.Base.WindowBase
+  public partial class MainWindow : Visual.Lib.Base.WindowBase
   {
     readonly ICollectionView _cv;
     readonly InventoryContext _context = new(@"Server=.\sqlexpress;Database=Inventory;Trusted_Connection=True;");

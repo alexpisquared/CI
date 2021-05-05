@@ -1,10 +1,10 @@
-﻿using CI.GUI.Support.WpfLibrary.Base;
-using CI.GUI.Support.WpfLibrary.Extensions;
+﻿using CI.Visual.Lib.Base;
+using CI.Standard.Lib.Extensions;
 using System;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace CI.GUI.Support.WpfLibrary.Views
+namespace CI.Standard.Lib.Views
 {
   public partial class ExceptionPopup : WindowBase
   {

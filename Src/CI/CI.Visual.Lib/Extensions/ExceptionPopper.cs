@@ -1,11 +1,11 @@
-﻿using CI.GUI.Support.WpfLibrary.Views;
+﻿using CI.Standard.Lib.Views;
 using System;
 using System.Diagnostics;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Windows;
 
-namespace CI.GUI.Support.WpfLibrary.Extensions
+namespace CI.Standard.Lib.Extensions
 {
     public static class ExnPopr
     {

@@ -1,5 +1,5 @@
 ﻿using AsyncSocketLib;
-using CI.GUI.Support.WpfLibrary.Base;
+using CI.Visual.Lib.Base;
 using System;
 using System.Media;
 using System.Net;

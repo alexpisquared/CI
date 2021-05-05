@@ -4,7 +4,7 @@
     "projects": [
       "AsyncSocketLib\\AsyncSocketLib.csproj",
       "AsyncSocketTester\\AsyncSocketTester.csproj",
-      "CI.GUI.Support.WpfLibrary\\CI.GUI.Support.WpfLibrary.csproj",
+      "CI.Visual.Lib\\CI.Visual.Lib.csproj",
     ]
   }
 }

@@ -1,4 +1,4 @@
-﻿using CI.GUI.Support.WpfLibrary.Helpers;
+﻿using CI.Standard.Lib.Helpers;
 using EfStoredProcWpfApp.Views;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;

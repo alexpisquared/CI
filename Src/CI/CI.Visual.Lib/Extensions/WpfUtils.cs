@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
 
-namespace CI.GUI.Support.WpfLibrary.Extensions
+namespace CI.Standard.Lib.Extensions
 {
   public static class WpfUtils
   {

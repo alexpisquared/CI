@@ -27,7 +27,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AsyncSocketLib", "AsyncSock
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AsyncSocketTester", "AsyncSocketTester\AsyncSocketTester.csproj", "{7426870D-0609-4D1D-B432-C38628BC747C}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CI.GUI.Support.WpfLibrary", "CI.GUI.Support.WpfLibrary\CI.GUI.Support.WpfLibrary.csproj", "{AE96A3DC-DF2B-47DF-BBB8-9B8FF39A6BE7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CI.Visual.Lib", "CI.Visual.Lib\CI.Visual.Lib.csproj", "{AE96A3DC-DF2B-47DF-BBB8-9B8FF39A6BE7}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "POCs", "POCs", "{3B6570B3-94D9-4D8F-A415-C8F3F0B680B5}"
 EndProject

@@ -1,10 +1,10 @@
-﻿using CI.GUI.Support.WpfLibrary.Extensions;
+﻿using CI.Standard.Lib.Extensions;
 using System;
 using System.Diagnostics;
 using System.Windows;
 using System.Windows.Threading;
 
-namespace CI.GUI.Support.WpfLibrary.Helpers
+namespace CI.Standard.Lib.Helpers
 {
   public static class UnhandledExceptionHndlr // Core 3
   {

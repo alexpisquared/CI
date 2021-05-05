@@ -2,7 +2,7 @@
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 
-namespace CI.GUI.Support.WpfLibrary.Views
+namespace CI.Standard.Lib.Views
 {
   public partial class ThemeToggleUsrCtrl : UserControl
   {

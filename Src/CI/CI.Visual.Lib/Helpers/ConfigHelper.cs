@@ -1,10 +1,10 @@
-﻿using CI.GUI.Support.WpfLibrary.Extensions;
+﻿using CI.Standard.Lib.Extensions;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Diagnostics;
 using System.IO;
 
-namespace CI.GUI.Support.WpfLibrary.Helpers
+namespace CI.Standard.Lib.Helpers
 {
   public class ConfigHelper //todo: Copy to the main Shared.WPF and replace all 'new ConfigurationBuilder()' with it.
   {

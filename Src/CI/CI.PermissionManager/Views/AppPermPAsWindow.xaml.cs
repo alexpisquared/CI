@@ -7,7 +7,7 @@ using System.Windows.Data;
 
 namespace CI.PermissionManager.Views
 {
-  public partial class AppPermPAsWindow : GUI.Support.WpfLibrary.Base.WindowBase
+  public partial class AppPermPAsWindow : Visual.Lib.Base.WindowBase
   {
     readonly InventoryContext _context = new(@"Server=.\sqlexpress;Database=Inventory;Trusted_Connection=True;");
     readonly CollectionViewSource _applicationViewSource;
