@@ -11,8 +11,6 @@
     <MenuItem   Header="ð" FontFamily="Wingdings 2" Background="Transparent" BorderThickness="0">
       <MenuItem Header="Dark Google"        Tag="Dark.Google"       Click="onMenuClick" IsCheckable="True" FontFamily="Arial" />
       <MenuItem Header="Dark Gray"          Tag="Dark.Gray"         Click="onMenuClick" IsCheckable="True" FontFamily="Arial" />
-      <MenuItem Header="Dark Iress"         Tag="Dark.Iress"        Click="onMenuClick" IsCheckable="True" FontFamily="Arial" />
-      <MenuItem Header="Lite Iress"         Tag="Lite.Iress"        Click="onMenuClick" IsCheckable="True" FontFamily="Arial" />
       <MenuItem Header="Lite Bootstrap"     Tag="Lite.Bootstrap"    Click="onMenuClick" IsCheckable="True" FontFamily="Arial" />
       <MenuItem Header="Lite Google"        Tag="Lite.Google"       Click="onMenuClick" IsCheckable="True" FontFamily="Arial" />
       <MenuItem Header="Lite Gray"          Tag="Lite.Gray"         Click="onMenuClick" IsCheckable="True" FontFamily="Arial" />

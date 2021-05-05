@@ -2,7 +2,7 @@
 
 namespace WinTiler.Lib
 {
-  public class UserPrefs
+  public class UserPrefs : UserSettings
   {
     List<string> _exestoIgnore = new();
 
@@ -10,4 +10,6 @@ namespace WinTiler.Lib
     public List<string> TitlToIgnore { get; set; } = new();
     public bool SkipMinimized { get; set; }
   }
+
+  public class UserSettings { } // just for discoverability.
 }
