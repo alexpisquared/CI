@@ -54,8 +54,8 @@ namespace TFS
 
           foreach (var filePattern in filePatterns)
           {
-            var files = versionControl.GetItems(teamProj.ServerItem + "/*." + filePattern, RecursionType.Full).Items.Where(r => r.ItemType == ItemType.File && !r.ServerItem.Contains("_ReSharper"));  //skipping resharper stuff
-            Console.WriteLine($"  {++f} / {filePatterns.Length} - *.{filePattern} - {files.Count():N0} files:");
+            var files = versionControl.GetItems(teamProj.ServerItem + "/" + filePattern, RecursionType.Full).Items.Where(r => r.ItemType == ItemType.File && !r.ServerItem.Contains("_ReSharper"));  //skipping resharper stuff
+            Console.WriteLine($"  {++f} / {filePatterns.Length} - {filePattern} - {files.Count():N0} files:");
             foreach (var item in files)
             {
               if ((++i) % 11 == 0)
