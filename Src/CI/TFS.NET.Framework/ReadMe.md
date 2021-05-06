@@ -1,5 +1,5 @@
 
-2021-05-01: SOLVED: Tupo copied 2 dlls to ...v2.0 folder and readded them to project References:
+2021-05-01: SOLVED: Tupo copied 2 ..NO ALL!! dlls to ...v2.0 folder and readded them to project References:
     ...
     <Reference Include="Microsoft.TeamFoundation.Client">
       <HintPath>C:\Program Files (x86)\Microsoft Visual Studio 10.0\Common7\IDE\ReferenceAssemblies\v2.0\Microsoft.TeamFoundation.Client.dll</HintPath>
@@ -8,7 +8,6 @@
       <HintPath>C:\Program Files (x86)\Microsoft Visual Studio 10.0\Common7\IDE\ReferenceAssemblies\v2.0\Microsoft.TeamFoundation.VersionControl.Client.dll</HintPath>
     </Reference>
     ...
-
 
 
 TFC ref stuff is on D20:
