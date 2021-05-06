@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 
 namespace CI.Visual.Lib.Helpers
 {
@@ -13,8 +9,8 @@ namespace CI.Visual.Lib.Helpers
     {
       Task.Run(async () =>
       {
-        await Beep(_f1, _d1/1000);
-        await Beep(_f2, _d1/1000);
+        await Beep(_f1, _d1 / 1000);
+        await Beep(_f2, _d1 / 1000);
         await Task.Delay(333);
         await Start();
         await Task.Delay(333);
@@ -27,22 +23,11 @@ namespace CI.Visual.Lib.Helpers
         await Task.Delay(333);
       });
     }
-    public static async Task Start()
-    {
-      await BprAlt.BeepMks(
-        new[] {
-          new[] { _f1, BprAlt.FixDuration(_f1, _d1) },
-          new[] { _f2, BprAlt.FixDuration(_f2, _d1) },
-      }, ushort.MaxValue);
-    }
-    public static async Task Finish()
-    {
-      await BprAlt.BeepMks(
-        new[] {
-          new[] { _f2, BprAlt.FixDuration(_f2, _d1) },
-          new[] { _f1, BprAlt.FixDuration(_f1, _d1) },
-      }, ushort.MaxValue);
-    }
+    public static async Task Beep(int freq = _f1, int durationMs = 250) { await BprAlt.BeepMks(new[] { new[] { freq, BprAlt.FixDuration(freq, durationMs * 1000) } }, ushort.MaxValue); }
+    public static async Task BeepFD(int freq = _f1, int durationMks = 250111, ushort volume = ushort.MaxValue) { await BprAlt.BeepMks(new[] { new[] { freq, BprAlt.FixDuration(freq, durationMks) } }, volume); }
+    public static async Task BeepFD(int freq = _f1, double durationSec = .25, ushort volume = ushort.MaxValue) { await BprAlt.BeepMks(new[] { new[] { freq, BprAlt.FixDuration(freq, (int)(durationSec * 1000000)) } }, volume); }
+    public static async Task Start() { await BprAlt.BeepMks(new[] { new[] { _f1, BprAlt.FixDuration(_f1, _d1) }, new[] { _f2, BprAlt.FixDuration(_f2, _d1) }, }, ushort.MaxValue); }
+    public static async Task Finish() { await BprAlt.BeepMks(new[] { new[] { _f2, BprAlt.FixDuration(_f2, _d1) }, new[] { _f1, BprAlt.FixDuration(_f1, _d1) }, }, ushort.MaxValue); }
     public static async Task Error()
     {
       await BprAlt.BeepMks(
@@ -53,9 +38,5 @@ namespace CI.Visual.Lib.Helpers
           new[] { _f1, BprAlt.FixDuration(_f1, _d1 * 3) },
       }, ushort.MaxValue);
     }
-
-    public static async Task Beep(int freq = 98, int durationMs = 250) => await BprAlt.BeepMks(new[] { new[] { freq, BprAlt.FixDuration(freq, durationMs * 1000) } }, ushort.MaxValue);
-    public static async Task BeepFD(int freq = 98, int durationMks = 250111, ushort volume = ushort.MaxValue) => await BprAlt.BeepMks(new[] { new[] { freq, BprAlt.FixDuration(freq, durationMks) } }, volume);
-    public static async Task BeepFD(int freq = 98, double durationSec = .25, ushort volume = ushort.MaxValue) => await BprAlt.BeepMks(new[] { new[] { freq, BprAlt.FixDuration(freq, (int)(durationSec * 1000000)) } }, volume);
   }
 }
