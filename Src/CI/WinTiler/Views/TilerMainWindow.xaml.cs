@@ -1,4 +1,4 @@
-﻿using CI.Visual.Lib.Extensions;
+﻿using CI.Standard.Lib.Extensions;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using System;

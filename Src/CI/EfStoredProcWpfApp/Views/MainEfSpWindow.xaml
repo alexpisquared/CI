@@ -1,6 +1,6 @@
 ﻿<lnk:WindowBase xmlns:lnk="clr-namespace:CI.Visual.Lib.Base;assembly=CI.Visual.Lib" x:Name="wnd" x:Class="EfStoredProcWpfApp.Views.MainEfSpWindow" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d"
+                xmlns:stb="clr-namespace:CI.Visual.Lib.Helpers;assembly=CI.Visual.Lib" 
                 xmlns:xui="clr-namespace:CI.Standard.Lib.Views;assembly=CI.Visual.Lib"                 
-                xmlns:stb="clr-namespace:CI.Standard.Lib.Helpers;assembly=CI.Visual.Lib" 
                 xmlns:cnv="clr-namespace:EfStoredProcWpfApp.Views" 
                 xmlns:local="clr-namespace:EfStoredProcWpfApp.Views" 
                 xmlns:Views="clr-namespace:EfStoredProcWpfApp.Views"

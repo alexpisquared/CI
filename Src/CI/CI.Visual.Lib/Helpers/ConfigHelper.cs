@@ -4,7 +4,7 @@ using System;
 using System.Diagnostics;
 using System.IO;
 
-namespace CI.Standard.Lib.Helpers
+namespace CI.Visual.Lib.Helpers
 {
   public class ConfigHelper //todo: Copy to the main Shared.WPF and replace all 'new ConfigurationBuilder()' with it.
   {

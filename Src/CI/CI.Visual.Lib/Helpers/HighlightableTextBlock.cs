@@ -4,7 +4,7 @@ using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Media;
 
-namespace CI.Standard.Lib.Helpers
+namespace CI.Visual.Lib.Helpers
 {
   public class HighlightableTextBlock : Control // latest + multi-word feature + IGNORE THE OTHER ONE!!!!!!!
   {

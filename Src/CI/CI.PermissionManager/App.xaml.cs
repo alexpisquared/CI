@@ -8,6 +8,7 @@ using System;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
+using CI.Visual.Lib.Helpers;
 
 namespace CI.PermissionManager
 {

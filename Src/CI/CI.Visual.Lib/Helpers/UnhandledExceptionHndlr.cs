@@ -4,7 +4,7 @@ using System.Diagnostics;
 using System.Windows;
 using System.Windows.Threading;
 
-namespace CI.Standard.Lib.Helpers
+namespace CI.Visual.Lib.Helpers
 {
   public static class UnhandledExceptionHndlr // Core 3
   {
