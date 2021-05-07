@@ -89,10 +89,7 @@ namespace TFS
         File.AppendAllText(details, $"\n from - to = took:  {now:HH:mm} - {DateTime.Now:HH:mm} = {(DateTime.Now - now).TotalMinutes:N1} min");
       }
 
-      Console.ForegroundColor = ConsoleColor.DarkGreen;
-      Console.WriteLine("======== Press any key ");
-      Console.ResetColor();
-      Console.ReadKey();
+      //Console.ForegroundColor = ConsoleColor.DarkGreen;      Console.WriteLine("======== Press any key ");      Console.ResetColor();      Console.ReadKey();
     }
 
     static List<string> SearchInFile(Item file, string[] textPatterns)
