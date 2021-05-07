@@ -2,6 +2,7 @@
 using Microsoft.TeamFoundation.VersionControl.Client;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -29,8 +30,10 @@ namespace TFS
       var details = $@"C:\temp\TFS.Search\Code Matches - {fnm} - {now:HHmm} - Files & Lines.txt";
       var headerL = $"Times  Checked-in  Filename{Environment.NewLine}";
 
+            Process.Start("Explorer.exe", @"C:\temp\TFS.Search\");
 
-      try
+
+            try
       {
         var tfs = TfsTeamProjectCollectionFactory.GetTeamProjectCollection(new Uri("http://dev-tfs1.pariotech.com:8080/tfs/defaultcollection"));
         tfs.EnsureAuthenticated();
