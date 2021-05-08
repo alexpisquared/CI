@@ -196,9 +196,6 @@
           <RowDefinition Height="57.525"/>
           <RowDefinition Height="Auto"/>
           <RowDefinition Height="*"/>
-          <RowDefinition Height="2"/>
-          <RowDefinition Height="0"/>
-          <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
         <Views:BrandTitleUserControl Margin="10,3,10,10" Opacity="1" Grid.Row="1" />
@@ -222,20 +219,8 @@
             </Border.Effect>
           </Border>
         </Grid>
-        <Grid Grid.Row="6" Grid.RowSpan="1" Margin="8,8,8,-8">
-          <Border>
-            <Border.Effect>
-              <DropShadowEffect ShadowDepth="2" Color="#000" BlurRadius="6" />
-            </Border.Effect>
-          </Border>
-          <Border>
-            <Border.Effect>
-              <DropShadowEffect ShadowDepth="2" Color="#fff" BlurRadius="6" Direction="135" />
-            </Border.Effect>
-          </Border>
-        </Grid>
 
-        <Rectangle Grid.Row="3" Margin="8,0,8,238" >
+        <Rectangle Grid.Row="3" Margin="7" >
           <Rectangle.Fill>
             <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
               <GradientStop Color="#2fff" Offset="0"/>

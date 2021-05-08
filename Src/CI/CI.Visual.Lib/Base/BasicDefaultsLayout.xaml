@@ -25,19 +25,13 @@
     <Setter Property="HorizontalAlignment"  Value="Right" />
   </Style>
 
-  <Style TargetType="{x:Type Label}" >
-    <Setter Property="Foreground"           Value="{StaticResource LablForegroundBrush}" />
-    <Setter Property="VerticalAlignment"    Value="Center" />
-    <Setter Property="HorizontalAlignment"  Value="Right" />
-    <Setter Property="FontSize"   Value="12" />
-    <Setter Property="Padding"    Value="8 4 2 2" />
-  </Style>
 
   <Style TargetType="{x:Type Control}"      x:Key="CrlBase" >
     <Setter Property="Foreground"           Value="{StaticResource MainForegroundBrush}" />
     <Setter Property="Background"           Value="{StaticResource TextBackgroundBrush}" />
     <Setter Property="BorderThickness"      Value="1" />
     <Setter Property="VerticalAlignment"    Value="Center" />
+    <Setter Property="HorizontalAlignment"  Value="Left" />
     <Setter Property="Padding"              Value="2" />
   </Style>
   <Style TargetType="{x:Type TextBox}"      BasedOn="{StaticResource CrlBase}" />
@@ -55,6 +49,16 @@
     <Setter Property="FontSize"             Value="15" />
     <Setter Property="ToolTipService.ShowDuration" Value="180000" />
   </Style>
+  <Style TargetType="{x:Type Label}"        BasedOn="{StaticResource CrlBase}" x:Key="LblBase">
+    <Setter Property="Foreground"           Value="{StaticResource LablForegroundBrush}" />
+    <Setter Property="Background"           Value="Transparent" />
+    <Setter Property="VerticalAlignment"    Value="Center" />
+    <Setter Property="HorizontalAlignment"  Value="Left" />
+    <Setter Property="FontSize"             Value="12" />
+    <Setter Property="Margin"               Value="-4 0" />
+    <Setter Property="Padding"              Value="0" />
+  </Style>
+  <Style TargetType="{x:Type Label}"       BasedOn="{StaticResource LblBase}" />
 
   <Style TargetType="{x:Type Button}"       x:Key="BtnBase">
     <Setter Property="Foreground"           Value="{StaticResource MainForegroundBrush}" />

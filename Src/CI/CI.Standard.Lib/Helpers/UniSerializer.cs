@@ -169,12 +169,10 @@ namespace CI.Standard.Lib.Helpers
         if (isoStore.FileExists(IsoHelper.GetSetFilename<T>(filenameONLY, "xml")))
           using (var stream = new IsolatedStorageFileStream(IsoHelper.GetSetFilename<T>(filenameONLY, "xml"), FileMode.Open, FileAccess.Read, FileShare.Read, isoStore))
           {
-            using (var streamReader = XmlReader.Create(stream))//ing (var streamReader = new StreamReader(stream))
-            {
-              var o = (T?)(new XmlSerializer(typeof(T)).Deserialize(streamReader));
-              streamReader.Close();
-              return o ?? (T)(Activator.CreateInstance(typeof(T)) ?? new T());
-            }
+            using var streamReader = XmlReader.Create(stream);//ing (var streamReader = new StreamReader(stream))
+            var o = (T?)(new XmlSerializer(typeof(T)).Deserialize(streamReader));
+            streamReader.Close();
+            return o ?? (T)(Activator.CreateInstance(typeof(T)) ?? new T());
           }
       }
       catch (InvalidOperationException ex) { if (ex.HResult != -2146233079) ex.Log(); throw; } // "Root element is missing." ==> create new at the bottom

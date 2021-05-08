@@ -4,6 +4,8 @@
     <ColorAnimation Storyboard.TargetProperty="(Fill).(SolidColorBrush.Color)" From="Red" To="Yellow" Duration="0:0:3.33"/>
   </Storyboard>
 
+  <SineEase    x:Key="sb"     EasingMode="EaseInOut" />
+
   <RadialGradientBrush x:Key="awesomeBkGrRadl"  MappingMode="RelativeToBoundingBox" SpreadMethod="Repeat" RadiusX="1" RadiusY="1" >
     <GradientStop Color="#0000" Offset="0.0"/>
     <GradientStop Color="#0000" Offset="0.1"/>
