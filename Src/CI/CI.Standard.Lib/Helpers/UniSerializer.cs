@@ -71,11 +71,9 @@ namespace CI.Standard.Lib.Helpers
         if (!FSHelper.ExistsOrCreated(Path.GetDirectoryName(filename)))
           throw new DirectoryNotFoundException(Path.GetDirectoryName(filename));
 
-        using (var streamWriter = new StreamWriter(filename))
-        {
-          new DataContractJsonSerializer(typeof(T)).WriteObject(streamWriter.BaseStream, o);
-          streamWriter.Close();
-        }
+        using var streamWriter = new StreamWriter(filename);
+        new DataContractJsonSerializer(typeof(T)).WriteObject(streamWriter.BaseStream, o);
+        streamWriter.Close();
       }
       catch (Exception ex) { ex.Log(); throw; }
     }
@@ -106,14 +104,10 @@ namespace CI.Standard.Lib.Helpers
       {
         var isoStore = IsolatedStorageFile.GetStore(iss, null, null);
 
-        using (var isoStream = new IsolatedStorageFileStream(IsoHelper.GetSetFilename<T>(filenameONLY ?? typeof(T).Name, "json"), FileMode.Create, isoStore))
-        {
-          using (var streamWriter = new StreamWriter(isoStream))
-          {
-            new DataContractJsonSerializer(typeof(T)).WriteObject(streamWriter.BaseStream, o); // new XmlSerializer(o.GetType()).Serialize(streamWriter, o);
-            streamWriter.Close();
-          }
-        }
+        using var isoStream = new IsolatedStorageFileStream(IsoHelper.GetSetFilename<T>(filenameONLY ?? typeof(T).Name, "json"), FileMode.Create, isoStore);
+        using var streamWriter = new StreamWriter(isoStream);
+        new DataContractJsonSerializer(typeof(T)).WriteObject(streamWriter.BaseStream, o); // new XmlSerializer(o.GetType()).Serialize(streamWriter, o);
+        streamWriter.Close();
       }
       catch (Exception ex) { ex.Log(); throw; }
     }
@@ -148,13 +142,11 @@ namespace CI.Standard.Lib.Helpers
       {
         var isoStore = IsolatedStorageFile.GetStore(iss, null, null);
 
-        using (var isoStream = new IsolatedStorageFileStream(IsoHelper.GetSetFilename<T>(filenameONLY, "xml"), FileMode.Create, isoStore))
-        {
-          //IsoHelper.DevDbgLookup(isoStore, isoStream);
+        using var isoStream = new IsolatedStorageFileStream(IsoHelper.GetSetFilename<T>(filenameONLY, "xml"), FileMode.Create, isoStore);
+        //IsoHelper.DevDbgLookup(isoStore, isoStream);
 
-          using var streamWriter = new StreamWriter(isoStream);
-          new XmlSerializer(typeof(T))?.Serialize(streamWriter, o);
-        }
+        using var streamWriter = new StreamWriter(isoStream);
+        new XmlSerializer(typeof(T))?.Serialize(streamWriter, o);
       }
       catch (Exception ex) { ex.Log(); throw; }
     }
@@ -187,12 +179,10 @@ namespace CI.Standard.Lib.Helpers
     public static string Save<T>(T o)
     {
       var serializer = new DataContractJsonSerializer(typeof(T));
-      using (var ms = new MemoryStream())
-      {
-        serializer.WriteObject(ms, o);
-        var jsonArray = ms.ToArray();
-        return Encoding.UTF8.GetString(jsonArray, 0, jsonArray.Length);
-      }
+      using var ms = new MemoryStream();
+      serializer.WriteObject(ms, o);
+      var jsonArray = ms.ToArray();
+      return Encoding.UTF8.GetString(jsonArray, 0, jsonArray.Length);
     }
 
     public static T? Load<T>(string str) where T : new() //catch ... : lets the caller handle the failure: it knows better what to do

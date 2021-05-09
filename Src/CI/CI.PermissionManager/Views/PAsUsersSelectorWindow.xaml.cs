@@ -79,7 +79,7 @@ namespace CI.PermissionManager.Views
     void dgPerm_SelectionChanged(object s, SelectionChangedEventArgs e)   /**/{; Debug.Write($"** {((FrameworkElement)s).Name} \t SelectionChanged"); }
     void dgUser_SelectionChanged(object s, SelectionChangedEventArgs e)   /**/
     {
-      Debug.Write($"** {((FrameworkElement)s).Name} \t SelectionChanged");
+      Debug.Write($"** {((FrameworkElement)s).Name} \t SelectionChanged"); ;
       //if (_loaded && e.RemovedItems.Count > 0 && (e.RemovedItems[0] as User) != null && (e.RemovedItems[0] as User)?.Selectd == true)        (e.RemovedItems[0] as User).Selectd = false;
     }
     void dgUser_GotFocus(object s, RoutedEventArgs e)  /**/{ if (_last != "U") { Debug.Write(" p->U-▒▒▒▒ "); } }
@@ -227,7 +227,7 @@ namespace CI.PermissionManager.Views
         $"G:{_context.Permissions.Local.Where(r => r.Granted == true).Count()}  +  " +
         $"f:{_context.Permissions.Local.Where(r => r.Granted == false).Count()}  +  " +
         $"n:{_context.Permissions.Local.Where(r => r.Granted is null).Count()}  =  " +
-        $"n:{_context.Permissions.Local.Count()}" +
+        $"n:{_context.Permissions.Local.Count}" +
         $"   ");
 
       if (_userid > 0 && _permid < 0)
