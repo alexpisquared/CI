@@ -9,6 +9,8 @@ I have reviewd the expamce of the SPs: they are very diverse:
 3. return values: some are just a string, number, some are a table, some a mutliple tables
   - not all columns are of interest
   - 
+MOST IMPORTANT:
+There are SPs which have conctenation of SQL statements ... which opens door to the SQL Injection Attack
 
 
 Technically, it is doable to create a dynamic SP UI by for the end usrs to deal with it, but:
@@ -20,3 +22,5 @@ Technically, it is doable to create a dynamic SP UI by for the end usrs to deal 
 I can crate a UE in less time for each SP than poor end users trying to deal with trying to translate their understaning/knowldge or the SP and the SP editor.
 
 the result will be a much better UE, data integrity, security
+
+
