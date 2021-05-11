@@ -13,24 +13,22 @@ namespace TFS
     {
         static void Main(string[] args)
         {
-            var _srchss = args[0]; //  "traderaccount_view2"; // "select distinct upper(trader_id + ':' + shortname) from inventory..traderaccount_view2";
             string[]
-              textPatterns = _srchss.Split(new char[] { '|' }, StringSplitOptions.RemoveEmptyEntries),
-              filePatterns = args[1].Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);// new[] { "*.jar", "*.cs", "*.cpp" };//"*.?", "*.??", "*.???", "*.????", "*.?????", "*.??????" };// "*.cs", "*.xml", "*.config", "*.asp", "*.aspx", "*.js", "*.h", "*.cpp", "*.vb", "*.asax", "*.ashx", "*.asmx", "*.ascx", "*.master", "*.svc", "*.jar" }; //file extensions
+              textPatterns = args[0].Split(new char[] { '`' }, StringSplitOptions.RemoveEmptyEntries),
+              filePatterns = args[1].Split(new char[] { '`' }, StringSplitOptions.RemoveEmptyEntries);// new[] { "*.jar", "*.cs", "*.cpp" };//"*.?", "*.??", "*.???", "*.????", "*.?????", "*.??????" };// "*.cs", "*.xml", "*.config", "*.asp", "*.aspx", "*.js", "*.h", "*.cpp", "*.vb", "*.asax", "*.ashx", "*.asmx", "*.ascx", "*.master", "*.svc", "*.jar" }; //file extensions
 
             Console.ForegroundColor = ConsoleColor.DarkCyan; Console.Write($"  Searching for  ");
-            Console.ForegroundColor = ConsoleColor.Cyan; Console.Write($"{_srchss}");
+            Console.ForegroundColor = ConsoleColor.Cyan; Console.Write($"{args[0]}");
             Console.ForegroundColor = ConsoleColor.DarkCyan; Console.Write($"  in  ");
             Console.ForegroundColor = ConsoleColor.Cyan; Console.Write($"{args[1]} \n");
 
             var now = DateTime.Now;
-            var fnm = _srchss.Replace(":", "-").Replace("|", " ").Replace("?", "-");
-            var outputF = $@"C:\temp\TFS.Search\Code Matches - {fnm} - {now:HHmm} - Filenames Only.txt";
-            var details = $@"C:\temp\TFS.Search\Code Matches - {fnm} - {now:HHmm} - Files & Lines.txt";
-            var headerL = $"Times  Checked-in  Filename{Environment.NewLine}";
+            var fnm = args[0].Replace(":", "-").Replace("|", " ").Replace("?", "-");
+            var outputF = $@"C:\temp\TFS.Search\{fnm} - {now:HHmm} - Filenames Only.txt";
+            var details = $@"C:\temp\TFS.Search\{fnm} - {now:HHmm} - Files & Lines.txt";
+            var headerL = $"Times  Checked-in  Filename       Searching for  '{args[0]}'  in  '{args[1]}'    {Environment.NewLine}";
 
             Process.Start("Explorer.exe", @"C:\temp\TFS.Search\");
-
 
             try
             {
@@ -56,7 +54,7 @@ namespace TFS
 
                     foreach (var filePattern in filePatterns)
                     {
-                        var files = versionControl.GetItems(teamProj.ServerItem + "/" + filePattern, RecursionType.Full).Items.Where(r => r.ItemType == ItemType.File && !r.ServerItem.Contains("_ReSharper"));  //skipping resharper stuff
+                        var files = versionControl.GetItems(teamProj.ServerItem + "/" + filePattern, RecursionType.Full).Items.Where(r => r.ItemType == ItemType.File && !r.ServerItem.Contains("_ReSharper")); //skipping resharper stuff
                         Console.WriteLine($"  {++f} / {filePatterns.Length} - {filePattern} - {files.Count():N0} files:");
                         foreach (var item in files)
                         {
@@ -108,7 +106,7 @@ namespace TFS
                 while (!stream.EndOfStream)
                 {
                     if (textPatterns.Any(p => line.IndexOf(p, StringComparison.OrdinalIgnoreCase) >= 0))
-                        result.Add($"{lineIndex}: {line.Trim()}");
+                        result.Add($"{lineIndex,6}: {line.Trim()}");
 
                     line = stream.ReadLine();
                     lineIndex++;
