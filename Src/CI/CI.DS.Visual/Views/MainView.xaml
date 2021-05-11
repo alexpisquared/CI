@@ -5,7 +5,7 @@
                 xmlns:Views="clr-namespace:CI.DS.Visual.Views"
                 xmlns:local="clr-namespace:CI.DS.Visual.Views"
                 xmlns:system="clr-namespace:System;assembly=mscorlib"
-                Title="[App Name 2]" Height="350" Width="800"
+                Title="DB Process Launch Application" Height="350" Width="800"
                 Style="{DynamicResource WindowStyle_Aav0}">
   <WindowChrome.WindowChrome>
     <WindowChrome CaptionHeight="0" ResizeBorderThickness="10" />

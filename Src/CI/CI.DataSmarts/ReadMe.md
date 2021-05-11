@@ -23,4 +23,3 @@ I can crate a UE in less time for each SP than poor end users trying to deal wit
 
 the result will be a much better UE, data integrity, security
 
-
