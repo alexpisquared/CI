@@ -13,6 +13,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Data;
 using Microsoft.Data.SqlClient;
 using System.Diagnostics;
+using System.Data.SqlTypes;
 
 namespace CI.DS.ViewModel
 {
@@ -21,7 +22,7 @@ namespace CI.DS.ViewModel
     readonly ILogger _logger;
     readonly IConfigurationRoot _config;
     readonly InventoryContext _context;
-    string _selectedDBP, _pKey;
+    string _selectedDBP, _SearchString, _SPName, _pKey;
     ObservableCollection<StoredProcDetail> _dbProcesses = new();
 
     public StoredProcListVM(ILogger logger, IConfigurationRoot config)
@@ -30,13 +31,14 @@ namespace CI.DS.ViewModel
       _config = config;
       _context = new(_config["SqlConStr"]); // string.Format(_config["SqlConStr"], cbxSrvr.SelectedValue)); // @"Server=.\sqlexpress;Database=Inventory;Trusted_Connection=True;"); // MTdevSQLDB
 
-
       using var connectionDb = _context.Database.GetDbConnection();
-      if (connectionDb.State.Equals(ConnectionState.Closed))
-        connectionDb.Open();
 
-      using (var command = connectionDb.CreateCommand())
+      try
       {
+        if (connectionDb.State.Equals(ConnectionState.Closed))
+          connectionDb.Open();
+
+        using var command = connectionDb.CreateCommand();
         command.CommandText = _sql;
 
         using var reader = command.ExecuteReader();
@@ -45,14 +47,19 @@ namespace CI.DS.ViewModel
         else
           while (reader.Read())
           {
-            _dbProcesses.Add(new StoredProcDetail(reader.GetString(0), reader.GetString(1), reader.GetString(2)));
+            try
+            {
+              Debug.WriteLine($"{reader.GetString(0)}");
+              _dbProcesses.Add(new StoredProcDetail(reader.GetString(0), reader.GetString(1), reader.GetString(2)));
+            }
+            catch (SqlNullValueException ex) { Debug.WriteLine($"  ■ ■ ■ {reader.GetString(0)}   {ex.Message}"); }
           }
 
         reader.Close();
       }
-
-      connectionDb.Close();
-
+      catch (SqlNullValueException ex) { _logger.LogError(ex.ToString()); }
+      catch (Exception ex) { _logger.LogError(ex.ToString()); }
+      finally { connectionDb.Close(); }
     }
 
     static void HasRows(SqlConnection connection)
@@ -81,12 +88,14 @@ namespace CI.DS.ViewModel
     public ObservableCollection<StoredProcDetail> StoredProcDetails { get => _dbProcesses; set => SetProperty(ref _dbProcesses, value, true); }
 
     public string PKey { get => _pKey; set => SetProperty(ref _pKey, value); }
+    public string SPName { get => _SPName; set => SetProperty(ref _SPName, value); }
+    public string SearchString { get => _SearchString; set => SetProperty(ref _SearchString, value); }
 
     public IConfigurationRoot Config => _config;
     public ILogger Logger => _logger;
 
     const string _sql = @"
-select schema_name(obj.schema_id) AS [Schema],       obj.name AS SPName,   substring(par.parameters, 0, len(par.parameters)) as Parameters,        mod.Definition
+select  obj.name AS SPName,  substring(par.parameters, 0, len(par.parameters)) as Parameters,  mod.Definition,  schema_name(obj.schema_id) AS [Schema]
 from sys.objects obj
 join sys.sql_modules mod
      on mod.object_id = obj.object_id

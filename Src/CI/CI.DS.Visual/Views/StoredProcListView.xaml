@@ -13,10 +13,10 @@
       <TextBlock Text="Stored Procedures Raw" FontSize="26" Margin="0 20" />
 
       <Label Content="Search" />
-      <TextBox Text="{Binding StringMayNotBeEmpty, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Stretch" />
+      <TextBox Text="{Binding SearchString, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Stretch" />
 
       <Label Content="DB Processes"    />
-      <ListBox ItemsSource="{Binding StoredProcDetails}" DisplayMemberPath="Name" SelectedValuePath="SPName" SelectedValue="{Binding SPName}" />
+      <ListBox ItemsSource="{Binding StoredProcDetails}" DisplayMemberPath="SPName" SelectedValuePath="SPName" SelectedValue="{Binding SPName}" Height="150"/>
 
       <Label Content="Selected DB Process:" />
       <TextBlock Text="{Binding SPName}"  d:Text="Sample Stored Proc Name" FontSize="18" />
