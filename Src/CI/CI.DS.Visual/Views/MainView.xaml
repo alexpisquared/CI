@@ -19,14 +19,9 @@
         <ResourceDictionary Source="/CI.Visual.Lib;component/Base/DataGrid.Anime.xaml" />
         <!--
         <ResourceDictionary Source="/CI.Visual.Lib;component/ColorScheme/Theme.Color.Dark.Gray.xaml" />-->
-      </ResourceDictionary.MergedDictionaries>
 
-      <DataTemplate DataType="{x:Type vm:DemoVM}" >
-        <local:DemoView/>
-      </DataTemplate>
-      <DataTemplate DataType="{x:Type vm:AllCashByGroupVM}" >
-        <local:AllCashByGroupView/>
-      </DataTemplate>
+        <ResourceDictionary Source="/CI.DS.Visual;component/ViewModelToViewMapping.xaml" />
+      </ResourceDictionary.MergedDictionaries>
 
       <system:Double x:Key="blur">0</system:Double>
 
@@ -250,13 +245,14 @@
                     <Setter Property="BorderThickness"  Value="0" />
                   </Style>
                 </Menu.Resources>
-                <MenuItem Header="_Demo" Command="{Binding UpdateViewCommand}" CommandParameter="Demo" Background="{DynamicResource MenuItemBackground1}" />
-                <MenuItem Header="_Acbg" Command="{Binding UpdateViewCommand}" CommandParameter="Acbg" Background="{DynamicResource MenuItemBackground2}" />
-                <MenuItem Header="Acbg"  Command="{Binding UpdateViewCommand}" CommandParameter="Acbg" Background="{DynamicResource MenuItemBackground3}" />
+                <MenuItem Header="_List" Command="{Binding UpdateViewCommand}" CommandParameter="Usps" Background="{DynamicResource MenuItemBackground0}" ToolTip="" />
+                <MenuItem Header="_Demo" Command="{Binding UpdateViewCommand}" CommandParameter="Demo" Background="{DynamicResource MenuItemBackground1}" ToolTip="" />
+                <MenuItem Header="_Acbg" Command="{Binding UpdateViewCommand}" CommandParameter="Acbg" Background="{DynamicResource MenuItemBackground2}" ToolTip="" />
+                <MenuItem Header="Acbg"  Command="{Binding UpdateViewCommand}" CommandParameter="Acbg" Background="{DynamicResource MenuItemBackground3}" ToolTip="" />
               </Menu>
             </StackPanel>
 
-            <ContentControl Content="{Binding SelectedVM}" Grid.Row="1" />
+            <ContentControl Content="{Binding SelectedVM}" Grid.Row="1" Padding="20" />
 
           </Grid>
 
