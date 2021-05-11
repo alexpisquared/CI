@@ -57,7 +57,6 @@ namespace CI.DS.ViewModel
 
     public ObservableCollection<DbProcess> DbProcesses { get => _dbProcesses; set => SetProperty(ref _dbProcesses, value, true); }
 
-    public string SelectedDBP { get => _selectedDBP; set => SetProperty(ref _selectedDBP, value); }
     public string PKey { get => _pKey; set => SetProperty(ref _pKey, value); }
 
     public ICommand UpdateViewCommand { get; set; }

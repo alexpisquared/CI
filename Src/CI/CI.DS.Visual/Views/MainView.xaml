@@ -246,9 +246,9 @@
                   </Style>
                 </Menu.Resources>
                 <MenuItem Header="_List" Command="{Binding UpdateViewCommand}" CommandParameter="Usps" Background="{DynamicResource MenuItemBackground0}" ToolTip="" />
-                <MenuItem Header="_Demo" Command="{Binding UpdateViewCommand}" CommandParameter="Demo" Background="{DynamicResource MenuItemBackground1}" ToolTip="" />
-                <MenuItem Header="_Acbg" Command="{Binding UpdateViewCommand}" CommandParameter="Acbg" Background="{DynamicResource MenuItemBackground2}" ToolTip="" />
-                <MenuItem Header="Acbg"  Command="{Binding UpdateViewCommand}" CommandParameter="Acbg" Background="{DynamicResource MenuItemBackground3}" ToolTip="" />
+                <MenuItem Header="_Spsl" Command="{Binding UpdateViewCommand}" CommandParameter="Spsl" Background="{DynamicResource MenuItemBackground1}" ToolTip="" />
+                <MenuItem Header="_Demo" Command="{Binding UpdateViewCommand}" CommandParameter="Demo" Background="{DynamicResource MenuItemBackground2}" ToolTip="" />
+                <MenuItem Header="_Acbg" Command="{Binding UpdateViewCommand}" CommandParameter="Acbg" Background="{DynamicResource MenuItemBackground3}" ToolTip="" />
               </Menu>
             </StackPanel>
 

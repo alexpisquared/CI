@@ -18,7 +18,7 @@ namespace EfStoredProcConsoleApp
 {
   public class Class1
   {
-    readonly InventoryContext context = new(@"Server=.\sqlexpress;Database=Inventory;Trusted_Connection=True;");
+    readonly InventoryContext _context = new(@"Server=.\sqlexpress;Database=Inventory;Trusted_Connection=True;");
 
     public void FromSql()           // https://www.entityframeworktutorial.net/efcore/working-with-stored-procedure-in-ef-core.aspx
     {
@@ -33,19 +33,19 @@ namespace EfStoredProcConsoleApp
         new SqlParameter("@pEndDateInt", 2),
         new SqlParameter("@pGroupName", "2")        };
 
-      var rows = context.BookReportViews.FromSqlRaw("usp_Report_AllCashByGroup @pGroup_ID, @pDateType, @pStartDateInt, @pEndDateInt, @pGroupName", parms).ToList();
+      var rows = _context.BookReportViews.FromSqlRaw("usp_Report_AllCashByGroup @pGroup_ID, @pDateType, @pStartDateInt, @pEndDateInt, @pGroupName", parms).ToList();
       Console.WriteLine($"** {rows.Count}  rows returned");
     }
     public void ExecuteSqlCommand() // https://www.entityframeworktutorial.net/efcore/working-with-stored-procedure-in-ef-core.aspx
     {
-      var rv = context.Database.ExecuteSqlRaw("usp_AddAccountGroupSymbol @p0, @p1", new[] {
+      var rv = _context.Database.ExecuteSqlRaw("usp_AddAccountGroupSymbol @p0, @p1", new[] {
         new SqlParameter("@p0", 2),
         new SqlParameter("@p1", "AGF")        }); // ~ var rowsAffected = context.Database.ExecuteSqlCommand("Update Students set FirstName = 'Bill' where StudentId = 1;");
       Console.WriteLine($"** {rv}  -1 0 1 ");
     }
     public void Projection()        // https://www.learnentityframeworkcore.com/raw-sql
     {
-      var rows = context.Users.FromSqlRaw("SELECT * FROM Users")
+      var rows = _context.Users.FromSqlRaw("SELECT * FROM Users")
           .Select(b => new
           {
             UserId___ = b.UserId,

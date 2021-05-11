@@ -21,10 +21,10 @@
       <TextBox Text="{Binding StringMayNotBeEmpty, UpdateSourceTrigger=PropertyChanged}" Margin="20 0" />
       
       <Label Margin="10 20 0 0" Content="Where am I:"      />
-      <TextBlock Text="{Binding WhereAmI}" Margin="20 0"   d:Text="Milky Way" FontSize="18" />
+      <TextBlock Text="{Binding WhereAmI}" Margin="20 0"   d:Text="Sample Stored Proc Name" FontSize="18" />
       
       <Label Margin="10 20 0 0" Content="SQL Conn String:" />
-      <TextBlock Text="{Binding SqlConStr}" Margin="20 0"  d:Text="Milky Way" FontSize="18" />
+      <TextBlock Text="{Binding SqlConStr}" Margin="20 0"  d:Text="Sample Stored Proc Name" FontSize="18" />
     </StackPanel>
 
   </Grid>

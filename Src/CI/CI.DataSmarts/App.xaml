@@ -55,10 +55,13 @@
         </Style.Triggers>
       </Style>
 
-      <SolidColorBrush x:Key="MenuItemBackground0" Color="#3fff"/>
-      <SolidColorBrush x:Key="MenuItemBackground1" Color="#10d0"/>
-      <SolidColorBrush x:Key="MenuItemBackground2" Color="#100f"/>
-      <SolidColorBrush x:Key="MenuItemBackground3" Color="#1f00"/>
+      <SolidColorBrush x:Key="MenuItemBackground0" Color="#2fff"/>
+      <SolidColorBrush x:Key="MenuItemBackground1" Color="#20d0"/>
+      <SolidColorBrush x:Key="MenuItemBackground2" Color="#2f0f"/>
+      <SolidColorBrush x:Key="MenuItemBackground3" Color="#200f"/>
+      <SolidColorBrush x:Key="MenuItemBackground4" Color="#2ff0"/>
+      <SolidColorBrush x:Key="MenuItemBackground5" Color="#20ff"/>
+      <SolidColorBrush x:Key="MenuItemBackground6" Color="#2f00"/>
 
     </ResourceDictionary>
   </Application.Resources>
