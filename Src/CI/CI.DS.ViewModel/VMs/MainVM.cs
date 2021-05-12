@@ -29,9 +29,6 @@ namespace CI.DS.ViewModel
       _config["ServerList"].Split(" ").ToList().ForEach(r => _sqlServers.Add(r));
       _userPrefs = UserPrefs.Load<UserPrefs>();
       SqlServer = _userPrefs.SqlServer;
-
-      Task.Run(async () => await Task.Delay(1000)).ContinueWith(_ => RunAnimation = true, TaskScheduler.FromCurrentSynchronizationContext());
-      Task.Run(async () => await Task.Delay(2000)).ContinueWith(_ => RunAnimation = false, TaskScheduler.FromCurrentSynchronizationContext());
     }
 
     public ObservableCollection<string> SqlServers { get => _sqlServers; set => SetProperty(ref _sqlServers, value, true); }
@@ -51,12 +48,8 @@ namespace CI.DS.ViewModel
     {
       get => _selectedVM; set
       {
-        RunAnimation = true;
-        Task.Run(async () => await Task.Delay(333)).ContinueWith(_ =>
-        {
-          SetProperty(ref _selectedVM, value);
-          RunAnimation = false;
-        }, TaskScheduler.FromCurrentSynchronizationContext());
+        RunAnimation = value is not StoredProcListVM;
+        Task.Run(async () => await Task.Delay(999)).ContinueWith(_ => { SetProperty(ref _selectedVM, value); }, TaskScheduler.FromCurrentSynchronizationContext());
       }
     }
     bool _RunAnimation = false; public bool RunAnimation { get => _RunAnimation; set => SetProperty(ref _RunAnimation, value); }
