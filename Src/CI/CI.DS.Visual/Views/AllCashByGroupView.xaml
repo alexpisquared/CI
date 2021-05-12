@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:CI.DS.Visual.Views" 
              xmlns:vm="clr-namespace:CI.DS.ViewModel;assembly=CI.DS.ViewModel"
              mc:Ignorable="d" 
-             d:DesignHeight="250" d:DesignWidth="900" Background="{DynamicResource MenuItemBackground2}">
+             d:DesignHeight="250" d:DesignWidth="900" Background="{DynamicResource MenuItemBackground3}">
   <!--<UserControl.DataContext>    <vm:AllCashByGroupVM />  </UserControl.DataContext>-->
   <UserControl.Resources>
     <Style TargetType="{x:Type Control}"      BasedOn="{StaticResource CrlBase}" x:Key="CrlBase2" >
@@ -33,7 +33,11 @@
       <RowDefinition Height="Auto"/>
     </Grid.RowDefinitions>
 
-    <TextBlock Text="All Cash by Group" FontSize="26" Foreground="#44f" Margin="5 -5 0 0" />
+    <Button Content="&lt;" Height="30" Margin="0,0" HorizontalAlignment="Left" BorderThickness="0" Background="Transparent" FontSize="22" Padding="10 0 10 5"
+            Command="{Binding UpdateViewCommand}" CommandParameter="Spsl" 
+            ToolTip="Go back to DB Process Selector" />
+
+    <TextBlock Text="All Cash by Group" FontSize="26" Foreground="#44f" Margin="51 -5 0 0" />
 
     <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center" x:Name="ctrlPanel">
       <StackPanel>

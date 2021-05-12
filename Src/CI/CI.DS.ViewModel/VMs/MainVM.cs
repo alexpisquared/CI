@@ -22,7 +22,7 @@ namespace CI.DS.ViewModel
     {
       _logger = logger;
       _config = config;
-      _selectedVM = new StoredProcListVM(logger, config);
+      _selectedVM = new StoredProcListVM(logger, config, this);
       UpdateViewCommand = new UpdateViewCommand(this);
 
       _config["ServerList"].Split(" ").ToList().ForEach(r => _sqlServers.Add(r));

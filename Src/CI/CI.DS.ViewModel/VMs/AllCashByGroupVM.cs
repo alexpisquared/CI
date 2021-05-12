@@ -1,4 +1,5 @@
-﻿using DB.Inventory.Models;
+﻿using CI.DS.ViewModel.Commands;
+using DB.Inventory.Models;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -27,11 +28,13 @@ namespace CI.DS.ViewModel
     ObservableCollection<BookGroup> _bookGroups = new();
     ICommand? _searchCommand;
 
-    public AllCashByGroupVM(ILogger logger, IConfigurationRoot config)
+    public AllCashByGroupVM(ILogger logger, IConfigurationRoot config, MainVM mainVM)
     {
       _logger = logger;
       _config = config;
       _context = new(_config["SqlConStr"]); // string.Format(_config["SqlConStr"], cbxSrvr.SelectedValue)); // @"Server=.\sqlexpress;Database=Inventory;Trusted_Connection=True;"); // MTdevSQLDB
+
+      UpdateViewCommand = new UpdateViewCommand(mainVM);
 
       ValidateAllProperties();
 
@@ -62,6 +65,7 @@ namespace CI.DS.ViewModel
       DetailedReport = await runRawSqlQuery();       //BookReports.Clear(); await foreach (BookReports result in searchClient.SearchAsync(SearchText)) { BookReports.Add(result); }      //RaisePropertyChanged(() => DetailedReport);
     }
     , () => (!string.IsNullOrEmpty(DateType) && !string.IsNullOrEmpty(GroupNam)));
+    public ICommand UpdateViewCommand { get; set; }
 
     async Task<string> runRawSqlQuery() // https://www.entityframeworktutorial.net/efcore/working-with-stored-procedure-in-ef-core.aspx
     {

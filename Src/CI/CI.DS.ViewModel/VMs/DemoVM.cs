@@ -9,7 +9,7 @@ namespace CI.DS.ViewModel
   {
     readonly ILogger _logger;
     readonly IConfigurationRoot _config;
-    string _stringMayNotBeEmpty = "", _sqlconstr, _whereami;
+    string _stringMayNotBeEmpty = "This may not be empty", _sqlconstr = "", _whereami = "";
 
     public DemoVM(ILogger logger, IConfigurationRoot config)
     {

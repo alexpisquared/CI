@@ -224,17 +224,17 @@
           </Rectangle.Fill>
         </Rectangle>
 
-        <Grid Grid.Row="3" Margin="9,1,9,9" Visibility="Visible" >
+        <Grid Grid.Row="3" Margin="9,9,9,9" Visibility="Visible" >
           <Grid.Effect>
             <BlurEffect Radius="{Binding ElementName=wnd, Path=Blur, FallbackValue=0}" />
           </Grid.Effect>
           <Grid>
             <Grid.RowDefinitions>
               <RowDefinition Height="Auto"/>
-              <RowDefinition Height="261*"/>
+              <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Grid.Row="0">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Grid.Row="0" Visibility="Collapsed">
               <Menu Background="Transparent" VerticalAlignment="Center" BorderThickness="0">
                 <Menu.Resources>
                   <Style TargetType="{x:Type MenuItem}">
@@ -245,7 +245,7 @@
                     <Setter Property="BorderThickness"  Value="0" />
                   </Style>
                 </Menu.Resources>
-                <MenuItem Header="_List" Command="{Binding UpdateViewCommand}" CommandParameter="Usps" Background="{DynamicResource MenuItemBackground0}" ToolTip="" />
+                <MenuItem Header="_Dbps" Command="{Binding UpdateViewCommand}" CommandParameter="Dbps" Background="{DynamicResource MenuItemBackground0}" ToolTip="" />
                 <MenuItem Header="_Spsl" Command="{Binding UpdateViewCommand}" CommandParameter="Spsl" Background="{DynamicResource MenuItemBackground1}" ToolTip="" />
                 <MenuItem Header="_Demo" Command="{Binding UpdateViewCommand}" CommandParameter="Demo" Background="{DynamicResource MenuItemBackground2}" ToolTip="" />
                 <MenuItem Header="_Acbg" Command="{Binding UpdateViewCommand}" CommandParameter="Acbg" Background="{DynamicResource MenuItemBackground3}" ToolTip="" />

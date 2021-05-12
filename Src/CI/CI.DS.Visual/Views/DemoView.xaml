@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:CI.DS.Visual.Views"
              mc:Ignorable="d" 
-             d:DesignHeight="350" d:DesignWidth="800" Background="{DynamicResource MenuItemBackground1}" Padding="20">
+             d:DesignHeight="350" d:DesignWidth="800" Background="{DynamicResource MenuItemBackground2}" Padding="20">
   <UserControl.Resources>
     <Style TargetType="{x:Type Label}" >
       <Setter Property="Foreground"           Value="{StaticResource LablForegroundBrush}" />
@@ -18,7 +18,7 @@
       <TextBlock Text="Demo Vew - ViewModel" FontSize="26" Foreground="#f0f" Margin="20 10" />
       
       <Label Margin="10 20 0 0" Content="String May Not be Empty:" />
-      <TextBox Text="{Binding StringMayNotBeEmpty, UpdateSourceTrigger=PropertyChanged}" Margin="20 0" />
+      <TextBox Text="{Binding StringMayNotBeEmpty, UpdateSourceTrigger=PropertyChanged, FallbackValue='Abc 123'}" Margin="20 0" HorizontalAlignment="Stretch" />
       
       <Label Margin="10 20 0 0" Content="Where am I:"      />
       <TextBlock Text="{Binding WhereAmI}" Margin="20 0"   d:Text="Sample Stored Proc Name" FontSize="18" />

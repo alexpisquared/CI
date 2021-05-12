@@ -20,7 +20,7 @@ namespace CI.DS.ViewModel
 
       //UpdateViewCommand = new UpdateViewCommand(this);
 
-      _dbProcesses.Add(new DbProcess("Usps", "Usps ... or just me", "UspsUspsUspsUspsUspsUspsUspsUspsUspsUspsUspsUsps"));
+      _dbProcesses.Add(new DbProcess("Dbps", "Dbps ... or just me", "DbpsDbpsDbpsDbpsDbpsDbpsDbpsDbpsDbpsDbpsDbpsDbps"));
       _dbProcesses.Add(new DbProcess("Demo", "Validation Demo    ", "DemoDDemoDemoDemoDemoDemoDemoDemoDemoDemoDemoemo"));
       _dbProcesses.Add(new DbProcess("Acbg", "All Cash by Group  ", "All Cash by Group or similar"));
       _dbProcesses.Add(new DbProcess("Nthg01", "Nothing 1 ", "Nthg01Nthg01Nthg01Nthg01Nthg01Nthg01Nthg01Nthg01Nthg01Nthg01"));

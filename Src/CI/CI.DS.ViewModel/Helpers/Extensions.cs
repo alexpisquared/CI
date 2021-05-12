@@ -4,25 +4,6 @@ using System.Text.RegularExpressions;
 
 namespace CI.DS.ViewModel
 {
-  public class StoredProcDetail
-  {
-    string sPName = "";
-
-    public StoredProcDetail(string n, string p, string d)
-    {
-      (SPName, Parameters, Definition, Schema) = (n, p, d, "dbo");
-    }
-
-    public string SPName { get => sPName; private set => UFName = generateUserFriendlyName(sPName = value); }
-    public string Schema { get; set; }
-    public string Parameters { get; set; }
-    public string Definition { get; set; }
-    public string UFName { get; set; } = "";
-
-    string generateUserFriendlyName(string val) => val.ToSentence();
-
-    public override string ToString() { return SPName; }
-  }
   public static class Extensions
   {
     public static string ToSentence1(this string val) => (new string(val.SelectMany((c, i) => i > 0 && char.IsUpper(c) ? new[] { ' ', c } : new[] { c }).ToArray())).Replace("usp_", "").Replace("sp_", "").Trim();

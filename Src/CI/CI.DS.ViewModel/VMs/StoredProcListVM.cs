@@ -1,4 +1,5 @@
-﻿using DB.Inventory.Models;
+﻿using CI.DS.ViewModel.Commands;
+using DB.Inventory.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
@@ -9,9 +10,9 @@ using System.ComponentModel;
 using System.Data;
 using System.Data.SqlTypes;
 using System.Diagnostics;
-using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Data;
+using System.Windows.Input;
 
 namespace CI.DS.ViewModel
 {
@@ -21,16 +22,18 @@ namespace CI.DS.ViewModel
     readonly IConfigurationRoot _config;
     readonly InventoryContext _context;
     readonly List<StoredProcDetail> _spds = new();
-    string _SearchString = "", _SPName = "", _pKey = "";
+    string _SearchString = "";    
 
     ICollectionView _spcv; public ICollectionView SpdCollectionView { get => _spcv; set => SetProperty(ref _spcv, value); }
 
-    public StoredProcListVM(ILogger logger, IConfigurationRoot config)
+    public StoredProcListVM(ILogger logger, IConfigurationRoot config, MainVM mainVM)
     {
       _logger = logger;
       _config = config;
-      _context = new(_config["SqlConStr"]); 
+      _context = new(_config["SqlConStr"]);
       _spcv = CollectionViewSource.GetDefaultView(_spds); // redundant warning stopper only.
+
+      UpdateViewCommand = new UpdateViewCommand(mainVM);
 
       Task.Run(async () => await loadAllSPs()).ContinueWith(_ =>
       {
@@ -43,10 +46,7 @@ namespace CI.DS.ViewModel
       }, TaskScheduler.FromCurrentSynchronizationContext());
     }
 
-    bool filterSPDs(object obj)
-    {
-      return obj is StoredProcDetail && ((obj as StoredProcDetail)?.UFName.Contains(SearchString, StringComparison.InvariantCultureIgnoreCase) ?? false);
-    }
+    bool filterSPDs(object obj) => obj is StoredProcDetail && ((obj as StoredProcDetail)?.UFName.Contains(SearchString, StringComparison.InvariantCultureIgnoreCase) ?? false);
 
     async Task<List<StoredProcDetail>> loadAllSPs()
     {
@@ -86,8 +86,7 @@ namespace CI.DS.ViewModel
       return rv;
     }
 
-    public string PKey { get => _pKey; set => SetProperty(ref _pKey, value); }
-    public string SPName { get => _SPName; set => SetProperty(ref _SPName, value); }
+    StoredProcDetail? _selectSPD; public StoredProcDetail? SelectSPD { get => _selectSPD; set => SetProperty(ref _selectSPD, value); }
     public string SearchString
     {
       get => _SearchString; set
@@ -97,6 +96,7 @@ namespace CI.DS.ViewModel
       }
     }
 
+    public ICommand UpdateViewCommand { get; set; }
     public IConfigurationRoot Config => _config;
     public ILogger Logger => _logger;
 

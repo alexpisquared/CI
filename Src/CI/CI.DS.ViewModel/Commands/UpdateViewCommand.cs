@@ -10,15 +10,14 @@ namespace CI.DS.ViewModel.Commands
 
     public UpdateViewCommand(ObservableValidator mainVM) => _mainVM = (MainVM)mainVM;
 
-
     public event EventHandler? CanExecuteChanged;
     public bool CanExecute(object? parameter) => true;
     public void Execute(object? parameter) => _mainVM.SelectedVM = parameter switch
     {
-      "Spsl" => new StoredProcListVM(_mainVM.Logger, _mainVM.Config),
-      "Usps" => new DbProcessSelectorVM(_mainVM.Logger, _mainVM.Config),
+      "Spsl" => new StoredProcListVM(_mainVM.Logger, _mainVM.Config, _mainVM),
+      "Dbps" => new DbProcessSelectorVM(_mainVM.Logger, _mainVM.Config),
       "Demo" => new DemoVM(_mainVM.Logger, _mainVM.Config),
-      "Acbg" => new AllCashByGroupVM(_mainVM.Logger, _mainVM.Config),
+      "Acbg" => new AllCashByGroupVM(_mainVM.Logger, _mainVM.Config, _mainVM),
       _ => throw new MissingFieldException(parameter?.ToString()),
     };
   }
