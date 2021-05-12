@@ -170,6 +170,14 @@
         </Style.Triggers>
       </Style>
 
+
+      <Storyboard x:Key="sbGogo">
+        <DoubleAnimation Storyboard.TargetProperty="RenderTransform.ScaleX" From="1" To="4" Duration="00:00:.333"/>
+      </Storyboard>
+      <Storyboard x:Key="sbDone">
+        <DoubleAnimation Storyboard.TargetProperty="RenderTransform.ScaleX" From="4" To="1" Duration="00:00:.333"/>
+      </Storyboard>
+
     </ResourceDictionary>
   </lnk:WindowBase.Resources>
   <Border Style="{StaticResource BorderStyle_Aav0}">
@@ -267,6 +275,29 @@
           </Viewbox>
         </Grid>
       </Grid>
+
+      <Rectangle Width="100" Height="100" Fill="Red">
+        <Rectangle.Style>
+          <Style TargetType="Rectangle">
+            <Setter Property="RenderTransform">
+              <Setter.Value>
+                <ScaleTransform/>
+              </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+              <DataTrigger Binding="{Binding RunAnimation}" Value="True">
+                <DataTrigger.EnterActions>
+                  <BeginStoryboard x:Name="BeginScaleFrom" Storyboard="{StaticResource sbGogo}"/>
+                </DataTrigger.EnterActions>
+                <DataTrigger.ExitActions>
+                  <BeginStoryboard Storyboard="{StaticResource sbDone}"/>
+                </DataTrigger.ExitActions>
+              </DataTrigger>
+            </Style.Triggers>
+          </Style>
+        </Rectangle.Style>
+      </Rectangle>
+
 
       <StackPanel Grid.ColumnSpan="6" Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0" Opacity="1">
         <Button   Margin="5 0" Content="_Flsh"     Height="26" Click="onFlush" Opacity="0" />
