@@ -18,7 +18,12 @@ namespace CI.DS.ViewModel.Commands
       "Dbps" => new DbProcessSelectorVM(_mainVM.Logger, _mainVM.Config),
       "Demo" => new DemoVM(_mainVM.Logger, _mainVM.Config),
       "Acbg" => new AllCashByGroupVM(_mainVM.Logger, _mainVM.Config, _mainVM),
+      "usp_Report_AllCashByGroup" => new AllCashByGroupVM(_mainVM.Logger, _mainVM.Config, _mainVM),
+#if DEBUG
+      _ => new AllCashByGroupVM(_mainVM.Logger, _mainVM.Config, _mainVM),
+#else
       _ => throw new MissingFieldException(parameter?.ToString()),
+#endif
     };
   }
 }

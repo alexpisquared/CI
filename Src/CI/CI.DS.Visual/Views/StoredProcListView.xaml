@@ -25,7 +25,13 @@
     </Style>
 
     <DataTemplate x:Key="myTaskTemplate">
-      <stb:HighlightableTextBlock Text="{Binding UFName}" SearchText="{Binding Text, ElementName=tbxSearch}" ToolTip="{Binding SPName}" Margin="5 0" />
+      <stb:HighlightableTextBlock Text="{Binding UFName}" SearchText="{Binding Text, ElementName=tbxSearch}" ToolTip="{Binding SPName}" Margin="0 -2.5" >
+        <stb:HighlightableTextBlock.InputBindings>
+          <MouseBinding MouseAction="LeftDoubleClick" 
+                        Command="{Binding DataContext.UpdateViewCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}"
+                        CommandParameter="{Binding DataContext.SelectSPD.SPName, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}" />
+        </stb:HighlightableTextBlock.InputBindings>
+      </stb:HighlightableTextBlock>
     </DataTemplate>
 
   </UserControl.Resources>
@@ -44,10 +50,10 @@
       <Label Content="_DB Processes" Target="{Binding ElementName=lbxSpds}"    />
     </StackPanel>
 
-    <ListBox    Grid.Row="1" x:Name="lbxSpds" 
+    <ListView   Grid.Row="1" x:Name="lbxSpds" 
                 ItemsSource="{Binding SpdCollectionView}" 
                 ItemTemplate="{StaticResource myTaskTemplate}" 
-                SelectedItem="{Binding SelectSPD}" />
+                SelectedItem="{Binding SelectSPD, Mode=TwoWay}" />
 
     <StackPanel Grid.Row="2" Margin="0 10" >
       <Label Content="Selected DB Process Details:" />
