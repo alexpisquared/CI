@@ -14,6 +14,8 @@ using System.Data;
 using Microsoft.Data.SqlClient;
 using System.Diagnostics;
 using System.Data.SqlTypes;
+using System.ComponentModel;
+using System.Windows.Data;
 
 namespace CI.DS.ViewModel
 {
@@ -22,8 +24,10 @@ namespace CI.DS.ViewModel
     readonly ILogger _logger;
     readonly IConfigurationRoot _config;
     readonly InventoryContext _context;
-    string _selectedDBP, _SearchString, _SPName, _pKey;
-    ObservableCollection<StoredProcDetail> _dbProcesses = new();
+    string _SearchString = "", _SPName = "", _pKey = "";
+    readonly List<StoredProcDetail> _spds = new();
+
+    ICollectionView _spcv; public ICollectionView SpdCollectionView { get => _spcv; set => SetProperty(ref _spcv, value); }
 
     public StoredProcListVM(ILogger logger, IConfigurationRoot config)
     {
@@ -31,8 +35,18 @@ namespace CI.DS.ViewModel
       _config = config;
       _context = new(_config["SqlConStr"]); // string.Format(_config["SqlConStr"], cbxSrvr.SelectedValue)); // @"Server=.\sqlexpress;Database=Inventory;Trusted_Connection=True;"); // MTdevSQLDB
 
-      Task.Run(async () => await loadAllSPs()).ContinueWith(_ => _.Result.ForEach(r => _dbProcesses.Add(r)), TaskScheduler.FromCurrentSynchronizationContext());
+      Task.Run(async () => await loadAllSPs()).ContinueWith(_ =>
+      {
+        _.Result.ForEach(r => _spds.Add(r));
+        SpdCollectionView = CollectionViewSource.GetDefaultView(_spds);
+        SpdCollectionView.Filter = filterSPDs;
+        SpdCollectionView.GroupDescriptions.Add(new PropertyGroupDescription(nameof(StoredProcDetail.Schema)));
+        SpdCollectionView.SortDescriptions.Add(new SortDescription(nameof(StoredProcDetail.SPName), ListSortDirection.Ascending));
+        System.Media.SystemSounds.Hand.Play(); // Visual.Lib.Helpers.Bpr.Start();
+      }, TaskScheduler.FromCurrentSynchronizationContext());
     }
+
+    bool filterSPDs(object obj) => obj is StoredProcDetail && ((obj as StoredProcDetail)?.SPName.Contains(SearchString, StringComparison.InvariantCultureIgnoreCase) ?? false);
 
     async Task<List<StoredProcDetail>> loadAllSPs()
     {
@@ -66,10 +80,16 @@ namespace CI.DS.ViewModel
       return rv;
     }
 
-    public ObservableCollection<StoredProcDetail> StoredProcDetails { get => _dbProcesses; set => SetProperty(ref _dbProcesses, value, true); }
     public string PKey { get => _pKey; set => SetProperty(ref _pKey, value); }
     public string SPName { get => _SPName; set => SetProperty(ref _SPName, value); }
-    public string SearchString { get => _SearchString; set => SetProperty(ref _SearchString, value); }
+    public string SearchString
+    {
+      get => _SearchString; set
+      {
+        SetProperty(ref _SearchString, value);
+        SpdCollectionView.Refresh();
+      }
+    }
 
     public IConfigurationRoot Config => _config;
     public ILogger Logger => _logger;
@@ -92,6 +112,7 @@ order by SPName";
   {
     public StoredProcDetail(string pKey, string name, string desc) => (SPName, Parameters, Definition) = (pKey, name, desc);
 
+    public string Schema{ get; set; }
     public string SPName { get; set; }
     public string Parameters { get; set; }
     public string Definition { get; set; }

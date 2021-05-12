@@ -45,7 +45,7 @@
     </StackPanel>
 
     <ListBox    Grid.Row="1" 
-                ItemsSource="{Binding StoredProcDetails}" 
+                ItemsSource="{Binding SpdCollectionView}" 
                 ItemTemplate="{StaticResource myTaskTemplate}" 
                 SelectedValue="{Binding SPName}" 
                 SelectedValuePath="SPName" />
