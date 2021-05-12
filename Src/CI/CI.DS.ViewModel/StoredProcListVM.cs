@@ -31,27 +31,29 @@ namespace CI.DS.ViewModel
       _config = config;
       _context = new(_config["SqlConStr"]); // string.Format(_config["SqlConStr"], cbxSrvr.SelectedValue)); // @"Server=.\sqlexpress;Database=Inventory;Trusted_Connection=True;"); // MTdevSQLDB
 
-      using var connectionDb = _context.Database.GetDbConnection();
+      Task.Run(async () => await loadAllSPs()).ContinueWith(_ => _.Result.ForEach(r => _dbProcesses.Add(r)), TaskScheduler.FromCurrentSynchronizationContext());
+    }
+
+    async Task<List<StoredProcDetail>> loadAllSPs()
+    {
+      List<StoredProcDetail> rv = new();
+      var connection = _context.Database.GetDbConnection();
 
       try
       {
-        if (connectionDb.State.Equals(ConnectionState.Closed))
-          connectionDb.Open();
+        if (connection.State.Equals(ConnectionState.Closed))
+          connection.Open();
 
-        using var command = connectionDb.CreateCommand();
+        using var command = connection.CreateCommand();
         command.CommandText = _sql;
 
-        using var reader = command.ExecuteReader();
+        using var reader = await command.ExecuteReaderAsync();
         if (!reader.HasRows)
           Debug.WriteLine("No rows found.");
         else
           while (reader.Read())
           {
-            try
-            {
-              Debug.WriteLine($"{reader.GetString(0)}");
-              _dbProcesses.Add(new StoredProcDetail(reader.GetString(0), reader.GetString(1), reader.GetString(2)));
-            }
+            try { rv.Add(new StoredProcDetail(reader.GetString(0), reader.GetString(1), reader.GetString(2))); Debug.WriteLine($"{reader.GetString(0)}"); }
             catch (SqlNullValueException ex) { Debug.WriteLine($"  ■ ■ ■ {reader.GetString(0)}   {ex.Message}"); }
           }
 
@@ -59,34 +61,12 @@ namespace CI.DS.ViewModel
       }
       catch (SqlNullValueException ex) { _logger.LogError(ex.ToString()); }
       catch (Exception ex) { _logger.LogError(ex.ToString()); }
-      finally { connectionDb.Close(); }
-    }
+      finally { connection.Close(); }
 
-    static void HasRows(SqlConnection connection)
-    {
-      using (connection)
-      {
-        SqlCommand command = new("SELECT CategoryID, CategoryName FROM Categories;", connection);
-        connection.Open();
-
-        SqlDataReader reader = command.ExecuteReader();
-        if (reader.HasRows)
-        {
-          while (reader.Read())
-          {
-            Debug.WriteLine("{0}\t{1}", reader.GetInt32(0), reader.GetString(1));
-          }
-        }
-        else
-        {
-          Debug.WriteLine("No rows found.");
-        }
-        reader.Close();
-      }
+      return rv;
     }
 
     public ObservableCollection<StoredProcDetail> StoredProcDetails { get => _dbProcesses; set => SetProperty(ref _dbProcesses, value, true); }
-
     public string PKey { get => _pKey; set => SetProperty(ref _pKey, value); }
     public string SPName { get => _SPName; set => SetProperty(ref _SPName, value); }
     public string SearchString { get => _SearchString; set => SetProperty(ref _SearchString, value); }
@@ -95,17 +75,17 @@ namespace CI.DS.ViewModel
     public ILogger Logger => _logger;
 
     const string _sql = @"
-select  obj.name AS SPName,  substring(par.parameters, 0, len(par.parameters)) as Parameters,  mod.Definition,  schema_name(obj.schema_id) AS [Schema]
-from sys.objects obj
-join sys.sql_modules mod
-     on mod.object_id = obj.object_id
+select  obj.name AS SPName,  substring(par.parameters, 0, len(par.parameters)) as Parameters,  
+--mod.Definition,  
+schema_name(obj.schema_id) AS [Schema]
+from sys.objects      obj
+--join sys.sql_modules  mod     on mod.object_id = obj.object_id
 cross apply (select p.name + ' ' + TYPE_NAME(p.user_type_id) + ', ' 
              from sys.parameters p
-             where p.object_id = obj.object_id 
-                   and p.parameter_id != 0 
-             for xml path ('') ) par (parameters)
+             where p.object_id = obj.object_id and p.parameter_id != 0 
+             for xml path ('')) par (parameters)
 where obj.type in ('P', 'X')
-order by 2";
+order by SPName";
   }
 
   public class StoredProcDetail

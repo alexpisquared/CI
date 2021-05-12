@@ -15,14 +15,16 @@ using System.Windows.Shapes;
 
 namespace CI.DS.Visual.Views
 {
-  /// <summary>
-  /// Interaction logic for StoredProcListView.xaml
-  /// </summary>
   public partial class StoredProcListView : UserControl
   {
     public StoredProcListView()
     {
       InitializeComponent();
+    }
+
+    void onLoaded(object sender, RoutedEventArgs e)
+    {
+      tbxSearch.Focus();
     }
   }
 }
