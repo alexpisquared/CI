@@ -1,20 +1,16 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using DB.Inventory.Models;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
-using System.Collections.ObjectModel;
-using System.Windows.Input;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using DB.Inventory.Models;
-using Microsoft.EntityFrameworkCore;
-using System.Data;
-using Microsoft.Data.SqlClient;
-using System.Diagnostics;
-using System.Data.SqlTypes;
 using System.ComponentModel;
+using System.Data;
+using System.Data.SqlTypes;
+using System.Diagnostics;
+using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Data;
 
 namespace CI.DS.ViewModel
@@ -24,8 +20,8 @@ namespace CI.DS.ViewModel
     readonly ILogger _logger;
     readonly IConfigurationRoot _config;
     readonly InventoryContext _context;
-    string _SearchString = "", _SPName = "", _pKey = "";
     readonly List<StoredProcDetail> _spds = new();
+    string _SearchString = "", _SPName = "", _pKey = "";
 
     ICollectionView _spcv; public ICollectionView SpdCollectionView { get => _spcv; set => SetProperty(ref _spcv, value); }
 
@@ -33,7 +29,8 @@ namespace CI.DS.ViewModel
     {
       _logger = logger;
       _config = config;
-      _context = new(_config["SqlConStr"]); // string.Format(_config["SqlConStr"], cbxSrvr.SelectedValue)); // @"Server=.\sqlexpress;Database=Inventory;Trusted_Connection=True;"); // MTdevSQLDB
+      _context = new(_config["SqlConStr"]); 
+      _spcv = CollectionViewSource.GetDefaultView(_spds); // redundant warning stopper only.
 
       Task.Run(async () => await loadAllSPs()).ContinueWith(_ =>
       {
@@ -41,35 +38,44 @@ namespace CI.DS.ViewModel
         SpdCollectionView = CollectionViewSource.GetDefaultView(_spds);
         SpdCollectionView.Filter = filterSPDs;
         SpdCollectionView.GroupDescriptions.Add(new PropertyGroupDescription(nameof(StoredProcDetail.Schema)));
-        SpdCollectionView.SortDescriptions.Add(new SortDescription(nameof(StoredProcDetail.SPName), ListSortDirection.Ascending));
+        SpdCollectionView.SortDescriptions.Add(new SortDescription(nameof(StoredProcDetail.UFName), ListSortDirection.Ascending));
         System.Media.SystemSounds.Hand.Play(); // Visual.Lib.Helpers.Bpr.Start();
       }, TaskScheduler.FromCurrentSynchronizationContext());
     }
 
-    bool filterSPDs(object obj) => obj is StoredProcDetail && ((obj as StoredProcDetail)?.SPName.Contains(SearchString, StringComparison.InvariantCultureIgnoreCase) ?? false);
+    bool filterSPDs(object obj)
+    {
+      return obj is StoredProcDetail && ((obj as StoredProcDetail)?.UFName.Contains(SearchString, StringComparison.InvariantCultureIgnoreCase) ?? false);
+    }
 
     async Task<List<StoredProcDetail>> loadAllSPs()
     {
       List<StoredProcDetail> rv = new();
-      var connection = _context.Database.GetDbConnection();
+      System.Data.Common.DbConnection? connection = _context.Database.GetDbConnection();
 
       try
       {
         if (connection.State.Equals(ConnectionState.Closed))
+        {
           connection.Open();
+        }
 
-        using var command = connection.CreateCommand();
+        using System.Data.Common.DbCommand? command = connection.CreateCommand();
         command.CommandText = _sql;
 
-        using var reader = await command.ExecuteReaderAsync();
+        using System.Data.Common.DbDataReader? reader = await command.ExecuteReaderAsync();
         if (!reader.HasRows)
+        {
           Debug.WriteLine("No rows found.");
+        }
         else
+        {
           while (reader.Read())
           {
             try { rv.Add(new StoredProcDetail(reader.GetString(0), reader.GetString(1), reader.GetString(2))); Debug.WriteLine($"{reader.GetString(0)}"); }
             catch (SqlNullValueException ex) { Debug.WriteLine($"  ■ ■ ■ {reader.GetString(0)}   {ex.Message}"); }
           }
+        }
 
         reader.Close();
       }
@@ -106,17 +112,5 @@ cross apply (select p.name + ' ' + TYPE_NAME(p.user_type_id) + ', '
              for xml path ('')) par (parameters)
 where obj.type in ('P', 'X')
 order by SPName";
-  }
-
-  public class StoredProcDetail
-  {
-    public StoredProcDetail(string pKey, string name, string desc) => (SPName, Parameters, Definition) = (pKey, name, desc);
-
-    public string Schema{ get; set; }
-    public string SPName { get; set; }
-    public string Parameters { get; set; }
-    public string Definition { get; set; }
-
-    public override string ToString() { return Parameters; }
   }
 }

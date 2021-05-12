@@ -23,3 +23,12 @@ I can crate a UE in less time for each SP than poor end users trying to deal wit
 
 the result will be a much better UE, data integrity, security
 
+
+
+
+SELECT     o.name AS SP, p.parameter_id, p.name AS Param, TYPE_NAME(p.user_type_id) AS Type, p.max_length, p.precision, p.system_type_id, p.user_type_id, p.scale, p.is_output, p.is_cursor_ref, p.has_default_value, p.is_xml_document, p.default_value, p.xml_collection_id, p.is_readonly, 
+                  p.is_nullable, p.encryption_type, p.encryption_type_desc, p.encryption_algorithm_name, p.column_encryption_key_id, p.column_encryption_key_database_name
+FROM        sys.parameters AS p INNER JOIN
+                  sys.objects AS o ON p.object_id = o.object_id
+WHERE     (p.name <> '') AND (o.type IN ('P', 'X'))
+ORDER BY SP, p.parameter_id, Param, o.type, p.max_length DESC

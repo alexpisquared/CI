@@ -25,7 +25,7 @@
     </Style>
 
     <DataTemplate x:Key="myTaskTemplate">
-      <stb:HighlightableTextBlock Text="{Binding SPName}" SearchText="{Binding Text, ElementName=tbxSearch}" ToolTip="{Binding SPName}" Margin="5 0" />
+      <stb:HighlightableTextBlock Text="{Binding UFName}" SearchText="{Binding Text, ElementName=tbxSearch}" ToolTip="{Binding SPName}" Margin="5 0" />
     </DataTemplate>
     
   </UserControl.Resources>
