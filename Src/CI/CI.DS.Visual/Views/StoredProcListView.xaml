@@ -59,7 +59,10 @@
       <Label Content="Selected DB Process Details:" />
       <TextBlock Text="{Binding SelectSPD}"      d:Text="sp_Name" FontSize="18" TextWrapping="WrapWithOverflow" />
 
-      <Button Content="  _Go  " IsDefault="True" HorizontalAlignment="Center" Command="{Binding UpdateViewCommand}" CommandParameter="Acbg" Background="{DynamicResource MenuItemBackground3}" ToolTip="Open the selected DB Process panel" />
+      <Button Content="  _Go  " IsDefault="True" HorizontalAlignment="Center" Background="{DynamicResource MenuItemBackground3}" ToolTip="Open the selected DB Process panel" 
+              Command="{Binding UpdateViewCommand}" 
+              CommandParameter="{Binding SelectSPD.SPName}" 
+              />
 
     </StackPanel>
 
