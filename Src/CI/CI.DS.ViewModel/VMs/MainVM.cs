@@ -8,7 +8,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
-namespace CI.DS.ViewModel
+namespace CI.DS.ViewModel.VMs
 {
   public class MainVM : ObservableValidator
   {
@@ -49,7 +49,7 @@ namespace CI.DS.ViewModel
       get => _selectedVM; set
       {
         RunAnimation = value is not StoredProcListVM;
-        Task.Run(async () => await Task.Delay(999)).ContinueWith(_ => { SetProperty(ref _selectedVM, value); }, TaskScheduler.FromCurrentSynchronizationContext());
+        Task.Run(async () => await Task.Delay(333)).ContinueWith(_ => { SetProperty(ref _selectedVM, value); }, TaskScheduler.FromCurrentSynchronizationContext());
       }
     }
     bool _RunAnimation = false; public bool RunAnimation { get => _RunAnimation; set => SetProperty(ref _RunAnimation, value); }

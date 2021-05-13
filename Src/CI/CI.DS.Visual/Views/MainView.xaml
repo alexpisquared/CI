@@ -172,12 +172,12 @@
 
 
       <Storyboard x:Key="sbGogo">
-        <DoubleAnimation Storyboard.TargetProperty="RenderTransform.(TranslateTransform.X)" From="0" To="-542" Duration="00:00:.999" EasingFunction="{StaticResource si}" />
-        <DoubleAnimation Storyboard.TargetProperty="RenderTransform.(TranslateTransform.X)" From="+542" To="0" Duration="00:00:.999" EasingFunction="{StaticResource so}" BeginTime="00:00:.999"/>
+        <DoubleAnimation Storyboard.TargetProperty="RenderTransform.(TranslateTransform.X)" From="0" To="-711" Duration="00:00:.333" EasingFunction="{StaticResource si}" />
+        <DoubleAnimation Storyboard.TargetProperty="RenderTransform.(TranslateTransform.X)" From="+711" To="0" Duration="00:00:.333" EasingFunction="{StaticResource so}" BeginTime="00:00:.333"/>
       </Storyboard>
       <Storyboard x:Key="sbDone">
-        <DoubleAnimation Storyboard.TargetProperty="RenderTransform.(TranslateTransform.X)" From="0" To="+542" Duration="00:00:.999" EasingFunction="{StaticResource ci}"/>
-        <DoubleAnimation Storyboard.TargetProperty="RenderTransform.(TranslateTransform.X)" From="-542" To="0" Duration="00:00:.999" EasingFunction="{StaticResource co}" BeginTime="00:00:.999"/>
+        <DoubleAnimation Storyboard.TargetProperty="RenderTransform.(TranslateTransform.X)" From="0" To="+711" Duration="00:00:.333" EasingFunction="{StaticResource ci}"/>
+        <DoubleAnimation Storyboard.TargetProperty="RenderTransform.(TranslateTransform.X)" From="-711" To="0" Duration="00:00:.333" EasingFunction="{StaticResource co}" BeginTime="00:00:.333"/>
       </Storyboard>
 
     </ResourceDictionary>

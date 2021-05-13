@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 using System.Windows.Data;
 using System.Windows.Input;
 
-namespace CI.DS.ViewModel
+namespace CI.DS.ViewModel.VMs
 {
   public class StoredProcListVM : ObservableValidator
   {
@@ -60,7 +60,7 @@ namespace CI.DS.ViewModel
           connection.Open();
         }
 
-        using System.Data.Common.DbCommand? command = connection.CreateCommand();
+        using System.Data.Common.DbCommand command = connection.CreateCommand();
         command.CommandText = _sql;
 
         using System.Data.Common.DbDataReader? reader = await command.ExecuteReaderAsync();

@@ -36,9 +36,9 @@
       <Button x:Name="btnGet" Content="  _Get  " Height="30" Margin="20,0" Click="onGo" IsDefault="True"/>
     </StackPanel>
 
-    <DataGrid x:Name="dg1" AutoGenerateColumns="True" Margin="5,5,5,5" Grid.Row="1" />
-    
-    <TextBlock x:Name="tbkError" Margin="5,5,5,5" Grid.Row="2" Foreground="#d00"/>
+    <DataGrid  Grid.Row="1" x:Name="dg1" AutoGenerateColumns="True" Margin="5,5,5,5" />
+
+    <TextBlock Grid.Row="2" x:Name="tbkError" Margin="5,5,5,5" Foreground="#d00"/>
 
   </Grid>
 </UserControl>
