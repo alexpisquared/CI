@@ -1,0 +1,152 @@
+﻿<Window x:Class="DataSourcesGeneratorWpf.Net4.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:DataSourcesGeneratorWpf.Net4"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="818" Width="800" Loaded="Window_Loaded">
+  <Window.Resources>
+    <local:TradeDataDataSet x:Key="tradeDataDataSet"/>
+    <CollectionViewSource x:Key="orderHistoryCIDViewSource" Source="{Binding OrderHistoryCID, Source={StaticResource tradeDataDataSet}}"/>
+  </Window.Resources>
+  <Grid DataContext="{StaticResource orderHistoryCIDViewSource}">
+    <Grid.RowDefinitions>
+      <RowDefinition Height="Auto"/>
+      <RowDefinition Height="*"/>
+      <RowDefinition Height="Auto"/>
+    </Grid.RowDefinitions>
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="Auto"/>
+      <ColumnDefinition Width="2*"/>
+    </Grid.ColumnDefinitions>
+    <DataGrid x:Name="orderHistoryCIDDataGrid" AutoGenerateColumns="False" EnableRowVirtualization="True" ItemsSource="{Binding}" RowDetailsVisibilityMode="VisibleWhenSelected" Grid.Row="1">
+      <DataGrid.Columns>
+        <DataGridTextColumn x:Name="baseClOrdIDColumn" Binding="{Binding BaseClOrdID}" Header="Base Cl Ord ID" Width="Auto"/>
+        <!--<DataGridTextColumn x:Name="seqNoColumn" Binding="{Binding SeqNo}" Header="Seq No" IsReadOnly="True" Width="Auto"/>
+        <DataGridTemplateColumn x:Name="sendingTimeColumn" Header="Sending Time" Width="*">
+          <DataGridTemplateColumn.CellTemplate>
+            <DataTemplate>
+              <DatePicker SelectedDate="{Binding SendingTime, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}"/>
+            </DataTemplate>
+          </DataGridTemplateColumn.CellTemplate>
+        </DataGridTemplateColumn>
+        <DataGridTemplateColumn x:Name="updateTimeColumn" Header="Update Time" Width="Auto">
+          <DataGridTemplateColumn.CellTemplate>
+            <DataTemplate>
+              <DatePicker SelectedDate="{Binding UpdateTime, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}"/>
+            </DataTemplate>
+          </DataGridTemplateColumn.CellTemplate>
+        </DataGridTemplateColumn>
+        <DataGridTextColumn x:Name="messageTypeColumn" Binding="{Binding MessageType}" Header="Message Type" Width="*"/>
+        <DataGridTextColumn x:Name="clOrdIDColumn" Binding="{Binding ClOrdID}" Header="Cl Ord ID" Width="*"/>
+        <DataGridTextColumn x:Name="orderOriginationColumn" Binding="{Binding OrderOrigination}" Header="Order Origination" Width="SizeToHeader"/>
+        <DataGridTextColumn x:Name="routingArrangementIndicatorColumn" Binding="{Binding RoutingArrangementIndicator}" Header="Routing Arrangement Indicator" Width="SizeToHeader"/>
+        <DataGridTextColumn x:Name="algorithmIDColumn" Binding="{Binding AlgorithmID}" Header="Algorithm ID" Width="SizeToHeader"/>
+        <DataGridTextColumn x:Name="customerAccountColumn" Binding="{Binding CustomerAccount}" Header="Customer Account" Width="SizeToHeader"/>
+        <DataGridTextColumn x:Name="customerLEIColumn" Binding="{Binding CustomerLEI}" Header="Customer LEI" Width="SizeToHeader"/>
+        <DataGridTextColumn x:Name="customerUnencryptedLEIColumn" Binding="{Binding CustomerUnencryptedLEI}" Header="Customer Unencrypted LEI" Width="SizeToHeader"/>
+        <DataGridTextColumn x:Name="brokerLEIColumn" Binding="{Binding BrokerLEI}" Header="Broker LEI" Width="SizeToHeader"/>
+        <DataGridTextColumn x:Name="buyOrderOriginationColumn" Binding="{Binding BuyOrderOrigination}" Header="Buy Order Origination" Width="SizeToHeader"/>
+        <DataGridTextColumn x:Name="buyRoutingArrangementIndicatorColumn" Binding="{Binding BuyRoutingArrangementIndicator}" Header="Buy Routing Arrangement Indicator" Width="SizeToHeader"/>
+        <DataGridTextColumn x:Name="buyAlgorithmIDColumn" Binding="{Binding BuyAlgorithmID}" Header="Buy Algorithm ID" Width="SizeToHeader"/>
+        <DataGridTextColumn x:Name="buyCustomerAccountColumn" Binding="{Binding BuyCustomerAccount}" Header="Buy Customer Account" Width="SizeToHeader"/>
+        <DataGridTextColumn x:Name="buyCustomerLEIColumn" Binding="{Binding BuyCustomerLEI}" Header="Buy Customer LEI" Width="SizeToHeader"/>
+        <DataGridTextColumn x:Name="buyBrokerLEIColumn" Binding="{Binding BuyBrokerLEI}" Header="Buy Broker LEI" Width="SizeToHeader"/>
+        <DataGridTextColumn x:Name="sellOrderOriginationColumn" Binding="{Binding SellOrderOrigination}" Header="Sell Order Origination" Width="SizeToHeader"/>
+        <DataGridTextColumn x:Name="sellRoutingArrangementIndicatorColumn" Binding="{Binding SellRoutingArrangementIndicator}" Header="Sell Routing Arrangement Indicator" Width="SizeToHeader"/>
+        <DataGridTextColumn x:Name="sellAlgorithmIDColumn" Binding="{Binding SellAlgorithmID}" Header="Sell Algorithm ID" Width="SizeToHeader"/>
+        <DataGridTextColumn x:Name="sellCustomerAccountColumn" Binding="{Binding SellCustomerAccount}" Header="Sell Customer Account" Width="SizeToHeader"/>
+        <DataGridTextColumn x:Name="sellCustomerLEIColumn" Binding="{Binding SellCustomerLEI}" Header="Sell Customer LEI" Width="SizeToHeader"/>
+        <DataGridTextColumn x:Name="sellBrokerLEIColumn" Binding="{Binding SellBrokerLEI}" Header="Sell Broker LEI" Width="SizeToHeader"/>
+        -->
+      </DataGrid.Columns>
+    </DataGrid>
+    <Grid x:Name="grid1" Grid.Column="1" HorizontalAlignment="Stretch" Margin="5" Grid.Row="1" VerticalAlignment="Top">
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="Auto"/>
+        <ColumnDefinition Width="*"/>
+      </Grid.ColumnDefinitions>
+      <Grid.RowDefinitions>
+        <RowDefinition Height="Auto"/>
+        <RowDefinition Height="Auto"/>
+        <RowDefinition Height="Auto"/>
+        <RowDefinition Height="Auto"/>
+        <RowDefinition Height="Auto"/>
+        <RowDefinition Height="Auto"/>
+        <RowDefinition Height="Auto"/>
+        <RowDefinition Height="Auto"/>
+        <RowDefinition Height="Auto"/>
+        <RowDefinition Height="Auto"/>
+        <RowDefinition Height="Auto"/>
+        <RowDefinition Height="Auto"/>
+        <RowDefinition Height="Auto"/>
+        <RowDefinition Height="Auto"/>
+        <RowDefinition Height="Auto"/>
+        <RowDefinition Height="Auto"/>
+        <RowDefinition Height="Auto"/>
+        <RowDefinition Height="Auto"/>
+        <RowDefinition Height="Auto"/>
+        <RowDefinition Height="Auto"/>
+        <RowDefinition Height="Auto"/>
+        <RowDefinition Height="Auto"/>
+        <RowDefinition Height="Auto"/>
+        <RowDefinition Height="Auto"/>
+        <RowDefinition Height="Auto"/>
+      </Grid.RowDefinitions>
+      <Label Content="Seq No:" Grid.Column="0" HorizontalAlignment="Right" Grid.Row="0" VerticalAlignment="Center"/>
+      <TextBox x:Name="seqNoTextBox" Grid.Column="1"                                    Grid.Row="0" Text="{Binding SeqNo, Mode=OneWay}" VerticalAlignment="Center" />
+      <Label Content="Sending Time:" Grid.Column="0"                                    HorizontalAlignment="Right" Grid.Row="1" VerticalAlignment="Center"/>
+      <DatePicker x:Name="sendingTimeDatePicker" Grid.Column="1"                        Grid.Row="1" SelectedDate="{Binding SendingTime, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" VerticalAlignment="Center"/>
+      <Label Content="Update Time:" Grid.Column="0"                                     HorizontalAlignment="Right" Grid.Row="2" VerticalAlignment="Center"/>
+      <DatePicker x:Name="updateTimeDatePicker" Grid.Column="1"                         Grid.Row="2" SelectedDate="{Binding UpdateTime, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" VerticalAlignment="Center"/>
+      <Label Content="Message Type:" Grid.Column="0"                                    HorizontalAlignment="Right" Grid.Row="3" VerticalAlignment="Center"/>
+      <TextBox x:Name="messageTypeTextBox" Grid.Column="1"                              Grid.Row="3" Text="{Binding MessageType, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" VerticalAlignment="Center" />
+      <Label Content="Base Cl Ord ID:" Grid.Column="0"                                  HorizontalAlignment="Right" Grid.Row="4" VerticalAlignment="Center"/>
+      <TextBox x:Name="baseClOrdIDTextBox" Grid.Column="1"                              Grid.Row="4" Text="{Binding BaseClOrdID, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" VerticalAlignment="Center" />
+      <Label Content="Cl Ord ID:" Grid.Column="0"                                       HorizontalAlignment="Right" Grid.Row="5" VerticalAlignment="Center"/>
+      <TextBox x:Name="clOrdIDTextBox" Grid.Column="1"                                  Grid.Row="5" Text="{Binding ClOrdID, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" VerticalAlignment="Center" />
+      <Label Content="Order Origination:" Grid.Column="0"                               HorizontalAlignment="Right" Grid.Row="6" VerticalAlignment="Center"/>
+      <TextBox x:Name="orderOriginationTextBox" Grid.Column="1"                         Grid.Row="6" Text="{Binding OrderOrigination, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" VerticalAlignment="Center" />
+      <Label Content="Routing Arrangement Indicator:" Grid.Column="0"                   HorizontalAlignment="Right" Grid.Row="7" VerticalAlignment="Center"/>
+      <TextBox x:Name="routingArrangementIndicatorTextBox" Grid.Column="1"              Grid.Row="7" Text="{Binding RoutingArrangementIndicator, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" VerticalAlignment="Center" />
+      <Label Content="Algorithm ID:" Grid.Column="0"                                    HorizontalAlignment="Right" Grid.Row="8" VerticalAlignment="Center"/>
+      <TextBox x:Name="algorithmIDTextBox" Grid.Column="1"                              Grid.Row="8" Text="{Binding AlgorithmID, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" VerticalAlignment="Center" />
+      <Label Content="Customer Account:" Grid.Column="0"                                HorizontalAlignment="Right" Grid.Row="9" VerticalAlignment="Center"/>
+      <TextBox x:Name="customerAccountTextBox" Grid.Column="1"                          Grid.Row="9" Text="{Binding CustomerAccount, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" VerticalAlignment="Center" />
+      <Label Content="Customer LEI:" Grid.Column="0"                                    HorizontalAlignment="Right" Grid.Row="10" VerticalAlignment="Center"/>
+      <TextBox x:Name="customerLEITextBox" Grid.Column="1"                              Grid.Row="10" Text="{Binding CustomerLEI, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" VerticalAlignment="Center" />
+      <Label Content="Customer Unencrypted LEI:" Grid.Column="0"                        HorizontalAlignment="Right" Grid.Row="11" VerticalAlignment="Center"/>
+      <TextBox x:Name="customerUnencryptedLEITextBox" Grid.Column="1"                   Grid.Row="11" Text="{Binding CustomerUnencryptedLEI, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" VerticalAlignment="Center" />
+      <Label Content="Broker LEI:" Grid.Column="0"                                      HorizontalAlignment="Right" Grid.Row="12" VerticalAlignment="Center"/>
+      <TextBox x:Name="brokerLEITextBox" Grid.Column="1"                                Grid.Row="12" Text="{Binding BrokerLEI, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" VerticalAlignment="Center" />
+      <Label Content="Buy Order Origination:" Grid.Column="0"                           HorizontalAlignment="Right" Grid.Row="13" VerticalAlignment="Center"/>
+      <TextBox x:Name="buyOrderOriginationTextBox" Grid.Column="1"                      Grid.Row="13" Text="{Binding BuyOrderOrigination, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" VerticalAlignment="Center" />
+      <Label Content="Buy Routing Arrangement Indicator:" Grid.Column="0"               HorizontalAlignment="Right" Grid.Row="14" VerticalAlignment="Center"/>
+      <TextBox x:Name="buyRoutingArrangementIndicatorTextBox" Grid.Column="1"           Grid.Row="14" Text="{Binding BuyRoutingArrangementIndicator, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" VerticalAlignment="Center" />
+      <Label Content="Buy Algorithm ID:" Grid.Column="0"                                HorizontalAlignment="Right" Grid.Row="15" VerticalAlignment="Center"/>
+      <TextBox x:Name="buyAlgorithmIDTextBox" Grid.Column="1"                           Grid.Row="15" Text="{Binding BuyAlgorithmID, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" VerticalAlignment="Center" />
+      <Label Content="Buy Customer Account:" Grid.Column="0"                            HorizontalAlignment="Right" Grid.Row="16" VerticalAlignment="Center"/>
+      <TextBox x:Name="buyCustomerAccountTextBox" Grid.Column="1"                       Grid.Row="16" Text="{Binding BuyCustomerAccount, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" VerticalAlignment="Center" />
+      <Label Content="Buy Customer LEI:" Grid.Column="0"                                HorizontalAlignment="Right" Grid.Row="17" VerticalAlignment="Center"/>
+      <TextBox x:Name="buyCustomerLEITextBox" Grid.Column="1"                           Grid.Row="17" Text="{Binding BuyCustomerLEI, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" VerticalAlignment="Center" />
+      <Label Content="Buy Broker LEI:" Grid.Column="0"                                  HorizontalAlignment="Right" Grid.Row="18" VerticalAlignment="Center"/>
+      <TextBox x:Name="buyBrokerLEITextBox" Grid.Column="1"                             Grid.Row="18" Text="{Binding BuyBrokerLEI, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" VerticalAlignment="Center" />
+      <Label Content="Sell Order Origination:" Grid.Column="0"                          HorizontalAlignment="Right" Grid.Row="19" VerticalAlignment="Center"/>
+      <TextBox x:Name="sellOrderOriginationTextBox" Grid.Column="1"                     Grid.Row="19" Text="{Binding SellOrderOrigination, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" VerticalAlignment="Center" />
+      <Label Content="Sell Routing Arrangement Indicator:" Grid.Column="0"              HorizontalAlignment="Right" Grid.Row="20" VerticalAlignment="Center"/>
+      <TextBox x:Name="sellRoutingArrangementIndicatorTextBox" Grid.Column="1"          Grid.Row="20" Text="{Binding SellRoutingArrangementIndicator, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" VerticalAlignment="Center" />
+      <Label Content="Sell Algorithm ID:" Grid.Column="0"                               HorizontalAlignment="Right" Grid.Row="21" VerticalAlignment="Center"/>
+      <TextBox x:Name="sellAlgorithmIDTextBox" Grid.Column="1"                          Grid.Row="21" Text="{Binding SellAlgorithmID, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" VerticalAlignment="Center" />
+      <Label Content="Sell Customer Account:" Grid.Column="0"                           HorizontalAlignment="Right" Grid.Row="22" VerticalAlignment="Center"/>
+      <TextBox x:Name="sellCustomerAccountTextBox" Grid.Column="1"                      Grid.Row="22" Text="{Binding SellCustomerAccount, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" VerticalAlignment="Center" />
+      <Label Content="Sell Customer LEI:" Grid.Column="0"                               HorizontalAlignment="Right" Grid.Row="23" VerticalAlignment="Center"/>
+      <TextBox x:Name="sellCustomerLEITextBox" Grid.Column="1"                          Grid.Row="23" Text="{Binding SellCustomerLEI, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" VerticalAlignment="Center" />
+      <Label Content="Sell Broker LEI:" Grid.Column="0"                                 HorizontalAlignment="Right" Grid.Row="24" VerticalAlignment="Center"/>
+      <TextBox x:Name="sellBrokerLEITextBox" Grid.Column="1"                            Grid.Row="24" Text="{Binding SellBrokerLEI, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" VerticalAlignment="Center" />
+    </Grid>
+    
+    <Button Grid.Column="0" HorizontalAlignment="Left" Margin="-24 0 0 0" Grid.Row="1" VerticalAlignment="Bottom" IsCancel="True" Click="onClose" />
+
+  </Grid>
+</Window>

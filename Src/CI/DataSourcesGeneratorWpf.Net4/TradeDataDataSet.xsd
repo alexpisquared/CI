@@ -1,0 +1,387 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="TradeDataDataSet" targetNamespace="http://tempuri.org/TradeDataDataSet.xsd" xmlns:mstns="http://tempuri.org/TradeDataDataSet.xsd" xmlns="http://tempuri.org/TradeDataDataSet.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:msprop="urn:schemas-microsoft-com:xml-msprop" attributeFormDefault="qualified" elementFormDefault="qualified">
+  <xs:annotation>
+    <xs:appinfo source="urn:schemas-microsoft-com:xml-msdatasource">
+      <DataSource DefaultConnectionIndex="0" FunctionsComponentName="QueriesTableAdapter" Modifier="AutoLayout, AnsiClass, Class, Public" SchemaSerializationMode="IncludeSchema" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
+        <Connections>
+          <Connection AppSettingsObjectName="Settings" AppSettingsPropertyName="TradeDataConnectionString" ConnectionStringObject="" IsAppSettingsProperty="true" Modifier="Assembly" Name="TradeDataConnectionString (Settings)" ParameterPrefix="@" PropertyReference="ApplicationSettings.DataSourcesGeneratorWpf.Net4.Properties.Settings.GlobalReference.Default.TradeDataConnectionString" Provider="System.Data.SqlClient" />
+        </Connections>
+        <Tables>
+          <TableAdapter BaseClass="System.ComponentModel.Component" DataAccessorModifier="AutoLayout, AnsiClass, Class, Public" DataAccessorName="OrderHistoryCIDTableAdapter" GeneratorDataComponentClassName="OrderHistoryCIDTableAdapter" Name="OrderHistoryCID" UserDataComponentName="OrderHistoryCIDTableAdapter">
+            <MainSource>
+              <DbSource ConnectionRef="TradeDataConnectionString (Settings)" DbObjectName="TradeData.dbo.OrderHistoryCID" DbObjectType="Table" FillMethodModifier="Public" FillMethodName="Fill" GenerateMethods="Both" GenerateShortCommands="true" GeneratorGetMethodName="GetData" GeneratorSourceName="Fill" GetMethodModifier="Public" GetMethodName="GetData" QueryType="Rowset" ScalarCallRetval="System.Object, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" UseOptimisticConcurrency="true" UserGetMethodName="GetData" UserSourceName="Fill">
+                <DeleteCommand>
+                  <DbCommand CommandType="Text" ModifiedByUser="false">
+                    <CommandText>DELETE FROM [dbo].[OrderHistoryCID] WHERE (([SeqNo] = @Original_SeqNo) AND ([SendingTime] = @Original_SendingTime) AND ([UpdateTime] = @Original_UpdateTime) AND ([MessageType] = @Original_MessageType) AND ([BaseClOrdID] = @Original_BaseClOrdID) AND ([ClOrdID] = @Original_ClOrdID) AND ((@IsNull_OrderOrigination = 1 AND [OrderOrigination] IS NULL) OR ([OrderOrigination] = @Original_OrderOrigination)) AND ((@IsNull_RoutingArrangementIndicator = 1 AND [RoutingArrangementIndicator] IS NULL) OR ([RoutingArrangementIndicator] = @Original_RoutingArrangementIndicator)) AND ((@IsNull_AlgorithmID = 1 AND [AlgorithmID] IS NULL) OR ([AlgorithmID] = @Original_AlgorithmID)) AND ((@IsNull_CustomerAccount = 1 AND [CustomerAccount] IS NULL) OR ([CustomerAccount] = @Original_CustomerAccount)) AND ((@IsNull_CustomerLEI = 1 AND [CustomerLEI] IS NULL) OR ([CustomerLEI] = @Original_CustomerLEI)) AND ((@IsNull_CustomerUnencryptedLEI = 1 AND [CustomerUnencryptedLEI] IS NULL) OR ([CustomerUnencryptedLEI] = @Original_CustomerUnencryptedLEI)) AND ((@IsNull_BrokerLEI = 1 AND [BrokerLEI] IS NULL) OR ([BrokerLEI] = @Original_BrokerLEI)) AND ((@IsNull_BuyOrderOrigination = 1 AND [BuyOrderOrigination] IS NULL) OR ([BuyOrderOrigination] = @Original_BuyOrderOrigination)) AND ((@IsNull_BuyRoutingArrangementIndicator = 1 AND [BuyRoutingArrangementIndicator] IS NULL) OR ([BuyRoutingArrangementIndicator] = @Original_BuyRoutingArrangementIndicator)) AND ((@IsNull_BuyAlgorithmID = 1 AND [BuyAlgorithmID] IS NULL) OR ([BuyAlgorithmID] = @Original_BuyAlgorithmID)) AND ((@IsNull_BuyCustomerAccount = 1 AND [BuyCustomerAccount] IS NULL) OR ([BuyCustomerAccount] = @Original_BuyCustomerAccount)) AND ((@IsNull_BuyCustomerLEI = 1 AND [BuyCustomerLEI] IS NULL) OR ([BuyCustomerLEI] = @Original_BuyCustomerLEI)) AND ((@IsNull_BuyBrokerLEI = 1 AND [BuyBrokerLEI] IS NULL) OR ([BuyBrokerLEI] = @Original_BuyBrokerLEI)) AND ((@IsNull_SellOrderOrigination = 1 AND [SellOrderOrigination] IS NULL) OR ([SellOrderOrigination] = @Original_SellOrderOrigination)) AND ((@IsNull_SellRoutingArrangementIndicator = 1 AND [SellRoutingArrangementIndicator] IS NULL) OR ([SellRoutingArrangementIndicator] = @Original_SellRoutingArrangementIndicator)) AND ((@IsNull_SellAlgorithmID = 1 AND [SellAlgorithmID] IS NULL) OR ([SellAlgorithmID] = @Original_SellAlgorithmID)) AND ((@IsNull_SellCustomerAccount = 1 AND [SellCustomerAccount] IS NULL) OR ([SellCustomerAccount] = @Original_SellCustomerAccount)) AND ((@IsNull_SellCustomerLEI = 1 AND [SellCustomerLEI] IS NULL) OR ([SellCustomerLEI] = @Original_SellCustomerLEI)) AND ((@IsNull_SellBrokerLEI = 1 AND [SellBrokerLEI] IS NULL) OR ([SellBrokerLEI] = @Original_SellBrokerLEI)))</CommandText>
+                    <Parameters>
+                      <Parameter AllowDbNull="false" AutogeneratedName="" DataSourceName="" DbType="Int32" Direction="Input" ParameterName="@Original_SeqNo" Precision="0" ProviderType="Int" Scale="0" Size="0" SourceColumn="SeqNo" SourceColumnNullMapping="false" SourceVersion="Original" />
+                      <Parameter AllowDbNull="false" AutogeneratedName="" DataSourceName="" DbType="DateTime" Direction="Input" ParameterName="@Original_SendingTime" Precision="0" ProviderType="DateTime" Scale="0" Size="0" SourceColumn="SendingTime" SourceColumnNullMapping="false" SourceVersion="Original" />
+                      <Parameter AllowDbNull="false" AutogeneratedName="" DataSourceName="" DbType="DateTime" Direction="Input" ParameterName="@Original_UpdateTime" Precision="0" ProviderType="DateTime" Scale="0" Size="0" SourceColumn="UpdateTime" SourceColumnNullMapping="false" SourceVersion="Original" />
+                      <Parameter AllowDbNull="false" AutogeneratedName="" DataSourceName="" DbType="AnsiString" Direction="Input" ParameterName="@Original_MessageType" Precision="0" ProviderType="VarChar" Scale="0" Size="0" SourceColumn="MessageType" SourceColumnNullMapping="false" SourceVersion="Original" />
+                      <Parameter AllowDbNull="false" AutogeneratedName="" DataSourceName="" DbType="AnsiString" Direction="Input" ParameterName="@Original_BaseClOrdID" Precision="0" ProviderType="VarChar" Scale="0" Size="0" SourceColumn="BaseClOrdID" SourceColumnNullMapping="false" SourceVersion="Original" />
+                      <Parameter AllowDbNull="false" AutogeneratedName="" DataSourceName="" DbType="AnsiString" Direction="Input" ParameterName="@Original_ClOrdID" Precision="0" ProviderType="VarChar" Scale="0" Size="0" SourceColumn="ClOrdID" SourceColumnNullMapping="false" SourceVersion="Original" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="Int32" Direction="Input" ParameterName="@IsNull_OrderOrigination" Precision="0" ProviderType="Int" Scale="0" Size="0" SourceColumn="OrderOrigination" SourceColumnNullMapping="true" SourceVersion="Original" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="AnsiString" Direction="Input" ParameterName="@Original_OrderOrigination" Precision="0" ProviderType="VarChar" Scale="0" Size="0" SourceColumn="OrderOrigination" SourceColumnNullMapping="false" SourceVersion="Original" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="Int32" Direction="Input" ParameterName="@IsNull_RoutingArrangementIndicator" Precision="0" ProviderType="Int" Scale="0" Size="0" SourceColumn="RoutingArrangementIndicator" SourceColumnNullMapping="true" SourceVersion="Original" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="AnsiString" Direction="Input" ParameterName="@Original_RoutingArrangementIndicator" Precision="0" ProviderType="VarChar" Scale="0" Size="0" SourceColumn="RoutingArrangementIndicator" SourceColumnNullMapping="false" SourceVersion="Original" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="Int32" Direction="Input" ParameterName="@IsNull_AlgorithmID" Precision="0" ProviderType="Int" Scale="0" Size="0" SourceColumn="AlgorithmID" SourceColumnNullMapping="true" SourceVersion="Original" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="AnsiString" Direction="Input" ParameterName="@Original_AlgorithmID" Precision="0" ProviderType="VarChar" Scale="0" Size="0" SourceColumn="AlgorithmID" SourceColumnNullMapping="false" SourceVersion="Original" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="Int32" Direction="Input" ParameterName="@IsNull_CustomerAccount" Precision="0" ProviderType="Int" Scale="0" Size="0" SourceColumn="CustomerAccount" SourceColumnNullMapping="true" SourceVersion="Original" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="AnsiString" Direction="Input" ParameterName="@Original_CustomerAccount" Precision="0" ProviderType="VarChar" Scale="0" Size="0" SourceColumn="CustomerAccount" SourceColumnNullMapping="false" SourceVersion="Original" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="Int32" Direction="Input" ParameterName="@IsNull_CustomerLEI" Precision="0" ProviderType="Int" Scale="0" Size="0" SourceColumn="CustomerLEI" SourceColumnNullMapping="true" SourceVersion="Original" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="AnsiString" Direction="Input" ParameterName="@Original_CustomerLEI" Precision="0" ProviderType="VarChar" Scale="0" Size="0" SourceColumn="CustomerLEI" SourceColumnNullMapping="false" SourceVersion="Original" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="Int32" Direction="Input" ParameterName="@IsNull_CustomerUnencryptedLEI" Precision="0" ProviderType="Int" Scale="0" Size="0" SourceColumn="CustomerUnencryptedLEI" SourceColumnNullMapping="true" SourceVersion="Original" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="AnsiString" Direction="Input" ParameterName="@Original_CustomerUnencryptedLEI" Precision="0" ProviderType="VarChar" Scale="0" Size="0" SourceColumn="CustomerUnencryptedLEI" SourceColumnNullMapping="false" SourceVersion="Original" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="Int32" Direction="Input" ParameterName="@IsNull_BrokerLEI" Precision="0" ProviderType="Int" Scale="0" Size="0" SourceColumn="BrokerLEI" SourceColumnNullMapping="true" SourceVersion="Original" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="AnsiString" Direction="Input" ParameterName="@Original_BrokerLEI" Precision="0" ProviderType="VarChar" Scale="0" Size="0" SourceColumn="BrokerLEI" SourceColumnNullMapping="false" SourceVersion="Original" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="Int32" Direction="Input" ParameterName="@IsNull_BuyOrderOrigination" Precision="0" ProviderType="Int" Scale="0" Size="0" SourceColumn="BuyOrderOrigination" SourceColumnNullMapping="true" SourceVersion="Original" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="AnsiString" Direction="Input" ParameterName="@Original_BuyOrderOrigination" Precision="0" ProviderType="VarChar" Scale="0" Size="0" SourceColumn="BuyOrderOrigination" SourceColumnNullMapping="false" SourceVersion="Original" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="Int32" Direction="Input" ParameterName="@IsNull_BuyRoutingArrangementIndicator" Precision="0" ProviderType="Int" Scale="0" Size="0" SourceColumn="BuyRoutingArrangementIndicator" SourceColumnNullMapping="true" SourceVersion="Original" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="AnsiString" Direction="Input" ParameterName="@Original_BuyRoutingArrangementIndicator" Precision="0" ProviderType="VarChar" Scale="0" Size="0" SourceColumn="BuyRoutingArrangementIndicator" SourceColumnNullMapping="false" SourceVersion="Original" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="Int32" Direction="Input" ParameterName="@IsNull_BuyAlgorithmID" Precision="0" ProviderType="Int" Scale="0" Size="0" SourceColumn="BuyAlgorithmID" SourceColumnNullMapping="true" SourceVersion="Original" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="AnsiString" Direction="Input" ParameterName="@Original_BuyAlgorithmID" Precision="0" ProviderType="VarChar" Scale="0" Size="0" SourceColumn="BuyAlgorithmID" SourceColumnNullMapping="false" SourceVersion="Original" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="Int32" Direction="Input" ParameterName="@IsNull_BuyCustomerAccount" Precision="0" ProviderType="Int" Scale="0" Size="0" SourceColumn="BuyCustomerAccount" SourceColumnNullMapping="true" SourceVersion="Original" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="AnsiString" Direction="Input" ParameterName="@Original_BuyCustomerAccount" Precision="0" ProviderType="VarChar" Scale="0" Size="0" SourceColumn="BuyCustomerAccount" SourceColumnNullMapping="false" SourceVersion="Original" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="Int32" Direction="Input" ParameterName="@IsNull_BuyCustomerLEI" Precision="0" ProviderType="Int" Scale="0" Size="0" SourceColumn="BuyCustomerLEI" SourceColumnNullMapping="true" SourceVersion="Original" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="AnsiString" Direction="Input" ParameterName="@Original_BuyCustomerLEI" Precision="0" ProviderType="VarChar" Scale="0" Size="0" SourceColumn="BuyCustomerLEI" SourceColumnNullMapping="false" SourceVersion="Original" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="Int32" Direction="Input" ParameterName="@IsNull_BuyBrokerLEI" Precision="0" ProviderType="Int" Scale="0" Size="0" SourceColumn="BuyBrokerLEI" SourceColumnNullMapping="true" SourceVersion="Original" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="AnsiString" Direction="Input" ParameterName="@Original_BuyBrokerLEI" Precision="0" ProviderType="VarChar" Scale="0" Size="0" SourceColumn="BuyBrokerLEI" SourceColumnNullMapping="false" SourceVersion="Original" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="Int32" Direction="Input" ParameterName="@IsNull_SellOrderOrigination" Precision="0" ProviderType="Int" Scale="0" Size="0" SourceColumn="SellOrderOrigination" SourceColumnNullMapping="true" SourceVersion="Original" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="AnsiString" Direction="Input" ParameterName="@Original_SellOrderOrigination" Precision="0" ProviderType="VarChar" Scale="0" Size="0" SourceColumn="SellOrderOrigination" SourceColumnNullMapping="false" SourceVersion="Original" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="Int32" Direction="Input" ParameterName="@IsNull_SellRoutingArrangementIndicator" Precision="0" ProviderType="Int" Scale="0" Size="0" SourceColumn="SellRoutingArrangementIndicator" SourceColumnNullMapping="true" SourceVersion="Original" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="AnsiString" Direction="Input" ParameterName="@Original_SellRoutingArrangementIndicator" Precision="0" ProviderType="VarChar" Scale="0" Size="0" SourceColumn="SellRoutingArrangementIndicator" SourceColumnNullMapping="false" SourceVersion="Original" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="Int32" Direction="Input" ParameterName="@IsNull_SellAlgorithmID" Precision="0" ProviderType="Int" Scale="0" Size="0" SourceColumn="SellAlgorithmID" SourceColumnNullMapping="true" SourceVersion="Original" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="AnsiString" Direction="Input" ParameterName="@Original_SellAlgorithmID" Precision="0" ProviderType="VarChar" Scale="0" Size="0" SourceColumn="SellAlgorithmID" SourceColumnNullMapping="false" SourceVersion="Original" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="Int32" Direction="Input" ParameterName="@IsNull_SellCustomerAccount" Precision="0" ProviderType="Int" Scale="0" Size="0" SourceColumn="SellCustomerAccount" SourceColumnNullMapping="true" SourceVersion="Original" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="AnsiString" Direction="Input" ParameterName="@Original_SellCustomerAccount" Precision="0" ProviderType="VarChar" Scale="0" Size="0" SourceColumn="SellCustomerAccount" SourceColumnNullMapping="false" SourceVersion="Original" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="Int32" Direction="Input" ParameterName="@IsNull_SellCustomerLEI" Precision="0" ProviderType="Int" Scale="0" Size="0" SourceColumn="SellCustomerLEI" SourceColumnNullMapping="true" SourceVersion="Original" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="AnsiString" Direction="Input" ParameterName="@Original_SellCustomerLEI" Precision="0" ProviderType="VarChar" Scale="0" Size="0" SourceColumn="SellCustomerLEI" SourceColumnNullMapping="false" SourceVersion="Original" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="Int32" Direction="Input" ParameterName="@IsNull_SellBrokerLEI" Precision="0" ProviderType="Int" Scale="0" Size="0" SourceColumn="SellBrokerLEI" SourceColumnNullMapping="true" SourceVersion="Original" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="AnsiString" Direction="Input" ParameterName="@Original_SellBrokerLEI" Precision="0" ProviderType="VarChar" Scale="0" Size="0" SourceColumn="SellBrokerLEI" SourceColumnNullMapping="false" SourceVersion="Original" />
+                    </Parameters>
+                  </DbCommand>
+                </DeleteCommand>
+                <InsertCommand>
+                  <DbCommand CommandType="Text" ModifiedByUser="false">
+                    <CommandText>INSERT INTO [dbo].[OrderHistoryCID] ([SendingTime], [UpdateTime], [MessageType], [BaseClOrdID], [ClOrdID], [OrderOrigination], [RoutingArrangementIndicator], [AlgorithmID], [CustomerAccount], [CustomerLEI], [CustomerUnencryptedLEI], [BrokerLEI], [BuyOrderOrigination], [BuyRoutingArrangementIndicator], [BuyAlgorithmID], [BuyCustomerAccount], [BuyCustomerLEI], [BuyBrokerLEI], [SellOrderOrigination], [SellRoutingArrangementIndicator], [SellAlgorithmID], [SellCustomerAccount], [SellCustomerLEI], [SellBrokerLEI]) VALUES (@SendingTime, @UpdateTime, @MessageType, @BaseClOrdID, @ClOrdID, @OrderOrigination, @RoutingArrangementIndicator, @AlgorithmID, @CustomerAccount, @CustomerLEI, @CustomerUnencryptedLEI, @BrokerLEI, @BuyOrderOrigination, @BuyRoutingArrangementIndicator, @BuyAlgorithmID, @BuyCustomerAccount, @BuyCustomerLEI, @BuyBrokerLEI, @SellOrderOrigination, @SellRoutingArrangementIndicator, @SellAlgorithmID, @SellCustomerAccount, @SellCustomerLEI, @SellBrokerLEI);
+SELECT SeqNo, SendingTime, UpdateTime, MessageType, BaseClOrdID, ClOrdID, OrderOrigination, RoutingArrangementIndicator, AlgorithmID, CustomerAccount, CustomerLEI, CustomerUnencryptedLEI, BrokerLEI, BuyOrderOrigination, BuyRoutingArrangementIndicator, BuyAlgorithmID, BuyCustomerAccount, BuyCustomerLEI, BuyBrokerLEI, SellOrderOrigination, SellRoutingArrangementIndicator, SellAlgorithmID, SellCustomerAccount, SellCustomerLEI, SellBrokerLEI FROM dbo.OrderHistoryCID WHERE (ClOrdID = @ClOrdID)</CommandText>
+                    <Parameters>
+                      <Parameter AllowDbNull="false" AutogeneratedName="" DataSourceName="" DbType="DateTime" Direction="Input" ParameterName="@SendingTime" Precision="0" ProviderType="DateTime" Scale="0" Size="0" SourceColumn="SendingTime" SourceColumnNullMapping="false" SourceVersion="Current" />
+                      <Parameter AllowDbNull="false" AutogeneratedName="" DataSourceName="" DbType="DateTime" Direction="Input" ParameterName="@UpdateTime" Precision="0" ProviderType="DateTime" Scale="0" Size="0" SourceColumn="UpdateTime" SourceColumnNullMapping="false" SourceVersion="Current" />
+                      <Parameter AllowDbNull="false" AutogeneratedName="" DataSourceName="" DbType="AnsiString" Direction="Input" ParameterName="@MessageType" Precision="0" ProviderType="VarChar" Scale="0" Size="0" SourceColumn="MessageType" SourceColumnNullMapping="false" SourceVersion="Current" />
+                      <Parameter AllowDbNull="false" AutogeneratedName="" DataSourceName="" DbType="AnsiString" Direction="Input" ParameterName="@BaseClOrdID" Precision="0" ProviderType="VarChar" Scale="0" Size="0" SourceColumn="BaseClOrdID" SourceColumnNullMapping="false" SourceVersion="Current" />
+                      <Parameter AllowDbNull="false" AutogeneratedName="" DataSourceName="" DbType="AnsiString" Direction="Input" ParameterName="@ClOrdID" Precision="0" ProviderType="VarChar" Scale="0" Size="0" SourceColumn="ClOrdID" SourceColumnNullMapping="false" SourceVersion="Current" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="AnsiString" Direction="Input" ParameterName="@OrderOrigination" Precision="0" ProviderType="VarChar" Scale="0" Size="0" SourceColumn="OrderOrigination" SourceColumnNullMapping="false" SourceVersion="Current" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="AnsiString" Direction="Input" ParameterName="@RoutingArrangementIndicator" Precision="0" ProviderType="VarChar" Scale="0" Size="0" SourceColumn="RoutingArrangementIndicator" SourceColumnNullMapping="false" SourceVersion="Current" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="AnsiString" Direction="Input" ParameterName="@AlgorithmID" Precision="0" ProviderType="VarChar" Scale="0" Size="0" SourceColumn="AlgorithmID" SourceColumnNullMapping="false" SourceVersion="Current" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="AnsiString" Direction="Input" ParameterName="@CustomerAccount" Precision="0" ProviderType="VarChar" Scale="0" Size="0" SourceColumn="CustomerAccount" SourceColumnNullMapping="false" SourceVersion="Current" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="AnsiString" Direction="Input" ParameterName="@CustomerLEI" Precision="0" ProviderType="VarChar" Scale="0" Size="0" SourceColumn="CustomerLEI" SourceColumnNullMapping="false" SourceVersion="Current" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="AnsiString" Direction="Input" ParameterName="@CustomerUnencryptedLEI" Precision="0" ProviderType="VarChar" Scale="0" Size="0" SourceColumn="CustomerUnencryptedLEI" SourceColumnNullMapping="false" SourceVersion="Current" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="AnsiString" Direction="Input" ParameterName="@BrokerLEI" Precision="0" ProviderType="VarChar" Scale="0" Size="0" SourceColumn="BrokerLEI" SourceColumnNullMapping="false" SourceVersion="Current" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="AnsiString" Direction="Input" ParameterName="@BuyOrderOrigination" Precision="0" ProviderType="VarChar" Scale="0" Size="0" SourceColumn="BuyOrderOrigination" SourceColumnNullMapping="false" SourceVersion="Current" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="AnsiString" Direction="Input" ParameterName="@BuyRoutingArrangementIndicator" Precision="0" ProviderType="VarChar" Scale="0" Size="0" SourceColumn="BuyRoutingArrangementIndicator" SourceColumnNullMapping="false" SourceVersion="Current" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="AnsiString" Direction="Input" ParameterName="@BuyAlgorithmID" Precision="0" ProviderType="VarChar" Scale="0" Size="0" SourceColumn="BuyAlgorithmID" SourceColumnNullMapping="false" SourceVersion="Current" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="AnsiString" Direction="Input" ParameterName="@BuyCustomerAccount" Precision="0" ProviderType="VarChar" Scale="0" Size="0" SourceColumn="BuyCustomerAccount" SourceColumnNullMapping="false" SourceVersion="Current" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="AnsiString" Direction="Input" ParameterName="@BuyCustomerLEI" Precision="0" ProviderType="VarChar" Scale="0" Size="0" SourceColumn="BuyCustomerLEI" SourceColumnNullMapping="false" SourceVersion="Current" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="AnsiString" Direction="Input" ParameterName="@BuyBrokerLEI" Precision="0" ProviderType="VarChar" Scale="0" Size="0" SourceColumn="BuyBrokerLEI" SourceColumnNullMapping="false" SourceVersion="Current" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="AnsiString" Direction="Input" ParameterName="@SellOrderOrigination" Precision="0" ProviderType="VarChar" Scale="0" Size="0" SourceColumn="SellOrderOrigination" SourceColumnNullMapping="false" SourceVersion="Current" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="AnsiString" Direction="Input" ParameterName="@SellRoutingArrangementIndicator" Precision="0" ProviderType="VarChar" Scale="0" Size="0" SourceColumn="SellRoutingArrangementIndicator" SourceColumnNullMapping="false" SourceVersion="Current" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="AnsiString" Direction="Input" ParameterName="@SellAlgorithmID" Precision="0" ProviderType="VarChar" Scale="0" Size="0" SourceColumn="SellAlgorithmID" SourceColumnNullMapping="false" SourceVersion="Current" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="AnsiString" Direction="Input" ParameterName="@SellCustomerAccount" Precision="0" ProviderType="VarChar" Scale="0" Size="0" SourceColumn="SellCustomerAccount" SourceColumnNullMapping="false" SourceVersion="Current" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="AnsiString" Direction="Input" ParameterName="@SellCustomerLEI" Precision="0" ProviderType="VarChar" Scale="0" Size="0" SourceColumn="SellCustomerLEI" SourceColumnNullMapping="false" SourceVersion="Current" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="AnsiString" Direction="Input" ParameterName="@SellBrokerLEI" Precision="0" ProviderType="VarChar" Scale="0" Size="0" SourceColumn="SellBrokerLEI" SourceColumnNullMapping="false" SourceVersion="Current" />
+                    </Parameters>
+                  </DbCommand>
+                </InsertCommand>
+                <SelectCommand>
+                  <DbCommand CommandType="Text" ModifiedByUser="false">
+                    <CommandText>SELECT SeqNo, SendingTime, UpdateTime, MessageType, BaseClOrdID, ClOrdID, OrderOrigination, RoutingArrangementIndicator, AlgorithmID, CustomerAccount, CustomerLEI, CustomerUnencryptedLEI, BrokerLEI, BuyOrderOrigination, BuyRoutingArrangementIndicator, BuyAlgorithmID, BuyCustomerAccount, BuyCustomerLEI, BuyBrokerLEI, SellOrderOrigination, SellRoutingArrangementIndicator, SellAlgorithmID, SellCustomerAccount, SellCustomerLEI, SellBrokerLEI FROM dbo.OrderHistoryCID</CommandText>
+                    <Parameters />
+                  </DbCommand>
+                </SelectCommand>
+                <UpdateCommand>
+                  <DbCommand CommandType="Text" ModifiedByUser="false">
+                    <CommandText>UPDATE [dbo].[OrderHistoryCID] SET [SendingTime] = @SendingTime, [UpdateTime] = @UpdateTime, [MessageType] = @MessageType, [BaseClOrdID] = @BaseClOrdID, [ClOrdID] = @ClOrdID, [OrderOrigination] = @OrderOrigination, [RoutingArrangementIndicator] = @RoutingArrangementIndicator, [AlgorithmID] = @AlgorithmID, [CustomerAccount] = @CustomerAccount, [CustomerLEI] = @CustomerLEI, [CustomerUnencryptedLEI] = @CustomerUnencryptedLEI, [BrokerLEI] = @BrokerLEI, [BuyOrderOrigination] = @BuyOrderOrigination, [BuyRoutingArrangementIndicator] = @BuyRoutingArrangementIndicator, [BuyAlgorithmID] = @BuyAlgorithmID, [BuyCustomerAccount] = @BuyCustomerAccount, [BuyCustomerLEI] = @BuyCustomerLEI, [BuyBrokerLEI] = @BuyBrokerLEI, [SellOrderOrigination] = @SellOrderOrigination, [SellRoutingArrangementIndicator] = @SellRoutingArrangementIndicator, [SellAlgorithmID] = @SellAlgorithmID, [SellCustomerAccount] = @SellCustomerAccount, [SellCustomerLEI] = @SellCustomerLEI, [SellBrokerLEI] = @SellBrokerLEI WHERE (([SeqNo] = @Original_SeqNo) AND ([SendingTime] = @Original_SendingTime) AND ([UpdateTime] = @Original_UpdateTime) AND ([MessageType] = @Original_MessageType) AND ([BaseClOrdID] = @Original_BaseClOrdID) AND ([ClOrdID] = @Original_ClOrdID) AND ((@IsNull_OrderOrigination = 1 AND [OrderOrigination] IS NULL) OR ([OrderOrigination] = @Original_OrderOrigination)) AND ((@IsNull_RoutingArrangementIndicator = 1 AND [RoutingArrangementIndicator] IS NULL) OR ([RoutingArrangementIndicator] = @Original_RoutingArrangementIndicator)) AND ((@IsNull_AlgorithmID = 1 AND [AlgorithmID] IS NULL) OR ([AlgorithmID] = @Original_AlgorithmID)) AND ((@IsNull_CustomerAccount = 1 AND [CustomerAccount] IS NULL) OR ([CustomerAccount] = @Original_CustomerAccount)) AND ((@IsNull_CustomerLEI = 1 AND [CustomerLEI] IS NULL) OR ([CustomerLEI] = @Original_CustomerLEI)) AND ((@IsNull_CustomerUnencryptedLEI = 1 AND [CustomerUnencryptedLEI] IS NULL) OR ([CustomerUnencryptedLEI] = @Original_CustomerUnencryptedLEI)) AND ((@IsNull_BrokerLEI = 1 AND [BrokerLEI] IS NULL) OR ([BrokerLEI] = @Original_BrokerLEI)) AND ((@IsNull_BuyOrderOrigination = 1 AND [BuyOrderOrigination] IS NULL) OR ([BuyOrderOrigination] = @Original_BuyOrderOrigination)) AND ((@IsNull_BuyRoutingArrangementIndicator = 1 AND [BuyRoutingArrangementIndicator] IS NULL) OR ([BuyRoutingArrangementIndicator] = @Original_BuyRoutingArrangementIndicator)) AND ((@IsNull_BuyAlgorithmID = 1 AND [BuyAlgorithmID] IS NULL) OR ([BuyAlgorithmID] = @Original_BuyAlgorithmID)) AND ((@IsNull_BuyCustomerAccount = 1 AND [BuyCustomerAccount] IS NULL) OR ([BuyCustomerAccount] = @Original_BuyCustomerAccount)) AND ((@IsNull_BuyCustomerLEI = 1 AND [BuyCustomerLEI] IS NULL) OR ([BuyCustomerLEI] = @Original_BuyCustomerLEI)) AND ((@IsNull_BuyBrokerLEI = 1 AND [BuyBrokerLEI] IS NULL) OR ([BuyBrokerLEI] = @Original_BuyBrokerLEI)) AND ((@IsNull_SellOrderOrigination = 1 AND [SellOrderOrigination] IS NULL) OR ([SellOrderOrigination] = @Original_SellOrderOrigination)) AND ((@IsNull_SellRoutingArrangementIndicator = 1 AND [SellRoutingArrangementIndicator] IS NULL) OR ([SellRoutingArrangementIndicator] = @Original_SellRoutingArrangementIndicator)) AND ((@IsNull_SellAlgorithmID = 1 AND [SellAlgorithmID] IS NULL) OR ([SellAlgorithmID] = @Original_SellAlgorithmID)) AND ((@IsNull_SellCustomerAccount = 1 AND [SellCustomerAccount] IS NULL) OR ([SellCustomerAccount] = @Original_SellCustomerAccount)) AND ((@IsNull_SellCustomerLEI = 1 AND [SellCustomerLEI] IS NULL) OR ([SellCustomerLEI] = @Original_SellCustomerLEI)) AND ((@IsNull_SellBrokerLEI = 1 AND [SellBrokerLEI] IS NULL) OR ([SellBrokerLEI] = @Original_SellBrokerLEI)));
+SELECT SeqNo, SendingTime, UpdateTime, MessageType, BaseClOrdID, ClOrdID, OrderOrigination, RoutingArrangementIndicator, AlgorithmID, CustomerAccount, CustomerLEI, CustomerUnencryptedLEI, BrokerLEI, BuyOrderOrigination, BuyRoutingArrangementIndicator, BuyAlgorithmID, BuyCustomerAccount, BuyCustomerLEI, BuyBrokerLEI, SellOrderOrigination, SellRoutingArrangementIndicator, SellAlgorithmID, SellCustomerAccount, SellCustomerLEI, SellBrokerLEI FROM dbo.OrderHistoryCID WHERE (ClOrdID = @ClOrdID)</CommandText>
+                    <Parameters>
+                      <Parameter AllowDbNull="false" AutogeneratedName="" DataSourceName="" DbType="DateTime" Direction="Input" ParameterName="@SendingTime" Precision="0" ProviderType="DateTime" Scale="0" Size="0" SourceColumn="SendingTime" SourceColumnNullMapping="false" SourceVersion="Current" />
+                      <Parameter AllowDbNull="false" AutogeneratedName="" DataSourceName="" DbType="DateTime" Direction="Input" ParameterName="@UpdateTime" Precision="0" ProviderType="DateTime" Scale="0" Size="0" SourceColumn="UpdateTime" SourceColumnNullMapping="false" SourceVersion="Current" />
+                      <Parameter AllowDbNull="false" AutogeneratedName="" DataSourceName="" DbType="AnsiString" Direction="Input" ParameterName="@MessageType" Precision="0" ProviderType="VarChar" Scale="0" Size="0" SourceColumn="MessageType" SourceColumnNullMapping="false" SourceVersion="Current" />
+                      <Parameter AllowDbNull="false" AutogeneratedName="" DataSourceName="" DbType="AnsiString" Direction="Input" ParameterName="@BaseClOrdID" Precision="0" ProviderType="VarChar" Scale="0" Size="0" SourceColumn="BaseClOrdID" SourceColumnNullMapping="false" SourceVersion="Current" />
+                      <Parameter AllowDbNull="false" AutogeneratedName="" DataSourceName="" DbType="AnsiString" Direction="Input" ParameterName="@ClOrdID" Precision="0" ProviderType="VarChar" Scale="0" Size="0" SourceColumn="ClOrdID" SourceColumnNullMapping="false" SourceVersion="Current" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="AnsiString" Direction="Input" ParameterName="@OrderOrigination" Precision="0" ProviderType="VarChar" Scale="0" Size="0" SourceColumn="OrderOrigination" SourceColumnNullMapping="false" SourceVersion="Current" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="AnsiString" Direction="Input" ParameterName="@RoutingArrangementIndicator" Precision="0" ProviderType="VarChar" Scale="0" Size="0" SourceColumn="RoutingArrangementIndicator" SourceColumnNullMapping="false" SourceVersion="Current" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="AnsiString" Direction="Input" ParameterName="@AlgorithmID" Precision="0" ProviderType="VarChar" Scale="0" Size="0" SourceColumn="AlgorithmID" SourceColumnNullMapping="false" SourceVersion="Current" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="AnsiString" Direction="Input" ParameterName="@CustomerAccount" Precision="0" ProviderType="VarChar" Scale="0" Size="0" SourceColumn="CustomerAccount" SourceColumnNullMapping="false" SourceVersion="Current" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="AnsiString" Direction="Input" ParameterName="@CustomerLEI" Precision="0" ProviderType="VarChar" Scale="0" Size="0" SourceColumn="CustomerLEI" SourceColumnNullMapping="false" SourceVersion="Current" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="AnsiString" Direction="Input" ParameterName="@CustomerUnencryptedLEI" Precision="0" ProviderType="VarChar" Scale="0" Size="0" SourceColumn="CustomerUnencryptedLEI" SourceColumnNullMapping="false" SourceVersion="Current" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="AnsiString" Direction="Input" ParameterName="@BrokerLEI" Precision="0" ProviderType="VarChar" Scale="0" Size="0" SourceColumn="BrokerLEI" SourceColumnNullMapping="false" SourceVersion="Current" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="AnsiString" Direction="Input" ParameterName="@BuyOrderOrigination" Precision="0" ProviderType="VarChar" Scale="0" Size="0" SourceColumn="BuyOrderOrigination" SourceColumnNullMapping="false" SourceVersion="Current" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="AnsiString" Direction="Input" ParameterName="@BuyRoutingArrangementIndicator" Precision="0" ProviderType="VarChar" Scale="0" Size="0" SourceColumn="BuyRoutingArrangementIndicator" SourceColumnNullMapping="false" SourceVersion="Current" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="AnsiString" Direction="Input" ParameterName="@BuyAlgorithmID" Precision="0" ProviderType="VarChar" Scale="0" Size="0" SourceColumn="BuyAlgorithmID" SourceColumnNullMapping="false" SourceVersion="Current" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="AnsiString" Direction="Input" ParameterName="@BuyCustomerAccount" Precision="0" ProviderType="VarChar" Scale="0" Size="0" SourceColumn="BuyCustomerAccount" SourceColumnNullMapping="false" SourceVersion="Current" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="AnsiString" Direction="Input" ParameterName="@BuyCustomerLEI" Precision="0" ProviderType="VarChar" Scale="0" Size="0" SourceColumn="BuyCustomerLEI" SourceColumnNullMapping="false" SourceVersion="Current" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="AnsiString" Direction="Input" ParameterName="@BuyBrokerLEI" Precision="0" ProviderType="VarChar" Scale="0" Size="0" SourceColumn="BuyBrokerLEI" SourceColumnNullMapping="false" SourceVersion="Current" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="AnsiString" Direction="Input" ParameterName="@SellOrderOrigination" Precision="0" ProviderType="VarChar" Scale="0" Size="0" SourceColumn="SellOrderOrigination" SourceColumnNullMapping="false" SourceVersion="Current" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="AnsiString" Direction="Input" ParameterName="@SellRoutingArrangementIndicator" Precision="0" ProviderType="VarChar" Scale="0" Size="0" SourceColumn="SellRoutingArrangementIndicator" SourceColumnNullMapping="false" SourceVersion="Current" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="AnsiString" Direction="Input" ParameterName="@SellAlgorithmID" Precision="0" ProviderType="VarChar" Scale="0" Size="0" SourceColumn="SellAlgorithmID" SourceColumnNullMapping="false" SourceVersion="Current" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="AnsiString" Direction="Input" ParameterName="@SellCustomerAccount" Precision="0" ProviderType="VarChar" Scale="0" Size="0" SourceColumn="SellCustomerAccount" SourceColumnNullMapping="false" SourceVersion="Current" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="AnsiString" Direction="Input" ParameterName="@SellCustomerLEI" Precision="0" ProviderType="VarChar" Scale="0" Size="0" SourceColumn="SellCustomerLEI" SourceColumnNullMapping="false" SourceVersion="Current" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="AnsiString" Direction="Input" ParameterName="@SellBrokerLEI" Precision="0" ProviderType="VarChar" Scale="0" Size="0" SourceColumn="SellBrokerLEI" SourceColumnNullMapping="false" SourceVersion="Current" />
+                      <Parameter AllowDbNull="false" AutogeneratedName="" DataSourceName="" DbType="Int32" Direction="Input" ParameterName="@Original_SeqNo" Precision="0" ProviderType="Int" Scale="0" Size="0" SourceColumn="SeqNo" SourceColumnNullMapping="false" SourceVersion="Original" />
+                      <Parameter AllowDbNull="false" AutogeneratedName="" DataSourceName="" DbType="DateTime" Direction="Input" ParameterName="@Original_SendingTime" Precision="0" ProviderType="DateTime" Scale="0" Size="0" SourceColumn="SendingTime" SourceColumnNullMapping="false" SourceVersion="Original" />
+                      <Parameter AllowDbNull="false" AutogeneratedName="" DataSourceName="" DbType="DateTime" Direction="Input" ParameterName="@Original_UpdateTime" Precision="0" ProviderType="DateTime" Scale="0" Size="0" SourceColumn="UpdateTime" SourceColumnNullMapping="false" SourceVersion="Original" />
+                      <Parameter AllowDbNull="false" AutogeneratedName="" DataSourceName="" DbType="AnsiString" Direction="Input" ParameterName="@Original_MessageType" Precision="0" ProviderType="VarChar" Scale="0" Size="0" SourceColumn="MessageType" SourceColumnNullMapping="false" SourceVersion="Original" />
+                      <Parameter AllowDbNull="false" AutogeneratedName="" DataSourceName="" DbType="AnsiString" Direction="Input" ParameterName="@Original_BaseClOrdID" Precision="0" ProviderType="VarChar" Scale="0" Size="0" SourceColumn="BaseClOrdID" SourceColumnNullMapping="false" SourceVersion="Original" />
+                      <Parameter AllowDbNull="false" AutogeneratedName="" DataSourceName="" DbType="AnsiString" Direction="Input" ParameterName="@Original_ClOrdID" Precision="0" ProviderType="VarChar" Scale="0" Size="0" SourceColumn="ClOrdID" SourceColumnNullMapping="false" SourceVersion="Original" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="Int32" Direction="Input" ParameterName="@IsNull_OrderOrigination" Precision="0" ProviderType="Int" Scale="0" Size="0" SourceColumn="OrderOrigination" SourceColumnNullMapping="true" SourceVersion="Original" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="AnsiString" Direction="Input" ParameterName="@Original_OrderOrigination" Precision="0" ProviderType="VarChar" Scale="0" Size="0" SourceColumn="OrderOrigination" SourceColumnNullMapping="false" SourceVersion="Original" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="Int32" Direction="Input" ParameterName="@IsNull_RoutingArrangementIndicator" Precision="0" ProviderType="Int" Scale="0" Size="0" SourceColumn="RoutingArrangementIndicator" SourceColumnNullMapping="true" SourceVersion="Original" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="AnsiString" Direction="Input" ParameterName="@Original_RoutingArrangementIndicator" Precision="0" ProviderType="VarChar" Scale="0" Size="0" SourceColumn="RoutingArrangementIndicator" SourceColumnNullMapping="false" SourceVersion="Original" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="Int32" Direction="Input" ParameterName="@IsNull_AlgorithmID" Precision="0" ProviderType="Int" Scale="0" Size="0" SourceColumn="AlgorithmID" SourceColumnNullMapping="true" SourceVersion="Original" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="AnsiString" Direction="Input" ParameterName="@Original_AlgorithmID" Precision="0" ProviderType="VarChar" Scale="0" Size="0" SourceColumn="AlgorithmID" SourceColumnNullMapping="false" SourceVersion="Original" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="Int32" Direction="Input" ParameterName="@IsNull_CustomerAccount" Precision="0" ProviderType="Int" Scale="0" Size="0" SourceColumn="CustomerAccount" SourceColumnNullMapping="true" SourceVersion="Original" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="AnsiString" Direction="Input" ParameterName="@Original_CustomerAccount" Precision="0" ProviderType="VarChar" Scale="0" Size="0" SourceColumn="CustomerAccount" SourceColumnNullMapping="false" SourceVersion="Original" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="Int32" Direction="Input" ParameterName="@IsNull_CustomerLEI" Precision="0" ProviderType="Int" Scale="0" Size="0" SourceColumn="CustomerLEI" SourceColumnNullMapping="true" SourceVersion="Original" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="AnsiString" Direction="Input" ParameterName="@Original_CustomerLEI" Precision="0" ProviderType="VarChar" Scale="0" Size="0" SourceColumn="CustomerLEI" SourceColumnNullMapping="false" SourceVersion="Original" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="Int32" Direction="Input" ParameterName="@IsNull_CustomerUnencryptedLEI" Precision="0" ProviderType="Int" Scale="0" Size="0" SourceColumn="CustomerUnencryptedLEI" SourceColumnNullMapping="true" SourceVersion="Original" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="AnsiString" Direction="Input" ParameterName="@Original_CustomerUnencryptedLEI" Precision="0" ProviderType="VarChar" Scale="0" Size="0" SourceColumn="CustomerUnencryptedLEI" SourceColumnNullMapping="false" SourceVersion="Original" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="Int32" Direction="Input" ParameterName="@IsNull_BrokerLEI" Precision="0" ProviderType="Int" Scale="0" Size="0" SourceColumn="BrokerLEI" SourceColumnNullMapping="true" SourceVersion="Original" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="AnsiString" Direction="Input" ParameterName="@Original_BrokerLEI" Precision="0" ProviderType="VarChar" Scale="0" Size="0" SourceColumn="BrokerLEI" SourceColumnNullMapping="false" SourceVersion="Original" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="Int32" Direction="Input" ParameterName="@IsNull_BuyOrderOrigination" Precision="0" ProviderType="Int" Scale="0" Size="0" SourceColumn="BuyOrderOrigination" SourceColumnNullMapping="true" SourceVersion="Original" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="AnsiString" Direction="Input" ParameterName="@Original_BuyOrderOrigination" Precision="0" ProviderType="VarChar" Scale="0" Size="0" SourceColumn="BuyOrderOrigination" SourceColumnNullMapping="false" SourceVersion="Original" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="Int32" Direction="Input" ParameterName="@IsNull_BuyRoutingArrangementIndicator" Precision="0" ProviderType="Int" Scale="0" Size="0" SourceColumn="BuyRoutingArrangementIndicator" SourceColumnNullMapping="true" SourceVersion="Original" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="AnsiString" Direction="Input" ParameterName="@Original_BuyRoutingArrangementIndicator" Precision="0" ProviderType="VarChar" Scale="0" Size="0" SourceColumn="BuyRoutingArrangementIndicator" SourceColumnNullMapping="false" SourceVersion="Original" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="Int32" Direction="Input" ParameterName="@IsNull_BuyAlgorithmID" Precision="0" ProviderType="Int" Scale="0" Size="0" SourceColumn="BuyAlgorithmID" SourceColumnNullMapping="true" SourceVersion="Original" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="AnsiString" Direction="Input" ParameterName="@Original_BuyAlgorithmID" Precision="0" ProviderType="VarChar" Scale="0" Size="0" SourceColumn="BuyAlgorithmID" SourceColumnNullMapping="false" SourceVersion="Original" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="Int32" Direction="Input" ParameterName="@IsNull_BuyCustomerAccount" Precision="0" ProviderType="Int" Scale="0" Size="0" SourceColumn="BuyCustomerAccount" SourceColumnNullMapping="true" SourceVersion="Original" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="AnsiString" Direction="Input" ParameterName="@Original_BuyCustomerAccount" Precision="0" ProviderType="VarChar" Scale="0" Size="0" SourceColumn="BuyCustomerAccount" SourceColumnNullMapping="false" SourceVersion="Original" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="Int32" Direction="Input" ParameterName="@IsNull_BuyCustomerLEI" Precision="0" ProviderType="Int" Scale="0" Size="0" SourceColumn="BuyCustomerLEI" SourceColumnNullMapping="true" SourceVersion="Original" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="AnsiString" Direction="Input" ParameterName="@Original_BuyCustomerLEI" Precision="0" ProviderType="VarChar" Scale="0" Size="0" SourceColumn="BuyCustomerLEI" SourceColumnNullMapping="false" SourceVersion="Original" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="Int32" Direction="Input" ParameterName="@IsNull_BuyBrokerLEI" Precision="0" ProviderType="Int" Scale="0" Size="0" SourceColumn="BuyBrokerLEI" SourceColumnNullMapping="true" SourceVersion="Original" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="AnsiString" Direction="Input" ParameterName="@Original_BuyBrokerLEI" Precision="0" ProviderType="VarChar" Scale="0" Size="0" SourceColumn="BuyBrokerLEI" SourceColumnNullMapping="false" SourceVersion="Original" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="Int32" Direction="Input" ParameterName="@IsNull_SellOrderOrigination" Precision="0" ProviderType="Int" Scale="0" Size="0" SourceColumn="SellOrderOrigination" SourceColumnNullMapping="true" SourceVersion="Original" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="AnsiString" Direction="Input" ParameterName="@Original_SellOrderOrigination" Precision="0" ProviderType="VarChar" Scale="0" Size="0" SourceColumn="SellOrderOrigination" SourceColumnNullMapping="false" SourceVersion="Original" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="Int32" Direction="Input" ParameterName="@IsNull_SellRoutingArrangementIndicator" Precision="0" ProviderType="Int" Scale="0" Size="0" SourceColumn="SellRoutingArrangementIndicator" SourceColumnNullMapping="true" SourceVersion="Original" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="AnsiString" Direction="Input" ParameterName="@Original_SellRoutingArrangementIndicator" Precision="0" ProviderType="VarChar" Scale="0" Size="0" SourceColumn="SellRoutingArrangementIndicator" SourceColumnNullMapping="false" SourceVersion="Original" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="Int32" Direction="Input" ParameterName="@IsNull_SellAlgorithmID" Precision="0" ProviderType="Int" Scale="0" Size="0" SourceColumn="SellAlgorithmID" SourceColumnNullMapping="true" SourceVersion="Original" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="AnsiString" Direction="Input" ParameterName="@Original_SellAlgorithmID" Precision="0" ProviderType="VarChar" Scale="0" Size="0" SourceColumn="SellAlgorithmID" SourceColumnNullMapping="false" SourceVersion="Original" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="Int32" Direction="Input" ParameterName="@IsNull_SellCustomerAccount" Precision="0" ProviderType="Int" Scale="0" Size="0" SourceColumn="SellCustomerAccount" SourceColumnNullMapping="true" SourceVersion="Original" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="AnsiString" Direction="Input" ParameterName="@Original_SellCustomerAccount" Precision="0" ProviderType="VarChar" Scale="0" Size="0" SourceColumn="SellCustomerAccount" SourceColumnNullMapping="false" SourceVersion="Original" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="Int32" Direction="Input" ParameterName="@IsNull_SellCustomerLEI" Precision="0" ProviderType="Int" Scale="0" Size="0" SourceColumn="SellCustomerLEI" SourceColumnNullMapping="true" SourceVersion="Original" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="AnsiString" Direction="Input" ParameterName="@Original_SellCustomerLEI" Precision="0" ProviderType="VarChar" Scale="0" Size="0" SourceColumn="SellCustomerLEI" SourceColumnNullMapping="false" SourceVersion="Original" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="Int32" Direction="Input" ParameterName="@IsNull_SellBrokerLEI" Precision="0" ProviderType="Int" Scale="0" Size="0" SourceColumn="SellBrokerLEI" SourceColumnNullMapping="true" SourceVersion="Original" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="AnsiString" Direction="Input" ParameterName="@Original_SellBrokerLEI" Precision="0" ProviderType="VarChar" Scale="0" Size="0" SourceColumn="SellBrokerLEI" SourceColumnNullMapping="false" SourceVersion="Original" />
+                    </Parameters>
+                  </DbCommand>
+                </UpdateCommand>
+              </DbSource>
+            </MainSource>
+            <Mappings>
+              <Mapping SourceColumn="SeqNo" DataSetColumn="SeqNo" />
+              <Mapping SourceColumn="SendingTime" DataSetColumn="SendingTime" />
+              <Mapping SourceColumn="UpdateTime" DataSetColumn="UpdateTime" />
+              <Mapping SourceColumn="MessageType" DataSetColumn="MessageType" />
+              <Mapping SourceColumn="BaseClOrdID" DataSetColumn="BaseClOrdID" />
+              <Mapping SourceColumn="ClOrdID" DataSetColumn="ClOrdID" />
+              <Mapping SourceColumn="OrderOrigination" DataSetColumn="OrderOrigination" />
+              <Mapping SourceColumn="RoutingArrangementIndicator" DataSetColumn="RoutingArrangementIndicator" />
+              <Mapping SourceColumn="AlgorithmID" DataSetColumn="AlgorithmID" />
+              <Mapping SourceColumn="CustomerAccount" DataSetColumn="CustomerAccount" />
+              <Mapping SourceColumn="CustomerLEI" DataSetColumn="CustomerLEI" />
+              <Mapping SourceColumn="CustomerUnencryptedLEI" DataSetColumn="CustomerUnencryptedLEI" />
+              <Mapping SourceColumn="BrokerLEI" DataSetColumn="BrokerLEI" />
+              <Mapping SourceColumn="BuyOrderOrigination" DataSetColumn="BuyOrderOrigination" />
+              <Mapping SourceColumn="BuyRoutingArrangementIndicator" DataSetColumn="BuyRoutingArrangementIndicator" />
+              <Mapping SourceColumn="BuyAlgorithmID" DataSetColumn="BuyAlgorithmID" />
+              <Mapping SourceColumn="BuyCustomerAccount" DataSetColumn="BuyCustomerAccount" />
+              <Mapping SourceColumn="BuyCustomerLEI" DataSetColumn="BuyCustomerLEI" />
+              <Mapping SourceColumn="BuyBrokerLEI" DataSetColumn="BuyBrokerLEI" />
+              <Mapping SourceColumn="SellOrderOrigination" DataSetColumn="SellOrderOrigination" />
+              <Mapping SourceColumn="SellRoutingArrangementIndicator" DataSetColumn="SellRoutingArrangementIndicator" />
+              <Mapping SourceColumn="SellAlgorithmID" DataSetColumn="SellAlgorithmID" />
+              <Mapping SourceColumn="SellCustomerAccount" DataSetColumn="SellCustomerAccount" />
+              <Mapping SourceColumn="SellCustomerLEI" DataSetColumn="SellCustomerLEI" />
+              <Mapping SourceColumn="SellBrokerLEI" DataSetColumn="SellBrokerLEI" />
+            </Mappings>
+            <Sources />
+          </TableAdapter>
+        </Tables>
+        <Sources />
+      </DataSource>
+    </xs:appinfo>
+  </xs:annotation>
+  <xs:element name="TradeDataDataSet" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:EnableTableAdapterManager="True" msprop:Generator_DataSetName="TradeDataDataSet" msprop:Generator_UserDSName="TradeDataDataSet">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="OrderHistoryCID" msprop:Generator_TableClassName="OrderHistoryCIDDataTable" msprop:Generator_TableVarName="tableOrderHistoryCID" msprop:Generator_TablePropName="OrderHistoryCID" msprop:Generator_RowDeletingName="OrderHistoryCIDRowDeleting" msprop:Generator_RowChangingName="OrderHistoryCIDRowChanging" msprop:Generator_RowEvHandlerName="OrderHistoryCIDRowChangeEventHandler" msprop:Generator_RowDeletedName="OrderHistoryCIDRowDeleted" msprop:Generator_UserTableName="OrderHistoryCID" msprop:Generator_RowChangedName="OrderHistoryCIDRowChanged" msprop:Generator_RowEvArgName="OrderHistoryCIDRowChangeEvent" msprop:Generator_RowClassName="OrderHistoryCIDRow">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="SeqNo" msdata:ReadOnly="true" msdata:AutoIncrement="true" msdata:AutoIncrementSeed="-1" msdata:AutoIncrementStep="-1" msprop:Generator_ColumnVarNameInTable="columnSeqNo" msprop:Generator_ColumnPropNameInRow="SeqNo" msprop:Generator_ColumnPropNameInTable="SeqNoColumn" msprop:Generator_UserColumnName="SeqNo" type="xs:int" />
+              <xs:element name="SendingTime" msprop:Generator_ColumnVarNameInTable="columnSendingTime" msprop:Generator_ColumnPropNameInRow="SendingTime" msprop:Generator_ColumnPropNameInTable="SendingTimeColumn" msprop:Generator_UserColumnName="SendingTime" type="xs:dateTime" />
+              <xs:element name="UpdateTime" msprop:Generator_ColumnVarNameInTable="columnUpdateTime" msprop:Generator_ColumnPropNameInRow="UpdateTime" msprop:Generator_ColumnPropNameInTable="UpdateTimeColumn" msprop:Generator_UserColumnName="UpdateTime" type="xs:dateTime" />
+              <xs:element name="MessageType" msprop:Generator_ColumnVarNameInTable="columnMessageType" msprop:Generator_ColumnPropNameInRow="MessageType" msprop:Generator_ColumnPropNameInTable="MessageTypeColumn" msprop:Generator_UserColumnName="MessageType">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="3" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="BaseClOrdID" msprop:Generator_ColumnVarNameInTable="columnBaseClOrdID" msprop:Generator_ColumnPropNameInRow="BaseClOrdID" msprop:Generator_ColumnPropNameInTable="BaseClOrdIDColumn" msprop:Generator_UserColumnName="BaseClOrdID">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="22" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="ClOrdID" msprop:Generator_ColumnVarNameInTable="columnClOrdID" msprop:Generator_ColumnPropNameInRow="ClOrdID" msprop:Generator_ColumnPropNameInTable="ClOrdIDColumn" msprop:Generator_UserColumnName="ClOrdID">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="22" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="OrderOrigination" msprop:Generator_ColumnVarNameInTable="columnOrderOrigination" msprop:Generator_ColumnPropNameInRow="OrderOrigination" msprop:Generator_ColumnPropNameInTable="OrderOriginationColumn" msprop:Generator_UserColumnName="OrderOrigination" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="2" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="RoutingArrangementIndicator" msprop:Generator_ColumnVarNameInTable="columnRoutingArrangementIndicator" msprop:Generator_ColumnPropNameInRow="RoutingArrangementIndicator" msprop:Generator_ColumnPropNameInTable="RoutingArrangementIndicatorColumn" msprop:Generator_UserColumnName="RoutingArrangementIndicator" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="2" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="AlgorithmID" msprop:Generator_ColumnVarNameInTable="columnAlgorithmID" msprop:Generator_ColumnPropNameInRow="AlgorithmID" msprop:Generator_ColumnPropNameInTable="AlgorithmIDColumn" msprop:Generator_UserColumnName="AlgorithmID" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="20" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="CustomerAccount" msprop:Generator_ColumnVarNameInTable="columnCustomerAccount" msprop:Generator_ColumnPropNameInRow="CustomerAccount" msprop:Generator_ColumnPropNameInTable="CustomerAccountColumn" msprop:Generator_UserColumnName="CustomerAccount" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="20" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="CustomerLEI" msprop:Generator_ColumnVarNameInTable="columnCustomerLEI" msprop:Generator_ColumnPropNameInRow="CustomerLEI" msprop:Generator_ColumnPropNameInTable="CustomerLEIColumn" msprop:Generator_UserColumnName="CustomerLEI" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="52" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="CustomerUnencryptedLEI" msprop:Generator_ColumnVarNameInTable="columnCustomerUnencryptedLEI" msprop:Generator_ColumnPropNameInRow="CustomerUnencryptedLEI" msprop:Generator_ColumnPropNameInTable="CustomerUnencryptedLEIColumn" msprop:Generator_UserColumnName="CustomerUnencryptedLEI" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="20" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="BrokerLEI" msprop:Generator_ColumnVarNameInTable="columnBrokerLEI" msprop:Generator_ColumnPropNameInRow="BrokerLEI" msprop:Generator_ColumnPropNameInTable="BrokerLEIColumn" msprop:Generator_UserColumnName="BrokerLEI" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="20" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="BuyOrderOrigination" msprop:Generator_ColumnVarNameInTable="columnBuyOrderOrigination" msprop:Generator_ColumnPropNameInRow="BuyOrderOrigination" msprop:Generator_ColumnPropNameInTable="BuyOrderOriginationColumn" msprop:Generator_UserColumnName="BuyOrderOrigination" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="2" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="BuyRoutingArrangementIndicator" msprop:Generator_ColumnVarNameInTable="columnBuyRoutingArrangementIndicator" msprop:Generator_ColumnPropNameInRow="BuyRoutingArrangementIndicator" msprop:Generator_ColumnPropNameInTable="BuyRoutingArrangementIndicatorColumn" msprop:Generator_UserColumnName="BuyRoutingArrangementIndicator" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="2" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="BuyAlgorithmID" msprop:Generator_ColumnVarNameInTable="columnBuyAlgorithmID" msprop:Generator_ColumnPropNameInRow="BuyAlgorithmID" msprop:Generator_ColumnPropNameInTable="BuyAlgorithmIDColumn" msprop:Generator_UserColumnName="BuyAlgorithmID" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="20" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="BuyCustomerAccount" msprop:Generator_ColumnVarNameInTable="columnBuyCustomerAccount" msprop:Generator_ColumnPropNameInRow="BuyCustomerAccount" msprop:Generator_ColumnPropNameInTable="BuyCustomerAccountColumn" msprop:Generator_UserColumnName="BuyCustomerAccount" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="20" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="BuyCustomerLEI" msprop:Generator_ColumnVarNameInTable="columnBuyCustomerLEI" msprop:Generator_ColumnPropNameInRow="BuyCustomerLEI" msprop:Generator_ColumnPropNameInTable="BuyCustomerLEIColumn" msprop:Generator_UserColumnName="BuyCustomerLEI" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="52" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="BuyBrokerLEI" msprop:Generator_ColumnVarNameInTable="columnBuyBrokerLEI" msprop:Generator_ColumnPropNameInRow="BuyBrokerLEI" msprop:Generator_ColumnPropNameInTable="BuyBrokerLEIColumn" msprop:Generator_UserColumnName="BuyBrokerLEI" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="20" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="SellOrderOrigination" msprop:Generator_ColumnVarNameInTable="columnSellOrderOrigination" msprop:Generator_ColumnPropNameInRow="SellOrderOrigination" msprop:Generator_ColumnPropNameInTable="SellOrderOriginationColumn" msprop:Generator_UserColumnName="SellOrderOrigination" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="2" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="SellRoutingArrangementIndicator" msprop:Generator_ColumnVarNameInTable="columnSellRoutingArrangementIndicator" msprop:Generator_ColumnPropNameInRow="SellRoutingArrangementIndicator" msprop:Generator_ColumnPropNameInTable="SellRoutingArrangementIndicatorColumn" msprop:Generator_UserColumnName="SellRoutingArrangementIndicator" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="2" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="SellAlgorithmID" msprop:Generator_ColumnVarNameInTable="columnSellAlgorithmID" msprop:Generator_ColumnPropNameInRow="SellAlgorithmID" msprop:Generator_ColumnPropNameInTable="SellAlgorithmIDColumn" msprop:Generator_UserColumnName="SellAlgorithmID" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="20" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="SellCustomerAccount" msprop:Generator_ColumnVarNameInTable="columnSellCustomerAccount" msprop:Generator_ColumnPropNameInRow="SellCustomerAccount" msprop:Generator_ColumnPropNameInTable="SellCustomerAccountColumn" msprop:Generator_UserColumnName="SellCustomerAccount" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="20" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="SellCustomerLEI" msprop:Generator_ColumnVarNameInTable="columnSellCustomerLEI" msprop:Generator_ColumnPropNameInRow="SellCustomerLEI" msprop:Generator_ColumnPropNameInTable="SellCustomerLEIColumn" msprop:Generator_UserColumnName="SellCustomerLEI" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="52" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="SellBrokerLEI" msprop:Generator_ColumnVarNameInTable="columnSellBrokerLEI" msprop:Generator_ColumnPropNameInRow="SellBrokerLEI" msprop:Generator_ColumnPropNameInTable="SellBrokerLEIColumn" msprop:Generator_UserColumnName="SellBrokerLEI" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="20" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:complexType>
+    <xs:unique name="Constraint1" msdata:PrimaryKey="true">
+      <xs:selector xpath=".//mstns:OrderHistoryCID" />
+      <xs:field xpath="mstns:ClOrdID" />
+    </xs:unique>
+  </xs:element>
+</xs:schema>
