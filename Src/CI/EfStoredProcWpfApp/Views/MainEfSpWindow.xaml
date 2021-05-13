@@ -249,6 +249,11 @@
           <TabControl x:Name="tabControl">
             <TabItem Header="Table View SP">
               <Grid Background="#FFE5E5E5">
+                <Views:DynamicSPUI Margin="2"/>
+              </Grid>
+            </TabItem>
+            <TabItem Header="Table View SP">
+              <Grid Background="#FFE5E5E5">
                 <Views:SpDemoTableView Margin="2"/>
               </Grid>
             </TabItem>
