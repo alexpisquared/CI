@@ -3,7 +3,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
-namespace CI.DS.ViewModel
+namespace CI.DS.ViewModel.VMs
 {
   public class DemoVM : ObservableValidator
   {

@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 using System.Windows.Data;
 using System.Windows.Input;
 
-namespace CI.DS.ViewModel
+namespace CI.DS.ViewModel.VMs
 {
   public class StoredProcListVM : ObservableValidator
   {

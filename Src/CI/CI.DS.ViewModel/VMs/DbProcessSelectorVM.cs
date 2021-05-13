@@ -4,7 +4,7 @@ using Microsoft.Toolkit.Mvvm.ComponentModel;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 
-namespace CI.DS.ViewModel
+namespace CI.DS.ViewModel.VMs
 {
   public class DbProcessSelectorVM : ObservableValidator
   {

@@ -8,7 +8,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
-namespace CI.DS.ViewModel
+namespace CI.DS.ViewModel.VMs
 {
   public class MainVM : ObservableValidator
   {

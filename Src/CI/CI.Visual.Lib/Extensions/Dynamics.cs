@@ -13,21 +13,17 @@ namespace CI.Standard.Lib.Extensions
   {
     public static DataTable ToDataTable(this IEnumerable<dynamic> items)
     {
+      var dataTable = new DataTable();
+
       var data = items.ToArray();
-      //if (data.Count() == 0) return null;
 
-      var dt = new DataTable();
       foreach (var key in ((IDictionary<string, object>)data[0]).Keys)
-      {
-        dt.Columns.Add(key);
-      }
-      
-      foreach (var d in data)
-      {
-        dt.Rows.Add(((IDictionary<string, object>)d).Values.ToArray());
-      }
+        dataTable.Columns.Add(key);
 
-      return dt;
+      foreach (var d in data)
+        dataTable.Rows.Add(((IDictionary<string, object>)d).Values.ToArray());
+
+      return dataTable;
     }
   }
 }

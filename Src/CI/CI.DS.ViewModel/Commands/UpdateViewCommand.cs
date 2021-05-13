@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CI.DS.ViewModel.VMs;
+using System;
 using System.Windows.Input;
 
 namespace CI.DS.ViewModel.Commands
@@ -28,7 +29,7 @@ namespace CI.DS.ViewModel.Commands
         "Acbg" => new AllCashByGroupVM(_mainVM.Logger, _mainVM.Config, _mainVM),
         "usp_Report_AllCashByGroup" => new AllCashByGroupVM(_mainVM.Logger, _mainVM.Config, _mainVM),
 #if DEBUG
-        _ => new AllCashByGroupVM(_mainVM.Logger, _mainVM.Config, _mainVM),
+        _ => new DynamicSPUICreatorVM(_mainVM.Logger, _mainVM.Config, _mainVM),
 #else
       _ => throw new MissingFieldException(parameter?.ToString()),
 #endif
