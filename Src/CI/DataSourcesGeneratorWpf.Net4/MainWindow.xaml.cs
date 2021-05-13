@@ -8,12 +8,9 @@ namespace DataSourcesGeneratorWpf.Net4
 
     void Window_Loaded(object sender, RoutedEventArgs e)
     {
-      TradeDataDataSet tradeDataDataSet = ((TradeDataDataSet)(FindResource("tradeDataDataSet")));
+      new TradeDataDataSetTableAdapters.OrderHistoryCIDTableAdapter().Fill(((TradeDataDataSet)(FindResource("tradeDataDataSet"))).OrderHistoryCID);
 
-      TradeDataDataSetTableAdapters.OrderHistoryCIDTableAdapter tradeDataDataSetOrderHistoryCIDTableAdapter = new DataSourcesGeneratorWpf.Net4.TradeDataDataSetTableAdapters.OrderHistoryCIDTableAdapter();
-      tradeDataDataSetOrderHistoryCIDTableAdapter.Fill(tradeDataDataSet.OrderHistoryCID);
-      System.Windows.Data.CollectionViewSource orderHistoryCIDViewSource = ((System.Windows.Data.CollectionViewSource)(FindResource("orderHistoryCIDViewSource")));
-      orderHistoryCIDViewSource.View.MoveCurrentToFirst();
+      ((System.Windows.Data.CollectionViewSource)(FindResource("orderHistoryCIDViewSource"))).View.MoveCurrentToFirst();
     }
 
     void onClose(object sender, RoutedEventArgs e) { Close(); }
