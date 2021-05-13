@@ -25,12 +25,15 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using CI.DS.ViewModel;
 
 namespace CI.DS.Visual.Views
 {
   public partial class DynamicSPUICreatorView : UserControl
   {
     readonly InventoryContext _context = new(@"Server=.\sqlexpress;Database=Inventory;Trusted_Connection=True;");
+    StoredProcDetail _spd;
+
     public DynamicSPUICreatorView()
     {
       InitializeComponent();
@@ -38,32 +41,43 @@ namespace CI.DS.Visual.Views
 
     void onLoaded(object sender, RoutedEventArgs e)
     {
-      wpEntry.Children.Add(new Label { Content = "@pGroup_ID",      /**/}); wpEntry.Children.Add(new TextBox { Tag = "@pGroup_ID",      /**/ Text = $"2" });
-      wpEntry.Children.Add(new Label { Content = "@pDateType",      /**/}); wpEntry.Children.Add(new TextBox { Tag = "@pDateType",      /**/ Text = $"2" });
-      wpEntry.Children.Add(new Label { Content = "@pStartDateInt",  /**/}); wpEntry.Children.Add(new TextBox { Tag = "@pStartDateInt",  /**/ Text = $"20210404" });
-      wpEntry.Children.Add(new Label { Content = "@pEndDateInt",    /**/}); wpEntry.Children.Add(new TextBox { Tag = "@pEndDateInt",    /**/ Text = $"{DateTime.Today:yyyyDDmm}" });
-      wpEntry.Children.Add(new Label { Content = "@pGroupName",     /**/}); wpEntry.Children.Add(new TextBox { Tag = "@pGroupName",     /**/ Text = $"2" });
+      _spd = ((CI.DS.ViewModel.VMs.DynamicSPUICreatorVM)DataContext).StoredProcDetail;
+      int i = 0;
+      foreach (var prm in _spd.Parameters.Split(','))
+      {
+        wpEntry.Children.Add(new Label { Content = prm.Replace("@p", "").Replace("@", ""), });
+        wpEntry.Children.Add(new TextBox { Tag = prm, Text = $"{++i}" });
+      }
 
       onRunSP(sender, e);
     }
     void onRunSP(object sender, RoutedEventArgs e)
     {
-      List<SqlParameter> spparams = new();
-      foreach (var control in wpEntry.Children)//.ToList().Where(r=>r is TextBox))
-      {
-        if (control is TextBox tbx)
-        {
-          spparams.Add(new SqlParameter(tbx.Tag.ToString(), tbx.Text));
-        }
-      }
-
       var spsql = "usp_Report_AllCashByGroup @pGroup_ID, @pDateType, @pStartDateInt, @pEndDateInt, @pGroupName";
-      spsql = "usp_Report_AllCashByGroup '2', '2', '2', '2', '2'";
+      spsql = $"{_spd.SPName} '2', '2', '2', '2', '2'";
+      spsql = $"{_spd.SPName} ";
 
-      var rows = readTableDynamicly(spsql); //todo: await foreach (var number in readTableDynamicly(spsql))      {        Console.WriteLine(number);      }
+      try
+      {
+        List<SqlParameter> spparams = new();
+        foreach (var control in wpEntry.Children)//.ToList().Where(r=>r is TextBox))
+        {
+          if (control is TextBox tbx)
+          {
+            spparams.Add(new SqlParameter(tbx.Tag.ToString(), tbx.Text));
+            spsql += $" '{tbx.Text}',";
+          }
+        }
 
-      dg1.ItemsSource = rows.ToDataTable().DefaultView;
-      tbkError.Text = $"{rows.Count()} rows found";
+        var rows = readTableDynamicly(spsql.TrimEnd(',')); //todo: await foreach (var number in readTableDynamicly(spsql))      {        Console.WriteLine(number);      }
+
+        dg1.ItemsSource = rows.ToDataTable().DefaultView;
+        tbkError.Text = $"{spsql} :: {rows.Count()} rows found";
+      }
+      catch (Exception ex)
+      {
+        tbkError.Text = $"{spsql}\r\n{ex.Message}";
+      }
     }
 
     IEnumerable<dynamic> readTableDynamicly(string _sql) //todo: async System.Collections.Generic.IAsyncEnumerable<dynamic> readTableDynamicly(string _sql)

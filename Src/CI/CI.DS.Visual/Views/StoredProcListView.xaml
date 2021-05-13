@@ -29,7 +29,7 @@
         <stb:HighlightableTextBlock.InputBindings>
           <MouseBinding MouseAction="LeftDoubleClick" 
                         Command="{Binding DataContext.UpdateViewCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}"
-                        CommandParameter="{Binding DataContext.SelectSPD.SPName, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}" />
+                        CommandParameter="{Binding DataContext.SelectSPD, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}" />
         </stb:HighlightableTextBlock.InputBindings>
       </stb:HighlightableTextBlock>
     </DataTemplate>
@@ -61,7 +61,7 @@
 
       <Button Content="  _Go  " IsDefault="True" HorizontalAlignment="Center" Background="{DynamicResource MenuItemBackground3}" ToolTip="Open the selected DB Process panel" 
               Command="{Binding UpdateViewCommand}" 
-              CommandParameter="{Binding SelectSPD.SPName}" 
+              CommandParameter="{Binding SelectSPD}" 
               />
 
     </StackPanel>
