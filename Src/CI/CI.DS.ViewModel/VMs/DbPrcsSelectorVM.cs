@@ -6,14 +6,14 @@ using System.Windows.Input;
 
 namespace CI.DS.ViewModel.VMs
 {
-  public class DbProcessSelectorVM : ObservableValidator
+  public class DbPrcsSelectorVM : ObservableValidator
   {
     readonly ILogger _logger;
     readonly IConfigurationRoot _config;
     string _selectedDBP, _pKey;
     ObservableCollection<DbProcess> _dbProcesses = new();
 
-    public DbProcessSelectorVM(ILogger logger, IConfigurationRoot config)
+    public DbPrcsSelectorVM(ILogger logger, IConfigurationRoot config)
     {
       _logger = logger;
       _config = config;

@@ -106,7 +106,7 @@ select  obj.name AS SPName,  substring(par.parameters, 0, len(par.parameters)) a
 schema_name(obj.schema_id) AS [Schema]
 from sys.objects      obj
 --join sys.sql_modules  mod     on mod.object_id = obj.object_id
-cross apply (select p.name + ' ' + TYPE_NAME(p.user_type_id) + ', ' 
+cross apply (select p.name + ' ' + TYPE_NAME(p.user_type_id) + ' ' + CAST(isnull(p.max_length,'888') AS nvarchar(4000)) + ' ' + CAST(isnull(p.precision,'888') AS nvarchar(4000)) + ',' 
              from sys.parameters p
              where p.object_id = obj.object_id and p.parameter_id != 0 
              for xml path ('')) par (parameters)

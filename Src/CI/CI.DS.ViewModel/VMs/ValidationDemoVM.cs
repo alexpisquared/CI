@@ -5,13 +5,13 @@ using System.ComponentModel.DataAnnotations;
 
 namespace CI.DS.ViewModel.VMs
 {
-  public class DemoVM : ObservableValidator
+  public class ValidationDemoVM : ObservableValidator
   {
     readonly ILogger _logger;
     readonly IConfigurationRoot _config;
     string _stringMayNotBeEmpty = "This may not be empty", _sqlconstr = "", _whereami = "";
 
-    public DemoVM(ILogger logger, IConfigurationRoot config)
+    public ValidationDemoVM(ILogger logger, IConfigurationRoot config)
     {
       _logger = logger;
       _config = config;

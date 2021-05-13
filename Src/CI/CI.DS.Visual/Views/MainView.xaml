@@ -244,7 +244,7 @@
               <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Grid.Row="0" Visibility="Collapsed">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Grid.Row="0" Visibility="Collapsed" x:Name="pnlTabs">
               <Menu Background="Transparent" VerticalAlignment="Center" BorderThickness="0">
                 <Menu.Resources>
                   <Style TargetType="{x:Type MenuItem}">
@@ -261,6 +261,7 @@
                 <MenuItem Header="_Acbg" Command="{Binding UpdateViewCommand}" CommandParameter="Acbg" Background="{DynamicResource MenuItemBackground3}" ToolTip="" />
               </Menu>
             </StackPanel>
+            <ToggleButton Content="_View" Grid.RowSpan="2" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="20 10" Click="ToggleButton_Click" />
 
             <ContentControl Content="{Binding SelectedVM}" Grid.Row="1" Padding="20">
               <ContentControl.Style>

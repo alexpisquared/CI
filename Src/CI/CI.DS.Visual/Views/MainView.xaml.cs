@@ -1,7 +1,7 @@
-﻿using CI.DS.ViewModel;
-using CI.DS.ViewModel.VMs;
+﻿using CI.DS.ViewModel.VMs;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls.Primitives;
 
 namespace CI.DS.Visual.Views
 {
@@ -23,5 +23,7 @@ namespace CI.DS.Visual.Views
     async void onAudio(object s, RoutedEventArgs e) { await Task.Yield(); ; }
     async void onFlush(object s, RoutedEventArgs e) { await Task.Yield(); ; }
     async void onSettings(object s, RoutedEventArgs e) { await Task.Yield(); ; }
+
+    void ToggleButton_Click(object sender, RoutedEventArgs e) => pnlTabs.Visibility = ((ToggleButton)sender).IsChecked == true ? Visibility.Visible : Visibility.Collapsed;
   }
 }
