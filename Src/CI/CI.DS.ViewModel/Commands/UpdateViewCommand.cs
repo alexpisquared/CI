@@ -16,12 +16,10 @@ namespace CI.DS.ViewModel.Commands
     public void Execute(object? parameter) => _mainVM.SelectedVM = parameter switch
     {
       StoredProcDetail spd => new DynamicSPUICreatorVM(_mainVM.Logger, _mainVM.Config, _mainVM, spd),
-      string key when (key == "Spsl") => new StoredProcListVM(_mainVM.Logger, _mainVM.Config, _mainVM),
       "Spsl" => new StoredProcListVM(_mainVM.Logger, _mainVM.Config, _mainVM),
-      "Dbps" => new DbProcessSelectorVM(_mainVM.Logger, _mainVM.Config),
-      "Demo" => new DemoVM(_mainVM.Logger, _mainVM.Config),
+      "Dbps" => new DbPrcsSelectorVM(_mainVM.Logger, _mainVM.Config),
+      "Demo" => new ValidationDemoVM(_mainVM.Logger, _mainVM.Config),
       "Acbg" => new AllCashByGroupVM(_mainVM.Logger, _mainVM.Config, _mainVM),
-      "usp_Report_AllCashByGroup" => new AllCashByGroupVM(_mainVM.Logger, _mainVM.Config, _mainVM),
 #if DEBUG
       _ => new AllCashByGroupVM(_mainVM.Logger, _mainVM.Config, _mainVM),
 #else

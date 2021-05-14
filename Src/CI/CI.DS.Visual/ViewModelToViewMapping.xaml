@@ -3,13 +3,13 @@
                     xmlns:local="clr-namespace:CI.DS.Visual.Views"
                     xmlns:vm="clr-namespace:CI.DS.ViewModel.VMs;assembly=CI.DS.ViewModel">
 
-  <DataTemplate DataType="{x:Type vm:DemoVM}" >
+  <DataTemplate DataType="{x:Type vm:ValidationDemoVM}" >
     <local:DemoView/>
   </DataTemplate>
   <DataTemplate DataType="{x:Type vm:AllCashByGroupVM}" >
     <local:AllCashByGroupView/>
   </DataTemplate>
-  <DataTemplate DataType="{x:Type vm:DbProcessSelectorVM}" >
+  <DataTemplate DataType="{x:Type vm:DbPrcsSelectorVM}" >
     <local:DbProcessSelectorView/>
   </DataTemplate>
   <DataTemplate DataType="{x:Type vm:StoredProcListVM}" >
