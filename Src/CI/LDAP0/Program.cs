@@ -1,34 +1,36 @@
 ﻿using System;
+using System.Diagnostics;
 using System.DirectoryServices;
 using System.DirectoryServices.AccountManagement;
 using System.Linq;
 using System.Security.Principal;
 
-allUsers();
+allUsersModern();
+allUsersSimple();
 //allAttributes();
 //list0();
 Console.ResetColor();
 
 
-static void allUsers()
+static void allUsersModern()
 {
+  Console.ForegroundColor = ConsoleColor.DarkCyan;
   try
   {
     PrincipalContext AD = new PrincipalContext(ContextType.Domain, "corporate.ciglobe.net");
     UserPrincipal u = new UserPrincipal(AD);
-    PrincipalSearcher search = new PrincipalSearcher(u);
+    using PrincipalSearcher search = new PrincipalSearcher(u);
+    var sw = Stopwatch.StartNew();
 
-    foreach (UserPrincipal result in search.FindAll().Where(r => r!= null && r.DisplayName != null && r.DisplayName.Contains("Pig", StringComparison.InvariantCultureIgnoreCase)))
-      //if (result.VoiceTelephoneNumber != null)
-        Console.WriteLine($"{result.DisplayName,-32}{result.UserPrincipalName,-26} {result.DisplayName,-26} " );
+    foreach (UserPrincipal up in search.FindAll().Where(r => r != null && r.DistinguishedName != null && r.DistinguishedName.Contains("Pi", StringComparison.InvariantCultureIgnoreCase)))//.ToList().OrderBy(r => r.Name))
+      Console.WriteLine($"{up.Name,-40}{up.SamAccountName,-26}{up.UserPrincipalName,-36} en:{up.Enabled,-5} pnr:{up.PasswordNotRequired,-5} pne:{up.PasswordNeverExpires,-5} {up.LastBadPasswordAttempt,9:yy-MM-dd} {up.Description,-26}  {up.DistinguishedName}  ");
+
+    Console.ForegroundColor = ConsoleColor.DarkGreen; Console.WriteLine($"*** ElapsedMilliseconds{sw.ElapsedMilliseconds,6:N0} ms"); Console.ResetColor();
 
     search.Dispose();
   }
-
-  catch (Exception e)
-  {
-    Console.WriteLine("Error: " + e.Message);
-  }
+  catch (Exception e) { Console.WriteLine("Error: " + e.Message); }
+  Console.ResetColor();
 }
 static void allUsersSimple()
 {
@@ -45,15 +47,15 @@ static void allUsersSimple()
 
     SearchResultCollection allUsers = search.FindAll();
 
+    var sw = Stopwatch.StartNew();
     foreach (SearchResult result in allUsers)
     {
       if (result.Properties["cn"].Count > 0 && result.Properties[property].Count > 0)
       {
-        Console.WriteLine(String.Format("{0,-20} : {1}",
-                          result.Properties["cn"][0].ToString(),
-                          result.Properties[property][0].ToString()));
+        Console.WriteLine(String.Format("{0,-20} : {1}", result.Properties["cn"][0].ToString(), result.Properties[property][0].ToString()));
       }
     }
+    Console.ForegroundColor = ConsoleColor.DarkGreen; Console.WriteLine($"*** ElapsedMilliseconds{sw.ElapsedMilliseconds,6:N0} ms"); Console.ResetColor();
   }
   catch (Exception e)
   {
@@ -64,7 +66,7 @@ static void allUsersSimple()
 
 void list0() // https://www.ianatkinson.net/computing/adcsharp/retrieve_all_info.cs
 {
-string username = "Pigida, Alex"; // Console.ReadLine();
+  string username = "Pigida, Alex"; // Console.ReadLine();
   Console.ForegroundColor = ConsoleColor.Green;
 
   DirectoryEntry myLdapConnection = createDirectoryEntry();
