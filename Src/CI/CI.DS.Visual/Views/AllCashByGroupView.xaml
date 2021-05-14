@@ -37,7 +37,7 @@
             Command="{Binding UpdateViewCommand}" CommandParameter="Spsl" 
             ToolTip="Go back to DB Process Selector" />
 
-    <TextBlock Text="All Cash by Group" FontSize="26" Foreground="#44f" Margin="51 -5 0 0" />
+    <TextBlock Text="All Cash by Group" FontSize="18" Foreground="#44f" Margin="51 -5 0 0" />
 
     <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center" x:Name="ctrlPanel">
       <StackPanel>

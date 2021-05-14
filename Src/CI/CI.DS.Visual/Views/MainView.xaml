@@ -261,8 +261,7 @@
                 <MenuItem Header="_Acbg" Command="{Binding UpdateViewCommand}" CommandParameter="Acbg" Background="{DynamicResource MenuItemBackground3}" ToolTip="" />
               </Menu>
             </StackPanel>
-            <ToggleButton Content="_View" Grid.RowSpan="2" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="20 10" Click="ToggleButton_Click" />
-
+            
             <ContentControl Content="{Binding SelectedVM}" Grid.Row="1" Padding="20">
               <ContentControl.Style>
                 <Style TargetType="ContentControl">
@@ -284,6 +283,8 @@
                 </Style>
               </ContentControl.Style>
             </ContentControl>
+
+            <ToggleButton Content="_Advanced" Grid.RowSpan="2" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="20 10" Click="ToggleButton_Click" />
 
           </Grid>
 

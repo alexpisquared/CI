@@ -33,6 +33,7 @@ namespace CI.DS.ViewModel.VMs
     ObservableCollection<BookReportView> _bookReports = new();
     ObservableCollection<BookGroup> _bookGroups = new();
     ICommand? _searchCommand;
+    string _uFName = "";
 
     public DynamicSPUICreatorVM(ILogger logger, IConfigurationRoot config, MainVM mainVM, StoredProcDetail spdetl)
     {
@@ -43,10 +44,12 @@ namespace CI.DS.ViewModel.VMs
 
       UpdateViewCommand = new UpdateViewCommand(mainVM);
 
-      ValidateAllProperties();
+      UFName = spdetl.UFName;
 
-      Task<List<BookGroup>>.Run(() => _context.BookGroups.OrderBy(r => r.Name).ToList()).ContinueWith(_ => { try { Debug.WriteLine($"** {_.Result.Count}  rows returned"); } catch (Exception ex) { _logger.LogError(ex, "Really?"); } }, TaskScheduler.FromCurrentSynchronizationContext());
+      ValidateAllProperties();
     }
+
+    public string UFName { get => _uFName; set => SetProperty(ref _uFName, value); }
 
     public StoredProcDetail StoredProcDetail { get => _spdetl; }
 

@@ -10,8 +10,10 @@ using System.Data;
 using System.Diagnostics;
 using System.Dynamic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 
 namespace CI.DS.Visual.Views
 {
@@ -37,40 +39,45 @@ namespace CI.DS.Visual.Views
         wpEntry.Children.Add(sp);
       }
 
-      onRunSP(sender, e);
+      //onRunSP(sender, e);
     }
-    void onRunSP(object sender, RoutedEventArgs e)
+    async void onRunSP(object sender, RoutedEventArgs e)
     {
-      var spsql = "usp_Report_AllCashByGroup @pGroup_ID, @pDateType, @pStartDateInt, @pEndDateInt, @pGroupName";
-      spsql = $"{_spd.SPName} '2', '2', '2', '2', '2'";
-      spsql = $"{_spd.SPName} ";
+      tbkError.Text = $"Launching ...";
+      tbkError.Foreground = Brushes.Blue;
+      await Task.Delay(100);
+
+      var spsql = $"{_spd?.SPName} "; // "usp_Report_AllCashByGroup @pGroup_ID, @pDateType, @pStartDateInt, @pEndDateInt, @pGroupName";
 
       try
       {
-        List<SqlParameter> spparams = new();
-        foreach (var control in wpEntry.Children)//.ToList().Where(r=>r is TextBox))
+        List<SqlParameter> spParams = new();
+        foreach (var panel in wpEntry.Children)
         {
-          if (control is StackPanel spnl)
+          if (panel is StackPanel spnl)
           {
             foreach (var tl in spnl.Children)
             {
               if (tl is TextBox tbx)
               {
-                spparams.Add(new SqlParameter(tbx.Tag.ToString(), tbx.Text));
+                spParams.Add(new SqlParameter(tbx.Tag.ToString(), tbx.Text)); //todo:
                 spsql += $" '{tbx.Text}',";
               }
             }
           }
         }
 
-        var rows = readTableDynamicly(spsql.TrimEnd(',')); //todo: await foreach (var number in readTableDynamicly(spsql))      {        Console.WriteLine(number);      }
+        var dynamicRows = readTableDynamicly(spsql.TrimEnd(',')); //todo: await foreach (var number in readTableDynamicly(spsql))      {        Console.WriteLine(number);      }
 
-        dg1.ItemsSource = rows.ToDataTable().DefaultView;
-        tbkError.Text = $"{spsql}   ►   {rows.Count()} rows found";
+        tbkError.Text = $"{spsql.TrimEnd(',')}   ►   {dynamicRows.Count()} rows found";
+        tbkError.Foreground = dynamicRows.Count() > 0 ? Brushes.Green : Brushes.DarkOrange;
+
+        dg1.ItemsSource = dynamicRows.ToDataTable().DefaultView;
       }
       catch (Exception ex)
       {
-        tbkError.Text = $"{spsql}\r\n{ex.Message}";
+        tbkError.Text = $"{spsql.TrimEnd(',')}\r\n{ex.GetType().Name}: {ex.Message}";
+        tbkError.Foreground = Brushes.HotPink;
       }
     }
 
@@ -92,6 +99,8 @@ namespace CI.DS.Visual.Views
         if (!reader.HasRows)
         {
           Debug.WriteLine("No rows found.");
+          yield break;
+          //yield return new List<string>();
         }
         else
         {

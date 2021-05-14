@@ -1,27 +1,30 @@
-﻿using CI.Standard.Lib.Helpers;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Diagnostics;
 using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
 
 namespace CI.Standard.Lib.Extensions
 {
   public static class Dynamics
   {
-    public static DataTable ToDataTable(this IEnumerable<dynamic> items)
+    public static DataTable ToDataTable(this IEnumerable<dynamic> dynamicRows)
     {
       var dataTable = new DataTable();
 
-      var data = items.ToArray();
+      try
+      {
+        var drArray = dynamicRows.ToArray();
 
-      foreach (var key in ((IDictionary<string, object>)data[0]).Keys)
-        dataTable.Columns.Add(key);
+        foreach (var key in ((IDictionary<string, object>)drArray[0]).Keys)
+          dataTable.Columns.Add(key);
 
-      foreach (var d in data)
-        dataTable.Rows.Add(((IDictionary<string, object>)d).Values.ToArray());
+        foreach (var d in drArray)
+          dataTable.Rows.Add(((IDictionary<string, object>)d).Values.ToArray());
+      }
+      catch (Exception ex)
+      {
+        ex.Log("Ignore and return an empty DataTable. ");
+      }
 
       return dataTable;
     }
