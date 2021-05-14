@@ -1,4 +1,5 @@
 ﻿using CI.DS.ViewModel;
+using CI.DS.ViewModel.VMs;
 using CI.Standard.Lib.Extensions;
 using DB.Inventory.Models;
 using Microsoft.Data.SqlClient;
@@ -17,13 +18,13 @@ namespace CI.DS.Visual.Views
   public partial class DynamicSPUICreatorView : UserControl
   {
     readonly InventoryContext _context = new(@"Server=.\sqlexpress;Database=Inventory;Trusted_Connection=True;");
-    StoredProcDetail _spd;
+    StoredProcDetail? _spd;
 
     public DynamicSPUICreatorView() => InitializeComponent();
 
     void onLoaded(object sender, RoutedEventArgs e)
     {
-      _spd = ((CI.DS.ViewModel.VMs.DynamicSPUICreatorVM)DataContext).StoredProcDetail;
+      _spd = ((DynamicSPUICreatorVM)DataContext).StoredProcDetail;
       wpEntry.Children.Clear();
       var i = 0;
       foreach (var prm in _spd.Parameters.Split(','))

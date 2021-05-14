@@ -1,4 +1,5 @@
 ﻿using CI.DS.ViewModel.Commands;
+using CI.Standard.Lib.Helpers;
 using DB.Inventory.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -42,7 +43,7 @@ namespace CI.DS.ViewModel.VMs
         SpdCollectionView.Filter = filterSPDs;
         SpdCollectionView.GroupDescriptions.Add(new PropertyGroupDescription(nameof(StoredProcDetail.Schema)));
         SpdCollectionView.SortDescriptions.Add(new SortDescription(nameof(StoredProcDetail.UFName), ListSortDirection.Ascending));
-        System.Media.SystemSounds.Hand.Play(); // Visual.Lib.Helpers.Bpr.Start();
+        Bpr.Tick();
       }, TaskScheduler.FromCurrentSynchronizationContext());
     }
 
