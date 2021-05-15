@@ -29,7 +29,7 @@ namespace CI.DS.Visual.Views
       _spd = ((DynamicSPUICreatorVM)DataContext).StoredProcDetail;
       wpEntry.Children.Clear();
       var i = 0;
-      foreach (var prm in _spd.Parameters.Split(','))
+      foreach (var prm in _spd.Parameters.Split(',', StringSplitOptions.RemoveEmptyEntries))
       {
         var sp = new StackPanel();
 
@@ -41,6 +41,7 @@ namespace CI.DS.Visual.Views
 
       //onRunSP(sender, e);
     }
+    void onShowSP(object s, RoutedEventArgs e) => MessageBox.Show(_spd?.Definition, _spd?.SPName);
     async void onRunSP(object sender, RoutedEventArgs e)
     {
       tbkError.Text = $"Launching ...";

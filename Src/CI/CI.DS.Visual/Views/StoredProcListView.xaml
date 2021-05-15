@@ -25,7 +25,7 @@
     </Style>
 
     <DataTemplate x:Key="myTaskTemplate">
-      <stb:HighlightableTextBlock Text="{Binding UFName}" SearchText="{Binding Text, ElementName=tbxSearch}" ToolTip="{Binding SPName}" Margin="0 -2.5" >
+      <stb:HighlightableTextBlock Text="{Binding UFName}" SearchText="{Binding Text, ElementName=tbxSearch}" ToolTip="{Binding Definition}" Margin="0 -2.5" >
         <stb:HighlightableTextBlock.InputBindings>
           <MouseBinding MouseAction="LeftDoubleClick" 
                         Command="{Binding DataContext.UpdateViewCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}"

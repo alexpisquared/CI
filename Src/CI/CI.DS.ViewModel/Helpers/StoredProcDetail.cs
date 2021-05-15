@@ -2,17 +2,18 @@
 {
   public class StoredProcDetail
   {
-    string sPName = "";
+    string _spName = "";
 
-    public StoredProcDetail(string n, string p, string d)
+    public StoredProcDetail( string s, string n, string p, string d, int e)
     {
-      (SPName, Parameters, Definition, Schema) = (n, p, d, "dbo");
+      (Schema, SPName, Parameters, Definition, HasExecPerm) = (s, n, p, d, e);
     }
 
-    public string SPName { get => sPName; private set => UFName = generateUserFriendlyName(sPName = value); }
     public string Schema { get; set; }
+    public string SPName { get => _spName; private set => UFName = generateUserFriendlyName(_spName = value); }
     public string Parameters { get; set; }
     public string Definition { get; set; }
+    public int HasExecPerm { get; set; }
     public string UFName { get; set; } = "";
 
     string generateUserFriendlyName(string val) => val.ToSentence();
