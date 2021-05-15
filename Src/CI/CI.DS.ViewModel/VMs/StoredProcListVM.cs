@@ -23,7 +23,7 @@ namespace CI.DS.ViewModel.VMs
     readonly IConfigurationRoot _config;
     readonly InventoryContext _context;
     readonly List<StoredProcDetail> _spds = new();
-    string _SearchString = "";
+    string _searchString = "", _sqlConStr = "sql con str";
 
     ICollectionView _spcv; public ICollectionView SpdCollectionView { get => _spcv; set => SetProperty(ref _spcv, value); }
 
@@ -31,7 +31,7 @@ namespace CI.DS.ViewModel.VMs
     {
       _logger = logger;
       _config = config;
-      _context = new(_config["SqlConStr"]);
+      _context = new(SqlConStr = _config["SqlConStr"]);
       _spcv = CollectionViewSource.GetDefaultView(_spds); // redundant warning stopper only.
 
       UpdateViewCommand = new UpdateViewCommand(mainVM);
@@ -97,14 +97,8 @@ namespace CI.DS.ViewModel.VMs
     }
 
     StoredProcDetail? _selectSPD; public StoredProcDetail? SelectSPD { get => _selectSPD; set => SetProperty(ref _selectSPD, value); }
-    public string SearchString
-    {
-      get => _SearchString; set
-      {
-        SetProperty(ref _SearchString, value);
-        SpdCollectionView.Refresh();
-      }
-    }
+    public string SearchString { get => _searchString; set { SetProperty(ref _searchString, value); SpdCollectionView.Refresh(); } }
+    public string SqlConStr { get => _sqlConStr; set { SetProperty(ref _sqlConStr, value); } }
 
     public ICommand UpdateViewCommand { get; set; }
     public IConfigurationRoot Config => _config;

@@ -41,8 +41,9 @@
       <RowDefinition Height="*"/>
       <RowDefinition Height="Auto"/>
     </Grid.RowDefinitions>
+    <TextBlock Text="{Binding SqlConStr}" FontSize="10" HorizontalAlignment="Right" VerticalAlignment="Top" d:Text="Sql con str"/>
     <StackPanel Grid.Row="0" >
-      <TextBlock Text="DB Process Selector" FontSize="26" Margin="0 10" />
+      <TextBlock Text="DB Process Selector" FontSize="20" Margin="0 10" />
 
       <Label Content="_Search" Target="{Binding ElementName=tbxSearch}"/>
       <TextBox Text="{Binding SearchString, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Stretch" x:Name="tbxSearch" />
