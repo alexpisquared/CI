@@ -1,4 +1,5 @@
-﻿using CI.DS.ViewModel.Commands;
+﻿using AAV.Sys.Ext;
+using CI.DS.ViewModel.Commands;
 using CI.Standard.Lib.Helpers;
 using DB.Inventory.Models;
 using Microsoft.EntityFrameworkCore;
@@ -23,7 +24,7 @@ namespace CI.DS.ViewModel.VMs
     readonly IConfigurationRoot _config;
     readonly InventoryContext _context;
     readonly List<StoredProcDetail> _spds = new();
-    string _SearchString = "";    
+    string _SearchString = "";
 
     ICollectionView _spcv; public ICollectionView SpdCollectionView { get => _spcv; set => SetProperty(ref _spcv, value); }
 
@@ -73,8 +74,12 @@ namespace CI.DS.ViewModel.VMs
         {
           while (reader.Read())
           {
-            try { rv.Add(new StoredProcDetail(reader.GetString(0), reader.GetString(1), reader.GetString(2))); Debug.WriteLine($"{reader.GetString(0)}"); }
-            catch (SqlNullValueException ex) { Debug.WriteLine($"  ■ ■ ■ {reader.GetString(0)}   {ex.Message}"); }
+            try
+            {
+              Debug.WriteLine($"{reader.GetString(0)}");
+              rv.Add(new StoredProcDetail(reader.GetString("SPName"), reader.IsDBNull("Parameters") ? "" : reader.GetString("Parameters"), reader.GetString(2)));
+            }
+            catch (SqlNullValueException ex) { _logger.LogError(ex.ToString()); }
           }
         }
 
@@ -107,7 +112,7 @@ select  obj.name AS SPName,  substring(par.parameters, 0, len(par.parameters)) a
 schema_name(obj.schema_id) AS [Schema]
 from sys.objects      obj
 --join sys.sql_modules  mod     on mod.object_id = obj.object_id
-cross apply (select p.name + ' ' + TYPE_NAME(p.user_type_id) + ' ' + CAST(isnull(p.max_length,'888') AS nvarchar(4000)) + ' ' + CAST(isnull(p.precision,'888') AS nvarchar(4000)) + ',' 
+cross apply (select p.name + ' ' + TYPE_NAME(p.user_type_id) + ' ' + CAST(isnull(p.max_length,8) AS nvarchar(4000)) + ' ' + CAST(isnull(p.precision,8) AS nvarchar(4000)) + ',' 
              from sys.parameters p
              where p.object_id = obj.object_id and p.parameter_id != 0 
              for xml path ('')) par (parameters)
