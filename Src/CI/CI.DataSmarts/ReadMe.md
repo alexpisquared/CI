@@ -53,4 +53,15 @@ exec [dbo].[AlexPi_Test]
 GRANT/DENY EXECUTE ON ~OBJECT::[dbo].[AlexPi_Test] TO ~DevDbgLoginUser 
 
 
+
+-- A quick peek at SQL Logins visible from the current connection:
+select sp.name       as SqlLogin,
+       sp.type_desc  as [Login type],
+       sp.create_date,
+       sp.modify_date,
+       case when sp.is_disabled = 1 then 'Disabled' else 'Enabled' end as Status
+from sys.server_principals sp left join sys.sql_logins sl on sp.principal_id = sl.principal_id
+where sp.type not in ('G', 'R')
+order by sp.name;
+
 # //todo: next: progressively script all required perms to run the DBPL.exe for RAZER1\alexp !!!
