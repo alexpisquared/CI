@@ -75,12 +75,13 @@ namespace CI.DS.ViewModel.VMs
           {
             try
             {
-              Debug.WriteLine($"{reader.GetString(0)}");
+              var vals = new object [reader.FieldCount];
+              Debug.WriteLine($"Depth:{reader.Depth}   {reader.GetValues(vals)}: {string.Join('\t', vals)}");
               rv.Add(new StoredProcDetail(
                 reader.GetString("Schema"),
                 reader.GetString("SPName"),
                 reader.IsDBNull("Parameters") ? "" : reader.GetString("Parameters"),
-                reader.GetString("Definition"),
+                reader.IsDBNull("Definition") ? "~DBNull (no access to definition)" : reader.GetString("Definition"),
                 reader.GetInt32("HasExecPerm")));
             }
             catch (SqlNullValueException ex) { _logger.LogError(ex.ToString()); }
