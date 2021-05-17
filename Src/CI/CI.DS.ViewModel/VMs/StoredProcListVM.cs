@@ -114,7 +114,7 @@ SELECT
   mod.Definition
 FROM   sys.objects      obj
   join sys.sql_modules  mod     on mod.object_id = obj.object_id
-  cross apply (select p.name + ' ' + TYPE_NAME(p.user_type_id) + ' ' + CAST(isnull(p.max_length,8) AS nvarchar(4000)) + ' ' + CAST(isnull(p.precision,8) AS nvarchar(4000)) + ',' 
+  cross apply (select p.name + ' ' + TYPE_NAME(p.user_type_id) + ' ' + CAST(isnull(p.max_length,8) AS nvarchar(4000)) + ' ' + CAST(isnull(p.precision,8) AS nvarchar(4000)) + ' ' + CAST(isnull(p.is_output,8) AS nvarchar(4000)) + ',' 
              from sys.parameters p
              where p.object_id = obj.object_id and p.parameter_id != 0 
              for xml path ('')) par (parameters)

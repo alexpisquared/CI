@@ -24,7 +24,7 @@ namespace CI.DS.Visual.Views
 
     public DynamicSPUICreatorView() => InitializeComponent();
 
-    async void onLoaded(object sender, RoutedEventArgs e)
+    async void onLoaded(object s, RoutedEventArgs e)
     {
       _spd = ((DynamicSPUICreatorVM)DataContext).StoredProcDetail;
       wpEntry.Children.Clear();
@@ -41,10 +41,10 @@ namespace CI.DS.Visual.Views
 
       await Task.Delay(99); focus0.Focus();
 
-      //onRunSP(sender, e);
+      //onRunSP(s, e);
     }
     void onShowSP(object s, RoutedEventArgs e) => MessageBox.Show(_spd?.Definition, _spd?.SPName);
-    async void onRunSP(object sender, RoutedEventArgs e)
+    async void onRunSP(object s, RoutedEventArgs e)
     {
       tbkError.Text = $"Launching ...";
       tbkError.Foreground = Brushes.Blue;
