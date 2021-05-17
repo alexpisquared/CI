@@ -41,8 +41,7 @@
     </Grid.RowDefinitions>
 
     <Button Content="" FontFamily="Wingdings 3" Height="30" Margin="0,0" HorizontalAlignment="Left" BorderThickness="0" Background="Transparent" FontSize="22" Padding="10 0 10 5"
-            Command="{Binding UpdateViewCommand}" CommandParameter="Spsl" 
-            ToolTip="Go back to DB Process Selector" x:Name="focus0"/>
+            Command="{Binding UpdateViewCommand}" CommandParameter="Spsl" ToolTip="Go back to DB Process Selector"/>
 
     <TextBlock Text="{Binding UFName, FallbackValue='User-friendly SP name'}" FontSize="18" Foreground="#44f" Margin="51 -5 0 0" />
 
@@ -58,7 +57,7 @@
     </WrapPanel>
 
     <Button    Grid.Row="1" Content="  _Def  " Click="onShowSP" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="80 0"/>
-    <Button    Grid.Row="1" Content="  _Run  " Click="onRunSP"  VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="10 0" IsDefault="True" />
+    <Button    Grid.Row="1" Content="  _Run  " Click="onRunSP"  VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="10 0" IsDefault="True" x:Name="focus0" />
 
     <DataGrid  Grid.Row="2" x:Name="dg1" AutoGenerateColumns="True" Margin="5,5,5,5" />
 

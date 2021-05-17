@@ -43,7 +43,7 @@
     <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center" x:Name="ctrlPanel">
       <StackPanel>
         <Label Content="Group"  />
-        <ComboBox ItemsSource="{Binding BookGroups}" DisplayMemberPath="Name" SelectedValuePath="GroupId" SelectedValue="{Binding Group_ID}" x:Name="focus0" />
+        <ComboBox ItemsSource="{Binding BookGroups}" DisplayMemberPath="Name" SelectedValuePath="GroupId" SelectedValue="{Binding Group_ID}" />
         <!--<TextBlock Text="{Binding Group_ID}" />-->
       </StackPanel>
       <StackPanel>
@@ -67,7 +67,7 @@
         <TextBox x:Name="t5" Text="{Binding GroupNam}" />
       </StackPanel>
 
-      <Button Content="  _Get  " Height="30" Margin="20,0" IsDefault="True" Command="{Binding SearchCommand}" VerticalAlignment="Bottom"/>
+      <Button Content="  _Get  " Height="30" Margin="20,0" IsDefault="True" Command="{Binding SearchCommand}" VerticalAlignment="Bottom" x:Name="focus0"/>
     </StackPanel>
 
     <DataGrid Grid.Row="2" x:Name="dg1" AutoGenerateColumns="True" Margin="5,5,5,5" ItemsSource="{Binding BookReports}" />

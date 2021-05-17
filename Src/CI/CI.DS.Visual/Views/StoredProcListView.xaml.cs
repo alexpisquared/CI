@@ -27,7 +27,7 @@ namespace CI.DS.Visual.Views
     async void onLoaded(object s, RoutedEventArgs e)
     {
       tbxSearch.Focus();
-      await Task.Delay(1250);
+      await Task.Delay(50);
       lbxSpds.SelectedIndex = 0;
     }
   }

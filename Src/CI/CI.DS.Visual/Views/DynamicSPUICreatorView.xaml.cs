@@ -39,7 +39,7 @@ namespace CI.DS.Visual.Views
         wpEntry.Children.Add(sp);
       }
 
-       await Task.Delay(99); focus0.Focus(); 
+      await Task.Delay(99); focus0.Focus();
 
       //onRunSP(sender, e);
     }
@@ -70,9 +70,13 @@ namespace CI.DS.Visual.Views
           }
         }
 
-        var dynamicRows = readTableDynamicly(spsql.TrimEnd(',')); //todo: await foreach (var number in readTableDynamicly(spsql))      {        Console.WriteLine(number);      }
+        //spsql += $"@ReturnValue OUTPUT";
 
-        tbkError.Text = $"{spsql.TrimEnd(',')}   ►   {dynamicRows.Count()} rows found";
+        Debug.WriteLine($" ■ ReturnValue = .   ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ");
+        var dynamicRows = readTableDynamicly(spsql.TrimEnd(',')); //todo: await foreach (var number in readTableDynamicly(spsql))      {        Console.WriteLine(number);      }
+        Debug.WriteLine($" ■ ReturnValue = .   ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ");
+
+        tbkError.Text = $"{spsql.TrimEnd(',')}   ►   {dynamicRows.Count()} rows returned";
         tbkError.Foreground = dynamicRows.Count() > 0 ? Brushes.Green : Brushes.DarkOrange;
 
         dg1.ItemsSource = dynamicRows.ToDataTable().DefaultView;
@@ -80,12 +84,20 @@ namespace CI.DS.Visual.Views
       catch (Exception ex)
       {
         tbkError.Text = $"{spsql.TrimEnd(',')}\r\n{ex.GetType().Name}: {ex.Message}";
-        tbkError.Foreground = Brushes.HotPink;
+        tbkError.Foreground = Brushes.DarkRed;
       }
     }
 
-    IEnumerable<dynamic> readTableDynamicly(string _sql) //todo: async System.Collections.Generic.IAsyncEnumerable<dynamic> readTableDynamicly(string _sql)
+    IEnumerable<dynamic> readTableDynamicly(string spSql) //todo: async System.Collections.Generic.IAsyncEnumerable<dynamic> readTableDynamicly(string _sql)
     {
+      var returnParam = new SqlParameter
+      {
+        ParameterName = "@ReturnValue",
+        SqlDbType = SqlDbType.Int,
+        Direction = ParameterDirection.Output
+      };
+      Debug.WriteLine($" ■ ReturnValue = {returnParam.Value}.   4 ■ ■ ■ ■ ■");
+
       var connection = _context.Database.GetDbConnection();
 
       try
@@ -95,15 +107,17 @@ namespace CI.DS.Visual.Views
           connection.Open();
         }
 
-        using var command = connection.CreateCommand();
-        command.CommandText = _sql;
+        using var cmd = connection.CreateCommand();
+        cmd.CommandType = CommandType.StoredProcedure;
+        cmd.CommandText = spSql;
 
-        using var reader = command.ExecuteReader();
+        //var added = cmd.Parameters.Add(returnParam);
+
+        using var reader = cmd.ExecuteReader();
         if (!reader.HasRows)
         {
-          Debug.WriteLine("No rows found.");
+          Debug.WriteLine($" ■ ReturnValue = {returnParam.Value}.   3 ■ ■ ■ ■   (No rows found)  ");
           yield break;
-          //yield return new List<string>();
         }
         else
         {
@@ -113,11 +127,15 @@ namespace CI.DS.Visual.Views
           }
         }
 
+        Debug.WriteLine($" ■ ReturnValue = {returnParam.Value}.   2 ■ ■ ■");
         reader.Close();
+        Debug.WriteLine($" ■ ReturnValue = {returnParam.Value}.   1 ■ ■");
       }
-      //catch (SqlNullValueException ex) { _logger.LogError(ex.ToString()); }
-      //catch (Exception ex) { Debug.WriteLine($"  ■ ■ ■ {ex.Message}"); }
-      finally { connection.Close(); }
+      finally
+      {
+        connection.Close();
+        Debug.WriteLine($" ■ ReturnValue = {returnParam.Value}.   0 ■");
+      }
     }
     dynamic GetDynamicData(System.Data.Common.DbDataReader reader)
     {
