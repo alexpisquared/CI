@@ -34,7 +34,7 @@
       <RowDefinition Height="Auto"/>
     </Grid.RowDefinitions>
 
-    <Button Content="_,&lt;" Height="30" Margin="0,0" HorizontalAlignment="Left" BorderThickness="0" Background="Transparent" FontSize="22" Padding="10 0 10 5"
+    <Button Content="" FontFamily="Wingdings 3" Height="30" Margin="0,0" HorizontalAlignment="Left" BorderThickness="0" Background="Transparent" FontSize="22" Padding="10 0 10 5" 
             Command="{Binding UpdateViewCommand}" CommandParameter="Spsl" 
             ToolTip="Go back to DB Process Selector" />
 
