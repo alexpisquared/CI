@@ -34,7 +34,7 @@ namespace CI.DS.ViewModel.VMs
       _context = new(SqlConStr = _config["SqlConStr"]);
       _spcv = CollectionViewSource.GetDefaultView(_spds); // redundant warning stopper only.
 
-      UpdateViewCommand = new UpdateViewCommand(mainVM);
+      UpdateViewCommand = new UpdateViewCommand(mainVM);//{ GestureKey = Key.F5, GestureModifier = ModifierKeys.None, MouseGesture = MouseAction.RightClick };
 
       Task.Run(async () => await loadAllSPs()).ContinueWith(_ =>
       {

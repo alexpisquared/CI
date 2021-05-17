@@ -1,11 +1,12 @@
-﻿<UserControl x:Class="CI.DS.Visual.Views.DynamicSPUICreatorView"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:CI.DS.Visual.Views"
-             mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800" Loaded="onLoaded">
+﻿<UserControl x:Class="CI.DS.Visual.Views.DynamicSPUICreatorView" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" mc:Ignorable="d" 
+             xmlns:local="clr-namespace:CI.DS.Visual.Views" 
+             
+             xmlns:vms="clr-namespace:CI.DS.ViewModel.VMs;assembly=CI.DS.ViewModel" d:DataContext="{d:DesignInstance Type=vms:DynamicSPUICreatorVM}"
+             
+             d:DesignHeight="450" d:DesignWidth="800" Loaded="onLoaded" x:Name="ths">
+  <UserControl.InputBindings>
+    <KeyBinding   Command="{Binding UpdateViewCommand}" CommandParameter="Spsl" Gesture="Left" Modifiers="Alt"/>
+  </UserControl.InputBindings>
   <UserControl.Resources>
     <Style TargetType="{x:Type Control}"      BasedOn="{StaticResource CrlBase}" x:Key="CrlBase2" >
       <Setter Property="FontWeight"           Value="SemiBold" />
@@ -41,18 +42,18 @@
 
     <Button Content="_&lt;" Height="30" Margin="0,0" HorizontalAlignment="Left" BorderThickness="0" Background="Transparent" FontSize="22" Padding="10 0 10 5"
             Command="{Binding UpdateViewCommand}" CommandParameter="Spsl" 
-            ToolTip="Go back to DB Process Selector" />
+            ToolTip="Go back to DB Process Selector" x:Name="focus0"/>
 
-    <TextBlock Text="{Binding UFName, FallbackValue='No clue'}" FontSize="18" Foreground="#44f" Margin="51 -5 0 0" />
+    <TextBlock Text="{Binding UFName, FallbackValue='User-friendly SP name'}" FontSize="18" Foreground="#44f" Margin="51 -5 0 0" />
 
     <WrapPanel Grid.Row="1" x:Name="wpEntry" >
       <StackPanel>
         <Label Content="Start" />
-        <TextBox x:Name="t3" Text="{Binding StartDat}" />
+        <TextBox x:Name="t3" d:Text="Hello" />
       </StackPanel>
       <StackPanel>
         <Label Content="End"   />
-        <TextBox x:Name="t4" Text="{Binding EndDateI}" />
+        <TextBox x:Name="t4" d:Text="Hello" />
       </StackPanel>
     </WrapPanel>
 

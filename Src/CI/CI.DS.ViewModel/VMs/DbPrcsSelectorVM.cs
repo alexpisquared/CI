@@ -18,8 +18,6 @@ namespace CI.DS.ViewModel.VMs
       _logger = logger;
       _config = config;
 
-      //UpdateViewCommand = new UpdateViewCommand(this);
-
       _dbProcesses.Add(new DbProcess("Dbps", "Dbps ... or just me", "DbpsDbpsDbpsDbpsDbpsDbpsDbpsDbpsDbpsDbpsDbpsDbps"));
       _dbProcesses.Add(new DbProcess("Demo", "Validation Demo    ", "DemoDDemoDemoDemoDemoDemoDemoDemoDemoDemoDemoemo"));
       _dbProcesses.Add(new DbProcess("Acbg", "All Cash by Group  ", "All Cash by Group or similar"));

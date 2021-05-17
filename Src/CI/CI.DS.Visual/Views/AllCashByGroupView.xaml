@@ -1,13 +1,14 @@
-﻿<UserControl x:Class="CI.DS.Visual.Views.AllCashByGroupView"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+﻿<UserControl x:Class="CI.DS.Visual.Views.AllCashByGroupView" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" mc:Ignorable="d" 
              xmlns:local="clr-namespace:CI.DS.Visual.Views" 
-             xmlns:vm="clr-namespace:CI.DS.ViewModel;assembly=CI.DS.ViewModel"
-             mc:Ignorable="d" 
+             xmlns:vm="clr-namespace:CI.DS.ViewModel;assembly=CI.DS.ViewModel" 
+             
+             xmlns:vms="clr-namespace:CI.DS.ViewModel.VMs;assembly=CI.DS.ViewModel" d:DataContext="{d:DesignInstance Type=vms:AllCashByGroupVM}"
+                          
              d:DesignHeight="250" d:DesignWidth="900" Background="{DynamicResource MenuItemBackground3}">
   <!--<UserControl.DataContext>    <vm:AllCashByGroupVM />  </UserControl.DataContext>-->
+  <UserControl.InputBindings>
+    <KeyBinding   Command="{Binding UpdateViewCommand}" CommandParameter="Spsl" Gesture="Left" Modifiers="Alt"/>
+  </UserControl.InputBindings>
   <UserControl.Resources>
     <Style TargetType="{x:Type Control}"      BasedOn="{StaticResource CrlBase}" x:Key="CrlBase2" >
       <Setter Property="FontWeight"           Value="SemiBold" />
@@ -33,7 +34,7 @@
       <RowDefinition Height="Auto"/>
     </Grid.RowDefinitions>
 
-    <Button Content="&lt;" Height="30" Margin="0,0" HorizontalAlignment="Left" BorderThickness="0" Background="Transparent" FontSize="22" Padding="10 0 10 5"
+    <Button Content="_,&lt;" Height="30" Margin="0,0" HorizontalAlignment="Left" BorderThickness="0" Background="Transparent" FontSize="22" Padding="10 0 10 5"
             Command="{Binding UpdateViewCommand}" CommandParameter="Spsl" 
             ToolTip="Go back to DB Process Selector" />
 
@@ -42,7 +43,7 @@
     <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center" x:Name="ctrlPanel">
       <StackPanel>
         <Label Content="Group"  />
-        <ComboBox ItemsSource="{Binding BookGroups}" DisplayMemberPath="Name" SelectedValuePath="GroupId" SelectedValue="{Binding Group_ID}" />
+        <ComboBox ItemsSource="{Binding BookGroups}" DisplayMemberPath="Name" SelectedValuePath="GroupId" SelectedValue="{Binding Group_ID}" x:Name="focus0" />
         <!--<TextBlock Text="{Binding Group_ID}" />-->
       </StackPanel>
       <StackPanel>

@@ -24,6 +24,6 @@ namespace CI.DS.Visual.Views
     async void onFlush(object s, RoutedEventArgs e) { await Task.Yield(); ; }
     async void onSettings(object s, RoutedEventArgs e) { await Task.Yield(); ; }
 
-    void ToggleButton_Click(object sender, RoutedEventArgs e) => pnlTabs.Visibility = ((ToggleButton)sender).IsChecked == true ? Visibility.Visible : Visibility.Collapsed;
+    //void ToggleButton_Click(object sender, RoutedEventArgs e) => pnlTabs.Visibility = ((ToggleButton)sender).IsChecked == true ? Visibility.Visible : Visibility.Collapsed;
   }
 }

@@ -24,7 +24,7 @@ namespace CI.DS.Visual.Views
 
     public DynamicSPUICreatorView() => InitializeComponent();
 
-    void onLoaded(object sender, RoutedEventArgs e)
+    async void onLoaded(object sender, RoutedEventArgs e)
     {
       _spd = ((DynamicSPUICreatorVM)DataContext).StoredProcDetail;
       wpEntry.Children.Clear();
@@ -38,6 +38,8 @@ namespace CI.DS.Visual.Views
 
         wpEntry.Children.Add(sp);
       }
+
+       await Task.Delay(99); focus0.Focus(); 
 
       //onRunSP(sender, e);
     }
