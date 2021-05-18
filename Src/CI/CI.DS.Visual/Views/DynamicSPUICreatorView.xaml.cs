@@ -53,14 +53,14 @@ namespace CI.DS.Visual.Views
       tbkError.Text = $"Launching ...";
       tbkError.Foreground = Brushes.Blue;
       await Task.Delay(75);
-      var spsql = "??";
+      var sqlstring = "??";
 
       try
       {
         switch (mode)
         {
           case 1:
-            spsql = $"{_spd?.SPName} "; // "usp_Report_AllCashByGroup @pGroup_ID, @pDateType, @pStartDateInt, @pEndDateInt, @pGroupName";
+            sqlstring = $"{_spd?.SPName} "; // "usp_Report_AllCashByGroup @pGroup_ID, @pDateType, @pStartDateInt, @pEndDateInt, @pGroupName";
             foreach (var panel in wpEntry.Children)
             {
               if (panel is StackPanel spnl)
@@ -70,19 +70,19 @@ namespace CI.DS.Visual.Views
                   if (tl is TextBox tbx)
                   {
                     var f = tbx.Tag.ToString()?.Split(' ').First();
-                    spsql += $" {f},"; // $" '{tbx.Text}',";
+                    sqlstring += $" {f},"; // $" '{tbx.Text}',";
                   }
                 }
               }
             }
-            var dynamicRows = readTableDynamicly(spsql.TrimEnd(',')); //todo: await foreach (var number in readTableDynamicly(spsql))      {        Console.WriteLine(number);      }
-            tbkError.Text = $"{spsql.TrimEnd(',')}   ►   {dynamicRows.Count()} rows returned";
+            var dynamicRows = readTableDynamicly(sqlstring.TrimEnd(',')); //todo: await foreach (var number in readTableDynamicly(spsql))      {        Console.WriteLine(number);      }
+            tbkError.Text = $"{sqlstring.TrimEnd(',')}   ►   {dynamicRows.Count()} rows returned";
             tbkError.Foreground = dynamicRows.Count() > 0 ? Brushes.Green : Brushes.DarkOrange;
             dg1.ItemsSource = dynamicRows.ToDataTable().DefaultView;
             break;
           case 2:
             List<SqlParameter> spParams2 = new();
-            spsql = $"EXEC @ReturnValue = {_spd?.Schema}.{_spd?.SPName}";
+            sqlstring = $"EXEC @ReturnValue = {_spd?.Schema}.{_spd?.SPName}";
             foreach (var panel in wpEntry.Children)
             {
               if (panel is StackPanel spnl)
@@ -96,16 +96,16 @@ namespace CI.DS.Visual.Views
                     var direction = e.Last() == "0" ? ParameterDirection.Input : ParameterDirection.Output;
                     var outputStr = direction == ParameterDirection.Output ? " OUTPUT" : "";
                     spParams2.Add(new SqlParameter { ParameterName = paramName, Value = tbx.Text, Direction = direction });
-                    spsql += $" {paramName}{outputStr},"; // $" '{tbx.Text}',";
+                    sqlstring += $" {paramName}{outputStr},"; // $" '{tbx.Text}',";
                   }
                 }
               }
             }
 
-            spParams2.Add(new SqlParameter { ParameterName = "@ReturnValue", Value = 1112, Direction = ParameterDirection.Output });
-            spsql = spsql.TrimEnd(',');
+            spParams2.Add(new SqlParameter { ParameterName = "@ReturnValue", Value = -1, Direction = ParameterDirection.Output });
+            sqlstring = sqlstring.TrimEnd(',');
 
-            var rowsAffected = _db.Database.ExecuteSqlRaw(spsql, spParams2.ToArray()); // Modify Data Using a Stored Procedure -- https://www.codemag.com/Article/2101031/Calling-Stored-Procedures-with-the-Entity-Framework-in-.NET-5Modify Data Using a Stored Procedure -- https://www.codemag.com/Article/2101031/Calling-Stored-Procedures-with-the-Entity-Framework-in-.NET-5
+            var rowsAffected = _db.Database.ExecuteSqlRaw(sqlstring, spParams2.ToArray()); // Modify Data Using a Stored Procedure -- https://www.codemag.com/Article/2101031/Calling-Stored-Procedures-with-the-Entity-Framework-in-.NET-5Modify Data Using a Stored Procedure -- https://www.codemag.com/Article/2101031/Calling-Stored-Procedures-with-the-Entity-Framework-in-.NET-5
 
             tbkError.Foreground = Brushes.DarkCyan;
             tbkError.Text = $"Rows Affected:{rowsAffected}   ...OUTPUTs: \r\n\t";
@@ -113,7 +113,7 @@ namespace CI.DS.Visual.Views
             break;
           case 3:
             List<SqlParameter> spParams3 = new();
-            spsql = $"EXEC /*@ReturnValue =*/ {_spd?.Schema}.{_spd?.SPName}";
+            sqlstring = $"EXEC @ReturnValue = {_spd?.Schema}.{_spd?.SPName}";
             foreach (var panel in wpEntry.Children)
             {
               if (panel is StackPanel spnl)
@@ -122,34 +122,38 @@ namespace CI.DS.Visual.Views
                 {
                   if (tl is TextBox tbx)
                   {
-                    var e = tbx.Tag.ToString()?.Split(' ');
-                    var paramName = e.First();
-                    var direction = e.Last() == "0" ? ParameterDirection.Input : ParameterDirection.Output;
-                    var outputStr = direction == ParameterDirection.Output ? " OUTPUT" : "";
-                    spParams3.Add(new SqlParameter { ParameterName = paramName, Value = tbx.Text, Direction = direction });
-                    spsql += $" {paramName}{outputStr},"; // $" '{tbx.Text}',";
+                    var param = tbx.Tag.ToString()?.Split(' ') ?? new[] { "name", "type", "max_len", "precision", "0-in, 1-out" };
+                    spParams3.Add(new SqlParameter
+                    {
+                      ParameterName = param.First(),
+                      Value = tbx.Text,
+                      DbType = param[1] == "int" ? DbType.Int32 : DbType.String,
+                      SqlDbType = param[1] == "int" ? SqlDbType.Int : SqlDbType.NVarChar,
+                      Direction = param.Last() == "0" ? ParameterDirection.Input : ParameterDirection.Output // .InputOutput is problematic
+                    });
+                    sqlstring += $" {param.First()}{(param?.Last() == "0" ? "" : " OUTPUT")},"; // $" '{tbx.Text}',";
                   }
                 }
               }
             }
 
-            //spParams3.Add(new SqlParameter { ParameterName = "@ReturnValue", Value = 1112, Direction = ParameterDirection.Output });
-            spsql = spsql.TrimEnd(',');
+            spParams3.Add(new SqlParameter { ParameterName = "@ReturnValue", Direction = ParameterDirection.ReturnValue, Value = -1 });
+            sqlstring = sqlstring.TrimEnd(',');
 
-            //var rowsAffected3 = _db.Database.ExecuteSqlRaw(spsql, spParams3.ToArray()); // Modify Data Using a Stored Procedure -- https://www.codemag.com/Article/2101031/Calling-Stored-Procedures-with-the-Entity-Framework-in-.NET-5Modify Data Using a Stored Procedure -- https://www.codemag.com/Article/2101031/Calling-Stored-Procedures-with-the-Entity-Framework-in-.NET-5
+            var spNameOnly = sqlstring = $"{_spd?.Schema}.{_spd?.SPName}";
+            var dynamcRows = readTableDynamicly_NoYield(spNameOnly, spParams3); //todo: await foreach (var number in readTableDynamicly(spsql))      {        Console.WriteLine(number);      }
 
-            var dynamicRows3 = readTableDynamicly3(spsql, spParams3); //todo: await foreach (var number in readTableDynamicly(spsql))      {        Console.WriteLine(number);      }
-            tbkError.Text = $"{spsql}   ►   {dynamicRows3.Count()} rows returned";
-            tbkError.Foreground = dynamicRows3.Count() > 0 ? Brushes.Green : Brushes.DarkOrange;
-            dg1.ItemsSource = dynamicRows3.ToDataTable().DefaultView;
-            spParams3.Where(p => p.Direction == ParameterDirection.Output).ToList().ForEach(p => tbkError.Text += ($"{p.ParameterName} = {p.Value}   "));
+            tbkError.Foreground = dynamcRows.Count() > 0 ? Brushes.Green : Brushes.Brown;
+            tbkError.Text = $"{spNameOnly}   ►   {dynamcRows.Count()} rows returned \r\n\t";
+            spParams3.Where(p => p.Direction != ParameterDirection.Input).ToList().ForEach(p => tbkError.Text += ($"{p.ParameterName} = {p.Value}   "));
+            dg1.ItemsSource = dynamcRows.ToDataTable().DefaultView;
             break;
           default: break;
         }
       }
       catch (Exception ex)
       {
-        tbkError.Text = $"{spsql}\r\n{ex.GetType().Name}: {ex.Message}";
+        tbkError.Text = $"{sqlstring}\r\n{ex.GetType().Name}: {ex.Message}";
         tbkError.Foreground = Brushes.Red;
       }
     }
@@ -183,9 +187,10 @@ namespace CI.DS.Visual.Views
         connection.Close();
       }
     }
-    IEnumerable<dynamic> readTableDynamicly3(string spSql, List<SqlParameter> sqlParameters) //todo: async System.Collections.Generic.IAsyncEnumerable<dynamic> readTableDynamicly(string _sql)
+    IEnumerable<dynamic> readTableDynamicly_NoYield(string spSql, List<SqlParameter> sqlParameters) //todo: async System.Collections.Generic.IAsyncEnumerable<dynamic> readTableDynamicly(string _sql)
     {
       var connection = _db.Database.GetDbConnection();
+      var rv = new List<dynamic>();
 
       try
       {
@@ -193,17 +198,15 @@ namespace CI.DS.Visual.Views
           connection.Open();
 
         using var cmd = connection.CreateCommand();
-        //cmd.CommandType = CommandType.StoredProcedure;
+        cmd.CommandType = CommandType.StoredProcedure;
         cmd.CommandText = spSql;
         sqlParameters.ForEach(p => cmd.Parameters.Add(p));
 
         using var reader = cmd.ExecuteReader();
-        if (!reader.HasRows)
-          yield break;
-        else
+        if (reader.HasRows)
           while (reader.Read())
           {
-            yield return GetDynamicData(reader);
+            rv.Add(GetDynamicData(reader));
           }
 
         reader.Close();
@@ -212,6 +215,8 @@ namespace CI.DS.Visual.Views
       {
         connection.Close();
       }
+
+      return rv;
     }
     dynamic GetDynamicData(System.Data.Common.DbDataReader reader)
     {

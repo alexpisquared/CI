@@ -57,7 +57,7 @@
 
     <DataGrid  Grid.Row="2" x:Name="dg1" AutoGenerateColumns="True" Margin="5,5,5,5" />
 
-    <TextBlock Grid.Row="3" x:Name="tbkError" Margin="5" Foreground="Red" FontSize="16" d:Text="Hello. Is everything OK?"/>
+    <TextBlock Grid.Row="3" x:Name="tbkError" Margin="5" Foreground="Red" FontSize="20" d:Text="Hello. Is everything OK?"/>
 
   </Grid>
 </UserControl>
