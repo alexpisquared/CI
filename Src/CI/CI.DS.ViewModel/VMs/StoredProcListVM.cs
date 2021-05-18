@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Data.Common;
 using System.Data.SqlTypes;
 using System.Diagnostics;
 using System.Threading.Tasks;
@@ -52,16 +53,14 @@ namespace CI.DS.ViewModel.VMs
     async Task<List<StoredProcDetail>> loadAllSPs()
     {
       List<StoredProcDetail> rv = new();
-      System.Data.Common.DbConnection? connection = _context.Database.GetDbConnection();
+      var connection = _context.Database.GetDbConnection();
 
       try
       {
         if (connection.State.Equals(ConnectionState.Closed))
-        {
           connection.Open();
-        }
 
-        using System.Data.Common.DbCommand command = connection.CreateCommand();
+        using DbCommand command = connection.CreateCommand();
         command.CommandText = _sql;
 
         using System.Data.Common.DbDataReader? reader = await command.ExecuteReaderAsync();
@@ -118,7 +117,7 @@ FROM   sys.objects      obj
              from sys.parameters p
              where p.object_id = obj.object_id and p.parameter_id != 0 
              for xml path ('')) par (parameters)
-WHERE obj.type in ('P', 'X') AND (has_perms_by_name(name, 'OBJECT', 'EXECUTE') = 1) 
+WHERE obj.type in ('P', 'X') AND (has_perms_by_name(name, 'OBJECT', 'EXECUTE') = 1) AND mod.execute_as_principal_id IS NULL
 ORDER BY SPName
 ";
   }
