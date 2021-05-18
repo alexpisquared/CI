@@ -1,4 +1,5 @@
 ﻿using CI.DS.ViewModel;
+using CI.DS.ViewModel.Helpers;
 using CI.DS.ViewModel.VMs;
 using CI.Standard.Lib.Extensions;
 using DB.Inventory.Models;

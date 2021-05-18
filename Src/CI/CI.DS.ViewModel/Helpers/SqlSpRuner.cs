@@ -5,7 +5,7 @@ using System.Data;
 using System.Dynamic;
 using System.Linq;
 
-namespace CI.DS.Visual.Views
+namespace CI.DS.ViewModel.Helpers
 {
   public class SqlSpRuner
   {
@@ -36,9 +36,7 @@ namespace CI.DS.Visual.Views
         using var reader = cmd.ExecuteReader();
         if (reader.HasRows)
           while (reader.Read())
-          {
             rv.Add(getDynamicData(reader));
-          }
 
         reader.Close();
       }
@@ -49,14 +47,12 @@ namespace CI.DS.Visual.Views
 
       return rv;
     }
-    
+
     dynamic getDynamicData(System.Data.Common.DbDataReader reader)
     {
       var expandoObject = new ExpandoObject() as IDictionary<string, object>;
       for (var i = 0; i < reader.FieldCount; i++)
-      {
         expandoObject.Add(reader.GetName(i), reader[i]);
-      }
       return expandoObject;
     }
   }
