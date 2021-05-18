@@ -1,24 +1,9 @@
 ﻿using CI.DS.ViewModel.Commands;
 using DB.Inventory.Models;
-using Microsoft.Data.SqlClient;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
-using Microsoft.Toolkit.Mvvm.Input;
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.ComponentModel.DataAnnotations;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
 using System.Windows.Input;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CI.DS.ViewModel.VMs
 {
@@ -28,11 +13,6 @@ namespace CI.DS.ViewModel.VMs
     readonly IConfigurationRoot _config;
     readonly StoredProcDetail _spdetl;
     readonly InventoryContext _context;
-    int _group_ID = 2, _startDat = 20200101, _endDateI = 20210505;
-    string _dateType = "T", _groupNam = "2", _detailedReport = "";
-    ObservableCollection<BookReportView> _bookReports = new();
-    ObservableCollection<BookGroup> _bookGroups = new();
-    ICommand? _searchCommand;
     string _uFName = "";
 
     public DynamicSPUICreatorVM(ILogger logger, IConfigurationRoot config, MainVM mainVM, StoredProcDetail spdetl)
@@ -51,7 +31,7 @@ namespace CI.DS.ViewModel.VMs
 
     public string UFName { get => _uFName; set => SetProperty(ref _uFName, value); }
 
-    public StoredProcDetail StoredProcDetail { get => _spdetl; }
+    public StoredProcDetail StoredProcDetail => _spdetl;
 
     public ICommand UpdateViewCommand { get; set; }
   }

@@ -10,7 +10,7 @@ namespace CI.DS.ViewModel.VMs
   {
     readonly ILogger _logger;
     readonly IConfigurationRoot _config;
-    string _selectedDBP, _pKey;
+    string _pKey = "";
     ObservableCollection<DbProcess> _dbProcesses = new();
 
     public DbPrcsSelectorVM(ILogger logger, IConfigurationRoot config)
@@ -57,7 +57,7 @@ namespace CI.DS.ViewModel.VMs
 
     public string PKey { get => _pKey; set => SetProperty(ref _pKey, value); }
 
-    public ICommand UpdateViewCommand { get; set; }
+    //public ICommand UpdateViewCommand { get; set; }
     public IConfigurationRoot Config => _config;
     public ILogger Logger => _logger;
   }
