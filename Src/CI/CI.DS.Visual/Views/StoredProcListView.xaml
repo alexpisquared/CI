@@ -46,9 +46,12 @@
       <RowDefinition Height="*"/>
       <RowDefinition Height="Auto"/>
     </Grid.RowDefinitions>
-    <TextBlock Text="{Binding SqlConStr}" FontSize="10" HorizontalAlignment="Right" VerticalAlignment="Top" d:Text="Sql con str"/>
+    <TextBlock Text="{Binding SqlConStr}" FontSize="10" HorizontalAlignment="Right" VerticalAlignment="Top" d:Text="Sql con str" Margin="50 0"/>
     <StackPanel Grid.Row="0" >
       <TextBlock Text="DB Process Selector" FontSize="20" Margin="0 10" />
+
+      <Label  Content="_Search" Target="{Binding ElementName=tbxSearch}"/>
+      <TextBox Text="{Binding SearchString, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Stretch" x:Name="tbxSearch" />
 
       <Grid >
         <Grid.ColumnDefinitions>
@@ -56,14 +59,10 @@
           <ColumnDefinition Width="Auto" />
           <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
-
-        <Label  Content="_Search" Target="{Binding ElementName=tbxSearch}"/>
+        <Label Content="_DB Processes" Target="{Binding ElementName=lbxSpds}"    />
         <TextBlock Grid.Column="1" Text="{Binding ElementName=lbxSpds, Path=Items.Count}"/>
         <TextBlock Grid.Column="2" Text=" matching stored procedures found"/>
       </Grid>
-      <TextBox Text="{Binding SearchString, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Stretch" x:Name="tbxSearch" />
-
-      <Label Content="_DB Processes" Target="{Binding ElementName=lbxSpds}"    />
     </StackPanel>
 
     <ListView   Grid.Row="1" x:Name="lbxSpds" 

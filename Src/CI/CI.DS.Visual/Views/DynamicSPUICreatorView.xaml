@@ -33,6 +33,8 @@
       <RowDefinition Height="Auto"/>
     </Grid.RowDefinitions>
 
+    <TextBlock Text="{Binding SqlConStr}" FontSize="10" HorizontalAlignment="Right" VerticalAlignment="Top" d:Text="Sql con str" Margin="50 0"/>
+
     <Button Content="" FontFamily="Wingdings 3" FontSize="22" Command="{Binding UpdateViewCommand}" CommandParameter="Spsl" ToolTip="Go back to DB Process Selector" Margin="0,0" HorizontalAlignment="Left" BorderThickness="0" Background="Transparent" />
 
     <TextBlock Text="{Binding UFName, FallbackValue='User-friendly SP name'}" FontSize="18" Foreground="#44f" Margin="60 -5 0 0" />
