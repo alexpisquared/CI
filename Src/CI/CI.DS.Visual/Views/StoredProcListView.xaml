@@ -4,7 +4,7 @@
              
              
              d:DesignHeight="350" d:DesignWidth="800" Background="{DynamicResource MenuItemBackground1}" Loaded="onLoaded">
-             <!--xmlns:vms="clr-namespace:CI.DS.ViewModel.VMs;assembly=CI.DS.ViewModel" d:DataContext="{d:DesignInstance Type=vms:StoredProcListVM}"-->
+  <!--xmlns:vms="clr-namespace:CI.DS.ViewModel.VMs;assembly=CI.DS.ViewModel" d:DataContext="{d:DesignInstance Type=vms:StoredProcListVM}"-->
   <UserControl.InputBindings>
     <KeyBinding   Command="{Binding UpdateViewCommand}" CommandParameter="Dbps" Gesture="F1" />
     <KeyBinding   Command="{Binding UpdateViewCommand}" CommandParameter="Spsl" Gesture="F2" />
@@ -50,7 +50,17 @@
     <StackPanel Grid.Row="0" >
       <TextBlock Text="DB Process Selector" FontSize="20" Margin="0 10" />
 
-      <Label Content="_Search" Target="{Binding ElementName=tbxSearch}"/>
+      <Grid >
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition />
+          <ColumnDefinition Width="Auto" />
+          <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
+
+        <Label  Content="_Search" Target="{Binding ElementName=tbxSearch}"/>
+        <TextBlock Grid.Column="1" Text="{Binding ElementName=lbxSpds, Path=Items.Count}"/>
+        <TextBlock Grid.Column="2" Text=" matching stored procedures found"/>
+      </Grid>
       <TextBox Text="{Binding SearchString, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Stretch" x:Name="tbxSearch" />
 
       <Label Content="_DB Processes" Target="{Binding ElementName=lbxSpds}"    />
