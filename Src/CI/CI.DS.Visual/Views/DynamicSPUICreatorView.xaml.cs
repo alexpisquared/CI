@@ -22,19 +22,32 @@ namespace CI.DS.Visual.Views
     StoredProcDetail? _spd;
     SqlSpRuner _runner = new();
 
+    bool _isdbg = false;
+
     public DynamicSPUICreatorView() => InitializeComponent();
 
     async void onLoaded(object s, RoutedEventArgs e)
     {
+#if DEBUG
+      _isdbg = true;
+#endif
       _spd = ((DynamicSPUICreatorVM)DataContext).StoredProcDetail;
       wpEntry.Children.Clear();
       var i = 0;
       foreach (var prm in _spd.Parameters.Split(',', StringSplitOptions.RemoveEmptyEntries))
       {
         var sp = new StackPanel();
+        var spl = prm.Split(' ');
+        bool v = int.TryParse(spl[2], out int width);
+        width = 20 + (v && width > 40 ? 260 : width * 10);
 
-        sp.Children.Add(new Label { Content = prm.Split(' ').First().Replace("@p", "").Replace("@", ""), });
-        sp.Children.Add(new TextBox { Tag = prm, Text = $"{++i}" });
+        sp.Children.Add(new Label { Content = _isdbg ? prm : spl.First().Replace("@p", "").Replace("@", "").ToSentence(), });
+        sp.Children.Add(new TextBox
+        {
+          Tag = prm,
+          Width = width,
+          Text = $"{(_isdbg ? ++i : "")}"
+        });
 
         wpEntry.Children.Add(sp);
       }

@@ -13,7 +13,8 @@
       <Setter Property="Padding"              Value="4" />
     </Style>
     <Style TargetType="{x:Type TextBox}"      BasedOn="{StaticResource CrlBase2}">
-      <Setter Property="MinWidth"             Value="80" />
+      <Setter Property="MinWidth"             Value="60" />
+      <Setter Property="Margin"               Value="0 0 16 0" />
     </Style>
     <Style TargetType="{x:Type ComboBox}"     BasedOn="{StaticResource CrlBase2}">
       <Setter Property="Width"                Value="148" />
@@ -22,6 +23,9 @@
     </Style>
     <Style TargetType="{x:Type StackPanel}"   >
       <Setter Property="Margin"               Value="12 0" />
+    </Style>
+    <Style TargetType="{x:Type Label}"        BasedOn="{StaticResource LblBase}">
+      <Setter Property="Margin"               Value="-4 10 10 0" />
     </Style>
   </UserControl.Resources>
   <Grid>
@@ -37,9 +41,9 @@
     <Button Content="" FontFamily="Wingdings 3" FontSize="22" Command="{Binding UpdateViewCommand}" CommandParameter="Spsl" ToolTip="Go back to DB Process Selector" Margin="0,0" HorizontalAlignment="Left" BorderThickness="0" Background="Transparent" />
 
     <TextBlock Text="DB Process: " FontSize="18" Margin="88 -5 0 0" />
-    <TextBlock Text="{Binding UFName, FallbackValue='User-friendly SP name'}" FontSize="18" Foreground="#44f" Margin="200 -5 0 0" />
+    <TextBlock Text="{Binding UFName, FallbackValue='User-friendly SP name'}" FontSize="20" Foreground="#44f" Margin="200 -5 0 0" />
 
-    <WrapPanel Grid.Row="1" x:Name="wpEntry" Margin="20 0 220 0">
+    <WrapPanel Grid.Row="1" x:Name="wpEntry" Margin="20 0 88 0">
       <StackPanel>
         <Label Content="Start" />
         <TextBox x:Name="t3" d:Text="Hello" />
@@ -72,23 +76,24 @@
 
     <StackPanel Grid.Row="1" Orientation="Horizontal" VerticalAlignment="Bottom" HorizontalAlignment="Right" >
       <Button     Content="  _Launch  " Click="onUpdateOnl0"  IsDefault="True" x:Name="focus0" />
-      <Menu Background="Transparent" VerticalAlignment="Top" HorizontalAlignment="Right" BorderThickness="0">
-        <Menu.Resources>
-          <Style TargetType="{x:Type MenuItem}">
-            <Setter Property="Foreground" Value="#080" />
-            <Setter Property="FontSize" Value="16" />
-            <Setter Property="Margin"   Value="5 5 5 0" />
-            <Setter Property="Padding"  Value="16 5" />
-            <Setter Property="BorderThickness"  Value="0" />
-          </Style>
-        </Menu.Resources>
-        <MenuItem Header="_Advanced" >
-          <MenuItem Header="  _Scl  " Click="onUpdateOnly"   />
-          <MenuItem Header="  _Tbl  " Click="onGetDataSet"  />
-          <MenuItem Header="  _Def  " Click="onShowSP"      />
-        </MenuItem>
-      </Menu>
     </StackPanel>
+
+    <Menu Background="Transparent" VerticalAlignment="Top" HorizontalAlignment="Right" BorderThickness="0" Margin="60 0">
+      <Menu.Resources>
+        <Style TargetType="{x:Type MenuItem}">
+          <Setter Property="Foreground" Value="#080" />
+          <Setter Property="FontSize" Value="16" />
+          <Setter Property="Margin"   Value="5 5 5 0" />
+          <Setter Property="Padding"  Value="16 5" />
+          <Setter Property="BorderThickness"  Value="0" />
+        </Style>
+      </Menu.Resources>
+      <MenuItem Header="   " >
+        <MenuItem Header="  _Scl  " Click="onUpdateOnly"   />
+        <MenuItem Header="  _Tbl  " Click="onGetDataSet"  />
+        <MenuItem Header="  _Def  " Click="onShowSP"      />
+      </MenuItem>
+    </Menu>
 
     <DataGrid  Grid.Row="2" x:Name="dg1" AutoGenerateColumns="True" Margin="5,5,5,5" />
 
