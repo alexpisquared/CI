@@ -29,7 +29,11 @@ SELECT     o.name AS SP, p.parameter_id, p.name AS Param, TYPE_NAME(p.user_type_
 FROM        sys.parameters AS p INNER JOIN sys.objects AS o ON p.object_id = o.object_id
 WHERE     (p.name <> '') AND (o.type IN ('P', 'X'))
 ORDER BY SP, p.parameter_id, Param, o.type, p.max_length DESC
-
+SPs with most params:
+usp_AddTransaction    24+ params
+usp_UpdateCommission  24
+usp_UpdateCompanyProfile
+usp_CreateNewCompanyProfile 21
 
 -- DB Permission Audit:
 SELECT suser_name() AS [SQL Login], CURRENT_USER AS [User]
@@ -65,3 +69,22 @@ where sp.type not in ('G', 'R')
 order by sp.name;
 
 # //todo: next: progressively script all required perms to run the DBPL.exe for RAZER1\alexp !!!
+
+
+
+USE [master]
+GO
+CREATE LOGIN [EndUserLogin] WITH PASSWORD=N'EndUserLogin', DEFAULT_DATABASE=[Inventory], CHECK_EXPIRATION=OFF, CHECK_POLICY=OFF
+GO
+
+USE [Inventory]
+GO
+CREATE USER [EndUserLoginUser] FOR LOGIN [EndUserLogin] WITH DEFAULT_SCHEMA=[dbo]
+GO
+
+GRANT EXECUTE ON [dbo].[usp_Report_AllCash] TO [EndUserLoginUser]
+GO
+
+GO
+GRANT VIEW DEFINITION ON [dbo].[usp_Report_AllCash] TO [EndUserLoginUser]
+GO

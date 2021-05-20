@@ -63,6 +63,7 @@ namespace CI.DS.Visual.Views
 
             var dynamicRows = _runner.ExecuteReader(_db, commandText = commandText.TrimEnd(',')); //todo: await foreach (var number in readTableDynamicly(spsql))      {        Console.WriteLine(number);      }
             tbkError.Text = $"{commandText}   ►   {dynamicRows.Count()} rows returned";
+            tbkError.Text = $"Rows returned  {dynamicRows.Count()} \r\n";
             tbkError.Foreground = dynamicRows.Count() > 0 ? Brushes.Green : Brushes.DarkOrange;
             dg1.ItemsSource = dynamicRows.ToDataTable().DefaultView;
             break;
@@ -76,8 +77,8 @@ namespace CI.DS.Visual.Views
             var dynamcRows = _runner.ExecuteReader(_db, commandText, spParams); //todo: await foreach (var number in readTableDynamicly(spsql))      {        Console.WriteLine(number);      }
 
             tbkError.Foreground = dynamcRows.Count() > 0 ? Brushes.Green : Brushes.Brown;
-            tbkError.Text = $"{commandText}   ►   {dynamcRows.Count()} rows returned \r\n\t";
-            spParams.Where(p => p.Direction != ParameterDirection.Input).ToList().ForEach(p => tbkError.Text += ($"{p.ParameterName} = {p.Value}   "));
+            tbkError.Text = $"Rows returned  {dynamcRows.Count()} \r\n";
+            spParams.Where(p => p.Direction != ParameterDirection.Input).ToList().ForEach(p => tbkError.Text += ($"{p.ParameterName.ToSentence()} = {p.Value}   "));
             dg1.ItemsSource = dynamcRows.ToDataTable().DefaultView;
             break;
           default: break;

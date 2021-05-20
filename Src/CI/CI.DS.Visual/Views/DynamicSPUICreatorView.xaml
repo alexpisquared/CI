@@ -36,9 +36,10 @@
 
     <Button Content="" FontFamily="Wingdings 3" FontSize="22" Command="{Binding UpdateViewCommand}" CommandParameter="Spsl" ToolTip="Go back to DB Process Selector" Margin="0,0" HorizontalAlignment="Left" BorderThickness="0" Background="Transparent" />
 
-    <TextBlock Text="{Binding UFName, FallbackValue='User-friendly SP name'}" FontSize="18" Foreground="#44f" Margin="60 -5 0 0" />
+    <TextBlock Text="DB Process: " FontSize="18" Margin="88 -5 0 0" />
+    <TextBlock Text="{Binding UFName, FallbackValue='User-friendly SP name'}" FontSize="18" Foreground="#44f" Margin="200 -5 0 0" />
 
-    <WrapPanel Grid.Row="1" x:Name="wpEntry" >
+    <WrapPanel Grid.Row="1" x:Name="wpEntry" Margin="20 0 220 0">
       <StackPanel>
         <Label Content="Start" />
         <TextBox x:Name="t3" d:Text="Hello" />
@@ -46,6 +47,26 @@
       <StackPanel>
         <Label Content="End"   />
         <TextBox x:Name="t4" d:Text="Hello" />
+      </StackPanel>
+      <StackPanel>
+        <Label Content="End"   />
+        <TextBox d:Text="Hello" />
+      </StackPanel>
+      <StackPanel>
+        <Label Content="End"   />
+        <TextBox d:Text="Hello" />
+      </StackPanel>
+      <StackPanel>
+        <Label Content="End"   />
+        <TextBox d:Text="Hello" />
+      </StackPanel>
+      <StackPanel>
+        <Label Content="End"   />
+        <TextBox d:Text="Hello" />
+      </StackPanel>
+      <StackPanel>
+        <Label Content="End"   />
+        <TextBox d:Text="Hello" />
       </StackPanel>
     </WrapPanel>
 
