@@ -18,7 +18,7 @@ namespace CI.DS.Visual.Views
 {
   public partial class DynamicSPUICreatorView : UserControl
   {
-    readonly InventoryContext _db = new(@"Server=.\sqlexpress;Database=Inventory;Trusted_Connection=True;");
+    readonly InventoryContext _db = new(@"Server=mtUATsqldb;Database=Inventory;Trusted_Connection=True;");
     StoredProcDetail? _spd;
     SqlSpRuner _runner = new();
 
@@ -33,15 +33,13 @@ namespace CI.DS.Visual.Views
       {
         var sp = new StackPanel();
 
-        sp.Children.Add(new Label { Content = prm.Replace("@p", "").Replace("@", ""), });
+        sp.Children.Add(new Label { Content = prm.Split(' ').First().Replace("@p", "").Replace("@", ""), });
         sp.Children.Add(new TextBox { Tag = prm, Text = $"{++i}" });
 
         wpEntry.Children.Add(sp);
       }
 
       await Task.Delay(99); focus0.Focus();
-
-      //onRunSP(s, e);
     }
     void onShowSP(object s, RoutedEventArgs e) => MessageBox.Show(_spd?.Definition, _spd?.SPName);
     async void onGetDataSet(object s, RoutedEventArgs e) => await runSP(1);

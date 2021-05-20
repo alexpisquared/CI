@@ -16,7 +16,7 @@ namespace EfStoredProcWpfApp.Views
 
     async Task FromSql()           // https://www.entityframeworktutorial.net/efcore/working-with-stored-procedure-in-ef-core.aspx
     {
-      InventoryContext context = new(@"Server=.\SqlExpress;Database=Inventory;Trusted_Connection=True;");
+      InventoryContext context = new(@"Server=mtUATsqldb;Database=Inventory;Trusted_Connection=True;");
       try
       {
         ctrlPanel.IsEnabled = false;

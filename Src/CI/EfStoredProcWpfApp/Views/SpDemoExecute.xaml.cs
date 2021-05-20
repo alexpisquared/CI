@@ -20,7 +20,7 @@ namespace EfStoredProcWpfApp.Views
 {
   public partial class SpDemoExecute : UserControl
   {
-    readonly InventoryContext _context = new(@"Server=.\sqlexpress;Database=Inventory;Trusted_Connection=True;");
+    readonly InventoryContext _context = new(@"Server=mtUATsqldb;Database=Inventory;Trusted_Connection=True;");
     
     public SpDemoExecute()    {      InitializeComponent();    }
 

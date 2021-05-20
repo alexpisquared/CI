@@ -18,7 +18,7 @@ namespace EfStoredProcConsoleApp
 {
   public class Class1
   {
-    readonly InventoryContext _context = new(@"Server=.\sqlexpress;Database=Inventory;Trusted_Connection=True;");
+    readonly InventoryContext _context = new(@"Server=mtUATsqldb;Database=Inventory;Trusted_Connection=True;");
 
     public void FromSql()           // https://www.entityframeworktutorial.net/efcore/working-with-stored-procedure-in-ef-core.aspx
     {

@@ -9,7 +9,7 @@ namespace CI.PermissionManager.Views
 {
   public partial class AppPermPAsWindow : Visual.Lib.Base.WindowBase
   {
-    readonly InventoryContext _context = new(@"Server=.\sqlexpress;Database=Inventory;Trusted_Connection=True;");
+    readonly InventoryContext _context = new(@"Server=mtUATsqldb;Database=Inventory;Trusted_Connection=True;");
     readonly CollectionViewSource _applicationViewSource;
 
     public AppPermPAsWindow()

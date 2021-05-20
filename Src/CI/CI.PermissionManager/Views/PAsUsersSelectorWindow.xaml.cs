@@ -171,7 +171,7 @@ namespace CI.PermissionManager.Views
           updateCrosRefTable();
         }
 
-#if SaveForDevOnly //         if (true)// Environment.MachineName == "RAZER1" || new[] { ".", @".\SqlExpress" }.Contains(cbxSrvr.SelectedValue))
+#if SaveForDevOnly //         if (true)// Environment.MachineName == "RAZER1" || new[] { ".", @"mtUATsqldb" }.Contains(cbxSrvr.SelectedValue))
         MessageBox.Show(this, "Press any key to continue...\n\n\t...or any other key to quit", "Changes Saved ...NOT!!! (SaveForDevOnly is ON) :(", MessageBoxButton.OK, MessageBoxImage.Information);
 #else
         rowsSaved = await _context.SaveChangesAsync();

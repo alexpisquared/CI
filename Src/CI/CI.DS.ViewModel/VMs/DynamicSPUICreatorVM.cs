@@ -13,15 +13,14 @@ namespace CI.DS.ViewModel.VMs
     readonly IConfigurationRoot _config;
     readonly StoredProcDetail _spdetl;
     readonly InventoryContext _context;
-    string _uFName = "";
-    string _searchString = "", _sqlConStr = "sql con str";
+    string _uFName = "", _sqlConStr = "sql con str";
 
     public DynamicSPUICreatorVM(ILogger logger, IConfigurationRoot config, MainVM mainVM, StoredProcDetail spdetl)
     {
       _logger = logger;
       _config = config;
       _spdetl = spdetl;
-      _context = new(SqlConStr = _config["SqlConStr"]); // string.Format(_config["SqlConStr"], cbxSrvr.SelectedValue)); // @"Server=.\sqlexpress;Database=Inventory;Trusted_Connection=True;"); // MTdevSQLDB
+      _context = new(SqlConStr = _config["SqlConStr"]); // string.Format(_config["SqlConStr"], cbxSrvr.SelectedValue)); // @"Server=mtUATsqldb;Database=Inventory;Trusted_Connection=True;"); // MTdevSQLDB
 
       UpdateViewCommand = new UpdateViewCommand(mainVM);
 

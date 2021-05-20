@@ -19,7 +19,6 @@
       <Setter Property="Width"                Value="148" />
     </Style>
     <Style TargetType="{x:Type Button}"       BasedOn="{StaticResource BtnBase}">
-      <Setter Property="Width"                Value="58" />
     </Style>
     <Style TargetType="{x:Type StackPanel}"   >
       <Setter Property="Margin"               Value="12 0" />
@@ -29,11 +28,11 @@
     <Grid.RowDefinitions>
       <RowDefinition Height="Auto"/>
       <RowDefinition Height="Auto"/>
-      <RowDefinition />
       <RowDefinition Height="Auto"/>
+      <RowDefinition />
     </Grid.RowDefinitions>
 
-    <TextBlock Text="{Binding SqlConStr}" FontSize="10" HorizontalAlignment="Right" VerticalAlignment="Top" d:Text="Sql con str" Margin="50 0"/>
+    <TextBlock Text="{Binding SqlConStr}" Visibility="Collapsed" FontSize="10" HorizontalAlignment="Right" VerticalAlignment="Top" d:Text="Sql con str" Margin="50 0"/>
 
     <Button Content="" FontFamily="Wingdings 3" FontSize="22" Command="{Binding UpdateViewCommand}" CommandParameter="Spsl" ToolTip="Go back to DB Process Selector" Margin="0,0" HorizontalAlignment="Left" BorderThickness="0" Background="Transparent" />
 
@@ -51,15 +50,28 @@
     </WrapPanel>
 
     <StackPanel Grid.Row="1" Orientation="Horizontal" VerticalAlignment="Bottom" HorizontalAlignment="Right" >
-      <Button     Content="  _New  " Click="onUpdateOnl0"  IsDefault="True" x:Name="focus0" />
-      <Button     Content="  _Scl  " Click="onUpdateOnly"   />
-      <Button     Content="  _Tbl  " Click="onGetDataSet"  />
-      <Button     Content="  _Def  " Click="onShowSP"      />
+      <Button     Content="  _Launch  " Click="onUpdateOnl0"  IsDefault="True" x:Name="focus0" />
+      <Menu Background="Transparent" VerticalAlignment="Top" HorizontalAlignment="Right" BorderThickness="0">
+        <Menu.Resources>
+          <Style TargetType="{x:Type MenuItem}">
+            <Setter Property="Foreground" Value="#080" />
+            <Setter Property="FontSize" Value="16" />
+            <Setter Property="Margin"   Value="5 5 5 0" />
+            <Setter Property="Padding"  Value="16 5" />
+            <Setter Property="BorderThickness"  Value="0" />
+          </Style>
+        </Menu.Resources>
+        <MenuItem Header="_Advanced" >
+          <MenuItem Header="  _Scl  " Click="onUpdateOnly"   />
+          <MenuItem Header="  _Tbl  " Click="onGetDataSet"  />
+          <MenuItem Header="  _Def  " Click="onShowSP"      />
+        </MenuItem>
+      </Menu>
     </StackPanel>
 
     <DataGrid  Grid.Row="2" x:Name="dg1" AutoGenerateColumns="True" Margin="5,5,5,5" />
 
-    <TextBlock Grid.Row="3" x:Name="tbkError" Margin="25 5" Foreground="Red" FontSize="20" d:Text="Hello. Is everything OK?"/>
+    <TextBlock Grid.Row="3" x:Name="tbkError" Margin="25 5" Foreground="Red" FontSize="20" d:Text="Hello. Is everything OK?" HorizontalAlignment="Center"/>
 
   </Grid>
 </UserControl>

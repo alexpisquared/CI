@@ -181,6 +181,34 @@
         <DoubleAnimation Storyboard.TargetProperty="RenderTransform.(TranslateTransform.X)" From="-711" To="0" Duration="00:00:.333" EasingFunction="{StaticResource co}" BeginTime="00:00:.333"/>
       </Storyboard>
 
+
+
+      <Storyboard Timeline.DesiredFrameRate="3" x:Key="Opacity_1MinLowCpu" >
+        <DoubleAnimation Storyboard.TargetProperty="(FrameworkElement.Opacity)"  From="0"   To="1"  Duration="0:0:20" x:Name="Opacity_1MinLowCpu" />
+      </Storyboard>
+      <Storyboard Timeline.DesiredFrameRate="3" x:Key="Opacity_FastLowCpu" >
+        <DoubleAnimation Storyboard.TargetProperty="(FrameworkElement.Opacity)"             To="1"  Duration="0:0:.3" />
+      </Storyboard>
+      <Storyboard Timeline.DesiredFrameRate="3" x:Key="Opacity_1SecLowCpu" >
+        <DoubleAnimation Storyboard.TargetProperty="(FrameworkElement.Opacity)"             To=".1" Duration="0:0:.9" />
+      </Storyboard>
+      <Style x:Key="MouseOverShowHideAnimStyle" TargetType="{x:Type StackPanel}">
+
+        <Setter Property="Opacity" Value="0" />
+
+        <Style.Triggers>
+          <Trigger Property="IsMouseOver" Value="True">
+            <Trigger.EnterActions>
+              <BeginStoryboard Storyboard="{StaticResource Opacity_FastLowCpu}" />
+            </Trigger.EnterActions>
+            <Trigger.ExitActions>
+              <BeginStoryboard Storyboard="{StaticResource Opacity_1SecLowCpu}" />
+            </Trigger.ExitActions>
+          </Trigger>
+        </Style.Triggers>
+      </Style>
+
+
     </ResourceDictionary>
   </lnk:WindowBase.Resources>
   <Border Style="{StaticResource BorderStyle_Aav0}">
@@ -210,7 +238,7 @@
           <StackPanel.Effect>
             <BlurEffect Radius="{Binding ElementName=wnd, Path=Blur, FallbackValue=0}" />
           </StackPanel.Effect>
-          <TextBlock Text="{Binding Title, ElementName=wnd}" FontSize="11" FontWeight="SemiBold" x:Name="tbkTitle" d:Text="(alex.pigida) - .\sqlexpress - Total 0 matches found in   2.76 sec."/>
+          <!--<TextBlock Text="{Binding Title, ElementName=wnd}" FontSize="11" FontWeight="SemiBold" x:Name="tbkTitle" d:Text="(alex.pigida) - mtUATsqldb - Total 0 matches found in   2.76 sec."/>-->
         </StackPanel>
 
         <Grid Grid.Row="2" Grid.RowSpan="2" Margin="8,8,8,8">
@@ -303,7 +331,7 @@
         </Grid>
       </Grid>
 
-      <StackPanel Grid.ColumnSpan="6" Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0" Opacity="1">
+      <StackPanel Grid.ColumnSpan="6" Orientation="Horizontal" Opacity=".1" Style="{StaticResource MouseOverShowHideAnimStyle}" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0" >
         <Button   Margin="5 0" Content="_Flsh"     Height="26" Click="onFlush" Opacity="0" />
         <Button   Margin="5 0" Content="_Save"     Height="26" Click="onSave"  Visibility="Collapsed" />
         <Button	  Margin="5 0" Content="Se_ttings" Height="26" Click="onSettings" ToolTip="Adjust application settings" VerticalAlignment="Stretch" Visibility="Collapsed" />

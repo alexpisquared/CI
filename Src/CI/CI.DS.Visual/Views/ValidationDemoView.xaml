@@ -27,7 +27,7 @@
       <TextBlock Text="{Binding WhereAmI}" Margin="20 0"   d:Text="Sample Stored Proc Name" FontSize="18" />
       
       <Label Margin="10 20 0 0" Content="SQL Conn String:" />
-      <TextBlock Text="{Binding SqlConStr}" Margin="20 0"  d:Text="Sample Stored Proc Name" FontSize="18" />
+      <TextBlock Text="{Binding SqlConStr}" Visibility="Collapsed" Margin="20 0"  d:Text="Sample Stored Proc Name" FontSize="18" />
 
       <Button Content="  _Dbps  " IsDefault="True" HorizontalAlignment="Center" Background="{DynamicResource MenuItemBackground3}" ToolTip="Open the selected DB Process panel" Command="{Binding UpdateViewCommand}" CommandParameter="Dbps" />
       <Button Content="  _Spsl  " IsDefault="True" HorizontalAlignment="Center" Background="{DynamicResource MenuItemBackground3}" ToolTip="Open the selected DB Process panel" Command="{Binding UpdateViewCommand}" CommandParameter="Spsl" />

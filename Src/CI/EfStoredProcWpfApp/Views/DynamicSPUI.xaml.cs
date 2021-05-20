@@ -18,7 +18,7 @@ namespace EfStoredProcWpfApp.Views
   {
     public DynamicSPUI() => InitializeComponent();
 
-    readonly InventoryContext _context = new(@"Server=.\sqlexpress;Database=Inventory;Trusted_Connection=True;");
+    readonly InventoryContext _context = new(@"Server=mtUATsqldb;Database=Inventory;Trusted_Connection=True;");
     void UserControl_Loaded(object sender, RoutedEventArgs e)
     {
       wpEntry.Children.Add(new Label { Content = "@pGroup_ID",      /**/}); wpEntry.Children.Add(new TextBox { Tag = "@pGroup_ID",      /**/ Text = $"2" });
