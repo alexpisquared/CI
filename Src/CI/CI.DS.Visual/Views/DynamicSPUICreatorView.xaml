@@ -43,7 +43,7 @@
     <TextBlock Text="DB Process: " FontSize="18" Margin="88 -5 0 0" />
     <TextBlock Text="{Binding UFName, FallbackValue='User-friendly SP name'}" FontSize="20" Foreground="#44f" Margin="200 -5 0 0" />
 
-    <WrapPanel Grid.Row="1" x:Name="wpEntry" Margin="20 0 88 0">
+    <WrapPanel Grid.Row="1" x:Name="wpEntry" Margin="20 0 48 0">
       <StackPanel>
         <Label Content="Start" />
         <TextBox x:Name="t3" d:Text="Hello" />
