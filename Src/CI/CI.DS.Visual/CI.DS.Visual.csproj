@@ -26,4 +26,10 @@
     <Resource Include="sql.ico" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Page Update="Views\DBProcessListView.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+    </Page>
+  </ItemGroup>
+
 </Project>

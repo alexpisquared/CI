@@ -1,7 +1,7 @@
-﻿<UserControl x:Class="CI.DS.Visual.Views.StoredProcListView" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" mc:Ignorable="d" 
+﻿<UserControl x:Class="CI.DS.Visual.Views.DBProcessListView" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" mc:Ignorable="d" 
              xmlns:local="clr-namespace:CI.DS.Visual.Views"
              xmlns:stb="clr-namespace:CI.Visual.Lib.Helpers;assembly=CI.Visual.Lib" 
-             d:DesignHeight="350" d:DesignWidth="800" Background="{DynamicResource MenuItemBackground1}" Loaded="onLoaded">
+             d:DesignHeight="350" d:DesignWidth="800" Background="{DynamicResource MenuItemBackground0}" Loaded="onLoaded">
   <UserControl.InputBindings>
     <KeyBinding   Command="{Binding UpdateViewCommand}" CommandParameter="Dbps" Gesture="F1" />
     <KeyBinding   Command="{Binding UpdateViewCommand}" CommandParameter="Dpsl" Gesture="F2" />
@@ -28,7 +28,7 @@
     </Style>
 
     <DataTemplate x:Key="myTaskTemplate">
-      <stb:HighlightableTextBlock Text="{Binding SPName}" SearchText="{Binding Text, ElementName=tbxSearch}" ToolTip="{Binding Definition}" Margin="0 -2.5" >
+      <stb:HighlightableTextBlock Text="{Binding UFName}" SearchText="{Binding Text, ElementName=tbxSearch}" ToolTip="{Binding Definition}" Margin="0 -2.5" >
         <!--//todo: <stb:HighlightableTextBlock.InputBindings>
           <MouseBinding MouseAction="LeftDoubleClick" 
                         Command="{Binding DataContext.UpdateViewCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}"
@@ -42,10 +42,11 @@
     <Grid.RowDefinitions>
       <RowDefinition Height="Auto"/>
       <RowDefinition Height="*"/>
+      <RowDefinition Height="Auto"/>
     </Grid.RowDefinitions>
     <TextBlock Text="{Binding SqlConStr}" Visibility="Collapsed" FontSize="10" HorizontalAlignment="Right" VerticalAlignment="Top" d:Text="Sql con str" Margin="50 0"/>
     <StackPanel Grid.Row="0" >
-      <TextBlock Text="Stored Procedure Selector" FontSize="20" Margin="0 10" />
+      <TextBlock Text="DB Process Selector" FontSize="20" Margin="0 10" />
 
       <Label  Content="_Search" Target="{Binding ElementName=tbxSearch}"/>
       <TextBox Text="{Binding SearchString, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Stretch" x:Name="tbxSearch" />
@@ -67,8 +68,12 @@
                 ItemTemplate="{StaticResource myTaskTemplate}" 
                 SelectedItem="{Binding SelectSPD, Mode=TwoWay}" />
 
-    <StackPanel Grid.Row="1" Margin="10" HorizontalAlignment="Right" VerticalAlignment="Bottom">
-      <Button Content="  _Go  " IsDefault="True" Background="{DynamicResource MenuItemBackground3}" ToolTip="Open the selected SP for Parameter Assignment" Command="{Binding UpdateViewCommand}" CommandParameter="{Binding SelectSPD}" />
+    <StackPanel Grid.Row="2" Margin="0 10" >
+      <!--<Label Content="Selected DB Process Details:" />
+      <TextBlock Text="{Binding SelectSPD}"      d:Text="sp_Name" FontSize="18" TextWrapping="WrapWithOverflow" />-->
+
+      <Button Content="  _Go  " IsDefault="True" HorizontalAlignment="Center" Background="{DynamicResource MenuItemBackground3}" ToolTip="Open the selected DB Process panel" Command="{Binding UpdateViewCommand}" CommandParameter="{Binding SelectSPD}" />
+
     </StackPanel>
 
   </Grid>

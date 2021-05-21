@@ -56,9 +56,9 @@
       </Style>
 
       <SolidColorBrush x:Key="MenuItemBackground0" Color="#5fff"/>
-      <SolidColorBrush x:Key="MenuItemBackground1" Color="#10d0"/>
+      <SolidColorBrush x:Key="MenuItemBackground1" Color="#100f"/>
       <SolidColorBrush x:Key="MenuItemBackground2" Color="#1f0f"/>
-      <SolidColorBrush x:Key="MenuItemBackground3" Color="#100f"/>
+      <SolidColorBrush x:Key="MenuItemBackground3" Color="#10d0"/>
       <SolidColorBrush x:Key="MenuItemBackground4" Color="#1ff0"/>
       <SolidColorBrush x:Key="MenuItemBackground5" Color="#10ff"/>
       <SolidColorBrush x:Key="MenuItemBackground6" Color="#1f00"/>

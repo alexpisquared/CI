@@ -15,6 +15,7 @@ namespace CI.DS.ViewModel.Commands
     public void Execute(object? parameter) => _mainVM.SelectedVM = parameter switch
     {
       StoredProcDetail spd => new DynamicSPUICreatorVM(_mainVM.Logger, _mainVM.Config, _mainVM, spd),
+      "Dpsl" => new DBProcessListVM(_mainVM.Logger, _mainVM.Config, _mainVM),
       "Spsl" => new StoredProcListVM(_mainVM.Logger, _mainVM.Config, _mainVM),
       "Dbps" => new DbPrcsSelectorVM(_mainVM.Logger, _mainVM.Config),
       "Demo" => new ValidationDemoVM(_mainVM.Logger, _mainVM.Config, _mainVM),
