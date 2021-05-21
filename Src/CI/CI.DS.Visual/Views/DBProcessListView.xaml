@@ -27,12 +27,12 @@
     </Style>
 
     <DataTemplate x:Key="myTaskTemplate">
-      <stb:HighlightableTextBlock Text="{Binding UFName}" SearchText="{Binding Text, ElementName=tbxSearch}" ToolTip="{Binding Definition}" Margin="0 -2.5" >
-        <!--//todo: <stb:HighlightableTextBlock.InputBindings>
+      <stb:HighlightableTextBlock Text="{Binding UFName}" SearchText="{Binding Text, ElementName=tbxSearch}" ToolTip="{Binding}" Margin="0 -2.5" >
+        <stb:HighlightableTextBlock.InputBindings>
           <MouseBinding MouseAction="LeftDoubleClick" 
-                        Command="{Binding DataContext.UpdateViewCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}"
+                        Command="{Binding  DataContext.UpdateViewCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}"
                         CommandParameter="{Binding DataContext.SelectSPD, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}" />
-        </stb:HighlightableTextBlock.InputBindings>-->
+        </stb:HighlightableTextBlock.InputBindings>
       </stb:HighlightableTextBlock>
     </DataTemplate>
 

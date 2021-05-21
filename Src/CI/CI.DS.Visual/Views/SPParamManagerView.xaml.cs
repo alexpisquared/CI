@@ -16,7 +16,7 @@ using System.Windows.Media;
 
 namespace CI.DS.Visual.Views
 {
-  public partial class SPParamManagerView : UserControl
+  public partial class DynamicSPUICreatorView : UserControl
   {
     readonly InventoryContext _db = new(@"Server=mtUATsqldb;Database=Inventory;Trusted_Connection=True;");
     StoredProcDetail? _spd;
@@ -24,14 +24,14 @@ namespace CI.DS.Visual.Views
 
     bool _isdbg = false;
 
-    public SPParamManagerView() => InitializeComponent();
+    public DynamicSPUICreatorView() => InitializeComponent();
 
     async void onLoaded(object s, RoutedEventArgs e)
     {
 #if DEBUG
       _isdbg = true;
 #endif
-      _spd = ((SPParamManagerVM)DataContext).StoredProcDetail;
+      _spd = ((DynamicSPUICreatorVM)DataContext).StoredProcDetail;
       wpEntry.Children.Clear();
       var i = 0;
       foreach (var prm in _spd.Parameters.Split(',', StringSplitOptions.RemoveEmptyEntries))

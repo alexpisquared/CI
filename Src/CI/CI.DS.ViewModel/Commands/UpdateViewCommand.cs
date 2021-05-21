@@ -19,6 +19,7 @@ namespace CI.DS.ViewModel.Commands
       "Spsl" => new StoredProcListVM(_mainVM.Logger, _mainVM.Config, _mainVM),
       "Demo" => new ValidationDemoVM(_mainVM.Logger, _mainVM.Config, _mainVM),
       "Acbg" => new AllCashByGroupVM(_mainVM.Logger, _mainVM.Config, _mainVM),
+      "SpPM" => new SPParamManagerVM(_mainVM.Logger, _mainVM.Config, _mainVM),
 #if DEBUG
       _ => new AllCashByGroupVM(_mainVM.Logger, _mainVM.Config, _mainVM),
 #else
