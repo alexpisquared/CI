@@ -88,10 +88,10 @@ namespace CI.Visual.Lib.Helpers
     const string _defaultValues = @"{{
       ""WhereAmI"": ""{{0}}"",
       ""LogFolder"": ""\\\\bbsfile01\\Public\\AlexPi\\Misc\\Logs\\[RenameMe].DFLT..txt"",
-      ""ServerList"": ""mtDEVsqldb mtUATsqldb mtPRDsqldb"",
+      ""ServerList"": "".\\sqlexpress mtDEVsqldb mtUATsqldb mtPRDsqldb"",
       ""SqlConStr"": ""Server=mtDEVsqldb;Database=Inventory;Trusted_Connection=True;"",
       ""AppSettings"": {{
-        ""ServerList"": ""mtDEVsqldb mtUATsqldb mtPRDsqldb"",
+        ""ServerList"": "".\\sqlexpress mtDEVsqldb mtUATsqldb mtPRDsqldb"",
         ""KeyVaultURL"": ""<moved to a safer place>""
       }}
 }}";

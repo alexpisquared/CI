@@ -23,10 +23,10 @@ namespace WinTiler
       _config = ConfigHelper.AutoInitConfig(@"{{
   ""WhereAmI"": "" ??\\PermMgrClient\\appsettings.CI.PM.json  DFLT"",
   ""LogFolder"": ""\\\\bbsfile01\\Public\\AlexPi\\Misc\\Logs\\WinTiler.DFLT..txt"",
-  ""ServerList"": ""mtDEVsqldb mtUATsqldb mtPRDsqldb"",
+  ""ServerList"": "".\\sqlexpress mtDEVsqldb mtUATsqldb mtPRDsqldb"",
   ""SqlConStr"": ""Server={{0}};Database=Inventory;Trusted_Connection=True;"",
   ""AppSettings"": {{
-    ""ServerList"": ""mtDEVsqldb mtUATsqldb mtPRDsqldb"",
+    ""ServerList"": "".\\sqlexpress mtDEVsqldb mtUATsqldb mtPRDsqldb"",
     ""RmsDbConStr"": ""Server={{0}};Database={{1}};Trusted_Connection=True;"",
     ""KeyVaultURL"": ""<moved to a safer place>""
   }}
