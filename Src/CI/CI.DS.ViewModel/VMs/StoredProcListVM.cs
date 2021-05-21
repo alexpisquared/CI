@@ -77,7 +77,7 @@ namespace CI.DS.ViewModel.VMs
           {
             try
             {
-              var vals = new object [reader.FieldCount];
+              var vals = new object[reader.FieldCount];
               Debug.WriteLine($"Depth:{reader.Depth}   {reader.GetValues(vals)}: {string.Join('\t', vals)}");
               rv.Add(new SpdAdm(
                 reader.GetString("Schema"),
@@ -91,11 +91,14 @@ namespace CI.DS.ViewModel.VMs
         }
 
         reader.Close();
-        IsBusy = Visibility.Collapsed;
       }
       catch (SqlNullValueException ex) { _logger.LogError(ex.ToString()); }
       catch (Exception ex) { _logger.LogError(ex.ToString()); }
-      finally { connection.Close(); }
+      finally
+      {
+        connection.Close();
+        IsBusy = Visibility.Collapsed;
+      }
 
       return rv;
     }
@@ -104,7 +107,6 @@ namespace CI.DS.ViewModel.VMs
     public string SearchString { get => _searchString; set { SetProperty(ref _searchString, value); SpdCollectionView.Refresh(); } }
     public string SqlConStr { get => _sqlConStr; set { SetProperty(ref _sqlConStr, value); } }
     Visibility isBusy; public Visibility IsBusy { get => isBusy; set => SetProperty(ref isBusy, value); }
-
 
     public ICommand UpdateViewCommand { get; set; }
     public IConfigurationRoot Config => _config;
@@ -126,6 +128,5 @@ FROM   sys.objects      obj
 WHERE obj.type in ('P', 'X') AND (has_perms_by_name(name, 'OBJECT', 'EXECUTE') = 1) AND mod.execute_as_principal_id IS NULL
 ORDER BY SPName
 ";
-
   }
 }

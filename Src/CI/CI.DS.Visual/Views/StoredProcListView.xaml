@@ -80,9 +80,9 @@
     </StackPanel>
 
     <!--<Viewbox Grid.Row="1" Grid.RowSpan="2" Visibility="{Binding IsBusy, UpdateSourceTrigger=PropertyChanged, Converter={cnv:BoolToVisibilityConverter}}" >-->
-    <Viewbox Grid.Row="1" Grid.RowSpan="2" Visibility="{Binding IsBusy}" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
-      <Grid Background="#8888" Margin="0" >
-        <TextBlock Text="Loading..." RenderTransformOrigin="0.5,0.5" Padding="20" >
+    <Grid Grid.Row="1" Grid.RowSpan="2" Background="#8888" Margin="-10" Visibility="{Binding IsBusy}" >
+      <Viewbox>
+        <TextBlock Text="Loading..." RenderTransformOrigin="0.5,0.5" Padding="10" Foreground="#f60" >
           <TextBlock.RenderTransform>
             <TransformGroup>
               <ScaleTransform/>
@@ -92,8 +92,8 @@
             </TransformGroup>
           </TextBlock.RenderTransform>
         </TextBlock>
-      </Grid>
-    </Viewbox>
+      </Viewbox>
+    </Grid>
 
   </Grid>
 </UserControl>
