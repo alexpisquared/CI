@@ -9,19 +9,19 @@ using System.Threading.Tasks;
 
 namespace CI.DS.ViewModel.VMs
 {
-  public class SPParamManagerVM : ObservableValidator
+  public class SPCureatedRunrVM : ObservableValidator
   {
-    readonly ILogger _logger;
-    readonly IConfigurationRoot _config;
-    readonly MainVM _mainVM;
+    private ILogger _logger;
+    private IConfigurationRoot _config;
+    private MainVM _mainVM;
+    private SpdUsr _spd;
 
-    public SPParamManagerVM(ILogger logger, IConfigurationRoot config, MainVM mainVM, SpdAdm spd)
+    public SPCureatedRunrVM(ILogger logger, IConfigurationRoot config, MainVM mainVM, SpdUsr spd)
     {
       _logger = logger;
       _config = config;
       _mainVM = mainVM;
+      _spd = spd;
     }
-
-    public SpdAdm? SpdAdm { get; set; }
   }
 }

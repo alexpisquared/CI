@@ -14,12 +14,13 @@ namespace CI.DS.ViewModel.Commands
     public event EventHandler? CanExecuteChanged;
     public void Execute(object? parameter) => _mainVM.SelectedVM = parameter switch
     {
-      StoredProcDetail spd => new DynamicSPUICreatorVM(_mainVM.Logger, _mainVM.Config, _mainVM, spd),
-      "Dpsl" => new DBProcessListVM(_mainVM.Logger, _mainVM.Config, _mainVM),
+      SpdAdm spd => new SPParamManagerVM(_mainVM.Logger, _mainVM.Config, _mainVM, spd),
+      SpdUsr spd => new SPCureatedRunrVM(_mainVM.Logger, _mainVM.Config, _mainVM, spd),
+      SpdFbk spd => new SPFallbackRunrVM(_mainVM.Logger, _mainVM.Config, _mainVM, spd),
       "Spsl" => new StoredProcListVM(_mainVM.Logger, _mainVM.Config, _mainVM),
+      "Dpsl" => new DBProcUserListVM(_mainVM.Logger, _mainVM.Config, _mainVM),
       "Demo" => new ValidationDemoVM(_mainVM.Logger, _mainVM.Config, _mainVM),
       "Acbg" => new AllCashByGroupVM(_mainVM.Logger, _mainVM.Config, _mainVM),
-      "SpPM" => new SPParamManagerVM(_mainVM.Logger, _mainVM.Config, _mainVM),
 #if DEBUG
       _ => new AllCashByGroupVM(_mainVM.Logger, _mainVM.Config, _mainVM),
 #else

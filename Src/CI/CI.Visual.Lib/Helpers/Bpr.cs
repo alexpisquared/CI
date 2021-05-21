@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 
 namespace CI.Visual.Lib.Helpers
 {
@@ -29,6 +30,11 @@ namespace CI.Visual.Lib.Helpers
     public static async Task Start() { await BprAlt.BeepMks(new[] { new[] { _f1, BprAlt.FixDuration(_f1, _d1) }, new[] { _f2, BprAlt.FixDuration(_f2, _d2) }, }, ushort.MaxValue); }
     public static async Task Finish() { await BprAlt.BeepMks(new[] { new[] { _f2, BprAlt.FixDuration(_f2, _d2) }, new[] { _f1, BprAlt.FixDuration(_f1, _d1) }, }, ushort.MaxValue); }
     public static async Task No() { await BprAlt.BeepMks(new[] { new[] { _f2, BprAlt.FixDuration(_f2, _d5) }, new[] { _f1, BprAlt.FixDuration(_f1, _d5) }, }, ushort.MaxValue); }
+    public static async Task Tick() => await Beep(9000, 75);
+    
+    public static void StartFAF() => Task.Run(async () => await Start());
+    public static void TickFAF() => Task.Run(async () => await Tick());
+
     public static async Task Error()
     {
       await BprAlt.BeepMks(

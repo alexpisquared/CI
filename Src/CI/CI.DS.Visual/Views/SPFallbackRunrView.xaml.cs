@@ -16,22 +16,22 @@ using System.Windows.Media;
 
 namespace CI.DS.Visual.Views
 {
-  public partial class SPParamManagerView : UserControl
+  public partial class SPFallbackRunrView : UserControl
   {
     readonly InventoryContext _db = new(@"Server=mtUATsqldb;Database=Inventory;Trusted_Connection=True;");
-    StoredProcDetail? _spd;
-    SqlSpRuner _runner = new();
+    readonly SqlSpRuner _runner = new();
+    SpdFbk? _spd;
 
     bool _isdbg = false;
 
-    public SPParamManagerView() => InitializeComponent();
+    public SPFallbackRunrView() => InitializeComponent();
 
     async void onLoaded(object s, RoutedEventArgs e)
     {
 #if DEBUG
       _isdbg = true;
 #endif
-      _spd = ((SPParamManagerVM)DataContext).StoredProcDetail;
+      _spd = ((SPFallbackRunrVM)DataContext).SpdFbk;
       wpEntry.Children.Clear();
       var i = 0;
       foreach (var prm in _spd.Parameters.Split(',', StringSplitOptions.RemoveEmptyEntries))

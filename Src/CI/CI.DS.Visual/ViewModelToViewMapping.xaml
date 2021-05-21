@@ -3,23 +3,25 @@
                     xmlns:local="clr-namespace:CI.DS.Visual.Views"
                     xmlns:vm="clr-namespace:CI.DS.ViewModel.VMs;assembly=CI.DS.ViewModel">
 
-  <DataTemplate DataType="{x:Type vm:ValidationDemoVM}" >
-    <local:ValidationDemoView/>
-  </DataTemplate>
   <DataTemplate DataType="{x:Type vm:AllCashByGroupVM}" >
     <local:AllCashByGroupView/>
   </DataTemplate>
-  <DataTemplate DataType="{x:Type vm:DBProcessListVM}" >
+  <DataTemplate DataType="{x:Type vm:DBProcUserListVM}" >
     <local:DBProcessListView/>
   </DataTemplate>
-  <DataTemplate DataType="{x:Type vm:StoredProcListVM}" >
-    <local:StoredProcListView/>
+  <DataTemplate DataType="{x:Type vm:SPCureatedRunrVM}" >
+    <local:SPCureatedRunrView/>
+  </DataTemplate>
+  <DataTemplate DataType="{x:Type vm:SPFallbackRunrVM}" >
+    <local:SPParamManagerView/>
   </DataTemplate>
   <DataTemplate DataType="{x:Type vm:SPParamManagerVM}" >
     <local:SPParamManagerView/>
   </DataTemplate>
-  <DataTemplate DataType="{x:Type vm:DynamicSPUICreatorVM}" >
-    <local:DynamicSPUICreatorView/>
+  <DataTemplate DataType="{x:Type vm:StoredProcListVM}" >
+    <local:StoredProcListView/>
   </DataTemplate>
-
+  <DataTemplate DataType="{x:Type vm:ValidationDemoVM}" >
+    <local:ValidationDemoView/>
+  </DataTemplate>
 </ResourceDictionary>

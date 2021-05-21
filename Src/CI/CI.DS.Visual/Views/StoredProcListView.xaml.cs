@@ -11,17 +11,15 @@ namespace CI.DS.Visual.Views
     public StoredProcListView()
     {
       InitializeComponent();
-      tbxSearch.PreviewKeyDown += onUpDown;
-    }
-
-    async void onUpDown(object s, KeyEventArgs e)
-    {
-      switch (e.Key)
+      tbxSearch.PreviewKeyDown += async (s, e) =>
       {
-        case Key.Up: if (lbxSpds.SelectedIndex > 0) lbxSpds.SelectedIndex--; else await Bpr.No(); break;
-        case Key.Down: if (lbxSpds.SelectedIndex < lbxSpds.Items.Count - 1) lbxSpds.SelectedIndex++; else await Bpr.No(); break;
-        default: break;
-      }
+        switch (e.Key)
+        {
+          case Key.Up: if (lbxSpds.SelectedIndex > 0) lbxSpds.SelectedIndex--; else await Bpr.No(); break;
+          case Key.Down: if (lbxSpds.SelectedIndex < lbxSpds.Items.Count - 1) lbxSpds.SelectedIndex++; else await Bpr.No(); break;
+          default: break;
+        }
+      };
     }
 
     async void onLoaded(object s, RoutedEventArgs e)

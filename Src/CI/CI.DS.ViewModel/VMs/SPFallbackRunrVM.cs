@@ -7,15 +7,15 @@ using System.Windows.Input;
 
 namespace CI.DS.ViewModel.VMs
 {
-  public class DynamicSPUICreatorVM : ObservableValidator
+  public class SPFallbackRunrVM : ObservableValidator
   {
     readonly ILogger _logger;
     readonly IConfigurationRoot _config;
-    readonly StoredProcDetail _spdetl;
+    readonly SpdFbk _spdetl;
     readonly InventoryContext _context;
     string _uFName = "", _sqlConStr = "sql con str";
 
-    public DynamicSPUICreatorVM(ILogger logger, IConfigurationRoot config, MainVM mainVM, StoredProcDetail spdetl)
+    public SPFallbackRunrVM(ILogger logger, IConfigurationRoot config, MainVM mainVM, SpdFbk spdetl)
     {
       _logger = logger;
       _config = config;
@@ -32,7 +32,7 @@ namespace CI.DS.ViewModel.VMs
     public string UFName { get => _uFName; set => SetProperty(ref _uFName, value); }
     public string SqlConStr { get => _sqlConStr; set { SetProperty(ref _sqlConStr, value); } }
 
-    public StoredProcDetail StoredProcDetail => _spdetl;
+    public SpdFbk SpdFbk => _spdetl;
 
     public ICommand UpdateViewCommand { get; set; }
   }

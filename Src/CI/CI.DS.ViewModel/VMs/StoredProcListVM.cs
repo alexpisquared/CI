@@ -23,7 +23,7 @@ namespace CI.DS.ViewModel.VMs
     readonly ILogger _logger;
     readonly IConfigurationRoot _config;
     readonly InventoryContext _context;
-    readonly List<StoredProcDetail> _spds = new();
+    readonly List<SpdAdm> _spds = new();
     string _searchString = "", _sqlConStr = "sql con str";
 
     ICollectionView _spcv; public ICollectionView SpdCollectionView { get => _spcv; set => SetProperty(ref _spcv, value); }
@@ -42,17 +42,17 @@ namespace CI.DS.ViewModel.VMs
         _.Result.ForEach(r => _spds.Add(r));
         SpdCollectionView = CollectionViewSource.GetDefaultView(_spds);
         SpdCollectionView.Filter = filterSPDs;
-        SpdCollectionView.GroupDescriptions.Add(new PropertyGroupDescription(nameof(StoredProcDetail.Schema)));
-        SpdCollectionView.SortDescriptions.Add(new SortDescription(nameof(StoredProcDetail.UFName), ListSortDirection.Ascending));
+        SpdCollectionView.GroupDescriptions.Add(new PropertyGroupDescription(nameof(SpdAdm.Schema)));
+        SpdCollectionView.SortDescriptions.Add(new SortDescription(nameof(SpdAdm.UFName), ListSortDirection.Ascending));
         Bpr.Tick();
       }, TaskScheduler.FromCurrentSynchronizationContext());
     }
 
-    bool filterSPDs(object obj) => obj is StoredProcDetail && ((obj as StoredProcDetail)?.UFName.Contains(SearchString, StringComparison.InvariantCultureIgnoreCase) ?? false);
+    bool filterSPDs(object obj) => obj is SpdAdm && ((obj as SpdAdm)?.UFName.Contains(SearchString, StringComparison.InvariantCultureIgnoreCase) ?? false);
 
-    async Task<List<StoredProcDetail>> loadAllSPs()
+    async Task<List<SpdAdm>> loadAllSPs()
     {
-      List<StoredProcDetail> rv = new();
+      List<SpdAdm> rv = new();
       var connection = _context.Database.GetDbConnection();
 
       try
@@ -76,7 +76,7 @@ namespace CI.DS.ViewModel.VMs
             {
               var vals = new object [reader.FieldCount];
               Debug.WriteLine($"Depth:{reader.Depth}   {reader.GetValues(vals)}: {string.Join('\t', vals)}");
-              rv.Add(new StoredProcDetail(
+              rv.Add(new SpdAdm(
                 reader.GetString("Schema"),
                 reader.GetString("SPName"),
                 reader.IsDBNull("Parameters") ? "" : reader.GetString("Parameters"),
@@ -96,7 +96,7 @@ namespace CI.DS.ViewModel.VMs
       return rv;
     }
 
-    StoredProcDetail? _selectSPD; public StoredProcDetail? SelectSPD { get => _selectSPD; set => SetProperty(ref _selectSPD, value); }
+    SpdAdm? _selectSPD; public SpdAdm? SelectSPD { get => _selectSPD; set => SetProperty(ref _selectSPD, value); }
     public string SearchString { get => _searchString; set { SetProperty(ref _searchString, value); SpdCollectionView.Refresh(); } }
     public string SqlConStr { get => _sqlConStr; set { SetProperty(ref _sqlConStr, value); } }
 
