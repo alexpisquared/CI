@@ -1,6 +1,6 @@
 ﻿<UserControl x:Class="CI.DS.Visual.Views.StoredProcListView" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" mc:Ignorable="d" 
              xmlns:local="clr-namespace:CI.DS.Visual.Views"
-             xmlns:stb="clr-namespace:CI.Visual.Lib.Helpers;assembly=CI.Visual.Lib" xmlns:vms="clr-namespace:CI.DS.ViewModel.VMs;assembly=CI.DS.ViewModel" d:DataContext="{d:DesignInstance Type=vms:StoredProcListVM}"
+             xmlns:stb="clr-namespace:CI.Visual.Lib.Helpers;assembly=CI.Visual.Lib" xmlns:vms="clr-namespace:CI.DS.ViewModel.VMs;assembly=CI.DS.ViewModel" xmlns:cnv="clr-namespace:CI.DS.Visual.Converters" d:DataContext="{d:DesignInstance Type=vms:StoredProcListVM}"
              d:DesignHeight="350" d:DesignWidth="800" Background="{DynamicResource MenuItemBackground1}" Loaded="onLoaded">
   <UserControl.InputBindings>
     <KeyBinding   Command="{Binding UpdateViewCommand}" CommandParameter="Dpsl" Gesture="F2" />
@@ -40,12 +40,14 @@
   <Grid Margin="30,10,30,10" >
     <Grid.RowDefinitions>
       <RowDefinition Height="Auto"/>
+      <RowDefinition Height="Auto"/>
       <RowDefinition Height="*"/>
     </Grid.RowDefinitions>
-    <TextBlock Text="{Binding SqlConStr}" Visibility="Collapsed" FontSize="10" HorizontalAlignment="Right" VerticalAlignment="Top" d:Text="Sql con str" Margin="50 0"/>
-    <StackPanel Grid.Row="0" >
-      <TextBlock Text="Stored Procedure Selector" FontSize="20" Margin="0 10" />
 
+    <TextBlock Text="{Binding SqlConStr}" Visibility="Collapsed" FontSize="10" HorizontalAlignment="Right" VerticalAlignment="Top" d:Text="Sql con str" Margin="50 0"/>
+    <TextBlock Text="Stored Procedure Selector" FontSize="20" Margin="0 10" />
+
+    <StackPanel Grid.Row="1" >
       <Label  Content="_Search" Target="{Binding ElementName=tbxSearch}"/>
       <TextBox Text="{Binding SearchString, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Stretch" x:Name="tbxSearch" />
 
@@ -57,17 +59,17 @@
         </Grid.ColumnDefinitions>
         <Label Content="_DB Processes" Target="{Binding ElementName=lbxSpds}"    />
         <TextBlock Grid.Column="1" Text="{Binding ElementName=lbxSpds, Path=Items.Count}"/>
-        <TextBlock Grid.Column="2" Text=" processes avialable"/>
+        <TextBlock Grid.Column="2" Text=" stored procedures in DB"/>
       </Grid>
     </StackPanel>
 
-    <ListView   Grid.Row="1" x:Name="lbxSpds" 
+    <ListView   Grid.Row="2" x:Name="lbxSpds" 
                 ItemsSource="{Binding SpdCollectionView}" 
                 ItemTemplate="{StaticResource myTaskTemplate}" 
                 SelectedItem="{Binding SelectSPD, Mode=TwoWay}" />
 
-    <StackPanel Grid.Row="1" Margin="30 10" HorizontalAlignment="Right" VerticalAlignment="Bottom">
-      <Button Content="_Edit" ToolTip="Go to Open the selected SP for Parameter Assignment" IsDefault="True" Background="{DynamicResource MenuItemBackground3}" Command="{Binding UpdateViewCommand}" CommandParameter="{Binding SelectSPD}" 
+    <StackPanel Grid.Row="2" Margin="30 10" HorizontalAlignment="Right" VerticalAlignment="Bottom">
+      <Button Content="_Go ►" ToolTip="Go to Parameter Manager for the selected SP" IsDefault="True" Background="{DynamicResource MenuItemBackground3}" Command="{Binding UpdateViewCommand}" CommandParameter="{Binding SelectSPD}" 
               Padding="0 0 0 3" Height="50" Width="50" >
         <Button.Resources>
           <Style TargetType="{x:Type Border}">
@@ -76,6 +78,22 @@
         </Button.Resources>
       </Button>
     </StackPanel>
+
+    <!--<Viewbox Grid.Row="1" Grid.RowSpan="2" Visibility="{Binding IsBusy, UpdateSourceTrigger=PropertyChanged, Converter={cnv:BoolToVisibilityConverter}}" >-->
+    <Viewbox Grid.Row="1" Grid.RowSpan="2" Visibility="{Binding IsBusy}" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+      <Grid Background="#8888" Margin="0" >
+        <TextBlock Text="Loading..." RenderTransformOrigin="0.5,0.5" Padding="20" >
+          <TextBlock.RenderTransform>
+            <TransformGroup>
+              <ScaleTransform/>
+              <SkewTransform/>
+              <RotateTransform Angle="-18.252"/>
+              <TranslateTransform/>
+            </TransformGroup>
+          </TextBlock.RenderTransform>
+        </TextBlock>
+      </Grid>
+    </Viewbox>
 
   </Grid>
 </UserControl>

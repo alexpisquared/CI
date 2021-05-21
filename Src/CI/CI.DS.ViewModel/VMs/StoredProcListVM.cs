@@ -13,6 +13,7 @@ using System.Data.Common;
 using System.Data.SqlTypes;
 using System.Diagnostics;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Data;
 using System.Windows.Input;
 
@@ -36,6 +37,8 @@ namespace CI.DS.ViewModel.VMs
       _spcv = CollectionViewSource.GetDefaultView(_spds); // redundant warning stopper only.
 
       UpdateViewCommand = new UpdateViewCommand(mainVM);//{ GestureKey = Key.F5, GestureModifier = ModifierKeys.None, MouseGesture = MouseAction.RightClick };
+
+      IsBusy = Visibility.Visible;
 
       Task.Run(async () => await loadAllSPs()).ContinueWith(_ =>
       {
@@ -88,6 +91,7 @@ namespace CI.DS.ViewModel.VMs
         }
 
         reader.Close();
+        IsBusy = Visibility.Collapsed;
       }
       catch (SqlNullValueException ex) { _logger.LogError(ex.ToString()); }
       catch (Exception ex) { _logger.LogError(ex.ToString()); }
@@ -99,6 +103,8 @@ namespace CI.DS.ViewModel.VMs
     SpdAdm? _selectSPD; public SpdAdm? SelectSPD { get => _selectSPD; set => SetProperty(ref _selectSPD, value); }
     public string SearchString { get => _searchString; set { SetProperty(ref _searchString, value); SpdCollectionView.Refresh(); } }
     public string SqlConStr { get => _sqlConStr; set { SetProperty(ref _sqlConStr, value); } }
+    Visibility isBusy; public Visibility IsBusy { get => isBusy; set => SetProperty(ref isBusy, value); }
+
 
     public ICommand UpdateViewCommand { get; set; }
     public IConfigurationRoot Config => _config;
@@ -120,5 +126,6 @@ FROM   sys.objects      obj
 WHERE obj.type in ('P', 'X') AND (has_perms_by_name(name, 'OBJECT', 'EXECUTE') = 1) AND mod.execute_as_principal_id IS NULL
 ORDER BY SPName
 ";
+
   }
 }
