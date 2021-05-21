@@ -13,13 +13,14 @@
       <Setter Property="Padding"              Value="4" />
     </Style>
     <Style TargetType="{x:Type TextBox}"      BasedOn="{StaticResource CrlBase2}">
-      <Setter Property="MinWidth"             Value="260" />
+      <Setter Property="MinWidth"             Value="320" />
       <Setter Property="Padding"              Value="2" />
     </Style>
     <Style TargetType="{x:Type ComboBox}"     BasedOn="{StaticResource CrlBase2}">
       <Setter Property="Width"                Value="148" />
     </Style>
     <Style TargetType="{x:Type Button}"       BasedOn="{StaticResource BtnBase}">
+      <Setter Property="FocusVisualStyle"     Value="{x:Null}" />
     </Style>
     <Style TargetType="{x:Type StackPanel}"   >
       <Setter Property="Margin"               Value="12 0" />
@@ -58,20 +59,22 @@
         <DataGridTextColumn     Header="ID"                 Binding="{Binding ID}"               IsReadOnly="True" Width="SizeToHeader"/>
         <DataGridTextColumn     Header="DBProcess ID"       Binding="{Binding DBProcessID}"      Width="SizeToHeader"/>
         <DataGridCheckBoxColumn Header="Is Read Only"       Binding="{Binding IsReadOnly}"       Width="SizeToHeader"/>        -->                                                                                      
-        <DataGridTextColumn     Header="Parameter Name"     Binding="{Binding ParameterName}"    IsReadOnly="True" Width="Auto"/>
-        <DataGridTextColumn     Header="Parameter Type"     Binding="{Binding ParameterType}"    IsReadOnly="True" />
-        <DataGridCheckBoxColumn Header="Is Output"          Binding="{Binding IsOutput}"         IsReadOnly="True" Width="SizeToHeader"/>
-        <DataGridCheckBoxColumn Header="User Visible"       Binding="{Binding UserVisible}"      Width="SizeToHeader"/>
+        <DataGridTextColumn     Header="Parameter Name  "   Binding="{Binding ParameterName}"    IsReadOnly="True" Width="Auto"/>
+        <DataGridTextColumn     Header="Type"               Binding="{Binding ParameterType}"    IsReadOnly="True" />
+        <DataGridCheckBoxColumn Header="Is Output "         Binding="{Binding IsOutput}"         IsReadOnly="True" Width="SizeToHeader"/>
+        <DataGridCheckBoxColumn Header="User-Visible "      Binding="{Binding UserVisible}"      Width="SizeToHeader"/>
         <DataGridTextColumn     Header="User-friendly Name" Binding="{Binding UserFriendlyName}" Width="*"/>
-        <DataGridTextColumn     Header="Default Value"      Binding="{Binding DefaultValue}"     Width="SizeToHeader"/>
-        <DataGridTextColumn     Header="Created"            Binding="{Binding Created, StringFormat='{}{0:yyyy-MM-dd HH:mm} EST'}" IsReadOnly="True" Width="Auto"/>
+        <DataGridTextColumn     Header="Default Value  "    Binding="{Binding DefaultValue}"     Width="SizeToHeader"/>
+        <DataGridTextColumn     Header="Created"            Binding="{Binding Created, StringFormat='{}{0:yyyy-MM-dd HH:mm} '}" IsReadOnly="True" Width="Auto"/>
       </DataGrid.Columns>
     </DataGrid>
 
 
-    <TextBlock  Grid.Row="3" x:Name="tbkError" Margin="25 5" Foreground="Red" FontSize="20" d:Text="Hello. Is everything OK?" HorizontalAlignment="Center"/>
+    <TextBlock  Grid.Row="3" Text="{Binding Report}" Margin="25 5" Foreground="#0a0" FontSize="20" d:Text="Hello. Is everything OK?" HorizontalAlignment="Center"/>
+    
     <StackPanel Grid.Row="2" Orientation="Horizontal" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="30 10" Grid.RowSpan="2">
-      <Button Content="◄ _OK" x:Name="focus0" ToolTip="Go to Parameter Manager for the selected SP" IsDefault="True" Background="{DynamicResource MenuItemBackground3}" Command="{Binding UpdateViewCommand}" CommandParameter="Spsl" 
+      <Button Content="_Save" ToolTip="Save changes to DB" Command="{Binding SaveToDB}"  />
+      <Button Content="◄ _OK" x:Name="focus0" ToolTip="Go back to SP selector " IsDefault="True" Background="{DynamicResource MenuItemBackground3}" Command="{Binding UpdateViewCommand}" CommandParameter="Spsl" 
               Padding="0 0 0 3" Height="50" Width="50" >
         <Button.Resources>
           <Style TargetType="{x:Type Border}">

@@ -24,6 +24,7 @@ namespace CI.DS.Visual.Views
 
     void onLoaded(object s, RoutedEventArgs e)
     {
+      focus0.Focus();
 #if DEBUG
       _isdbg = true;
 #endif

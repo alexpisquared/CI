@@ -233,12 +233,15 @@
         </Grid.RowDefinitions>
 
         <Views:BrandTitleUserControl Margin="10,3,10,10" Opacity="1" Grid.Row="1" />
+        
+        
 
-        <StackPanel Margin="0,0,6,6" HorizontalAlignment="Right" VerticalAlignment="Bottom" Grid.Row="1">
+        <StackPanel Margin="0,0,6,6" HorizontalAlignment="Right" VerticalAlignment="Bottom" Grid.Row="1" Orientation="Horizontal">
           <StackPanel.Effect>
             <BlurEffect Radius="{Binding ElementName=wnd, Path=Blur, FallbackValue=0}" />
           </StackPanel.Effect>
-          <!--<TextBlock Text="{Binding Title, ElementName=wnd}" FontSize="11" FontWeight="SemiBold" x:Name="tbkTitle" d:Text="(alex.pigida) - mtUATsqldb - Total 0 matches found in   2.76 sec."/>-->
+          <Label     FontSize="11" Content="Hello " />
+          <TextBlock FontSize="11" Text="{Binding CurrentUser}" FontWeight="SemiBold" d:Text="(alex.pigida) - mtUATsqldb - Total 0 matches found in   2.76 sec."/>
         </StackPanel>
 
         <Grid Grid.Row="2" Grid.RowSpan="2" Margin="8,8,8,8">

@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
+using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -29,6 +30,7 @@ namespace CI.DS.ViewModel.VMs
       _config["ServerList"].Split(" ").ToList().ForEach(r => _sqlServers.Add(r));
       _userPrefs = UserPrefs.Load<UserPrefs>();
       SqlServer = _userPrefs.SqlServer;
+      _currentuser = $"{Environment.UserName}"; //todo: use AD to get proper name, auto add current user to DB. auto-add roles, if missing.
     }
 
     public ObservableCollection<string> SqlServers { get => _sqlServers; set => SetProperty(ref _sqlServers, value, true); }
@@ -57,5 +59,7 @@ namespace CI.DS.ViewModel.VMs
     public ICommand UpdateViewCommand { get; set; }
     public IConfigurationRoot Config { get => _config; }
     public ILogger Logger { get => _logger; }
+
+    string _currentuser; public string CurrentUser { get => _currentuser; set => SetProperty(ref _currentuser, value); }
   }
 }

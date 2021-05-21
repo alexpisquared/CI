@@ -11,6 +11,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Microsoft.Toolkit.Mvvm.Input;
 
 namespace CI.DS.ViewModel.VMs
 {
@@ -85,6 +86,7 @@ namespace CI.DS.ViewModel.VMs
       var newDBP = _dbCnxt.Dbprocesses.Add(ndp);
 
       var rowsSaved = await _dbCnxt.SaveChangesAsync();
+      Report = $"New SP  '{spd.SPName}'  with  {ndp.DbprocessParameters.Count}  parameters added to DB.\r\n(all  {rowsSaved}  rows saved)";
 
       return await _dbCnxt.Dbprocesses.FirstOrDefaultAsync(r => r.StoredProcName.Equals(spd.SPName));
     }
@@ -106,5 +108,14 @@ namespace CI.DS.ViewModel.VMs
 
 
     public ICommand UpdateViewCommand { get; set; }
+
+    ICommand saveToDB; public ICommand SaveToDB => saveToDB ??= new RelayCommand(PerformSaveToDB);
+    void PerformSaveToDB()
+    {
+      var rowsSaved = _dbCnxt.SaveChanges();
+      Report = $"{rowsSaved} rows saved";
+    }
+
+    string report; public string Report { get => report; set => SetProperty(ref report, value); }
   }
 }

@@ -51,7 +51,7 @@ namespace CI.DS.ViewModel.VMs
       }, TaskScheduler.FromCurrentSynchronizationContext());
     }
 
-    bool filterSPDs(object obj) => obj is SpdAdm && ((obj as SpdAdm)?.UFName.Contains(SearchString, StringComparison.InvariantCultureIgnoreCase) ?? false);
+    bool filterSPDs(object obj) => obj is SpdAdm && ((obj as SpdAdm)?.SPName.Contains(SearchString, StringComparison.InvariantCultureIgnoreCase) ?? false);
 
     async Task<List<SpdAdm>> loadAllSPs()
     {
