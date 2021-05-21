@@ -52,7 +52,22 @@
     </StackPanel>
 
 
-    <DataGrid   Grid.Row="2" ItemsSource="{Binding DbprocessParameters}" x:Name="dg1" AutoGenerateColumns="True" Margin="5,5,5,5" />
+    <DataGrid Grid.Row="2" ItemsSource="{Binding DbprocessParameters}" x:Name="dg1" Margin="3 8" AutoGenerateColumns="False" EnableRowVirtualization="True" RowDetailsVisibilityMode="VisibleWhenSelected">
+      <DataGrid.Columns>
+        <!--
+        <DataGridTextColumn     Header="ID"                 Binding="{Binding ID}"               IsReadOnly="True" Width="SizeToHeader"/>
+        <DataGridTextColumn     Header="DBProcess ID"       Binding="{Binding DBProcessID}"      Width="SizeToHeader"/>
+        <DataGridCheckBoxColumn Header="Is Read Only"       Binding="{Binding IsReadOnly}"       Width="SizeToHeader"/>        -->                                                                                      
+        <DataGridTextColumn     Header="Parameter Name"     Binding="{Binding ParameterName}"    IsReadOnly="True" Width="Auto"/>
+        <DataGridTextColumn     Header="Parameter Type"     Binding="{Binding ParameterType}"    IsReadOnly="True" />
+        <DataGridCheckBoxColumn Header="Is Output"          Binding="{Binding IsOutput}"         IsReadOnly="True" Width="SizeToHeader"/>
+        <DataGridCheckBoxColumn Header="User Visible"       Binding="{Binding UserVisible}"      Width="SizeToHeader"/>
+        <DataGridTextColumn     Header="User-friendly Name" Binding="{Binding UserFriendlyName}" Width="*"/>
+        <DataGridTextColumn     Header="Default Value"      Binding="{Binding DefaultValue}"     Width="SizeToHeader"/>
+        <DataGridTextColumn     Header="Created"            Binding="{Binding Created, StringFormat='{}{0:yyyy-MM-dd HH:mm} EST'}" IsReadOnly="True" Width="Auto"/>
+      </DataGrid.Columns>
+    </DataGrid>
+
 
     <TextBlock  Grid.Row="3" x:Name="tbkError" Margin="25 5" Foreground="Red" FontSize="20" d:Text="Hello. Is everything OK?" HorizontalAlignment="Center"/>
     <StackPanel Grid.Row="2" Orientation="Horizontal" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="30 10" Grid.RowSpan="2">
