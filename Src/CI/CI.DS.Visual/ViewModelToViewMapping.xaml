@@ -9,8 +9,8 @@
   <DataTemplate DataType="{x:Type vm:AllCashByGroupVM}" >
     <local:AllCashByGroupView/>
   </DataTemplate>
-  <DataTemplate DataType="{x:Type vm:DbPrcsSelectorVM}" >
-    <local:DbProcessSelectorView/>
+  <DataTemplate DataType="{x:Type vm:DBProcessListVM}" >
+    <local:DBProcessListView/>
   </DataTemplate>
   <DataTemplate DataType="{x:Type vm:StoredProcListVM}" >
     <local:StoredProcListView/>

@@ -3,7 +3,6 @@
              xmlns:stb="clr-namespace:CI.Visual.Lib.Helpers;assembly=CI.Visual.Lib" 
              d:DesignHeight="350" d:DesignWidth="800" Background="{DynamicResource MenuItemBackground0}" Loaded="onLoaded">
   <UserControl.InputBindings>
-    <KeyBinding   Command="{Binding UpdateViewCommand}" CommandParameter="Dbps" Gesture="F1" />
     <KeyBinding   Command="{Binding UpdateViewCommand}" CommandParameter="Dpsl" Gesture="F2" />
     <KeyBinding   Command="{Binding UpdateViewCommand}" CommandParameter="Spsl" Gesture="F2" />
     <KeyBinding   Command="{Binding UpdateViewCommand}" CommandParameter="Demo" Gesture="F3" />

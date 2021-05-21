@@ -310,7 +310,6 @@
                 <MenuItem Header="_Export to XML file" InputGestureText="Ctrl+Q" />
                 <MenuItem Header="_Export to CSV file" InputGestureText="Ctrl+U" />
                 <Separator/>
-                <MenuItem Header="_Dbps" Command="{Binding UpdateViewCommand}" CommandParameter="Dbps" Background="{DynamicResource MenuItemBackground0}" InputGestureText="F1" ToolTip="" />
                 <MenuItem Header="_Dpsl" Command="{Binding UpdateViewCommand}" CommandParameter="Dpsl" Background="{DynamicResource MenuItemBackground1}" InputGestureText="F2" ToolTip="" />
                 <MenuItem Header="_Spsl" Command="{Binding UpdateViewCommand}" CommandParameter="Spsl" Background="{DynamicResource MenuItemBackground1}" InputGestureText="F2" ToolTip="" />
                 <MenuItem Header="_Demo" Command="{Binding UpdateViewCommand}" CommandParameter="Demo" Background="{DynamicResource MenuItemBackground2}" InputGestureText="F3" ToolTip="" />
