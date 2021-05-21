@@ -32,24 +32,34 @@ namespace CI.DS.ViewModel.VMs
 
       ValidateAllProperties();
 
-      Task<Dbprocess>.Run(async () =>
+      asyncLoad(spd);
+    }
+
+    void asyncLoad(SpdAdm spd) => Task.Run(async () => await getOrCreateSpd(spd)).ContinueWith(_ =>
+    {
+      try
       {
-        var sp = await _dbCnxt.Dbprocesses.FirstOrDefaultAsync(r => r.StoredProcName.Equals(spd.SPName, StringComparison.OrdinalIgnoreCase));
+        Dbprocess = _.Result;
+        Debug.WriteLine($"** DBP id = {Dbprocess.Id}, Param count = {Dbprocess.DbprocessParameters.Count}.  ");
+        Dbprocess.DbprocessParameters.ToList().ForEach(row => DbprocessParameters.Add(row));
+      }
+      catch (Exception ex) { _logger.LogError(ex, "Really?"); }
+    }, TaskScheduler.FromCurrentSynchronizationContext());
+    async Task<Dbprocess> getOrCreateSpd(SpdAdm spd)
+    {
+      try
+      {
+        await _dbCnxt.Dbprocesses.LoadAsync();
+        await _dbCnxt.DbprocessParameters.LoadAsync();
+
+        var sp = _dbCnxt.Dbprocesses.Local.FirstOrDefault(r => spd.SPName.Equals(r.StoredProcName));
         if (sp is null) sp = await createNewDBProcessAndStoreToDB(spd);
         if (sp is null) throw new ArgumentNullException("Impossible!!!");
 
         return sp;
-      }).ContinueWith(_ =>
-      {
-        try
-        {
-          Debug.WriteLine($"** New DBP id = {_.Result.Id}  ");
-          //_.Result.ForEach(row => Dbprocesss.Add(row));
-        }
-        catch (Exception ex) { _logger.LogError(ex, "Really?"); }
-      }, TaskScheduler.FromCurrentSynchronizationContext());
+      }
+      catch (Exception ex) { _logger.LogError(ex, "go figure..."); throw; }
     }
-
     async Task<Dbprocess> createNewDBProcessAndStoreToDB(SpdAdm spd)
     {
       var now = DateTime.Now;
@@ -72,11 +82,12 @@ namespace CI.DS.ViewModel.VMs
           });
       });
 
+      var newDBP = _dbCnxt.Dbprocesses.Add(ndp);
+
       var rowsSaved = await _dbCnxt.SaveChangesAsync();
 
-      return await _dbCnxt.Dbprocesses.FirstOrDefaultAsync(r => r.StoredProcName.Equals(spd.SPName, StringComparison.OrdinalIgnoreCase));
+      return await _dbCnxt.Dbprocesses.FirstOrDefaultAsync(r => r.StoredProcName.Equals(spd.SPName));
     }
-
     string defaultValue(string dbTypeName)
     {
       switch (dbTypeName)
@@ -90,7 +101,8 @@ namespace CI.DS.ViewModel.VMs
 
     public SpdAdm? SpdAdm { get; set; }
 
-    ObservableCollection<DbprocessParameter> _DbprocessParameters = new(); public ObservableCollection<DbprocessParameter> DbprocessParameters { get => _DbprocessParameters; set => SetProperty(ref _DbprocessParameters, value, true); }
+    public Dbprocess Dbprocess { get; set; }
+    readonly ObservableCollection<DbprocessParameter> _dbprocessParameters = new(); public ObservableCollection<DbprocessParameter> DbprocessParameters { get => _dbprocessParameters; }
 
 
     public ICommand UpdateViewCommand { get; set; }
