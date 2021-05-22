@@ -65,6 +65,7 @@
         <DataGridCheckBoxColumn Header="User-Visible "      Binding="{Binding UserVisible}"      Width="SizeToHeader"/>
         <DataGridTextColumn     Header="User-friendly Name" Binding="{Binding UserFriendlyName}" Width="*"/>
         <DataGridTextColumn     Header="Default Value  "    Binding="{Binding DefaultValue}"     Width="SizeToHeader"/>
+        <DataGridTextColumn     Header="Notes"              Binding="{Binding Notes}"            Width="*"/>
         <DataGridTextColumn     Header="Created"            Binding="{Binding Created, StringFormat='{}{0:yyyy-MM-dd HH:mm} '}" IsReadOnly="True" Width="Auto"/>
       </DataGrid.Columns>
     </DataGrid>
