@@ -15,6 +15,7 @@
     public string Definition { get; set; }
     public int HasExecPerm { get; set; }
     public string UFName { get; set; } = "";
+    public string DBName { get; set; } = "Inventory";
 
     string generateUserFriendlyName(string val) => val.ToSentence();
 

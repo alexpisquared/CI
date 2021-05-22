@@ -55,13 +55,17 @@
     </DataTemplate>
 
     <DataTemplate x:Key="SpdTemplate">
-      <stb:HighlightableTextBlock Text="{Binding SPName}" SearchText="{Binding Text, ElementName=tbxSpdSearch}" ToolTip="{Binding Definition}" Margin="0 -2.5" >
-        <stb:HighlightableTextBlock.InputBindings>
-          <MouseBinding MouseAction="LeftDoubleClick" 
+      <StackPanel Orientation="Horizontal">
+        <TextBlock Margin="0 -2.5" Padding="0 3" Text="{Binding DBName, FallbackValue='BP'}" />
+        <TextBlock Margin="0 -2.5" Padding="0 3" Text="." />
+        <stb:HighlightableTextBlock Text="{Binding SPName}" SearchText="{Binding Text, ElementName=tbxSpdSearch}" ToolTip="{Binding Definition}" Margin="0 -2.5" >
+          <stb:HighlightableTextBlock.InputBindings>
+            <MouseBinding MouseAction="LeftDoubleClick" 
                         Command="{Binding DataContext.UpdateViewCommand,  RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}"
                         CommandParameter="{Binding DataContext.SelectSPD, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}" />
-        </stb:HighlightableTextBlock.InputBindings>
-      </stb:HighlightableTextBlock>
+          </stb:HighlightableTextBlock.InputBindings>
+        </stb:HighlightableTextBlock>
+      </StackPanel>
     </DataTemplate>
 
   </UserControl.Resources>

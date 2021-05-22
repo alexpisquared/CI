@@ -52,6 +52,7 @@ namespace CI.DS.ViewModel.VMs
     {
       try
       {
+        await _dbCnxt.Databases.LoadAsync();
         await _dbCnxt.Dbprocesses.LoadAsync();
         await _dbCnxt.Parameters.LoadAsync();
 
