@@ -13,8 +13,8 @@ namespace CI.DS.ViewModel.VMs
 {
   public class MainVM : ObservableValidator
   {
-    readonly ILogger _logger;
     readonly IConfigurationRoot _config;
+    readonly ILogger _logger;
     readonly UserPrefs _userPrefs;
 
     ObservableCollection<string> _sqlServers = new();

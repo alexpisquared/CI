@@ -53,7 +53,7 @@
     </StackPanel>
 
 
-    <DataGrid Grid.Row="2" ItemsSource="{Binding DbprocessParameters}" x:Name="dg1" Margin="3 8" AutoGenerateColumns="False" EnableRowVirtualization="True" RowDetailsVisibilityMode="VisibleWhenSelected">
+    <DataGrid Grid.Row="2" ItemsSource="{Binding Parameters}" x:Name="dg1" Margin="3 8" AutoGenerateColumns="False" EnableRowVirtualization="True" RowDetailsVisibilityMode="VisibleWhenSelected">
       <DataGrid.Columns>
         <!--
         <DataGridTextColumn     Header="ID"                 Binding="{Binding ID}"               IsReadOnly="True" Width="SizeToHeader"/>

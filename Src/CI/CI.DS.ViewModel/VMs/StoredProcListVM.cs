@@ -12,6 +12,7 @@ using System.Data;
 using System.Data.Common;
 using System.Data.SqlTypes;
 using System.Diagnostics;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Data;
@@ -23,47 +24,69 @@ namespace CI.DS.ViewModel.VMs
   {
     readonly ILogger _logger;
     readonly IConfigurationRoot _config;
-    readonly InventoryContext _context;
-    readonly List<SpdAdm> _spds = new();
+    readonly InventoryContext _dbx;
+    readonly List<SpdAdm> _spdl = new();
+    readonly List<Database> _dbll = new();
     string _searchString = "", _sqlConStr = "sql con str";
 
-    ICollectionView _spcv; public ICollectionView SpdCollectionView { get => _spcv; set => SetProperty(ref _spcv, value); }
+    ICollectionView _spdv; public ICollectionView SpdCollectionView { get => _spdv; set => SetProperty(ref _spdv, value); }
+    ICollectionView _dblv; public ICollectionView DblCollectionView { get => _dblv; set => SetProperty(ref _dblv, value); }
 
     public StoredProcListVM(ILogger logger, IConfigurationRoot config, MainVM mainVM)
     {
       _logger = logger;
       _config = config;
-      _context = new(SqlConStr = _config["SqlConStr"]);
-      _spcv = CollectionViewSource.GetDefaultView(_spds); // redundant warning stopper only.
+      _dbx = new(SqlConStr = _config["SqlConStr"]);
+      _spdv = CollectionViewSource.GetDefaultView(_spdl); // redundant warning stopper only.
+      _dblv = CollectionViewSource.GetDefaultView(_dbll); // redundant warning stopper only.
 
       UpdateViewCommand = new UpdateViewCommand(mainVM);//{ GestureKey = Key.F5, GestureModifier = ModifierKeys.None, MouseGesture = MouseAction.RightClick };
 
       IsBusy = Visibility.Visible;
 
-      Task.Run(async () => await loadAllSPs()).ContinueWith(_ =>
+      Task.Run(async () =>
       {
-        _.Result.ForEach(r => _spds.Add(r));
-        SpdCollectionView = CollectionViewSource.GetDefaultView(_spds);
+        var spdl = new List<SpdAdm>();
+
+        var dbll = await _dbx.Databases.ToListAsync();
+
+        dbll.Where(d => d.IsActive == true).ToList().ForEach(async r =>
+          (await loadAllSPs(r)).ForEach(m => spdl.Add(m))
+        );
+
+        return (dbll, spdl);
+      }).ContinueWith(_ =>
+      {
+        _.Result.dbll.ForEach(r => _dbll.Add(r));
+        DblCollectionView = CollectionViewSource.GetDefaultView(_dbll);
+        DblCollectionView.Filter = filterdbls;
+        //DblCollectionView.GroupDescriptions.Add(new PropertyGroupDescription(nameof(Database.Name)));
+        DblCollectionView.SortDescriptions.Add(new SortDescription(nameof(Database.Name), ListSortDirection.Ascending));
+        
+        _.Result.spdl.ForEach(r => _spdl.Add(r));
+        SpdCollectionView = CollectionViewSource.GetDefaultView(_spdl);
         SpdCollectionView.Filter = filterSPDs;
         SpdCollectionView.GroupDescriptions.Add(new PropertyGroupDescription(nameof(SpdAdm.Schema)));
         SpdCollectionView.SortDescriptions.Add(new SortDescription(nameof(SpdAdm.UFName), ListSortDirection.Ascending));
+        
         Bpr.Tick();
       }, TaskScheduler.FromCurrentSynchronizationContext());
     }
 
     bool filterSPDs(object obj) => obj is SpdAdm && ((obj as SpdAdm)?.SPName.Contains(SearchString, StringComparison.InvariantCultureIgnoreCase) ?? false);
+    bool filterdbls(object obj) => obj is Database && ((obj as Database)?.Name.Contains(SearchString, StringComparison.InvariantCultureIgnoreCase) ?? false);
 
-    async Task<List<SpdAdm>> loadAllSPs()
+    async Task<List<SpdAdm>> loadAllSPs(Database r)
     {
       List<SpdAdm> rv = new();
-      var connection = _context.Database.GetDbConnection();
+      var connection = _dbx.Database.GetDbConnection();
 
       try
       {
         if (connection.State.Equals(ConnectionState.Closed))
           connection.Open();
 
-        using DbCommand command = connection.CreateCommand();
+        using var command = connection.CreateCommand();
         command.CommandText = _sql;
 
         using System.Data.Common.DbDataReader? reader = await command.ExecuteReaderAsync();
@@ -106,7 +129,7 @@ namespace CI.DS.ViewModel.VMs
     SpdAdm? _selectSPD; public SpdAdm? SelectSPD { get => _selectSPD; set => SetProperty(ref _selectSPD, value); }
     public string SearchString { get => _searchString; set { SetProperty(ref _searchString, value); SpdCollectionView.Refresh(); } }
     public string SqlConStr { get => _sqlConStr; set { SetProperty(ref _sqlConStr, value); } }
-    Visibility isBusy; public Visibility IsBusy { get => isBusy; set => SetProperty(ref isBusy, value); }
+    Visibility _isBusy; public Visibility IsBusy { get => _isBusy; set => SetProperty(ref _isBusy, value); }
 
     public ICommand UpdateViewCommand { get; set; }
     public IConfigurationRoot Config => _config;

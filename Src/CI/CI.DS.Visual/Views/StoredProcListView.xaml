@@ -26,8 +26,18 @@
       </Setter>
     </Style>
 
-    <DataTemplate x:Key="myTaskTemplate">
-      <stb:HighlightableTextBlock Text="{Binding SPName}" SearchText="{Binding Text, ElementName=tbxSearch}" ToolTip="{Binding Definition}" Margin="0 -2.5" >
+    <DataTemplate x:Key="DblTemplate">
+      <stb:HighlightableTextBlock Text="{Binding Name}" SearchText="{Binding Text, ElementName=tbxDblSearch}" ToolTip="{Binding Definition}" Margin="0 -2.5" >
+        <stb:HighlightableTextBlock.InputBindings>
+          <MouseBinding MouseAction="LeftDoubleClick" 
+                        Command="{Binding DataContext.UpdateViewCommand,  RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}"
+                        CommandParameter="{Binding DataContext.SelectSPD, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}" />
+        </stb:HighlightableTextBlock.InputBindings>
+      </stb:HighlightableTextBlock>
+    </DataTemplate>
+
+    <DataTemplate x:Key="SpdTemplate">
+      <stb:HighlightableTextBlock Text="{Binding SPName}" SearchText="{Binding Text, ElementName=tbxSpdSearch}" ToolTip="{Binding Definition}" Margin="0 -2.5" >
         <stb:HighlightableTextBlock.InputBindings>
           <MouseBinding MouseAction="LeftDoubleClick" 
                         Command="{Binding DataContext.UpdateViewCommand,  RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}"
@@ -38,6 +48,12 @@
 
   </UserControl.Resources>
   <Grid Margin="30,10,30,10" >
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="*" />
+      <ColumnDefinition Width="30" />
+      <ColumnDefinition Width="*" />
+      <ColumnDefinition Width="Auto" />
+    </Grid.ColumnDefinitions>
     <Grid.RowDefinitions>
       <RowDefinition Height="Auto"/>
       <RowDefinition Height="Auto"/>
@@ -47,9 +63,9 @@
     <TextBlock Text="{Binding SqlConStr}" Visibility="Collapsed" FontSize="10" HorizontalAlignment="Right" VerticalAlignment="Top" d:Text="Sql con str" Margin="50 0"/>
     <TextBlock Text="Stored Procedure Selector" FontSize="20" Margin="0 10" />
 
-    <StackPanel Grid.Row="1" >
-      <Label  Content="_Search" Target="{Binding ElementName=tbxSearch}"/>
-      <TextBox Text="{Binding SearchString, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Stretch" x:Name="tbxSearch" />
+    <StackPanel Grid.Row="1" Grid.Column="0" >
+      <Label  Content="_Search Databases" Target="{Binding ElementName=tbxDblSearch}"/>
+      <TextBox Text="{Binding SearchString, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Stretch" x:Name="tbxDblSearch" />
 
       <Grid >
         <Grid.ColumnDefinitions>
@@ -57,18 +73,40 @@
           <ColumnDefinition Width="Auto" />
           <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
-        <Label Content="_DB Processes" Target="{Binding ElementName=lbxSpds}"    />
+        <Label Content="_Databases" Target="{Binding ElementName=lbxDbls}"    />
+        <TextBlock Grid.Column="1" Text="{Binding ElementName=lbxDbls, Path=Items.Count}"/>
+        <TextBlock Grid.Column="2" Text=" databases"/>
+      </Grid>
+    </StackPanel>
+
+    <ListView   Grid.Row="2" Grid.Column="0" x:Name="lbxDbls" 
+                ItemsSource="{Binding DblCollectionView}" 
+                ItemTemplate="{StaticResource DblTemplate}" 
+                SelectedItem="{Binding SelectSPD, Mode=TwoWay}" />
+
+    <StackPanel Grid.Row="1" Grid.Column="2" >
+      <Label  Content="_Search DB Process" Target="{Binding ElementName=tbxSpdSearch}"/>
+      <TextBox Text="{Binding SearchString, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Stretch" x:Name="tbxSpdSearch" />
+
+      <Grid >
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition />
+          <ColumnDefinition Width="Auto" />
+          <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
+        <Label Content="DB _Processes" Target="{Binding ElementName=lbxSpds}"    />
         <TextBlock Grid.Column="1" Text="{Binding ElementName=lbxSpds, Path=Items.Count}"/>
         <TextBlock Grid.Column="2" Text=" stored procedures in DB"/>
       </Grid>
     </StackPanel>
 
-    <ListView   Grid.Row="2" x:Name="lbxSpds" 
+    <ListView   Grid.Row="2" Grid.Column="2" x:Name="lbxSpds" 
                 ItemsSource="{Binding SpdCollectionView}" 
-                ItemTemplate="{StaticResource myTaskTemplate}" 
+                ItemTemplate="{StaticResource SpdTemplate}" 
                 SelectedItem="{Binding SelectSPD, Mode=TwoWay}" />
 
-    <StackPanel Grid.Row="2" Margin="30 10" HorizontalAlignment="Right" VerticalAlignment="Bottom">
+    
+    <StackPanel Grid.Row="2" Grid.Column="2" Margin="30 10" HorizontalAlignment="Right" VerticalAlignment="Bottom">
       <Button Content="_Go ►" ToolTip="Go to Parameter Manager for the selected SP" IsDefault="True" Background="{DynamicResource MenuItemBackground3}" Command="{Binding UpdateViewCommand}" CommandParameter="{Binding SelectSPD}" 
               Padding="0 0 0 3" Height="50" Width="50" >
         <Button.Resources>

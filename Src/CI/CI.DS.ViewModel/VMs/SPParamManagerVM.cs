@@ -19,14 +19,14 @@ namespace CI.DS.ViewModel.VMs
   {
     readonly ILogger _logger;
     readonly IConfigurationRoot _config;
-    readonly MainVM _mainVM;
     readonly InventoryContext _dbCnxt;
+    string _report = "So far - so good";
+    Dbprocess? _dpprocess;
 
     public SPParamManagerVM(ILogger logger, IConfigurationRoot config, MainVM mainVM, SpdAdm spd)
     {
       _logger = logger;
       _config = config;
-      _mainVM = mainVM;
       _dbCnxt = new(_config["SqlConStr"]);
 
       UpdateViewCommand = new UpdateViewCommand(mainVM);
@@ -41,8 +41,8 @@ namespace CI.DS.ViewModel.VMs
       try
       {
         Dbprocess = _.Result;
-        Debug.WriteLine($"** DBP id = {Dbprocess.Id}, Param count = {Dbprocess.DbprocessParameters.Count}.  ");
-        Dbprocess.DbprocessParameters.ToList().ForEach(row => DbprocessParameters.Add(row));
+        Debug.WriteLine($"** DBP id = {Dbprocess.Id}, Param count = {Dbprocess.Parameters.Count}.  ");
+        Dbprocess.Parameters.ToList().ForEach(row => Parameters.Add(row));
       }
       catch (Exception ex) { _logger.LogError(ex, "Really?"); }
     }, TaskScheduler.FromCurrentSynchronizationContext());
@@ -51,7 +51,7 @@ namespace CI.DS.ViewModel.VMs
       try
       {
         await _dbCnxt.Dbprocesses.LoadAsync();
-        await _dbCnxt.DbprocessParameters.LoadAsync();
+        await _dbCnxt.Parameters.LoadAsync();
 
         var sp = _dbCnxt.Dbprocesses.Local.FirstOrDefault(r => spd.SPName.Equals(r.StoredProcName));
         if (sp is null) sp = await createNewDBProcessAndStoreToDB(spd);
@@ -64,13 +64,13 @@ namespace CI.DS.ViewModel.VMs
     async Task<Dbprocess> createNewDBProcessAndStoreToDB(SpdAdm spd)
     {
       var now = DateTime.Now;
-      var ndp = new Dbprocess { Created = now, DbprocessName = spd.UFName, StoredProcName = spd.SPName, DbprocessParameters = new List<DbprocessParameter>() };
+      var ndp = new Dbprocess { Created = now, DbprocessName = spd.UFName, StoredProcName = spd.SPName, Parameters = new List<Parameter>() };
 
       spd.Parameters.Split(',', StringSplitOptions.RemoveEmptyEntries).ToList().ForEach(param =>
       {
         var ps = param.Split(' ', StringSplitOptions.RemoveEmptyEntries);
-        ndp.DbprocessParameters.Add(
-          new DbprocessParameter
+        ndp.Parameters.Add(
+          new Parameter
           {
             Created = now,
             ParameterName = ps[0],
@@ -86,7 +86,7 @@ namespace CI.DS.ViewModel.VMs
       var newDBP = _dbCnxt.Dbprocesses.Add(ndp);
 
       var rowsSaved = await _dbCnxt.SaveChangesAsync();
-      Report = $"New SP  '{spd.SPName}'  with  {ndp.DbprocessParameters.Count}  parameters added to DB.\r\n(all  {rowsSaved}  rows saved)";
+      Report = $"New SP  '{spd.SPName}'  with  {ndp.Parameters.Count}  parameters added to DB.\r\n(all  {rowsSaved}  rows saved)";
 
       return await _dbCnxt.Dbprocesses.FirstOrDefaultAsync(r => r.StoredProcName.Equals(spd.SPName));
     }
@@ -101,21 +101,22 @@ namespace CI.DS.ViewModel.VMs
       }
     }
 
-    public SpdAdm? SpdAdm { get; set; }
+    //public SpdAdm SpdAdm { get; set; }
 
-    public Dbprocess Dbprocess { get; set; }
-    readonly ObservableCollection<DbprocessParameter> _dbprocessParameters = new(); public ObservableCollection<DbprocessParameter> DbprocessParameters { get => _dbprocessParameters; }
-
+    public Dbprocess? Dbprocess { get => _dpprocess; set => SetProperty(ref _dpprocess, value); }
+    public ObservableCollection<Parameter> Parameters { get; } = new ObservableCollection<Parameter>();
 
     public ICommand UpdateViewCommand { get; set; }
+    ICommand? _saveToDB; public ICommand SaveToDB => _saveToDB ??= new RelayCommand(performSaveToDB);
 
-    ICommand saveToDB; public ICommand SaveToDB => saveToDB ??= new RelayCommand(PerformSaveToDB);
-    void PerformSaveToDB()
+
+    void performSaveToDB()
     {
       var rowsSaved = _dbCnxt.SaveChanges();
       Report = $"{rowsSaved} rows saved";
     }
 
-    string report; public string Report { get => report; set => SetProperty(ref report, value); }
+
+    public string Report { get => _report; set => SetProperty(ref _report, value); }
   }
 }
