@@ -40,5 +40,7 @@ namespace CI.DS.Visual.Views
       lbxDbls.SelectedIndex = 0;
       lbxSpds.SelectedIndex = 0;
     }
+
+    void ToggleButton_Click(object sender, RoutedEventArgs e)    {    }
   }
 }

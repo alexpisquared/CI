@@ -25,7 +25,6 @@ namespace CI.PermissionManager.Views
     public override object ProvideValue(IServiceProvider serviceProvider) => this;
     public StringToColor() { }
   }
-
   public class BoolToColorConverter : MarkupExtension, IValueConverter
   {
     public object Convert(object value, Type targetType, object parameter, CultureInfo culture) => new SolidColorBrush(((bool?)value) == null ? Colors.Transparent : ((bool?)value) == true ? Colors.Green : Colors.Red);

@@ -126,6 +126,7 @@ namespace CI.DS.ViewModel.VMs
       return rv;
     }
 
+    Database selectDBL; public Database SelectDBL { get => selectDBL; set => SetProperty(ref selectDBL, value); }
     SpdAdm? _selectSPD; public SpdAdm? SelectSPD { get => _selectSPD; set => SetProperty(ref _selectSPD, value); }
     public string SearchString { get => _searchString; set { SetProperty(ref _searchString, value); SpdCollectionView.Refresh(); } }
     public string SqlConStr { get => _sqlConStr; set { SetProperty(ref _sqlConStr, value); } }
@@ -151,5 +152,6 @@ FROM   sys.objects      obj
 WHERE obj.type in ('P', 'X') AND (has_perms_by_name(name, 'OBJECT', 'EXECUTE') = 1) AND mod.execute_as_principal_id IS NULL
 ORDER BY SPName
 ";
+
   }
 }

@@ -1,6 +1,8 @@
 ﻿<UserControl x:Class="CI.DS.Visual.Views.StoredProcListView" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" mc:Ignorable="d" 
-             xmlns:local="clr-namespace:CI.DS.Visual.Views"
-             xmlns:stb="clr-namespace:CI.Visual.Lib.Helpers;assembly=CI.Visual.Lib" xmlns:vms="clr-namespace:CI.DS.ViewModel.VMs;assembly=CI.DS.ViewModel" xmlns:cnv="clr-namespace:CI.DS.Visual.Converters" d:DataContext="{d:DesignInstance Type=vms:StoredProcListVM}"
+             xmlns:stb="clr-namespace:CI.Visual.Lib.Helpers;assembly=CI.Visual.Lib" 
+             xmlns:cnv="clr-namespace:CI.DS.Visual.Converters" 
+             xmlns:vms="clr-namespace:CI.DS.ViewModel.VMs;assembly=CI.DS.ViewModel" 
+             d:DataContext="{d:DesignInstance Type=vms:StoredProcListVM}"
              d:DesignHeight="350" d:DesignWidth="800" Background="{DynamicResource MenuItemBackground1}" Loaded="onLoaded">
   <UserControl.InputBindings>
     <KeyBinding   Command="{Binding UpdateViewCommand}" CommandParameter="Dpsl" Gesture="F2" />
@@ -26,14 +28,30 @@
       </Setter>
     </Style>
 
+    <Style TargetType="ToggleButton">
+      <Setter Property="VerticalAlignment"          Value="Center"  />
+      <Setter Property="HorizontalAlignment"        Value="Right"  />
+      <Setter Property="BorderThickness"            Value="0"  />
+      <Setter Property="Height"                     Value="26"  />
+      <Setter Property="Width"                      Value="60"  />
+      <Setter Property="Margin"                     Value="0"  />
+      <Setter Property="FocusVisualStyle"     Value="{x:Null}" />
+    </Style>
+
     <DataTemplate x:Key="DblTemplate">
-      <stb:HighlightableTextBlock Text="{Binding Name}" SearchText="{Binding Text, ElementName=tbxDblSearch}" ToolTip="{Binding Definition}" Margin="0 -2.5" >
-        <stb:HighlightableTextBlock.InputBindings>
-          <MouseBinding MouseAction="LeftDoubleClick" 
+      <Grid Width="360">
+        <stb:HighlightableTextBlock Text="{Binding Name}" SearchText="{Binding Text, ElementName=tbxDblSearch}" ToolTip="{Binding Notes}" Margin="0 -2.5" >
+          <!--<stb:HighlightableTextBlock.InputBindings>
+            <MouseBinding MouseAction="LeftDoubleClick" 
                         Command="{Binding DataContext.UpdateViewCommand,  RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}"
                         CommandParameter="{Binding DataContext.SelectSPD, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}" />
-        </stb:HighlightableTextBlock.InputBindings>
-      </stb:HighlightableTextBlock>
+          </stb:HighlightableTextBlock.InputBindings>-->
+        </stb:HighlightableTextBlock>
+        <ToggleButton IsChecked="{Binding IsActive, UpdateSourceTrigger=PropertyChanged}" Click="ToggleButton_Click" >
+          <TextBlock       Text="{Binding IsActive, UpdateSourceTrigger=PropertyChanged, Converter={cnv:BoolToCharConverter}}" FontFamily="Wingdings" FontSize="26"
+                     Foreground="{Binding IsActive, UpdateSourceTrigger=PropertyChanged, Converter={cnv:BoolToColorConverter}}" />
+        </ToggleButton>
+      </Grid>
     </DataTemplate>
 
     <DataTemplate x:Key="SpdTemplate">
@@ -49,7 +67,7 @@
   </UserControl.Resources>
   <Grid Margin="30,10,30,10" >
     <Grid.ColumnDefinitions>
-      <ColumnDefinition Width="*" />
+      <ColumnDefinition Width="Auto" />
       <ColumnDefinition Width="30" />
       <ColumnDefinition Width="*" />
       <ColumnDefinition Width="Auto" />
@@ -82,7 +100,7 @@
     <ListView   Grid.Row="2" Grid.Column="0" x:Name="lbxDbls" 
                 ItemsSource="{Binding DblCollectionView}" 
                 ItemTemplate="{StaticResource DblTemplate}" 
-                SelectedItem="{Binding SelectSPD, Mode=TwoWay}" />
+                SelectedItem="{Binding SelectDBL, Mode=TwoWay}" />
 
     <StackPanel Grid.Row="1" Grid.Column="2" >
       <Label  Content="_Search DB Process" Target="{Binding ElementName=tbxSpdSearch}"/>
@@ -105,7 +123,7 @@
                 ItemTemplate="{StaticResource SpdTemplate}" 
                 SelectedItem="{Binding SelectSPD, Mode=TwoWay}" />
 
-    
+
     <StackPanel Grid.Row="2" Grid.Column="2" Margin="30 10" HorizontalAlignment="Right" VerticalAlignment="Bottom">
       <Button Content="_Go ►" ToolTip="Go to Parameter Manager for the selected SP" IsDefault="True" Background="{DynamicResource MenuItemBackground3}" Command="{Binding UpdateViewCommand}" CommandParameter="{Binding SelectSPD}" 
               Padding="0 0 0 3" Height="50" Width="50" >
