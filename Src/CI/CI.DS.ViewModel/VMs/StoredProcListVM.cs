@@ -1,4 +1,5 @@
-﻿using CI.DS.ViewModel.Commands;
+﻿using CI.Standard.Lib.Extensions;
+using CI.DS.ViewModel.Commands;
 using CI.Standard.Lib.Helpers;
 using DB.Inventory.Models;
 using Microsoft.EntityFrameworkCore;
@@ -17,6 +18,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Data;
 using System.Windows.Input;
+using CI.Standard.Lib.Extensions;
 
 namespace CI.DS.ViewModel.VMs
 {
@@ -109,14 +111,15 @@ namespace CI.DS.ViewModel.VMs
                 reader.IsDBNull("Definition") ? "~DBNull (no access to definition)" : reader.GetString("Definition"),
                 reader.GetInt32("HasExecPerm")));
             }
-            catch (SqlNullValueException ex) { _logger.LogError(ex.ToString()); }
+            catch (SqlNullValueException ex) { ex.Log(); _logger.LogError(ex.ToString()); }
+            catch (Exception ex) { ex.Log(); _logger.LogError(ex.ToString()); }
           }
         }
 
         reader.Close();
       }
-      catch (SqlNullValueException ex) { _logger.LogError(ex.ToString()); }
-      catch (Exception ex) { _logger.LogError(ex.ToString()); }
+      catch (SqlNullValueException ex) { ex.Log(); _logger.LogError(ex.ToString()); }
+      catch (Exception ex) { ex.Log(); _logger.LogError(ex.ToString()); }
       finally
       {
         connection.Close();

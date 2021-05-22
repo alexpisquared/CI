@@ -1,4 +1,5 @@
-﻿using CI.DS.ViewModel.Commands;
+﻿using CI.Standard.Lib.Extensions;
+using CI.DS.ViewModel.Commands;
 using DB.Inventory.Models;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
@@ -46,7 +47,7 @@ namespace CI.DS.ViewModel.VMs
           BookGroups.Clear();
           _.Result.ForEach(row => BookGroups.Add(row));
         }
-        catch (Exception ex) { _logger.LogError(ex, "Really?"); }
+        catch (Exception ex) { ex.Log(); _logger.LogError(ex, "Really?"); }
       }, TaskScheduler.FromCurrentSynchronizationContext());
     }
 
@@ -89,7 +90,7 @@ namespace CI.DS.ViewModel.VMs
 
         return $"{rows.Count} rows found";
       }
-      catch (Exception ex) { _logger.LogError(ex.ToString()); return ex.Message; }
+      catch (Exception ex) { ex.Log(); _logger.LogError(ex.ToString()); return ex.Message; }
       finally { }
     }
   }

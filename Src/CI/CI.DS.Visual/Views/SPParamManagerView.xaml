@@ -53,20 +53,21 @@
     </StackPanel>
 
 
-    <DataGrid Grid.Row="2" ItemsSource="{Binding Parameters}" x:Name="dg1" Margin="3 8" AutoGenerateColumns="False" EnableRowVirtualization="True" RowDetailsVisibilityMode="VisibleWhenSelected">
+    <DataGrid Grid.Row="2" ItemsSource="{Binding Parameters}" Margin="3 8" AutoGenerateColumns="False" EnableRowVirtualization="True" RowDetailsVisibilityMode="VisibleWhenSelected"
+              IsReadOnly="False">
       <DataGrid.Columns>
         <!--
-        <DataGridTextColumn     Header="ID"                 Binding="{Binding ID}"               IsReadOnly="True" Width="SizeToHeader"/>
-        <DataGridTextColumn     Header="DBProcess ID"       Binding="{Binding DBProcessID}"      Width="SizeToHeader"/>
-        <DataGridCheckBoxColumn Header="Is Read Only"       Binding="{Binding IsReadOnly}"       Width="SizeToHeader"/>        -->                                                                                      
-        <DataGridTextColumn     Header="Parameter Name  "   Binding="{Binding ParameterName}"    IsReadOnly="True" Width="Auto"/>
-        <DataGridTextColumn     Header="Type"               Binding="{Binding ParameterType}"    IsReadOnly="True" />
-        <DataGridCheckBoxColumn Header="Is Output "         Binding="{Binding IsOutput}"         IsReadOnly="True" Width="SizeToHeader"/>
-        <DataGridCheckBoxColumn Header="User-Visible "      Binding="{Binding UserVisible}"      Width="SizeToHeader"/>
-        <DataGridTextColumn     Header="User-friendly Name" Binding="{Binding UserFriendlyName}" Width="*"/>
-        <DataGridTextColumn     Header="Default Value  "    Binding="{Binding DefaultValue}"     Width="SizeToHeader"/>
-        <DataGridTextColumn     Header="Notes"              Binding="{Binding Notes}"            Width="*"/>
-        <DataGridTextColumn     Header="Created"            Binding="{Binding Created, StringFormat='{}{0:yyyy-MM-dd HH:mm} '}" IsReadOnly="True" Width="Auto"/>
+        <DataGridTextColumn     Header="Created"              Binding="{Binding Created, StringFormat='{}{0:yyyy-MM-dd HH:mm} '}" IsReadOnly="True" Width="Auto"/>
+        <DataGridTextColumn     Header="ID"                   Binding="{Binding ID}"               IsReadOnly="True" Width="SizeToHeader"/>
+        <DataGridTextColumn     Header="DBProcess ID"         Binding="{Binding DBProcessID}"      Width="SizeToHeader"/>
+        <DataGridCheckBoxColumn Header="Is Read Only"         Binding="{Binding IsReadOnly}"       Width="SizeToHeader"/>        -->                                                                                      
+        <DataGridTextColumn     Header="Parameter Name  "     Binding="{Binding ParameterName}"    IsReadOnly="True" Foreground="#666"/>
+        <DataGridTextColumn     Header="Type"                 Binding="{Binding ParameterType}"    IsReadOnly="True" Foreground="#666"/>
+        <DataGridCheckBoxColumn Header="  Is Output  "        Binding="{Binding IsOutput}"         IsReadOnly="True" />
+        <DataGridCheckBoxColumn Header="  User-Visible  "     Binding="{Binding UserVisible}"      />
+        <DataGridTextColumn     Header="User-friendly Name  " Binding="{Binding UserFriendlyName}" />
+        <DataGridTextColumn     Header="Default Value   "     Binding="{Binding DefaultValue}"     />
+        <DataGridTextColumn     Header="Notes"                Binding="{Binding Notes}"            Width="*"/>
       </DataGrid.Columns>
     </DataGrid>
 

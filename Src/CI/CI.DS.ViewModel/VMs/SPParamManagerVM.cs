@@ -1,4 +1,6 @@
-﻿using CI.DS.ViewModel.Commands;
+﻿using CI.Standard.Lib.Extensions;
+using CI.Standard.Lib.Extensions;
+using CI.DS.ViewModel.Commands;
 using DB.Inventory.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -44,7 +46,7 @@ namespace CI.DS.ViewModel.VMs
         Debug.WriteLine($"** DBP id = {Dbprocess.Id}, Param count = {Dbprocess.Parameters.Count}.  ");
         Dbprocess.Parameters.ToList().ForEach(row => Parameters.Add(row));
       }
-      catch (Exception ex) { _logger.LogError(ex, "Really?"); }
+      catch (Exception ex) { ex.Log(); _logger.LogError(ex, "Really?"); }
     }, TaskScheduler.FromCurrentSynchronizationContext());
     async Task<Dbprocess> getOrCreateSpd(SpdAdm spd)
     {
@@ -59,7 +61,7 @@ namespace CI.DS.ViewModel.VMs
 
         return sp;
       }
-      catch (Exception ex) { _logger.LogError(ex, "go figure..."); throw; }
+      catch (Exception ex) { ex.Log(); _logger.LogError(ex, "go figure..."); throw; }
     }
     async Task<Dbprocess> createNewDBProcessAndStoreToDB(SpdAdm spd)
     {
