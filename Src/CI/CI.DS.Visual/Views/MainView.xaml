@@ -187,10 +187,10 @@
         <DoubleAnimation Storyboard.TargetProperty="(FrameworkElement.Opacity)"  From="0"   To="1"  Duration="0:0:20" x:Name="Opacity_1MinLowCpu" />
       </Storyboard>
       <Storyboard Timeline.DesiredFrameRate="3" x:Key="Opacity_FastLowCpu" >
-        <DoubleAnimation Storyboard.TargetProperty="(FrameworkElement.Opacity)"             To="1"  Duration="0:0:.3" />
+        <DoubleAnimation Storyboard.TargetProperty="(FrameworkElement.Opacity)"             To="1"  Duration="0:0:0.2" />
       </Storyboard>
       <Storyboard Timeline.DesiredFrameRate="3" x:Key="Opacity_1SecLowCpu" >
-        <DoubleAnimation Storyboard.TargetProperty="(FrameworkElement.Opacity)"             To=".1" Duration="0:0:.9" />
+        <DoubleAnimation Storyboard.TargetProperty="(FrameworkElement.Opacity)"             To="0"  Duration="0:0:2.0" />
       </Storyboard>
       <Style x:Key="MouseOverShowHideAnimStyle" TargetType="{x:Type StackPanel}">
 
@@ -242,6 +242,29 @@
           </StackPanel.Effect>
           <Label     FontSize="11" Content="Hello " />
           <TextBlock FontSize="11" Text="{Binding CurrentUser}" FontWeight="SemiBold" d:Text="(alex.pigida) - mtUATsqldb - Total 0 matches found in   2.76 sec."/>
+          
+          <Menu Background="Transparent" BorderThickness="0" >
+            <Menu.Resources>
+              <Style TargetType="{x:Type MenuItem}">
+                <Setter Property="Foreground" Value="#080" />
+                <Setter Property="FontSize" Value="14" />
+                <Setter Property="Margin"   Value="5" />
+                <Setter Property="Padding"  Value="5" />
+                <Setter Property="BorderThickness"  Value="0" />
+              </Style>
+            </Menu.Resources>
+            <MenuItem Header="· · ·" >
+              <MenuItem Header="_Dpsl" Command="{Binding UpdateViewCommand}" CommandParameter="Dpsl" Background="{DynamicResource MenuItemBackground1}" InputGestureText="F2" ToolTip="" />
+              <MenuItem Header="_Spsl" Command="{Binding UpdateViewCommand}" CommandParameter="Spsl" Background="{DynamicResource MenuItemBackground1}" InputGestureText="F2" ToolTip="" />
+              <MenuItem Header="_Demo" Command="{Binding UpdateViewCommand}" CommandParameter="Demo" Background="{DynamicResource MenuItemBackground2}" InputGestureText="F3" ToolTip="" />
+              <MenuItem Header="_Acbg" Command="{Binding UpdateViewCommand}" CommandParameter="Acbg" Background="{DynamicResource MenuItemBackground3}" InputGestureText="F4" ToolTip="" />
+              <Separator/>
+              <MenuItem Header="_Copy" Command="Copy" InputGestureText="Ctrl+C" />
+              <MenuItem Header="_Export to XML file" InputGestureText="Ctrl+Q" />
+              <MenuItem Header="_Export to CSV file" InputGestureText="Ctrl+U" />
+            </MenuItem>
+          </Menu>
+
         </StackPanel>
 
         <Grid Grid.Row="2" Grid.RowSpan="2" Margin="8,8,8,8">
@@ -298,30 +321,7 @@
               </ContentControl.Style>
             </ContentControl>
 
-            <Menu Background="Transparent" VerticalAlignment="Top" HorizontalAlignment="Right" BorderThickness="0" Grid.RowSpan="2">
-              <Menu.Resources>
-                <Style TargetType="{x:Type MenuItem}">
-                  <Setter Property="Foreground" Value="#080" />
-                  <Setter Property="FontSize" Value="16" />
-                  <Setter Property="Margin"   Value="5 5 5 0" />
-                  <Setter Property="Padding"  Value="16 5" />
-                  <Setter Property="BorderThickness"  Value="0" />
-                </Style>
-              </Menu.Resources>
-              <MenuItem Header="· · ·" >
-                <MenuItem Header="_Copy" Command="Copy" InputGestureText="Ctrl+C" />
-                <MenuItem Header="_Export to XML file" InputGestureText="Ctrl+Q" />
-                <MenuItem Header="_Export to CSV file" InputGestureText="Ctrl+U" />
-                <Separator/>
-                <MenuItem Header="_Dpsl" Command="{Binding UpdateViewCommand}" CommandParameter="Dpsl" Background="{DynamicResource MenuItemBackground1}" InputGestureText="F2" ToolTip="" />
-                <MenuItem Header="_Spsl" Command="{Binding UpdateViewCommand}" CommandParameter="Spsl" Background="{DynamicResource MenuItemBackground1}" InputGestureText="F2" ToolTip="" />
-                <MenuItem Header="_Demo" Command="{Binding UpdateViewCommand}" CommandParameter="Demo" Background="{DynamicResource MenuItemBackground2}" InputGestureText="F3" ToolTip="" />
-                <MenuItem Header="_Acbg" Command="{Binding UpdateViewCommand}" CommandParameter="Acbg" Background="{DynamicResource MenuItemBackground3}" InputGestureText="F4" ToolTip="" />
-              </MenuItem>
-            </Menu>
-
           </Grid>
-
         </Grid>
 
         <Grid Grid.Row="2" Grid.RowSpan="2" x:Name="pnlBusy" Background="#dd84" Margin="8,8,8,6" Visibility="Collapsed" d:Visibility="Collapsed">
@@ -334,7 +334,7 @@
         </Grid>
       </Grid>
 
-      <StackPanel Grid.ColumnSpan="6" Orientation="Horizontal" Opacity=".1" Style="{StaticResource MouseOverShowHideAnimStyle}" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0" >
+      <StackPanel Grid.ColumnSpan="6" Orientation="Horizontal" Opacity=".3" Style="{StaticResource MouseOverShowHideAnimStyle}" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0" >
         <Button   Margin="5 0" Content="_Flsh"     Height="26" Click="onFlush" Opacity="0" />
         <Button   Margin="5 0" Content="_Save"     Height="26" Click="onSave"  Visibility="Collapsed" />
         <Button	  Margin="5 0" Content="Se_ttings" Height="26" Click="onSettings" ToolTip="Adjust application settings" VerticalAlignment="Stretch" Visibility="Collapsed" />

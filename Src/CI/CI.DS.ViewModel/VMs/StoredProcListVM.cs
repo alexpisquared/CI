@@ -1,5 +1,5 @@
-﻿using CI.Standard.Lib.Extensions;
-using CI.DS.ViewModel.Commands;
+﻿using CI.DS.ViewModel.Commands;
+using CI.Standard.Lib.Extensions;
 using CI.Standard.Lib.Helpers;
 using DB.Inventory.Models;
 using Microsoft.EntityFrameworkCore;
@@ -10,7 +10,6 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
-using System.Data.Common;
 using System.Data.SqlTypes;
 using System.Diagnostics;
 using System.Linq;
@@ -18,7 +17,6 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Data;
 using System.Windows.Input;
-using CI.Standard.Lib.Extensions;
 
 namespace CI.DS.ViewModel.VMs
 {
@@ -29,10 +27,7 @@ namespace CI.DS.ViewModel.VMs
     readonly InventoryContext _dbx;
     readonly List<SpdAdm> _spdl = new();
     readonly List<Database> _dbll = new();
-    string _searchString = "", _sqlConStr = "sql con str";
-
-    ICollectionView _spdv; public ICollectionView SpdCollectionView { get => _spdv; set => SetProperty(ref _spdv, value); }
-    ICollectionView _dblv; public ICollectionView DblCollectionView { get => _dblv; set => SetProperty(ref _dblv, value); }
+    string _searchString = "", _Report = "sql con str", _sqlConStr = "sql con str";
 
     public StoredProcListVM(ILogger logger, IConfigurationRoot config, MainVM mainVM)
     {
@@ -45,6 +40,8 @@ namespace CI.DS.ViewModel.VMs
       UpdateViewCommand = new UpdateViewCommand(mainVM);//{ GestureKey = Key.F5, GestureModifier = ModifierKeys.None, MouseGesture = MouseAction.RightClick };
 
       IsBusy = Visibility.Visible;
+
+      var sw = Stopwatch.StartNew();
 
       Task.Run(async () =>
       {
@@ -64,13 +61,14 @@ namespace CI.DS.ViewModel.VMs
         DblCollectionView.Filter = filterdbls;
         //DblCollectionView.GroupDescriptions.Add(new PropertyGroupDescription(nameof(Database.Name)));
         DblCollectionView.SortDescriptions.Add(new SortDescription(nameof(Database.Name), ListSortDirection.Ascending));
-        
+
         _.Result.spdl.ForEach(r => _spdl.Add(r));
         SpdCollectionView = CollectionViewSource.GetDefaultView(_spdl);
         SpdCollectionView.Filter = filterSPDs;
         SpdCollectionView.GroupDescriptions.Add(new PropertyGroupDescription(nameof(SpdAdm.Schema)));
         SpdCollectionView.SortDescriptions.Add(new SortDescription(nameof(SpdAdm.UFName), ListSortDirection.Ascending));
-        
+
+        Report = $"Loaded {_dbll.Count} DBs, {_spdl.Count} SPs in {sw.ElapsedMilliseconds:N0} ms.";
         Bpr.Tick();
       }, TaskScheduler.FromCurrentSynchronizationContext());
     }
@@ -91,7 +89,7 @@ namespace CI.DS.ViewModel.VMs
         using var command = connection.CreateCommand();
         command.CommandText = _sql;
 
-        using System.Data.Common.DbDataReader? reader = await command.ExecuteReaderAsync();
+        using var reader = await command.ExecuteReaderAsync();
         if (!reader.HasRows)
         {
           Debug.WriteLine("No rows found.");
@@ -129,10 +127,13 @@ namespace CI.DS.ViewModel.VMs
       return rv;
     }
 
-    Database selectDBL; public Database SelectDBL { get => selectDBL; set => SetProperty(ref selectDBL, value); }
+    ICollectionView _spdv; public ICollectionView SpdCollectionView { get => _spdv; set => SetProperty(ref _spdv, value); }
+    ICollectionView _dblv; public ICollectionView DblCollectionView { get => _dblv; set => SetProperty(ref _dblv, value); }
+    Database? _selectDBL; public Database SelectDBL { get => _selectDBL; set => SetProperty(ref _selectDBL, value); }
     SpdAdm? _selectSPD; public SpdAdm? SelectSPD { get => _selectSPD; set => SetProperty(ref _selectSPD, value); }
     public string SearchString { get => _searchString; set { SetProperty(ref _searchString, value); SpdCollectionView.Refresh(); } }
-    public string SqlConStr { get => _sqlConStr; set { SetProperty(ref _sqlConStr, value); } }
+    public string SqlConStr { get => _sqlConStr; set => SetProperty(ref _sqlConStr, value); }
+    public string Report { get => _Report; set => SetProperty(ref _Report, value); }
     Visibility _isBusy; public Visibility IsBusy { get => _isBusy; set => SetProperty(ref _isBusy, value); }
 
     public ICommand UpdateViewCommand { get; set; }
