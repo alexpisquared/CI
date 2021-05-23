@@ -30,29 +30,36 @@ namespace CI.DS.Visual.Views
     bool _loaded, _isDbg, _isDirty;
     string? _last = null;
     int _userid, _permid;
-    readonly ILogger<UserSpSelectorView> _logger;
-    readonly Microsoft.Extensions.Configuration.IConfigurationRoot _config;
+    ILogger _logger;
+    Microsoft.Extensions.Configuration.IConfigurationRoot _config;
     public static readonly DependencyProperty BlurProperty = DependencyProperty.Register("Blur", typeof(double), typeof(UserSpSelectorView), new PropertyMetadata(.0)); public double Blur { get => (double)GetValue(BlurProperty); set => SetValue(BlurProperty, value); }
-    public UserSpSelectorView() { InitializeComponent(); } //todo:
-    public UserSpSelectorView(ILogger<UserSpSelectorView> logger, Microsoft.Extensions.Configuration.IConfigurationRoot config)
+    public UserSpSelectorView()
     {
       InitializeComponent();
 
       _userViewSource = (CollectionViewSource)FindResource(nameof(_userViewSource));
       _permViewSource = (CollectionViewSource)FindResource(nameof(_permViewSource));
 
-      DataContext = this;
-
-      Loaded += onLoaded;
       //todo: themeSelector.ThemeApplier = ApplyTheme;
-      _logger = logger;
-      _config = config;
+    } //todo:
+    public UserSpSelectorView(ILogger logger, Microsoft.Extensions.Configuration.IConfigurationRoot config)
+    {
+      _userViewSource = (CollectionViewSource)FindResource(nameof(_userViewSource));
+      _permViewSource = (CollectionViewSource)FindResource(nameof(_permViewSource));
 
+      init(logger, config);
+    } //todo:
+    void init(ILogger logger, Microsoft.Extensions.Configuration.IConfigurationRoot config)
+    {
 #if DEBUG
       _isDbg = true;
 #else
       _isDbg = false;
 #endif
+
+      //todo: themeSelector.ThemeApplier = ApplyTheme;
+      _logger = logger;
+      _config = config;
 
       var svrs = _config["ServerList"].Split(" ").ToList();
       cbxSrvr.ItemsSource = svrs;
@@ -61,6 +68,8 @@ namespace CI.DS.Visual.Views
     }
     async void onLoaded(object s, RoutedEventArgs e)
     {
+      init((ILogger?)((CI.DS.ViewModel.VMs.UserSpSelectorVM)DataContext)._logger, ((CI.DS.ViewModel.VMs.UserSpSelectorVM)DataContext)._config);
+
       await loadEF();
 
       ufp.Text = pfu.Text = "";
