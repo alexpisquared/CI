@@ -79,9 +79,21 @@
     <TextBlock  Grid.Row="3" Text="{Binding Report}" Margin="25 5" Foreground="#0a0" FontSize="20" d:Text="Hello. Is everything OK?" HorizontalAlignment="Center"/>
 
     <StackPanel Grid.Row="2" Orientation="Horizontal" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="30 10" Grid.RowSpan="2">
-      <Button Content="_Save" ToolTip="Save changes to DB" Command="{Binding SaveToDB}"  />
-      <Button Content="◄ _OK" x:Name="focus0" ToolTip="Go back to SP selector " IsDefault="True" Background="{DynamicResource MenuItemBackground3}" Command="{Binding UpdateViewCommand}" CommandParameter="Spsl" 
-              Padding="0 0 0 3" Height="50" Width="50" >
+      <Button Padding="0 0 0 3" Height="50" Width="50" Content="_Save" ToolTip="Save changes to DB" Command="{Binding SaveToDB}" Background="{DynamicResource MenuItemBackground3}" >
+        <Button.Resources>
+          <Style TargetType="{x:Type Border}">
+            <Setter Property="CornerRadius" Value="25"/>
+          </Style>
+        </Button.Resources>
+      </Button>
+      <Button Padding="0 0 0 3" Height="50" Width="50" Content="◄ _OK" ToolTip="Go back to SP selector " Background="{DynamicResource MenuItemBackground3}" Command="{Binding UpdateViewCommand}" CommandParameter="Spsl" x:Name="focus0" IsDefault="True" >
+        <Button.Resources>
+          <Style TargetType="{x:Type Border}">
+            <Setter Property="CornerRadius" Value="25"/>
+          </Style>
+        </Button.Resources>
+      </Button>
+      <Button Padding="0 0 0 3" Height="50" Width="50" Content="UA ►" ToolTip="User Assignment" Background="{DynamicResource MenuItemBackground3}" Command="{Binding UpdateViewCommand}" CommandParameter="USpS" >
         <Button.Resources>
           <Style TargetType="{x:Type Border}">
             <Setter Property="CornerRadius" Value="25"/>

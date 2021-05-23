@@ -1,25 +1,17 @@
-﻿using DB.Inventory.Models;
+﻿using CI.Standard.Lib.Extensions;
+using DB.Inventory.Models;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using System;
-using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
-using System.Text;
+using System.Media;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using Microsoft.Extensions.Logging;
-using System.Collections.ObjectModel;
-using System.Media;
-using System.Diagnostics;
-using Microsoft.EntityFrameworkCore;
-using System.ComponentModel;
-using CI.Standard.Lib.Extensions;
 
 namespace CI.DS.Visual.Views
 {
@@ -68,7 +60,7 @@ namespace CI.DS.Visual.Views
     }
     async void onLoaded(object s, RoutedEventArgs e)
     {
-      init((ILogger?)((CI.DS.ViewModel.VMs.UserSpSelectorVM)DataContext)._logger, ((CI.DS.ViewModel.VMs.UserSpSelectorVM)DataContext)._config);
+      init(((ViewModel.VMs.UserSpSelectorVM)DataContext)._logger, ((CI.DS.ViewModel.VMs.UserSpSelectorVM)DataContext)._config);
 
       await loadEF();
 
@@ -213,6 +205,7 @@ namespace CI.DS.Visual.Views
         await Task.Delay(60);
         _context = new(string.Format(_config["SqlConStr"], cbxSrvr.SelectedValue));
         await _context.Users.LoadAsync();
+        await _context.Databases.LoadAsync();
         await _context.Dbprocesses.LoadAsync();
         await _context.ProcessUserAccesses.LoadAsync();
         tbkTitle.Text = _isDbg ? $"A:{_context.Applications.Local.Count} ◄ P:{_context.Dbprocesses.Local.Count} ◄ pa:{_context.ProcessUserAccesses.Local.Count} ◄ u:{_context.Users.Local.Count}" : "";
@@ -300,9 +293,9 @@ namespace CI.DS.Visual.Views
       }
     }
 
-    internal async Task Recalc(FrameworkElement s)
+    async void onTogglePermission(object s, RoutedEventArgs e) 
     {
-      var dc = ((FrameworkElement)s.TemplatedParent).DataContext;
+      var dc = ((FrameworkElement)((FrameworkElement)s).TemplatedParent).DataContext;
       if (dc is Dbprocess perm && _userid > 0)
       {
         var dbpa = _context.ProcessUserAccesses.Local.FirstOrDefault(r => r.UserId == _userid && r.DbprocessId == perm.Id);
@@ -344,13 +337,6 @@ namespace CI.DS.Visual.Views
         pfu.Text = $"---";
         ufp.Text = $"{_context.Dbprocesses.Local.FirstOrDefault(r => r.Id == _permid)?.DbprocessName}  assigned to  {_context.Users.Local.Where(r => r.Granted == true).Count()}  users:";
       }
-    }
-
-
-
-    async void onTogglePermission(object s, RoutedEventArgs e)
-    {
-      await Recalc((FrameworkElement)s); //todo: 
     }
   }
 }

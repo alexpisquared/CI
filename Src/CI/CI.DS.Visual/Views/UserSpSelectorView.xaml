@@ -4,7 +4,7 @@
              xmlns:Views="clr-namespace:CI.DS.Visual.Views"
              xmlns:vlh="clr-namespace:CI.Visual.Lib.Helpers;assembly=CI.Visual.Lib" 
              xmlns:cnv="clr-namespace:CI.DS.Visual.Converters"
-             xmlns:xui="clr-namespace:CI.Standard.Lib.Views;assembly=CI.Visual.Lib"                                 
+             xmlns:xui="clr-namespace:CI.Standard.Lib.Views;assembly=CI.Visual.Lib" xmlns:vms="clr-namespace:CI.DS.ViewModel.VMs;assembly=CI.DS.ViewModel" d:DataContext="{d:DesignInstance Type=vms:UserSpSelectorVM}"
              Loaded="onLoaded"
              d:DesignHeight="450" d:DesignWidth="800">
   <UserControl.Resources>
@@ -341,7 +341,7 @@
                     SelectionUnit="Cell" SelectedCellsChanged="dgPerm_SelectedCellsChanged" 
                     CanUserAddRows="True" SelectionChanged="dgPerm_SelectionChanged" GotFocus="dgPerm_GotFocus" LostFocus="dgPerm_LostFocus">
         <DataGrid.Columns>
-          <DataGridTextColumn     Header="Stored Proc Name" Binding="{Binding StoredProcName}"  Width="*"/>
+          <DataGridTextColumn     Header="Stored Proc Name" Binding="{Binding DB_SP_Name}"  Width="*"/>
           <DataGridTemplateColumn Header="Granted" CellTemplate="{StaticResource LookTemplate}" x:Name="colPG"/>
         </DataGrid.Columns>
       </DataGrid>
@@ -378,6 +378,16 @@
         <TextBlock  x:Name="tbkVer" Text="V 0.3.26.12" Margin="10 0" Foreground="#07e" />
         -->
       <Button	Margin="2" Content="æ" FontFamily="Webdings"    FontSize="18" Height="26" Padding="0 -1" Width="26" Foreground="#F00" BorderThickness="0" ToolTip="Toggle Audio"      Click="onAudio"           Visibility="Collapsed"/>
+    </StackPanel>
+
+    <StackPanel Grid.Row="2" Orientation="Horizontal" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="30 20" Grid.RowSpan="2">
+      <Button Padding="0 0 0 3" Height="50" Width="50" Content="◄ _OK" ToolTip="Go back to SP selector " Background="{DynamicResource MenuItemBackground3}" Command="{Binding UpdateViewCommand}" CommandParameter="Spsl" x:Name="focus0" IsDefault="True" >
+        <Button.Resources>
+          <Style TargetType="{x:Type Border}">
+            <Setter Property="CornerRadius" Value="25"/>
+          </Style>
+        </Button.Resources>
+      </Button>
     </StackPanel>
 
   </Grid>

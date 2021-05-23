@@ -1,6 +1,9 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
+using System.Windows.Input;
+using Microsoft.Toolkit.Mvvm.Input;
+using CI.DS.ViewModel.Commands;
 
 namespace CI.DS.ViewModel.VMs
 {
@@ -15,6 +18,9 @@ namespace CI.DS.ViewModel.VMs
       _logger = logger;
       _config = config;
       _mainVM = mainVM;
+      UpdateViewCommand = new UpdateViewCommand(mainVM);//{ GestureKey = Key.F5, GestureModifier = ModifierKeys.None, MouseGesture = MouseAction.RightClick };
     }
+
+    public ICommand UpdateViewCommand { get; set; }
   }
 }
