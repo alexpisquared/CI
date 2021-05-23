@@ -87,7 +87,7 @@ namespace CI.DS.Visual.Views
       SystemSounds.Asterisk.Play();
     }
     async void onSave(object s, RoutedEventArgs e) => await saveIfDirty();
-    void dgPermReset(object s, RoutedEventArgs e) { ((ObservableCollection<Permission>)_permViewSource.Source).ToList().ForEach(r => r.Granted = null); dgPerm.Items.Refresh(); }
+    void dgPermReset(object s, RoutedEventArgs e) { ((ObservableCollection<Dbprocess>)_permViewSource.Source).ToList().ForEach(r => r.Granted = null); dgPerm.Items.Refresh(); }
     void dgUserReset(object s, RoutedEventArgs e) { ((ObservableCollection<User/*  */>)_userViewSource.Source).ToList().ForEach(r => r.Granted = null); dgUser.Items.Refresh(); }
     void onSettings(object s, RoutedEventArgs e) { }
     async void onAudio(object s, RoutedEventArgs e) { _isDbg = false; SystemSounds.Hand.Play(); await Task.Delay(300000); _isDbg = true; }
@@ -106,28 +106,28 @@ namespace CI.DS.Visual.Views
     {
       if (!_loaded || e.AddedCells.Count < 1 || !(e.AddedCells[0].Column is DataGridTextColumn)) return;
 
-      //if (e.RemovedCells.Count > 0 && ((Permission)e.RemovedCells[0].Item).Selectd == true) ((Permission)e.RemovedCells[0].Item).Selectd = false;
+      //if (e.RemovedCells.Count > 0 && ((Dbprocess)e.RemovedCells[0].Item).Selectd == true) ((Dbprocess)e.RemovedCells[0].Item).Selectd = false;
 
       await saveIfDirty();
       colPG.Visibility = Visibility.Collapsed;
       colUG.Visibility = Visibility.Visible;
-      Debug.WriteLine($"■  {((FrameworkElement)s).Name} \t SelectedCellsChanged  {((ObservableCollection<Permission>)_permViewSource.Source).Count(r => r.Granted == true)} selects here");
+      Debug.WriteLine($"■  {((FrameworkElement)s).Name} \t SelectedCellsChanged  {((ObservableCollection<Dbprocess>)_permViewSource.Source).Count(r => r.Granted == true)} selects here");
 
-      var prm = ((Permission)e.AddedCells[0].Item);
-      _permid = prm.PermissionId;
+      var prm = ((Dbprocess)e.AddedCells[0].Item);
+      _permid = prm.Id;
       _userid = -1;
 
-      ((ObservableCollection<Permission>)_permViewSource.Source).ToList().ForEach(r => { r.Granted = null; r.Selectd = false; });
+      ((ObservableCollection<Dbprocess>)_permViewSource.Source).ToList().ForEach(r => { r.Granted = null; r.Selectd = false; });
       prm.Selectd = true;
 
       var us = (ObservableCollection<User>)_userViewSource.Source;
       us.ToList().ForEach(r => r.Granted = false);
 
-      foreach (var pa in prm.PermissionAssignments) { var u = us.FirstOrDefault(r => r.UserIntId == pa.UserId); if (u != null) u.Granted = true; }
+      foreach (var pa in prm.ProcessUserAccesses) { var u = us.FirstOrDefault(r => r.UserIntId == pa.UserId); if (u != null) u.Granted = true; }
 
       await resetPermUnselectUser(); // dgUser.Items.Refresh();
 
-      pfu.Text = $"---"; ufp.Text = $"{prm.Name}  assigned to  {prm.PermissionAssignments.Count}  users:";
+      pfu.Text = $"---"; ufp.Text = $"{prm.StoredProcName}  assigned to  {prm.ProcessUserAccesses.Count}  users:";
     }
     async void dgUser_SelectedCellsChanged(object s, SelectedCellsChangedEventArgs e)
     {
@@ -147,27 +147,27 @@ namespace CI.DS.Visual.Views
       ((ObservableCollection<User>)_userViewSource.Source).ToList().ForEach(r => { r.Granted = null; r.Selectd = false; });      //CollectionViewSource.GetDefaultView(dgUser.ItemsSource).Refresh(); //tu: refresh bound datagrid
       usr.Selectd = true;
 
-      var ps = (ObservableCollection<Permission>)_permViewSource.Source;
+      var ps = (ObservableCollection<Dbprocess>)_permViewSource.Source;
       ps.ToList().ForEach(r => r.Granted = false);
 
-      foreach (var pa in usr.PermissionAssignments) { var p = ps.FirstOrDefault(r => r.PermissionId == pa.PermissionId); if (p != null) p.Granted = true; }
+      foreach (var pa in usr.ProcessUserAccesses) { var p = ps.FirstOrDefault(r => r.Id == pa.DbprocessId); if (p != null) p.Granted = true; }
 
       await resetUserUnselectPerm(); // dgPerm.Items.Refresh();      //dgUser.Items.Refresh();
 
-      ufp.Text = $"---"; pfu.Text = $"{usr.UserId}  has  {usr.PermissionAssignments.Count}  permissions:";
+      ufp.Text = $"---"; pfu.Text = $"{usr.UserId}  has  {usr.ProcessUserAccesses.Count}  Dbprocesses:";
     }
 
     async Task resetUserUnselectPerm()
     {
       await Task.Delay(100);
       ((ObservableCollection<User/*  */>)_userViewSource.Source).ToList().ForEach(r => r.Granted = null);
-      ((ObservableCollection<Permission>)_permViewSource.Source).ToList().ForEach(r => r.Selectd = false);
+      ((ObservableCollection<Dbprocess>)_permViewSource.Source).ToList().ForEach(r => r.Selectd = false);
       dgUser.Items.Refresh(); dgPerm.Items.Refresh();
     }
     async Task resetPermUnselectUser()
     {
       await Task.Delay(100);
-      ((ObservableCollection<Permission>)_permViewSource.Source).ToList().ForEach(r => r.Granted = null);
+      ((ObservableCollection<Dbprocess>)_permViewSource.Source).ToList().ForEach(r => r.Granted = null);
       ((ObservableCollection<User/*  */>)_userViewSource.Source).ToList().ForEach(r => r.Selectd = false);
       dgPerm.Items.Refresh(); dgUser.Items.Refresh();
     }
@@ -213,9 +213,9 @@ namespace CI.DS.Visual.Views
         await Task.Delay(60);
         _context = new(string.Format(_config["SqlConStr"], cbxSrvr.SelectedValue));
         await _context.Users.LoadAsync();
-        await _context.Permissions.LoadAsync();
-        await _context.PermissionAssignments.LoadAsync();
-        tbkTitle.Text = _isDbg ? $"A:{_context.Applications.Local.Count} ◄ P:{_context.Permissions.Local.Count} ◄ pa:{_context.PermissionAssignments.Local.Count} ◄ u:{_context.Users.Local.Count}" : "";
+        await _context.Dbprocesses.LoadAsync();
+        await _context.ProcessUserAccesses.LoadAsync();
+        tbkTitle.Text = _isDbg ? $"A:{_context.Applications.Local.Count} ◄ P:{_context.Dbprocesses.Local.Count} ◄ pa:{_context.ProcessUserAccesses.Local.Count} ◄ u:{_context.Users.Local.Count}" : "";
 
         dgPerm.SelectedIndex = -1;
         dgUser.SelectedIndex = -1;
@@ -223,8 +223,8 @@ namespace CI.DS.Visual.Views
         _userViewSource.Source = _context.Users.Local.ToObservableCollection();
         _userViewSource.SortDescriptions.Add(new SortDescription(nameof(User.UserId), ListSortDirection.Ascending));
 
-        _permViewSource.Source = _context.Permissions.Local.ToObservableCollection();
-        _permViewSource.SortDescriptions.Add(new SortDescription(nameof(Permission.Name), ListSortDirection.Ascending)); //tu: instead of  .OrderBy(r => r.UserId); lest forfeit CanUserAddRows.
+        _permViewSource.Source = _context.Dbprocesses.Local.ToObservableCollection();
+        _permViewSource.SortDescriptions.Add(new SortDescription(nameof(Dbprocess.DbprocessName), ListSortDirection.Ascending)); //tu: instead of  .OrderBy(r => r.UserId); lest forfeit CanUserAddRows.
 
         btnAddMe.Visibility = _context.Users.Local.Any(r => r.UserId == $@"{Environment.UserDomainName}\{Environment.UserName}") ? Visibility.Collapsed : Visibility.Visible;
       }
@@ -240,46 +240,45 @@ namespace CI.DS.Visual.Views
     void updateCrosRefTable()
     {
       Debug.Write("    Upd xRef  " +
-        $"G:{_context.Permissions.Local.Where(r => r.Granted == true).Count()}  +  " +
-        $"f:{_context.Permissions.Local.Where(r => r.Granted == false).Count()}  +  " +
-        $"n:{_context.Permissions.Local.Where(r => r.Granted is null).Count()}  =  " +
-        $"n:{_context.Permissions.Local.Count}" +
+        $"G:{_context.Dbprocesses.Local.Where(r => r.Granted == true).Count()}  +  " +
+        $"f:{_context.Dbprocesses.Local.Where(r => r.Granted == false).Count()}  +  " +
+        $"n:{_context.Dbprocesses.Local.Where(r => r.Granted is null).Count()}  =  " +
+        $"n:{_context.Dbprocesses.Local.Count}" +
         $"   ");
 
       if (_userid > 0 && _permid < 0)
       {
 #if false // no difference
-        _context.Permissions.Local.ToList().ForEach(p =>
+        _context.Dbprocesses.Local.ToList().ForEach(p =>
         {
-          var dbpa = _context.PermissionAssignments.Local.FirstOrDefault(r => r.UserId == _userid && r.PermissionId == p.PermissionId);
+          var dbpa = _context.ProcessUserAccesses.Local.FirstOrDefault(r => r.UserId == _userid && r.DbprocessId == p.DbprocessId);
           if (dbpa != null)
           {
             if (p.Granted == true)
               dbpa.Status = "G";
             else
-              _context.PermissionAssignments.Local.Remove(dbpa);
+              _context.ProcessUserAccesses.Local.Remove(dbpa);
           }
           else if (p.Granted == true)
-            _context.PermissionAssignments.Local.Add(new PermissionAssignment { UserId = _userid, PermissionId = p.PermissionId, Status = "G" });
+            _context.ProcessUserAccesses.Local.Add(new ProcessUserAccess { UserId = _userid, DbprocessId = p.DbprocessId , RoleId = "U"});
         });
 #else
-        _context.Permissions.Local.Where(r => r.Granted == true).ToList().ForEach(p =>
+        _context.Dbprocesses.Local.Where(r => r.Granted == true).ToList().ForEach(p =>
         {
-          var dbpa = _context.PermissionAssignments.Local.FirstOrDefault(r => r.UserId == _userid && r.PermissionId == p.PermissionId);
+          var dbpa = _context.ProcessUserAccesses.Local.FirstOrDefault(r => r.UserId == _userid && r.DbprocessId == p.Id);
           if (dbpa != null)
           {
-            if (dbpa.Status != "G")
-              dbpa.Status = "G";
+            Debugger.Break(); //             if (dbpa.Status != "G")              dbpa.Status = "G";
           }
           else
-            _context.PermissionAssignments.Local.Add(new PermissionAssignment { UserId = _userid, PermissionId = p.PermissionId, Status = "G" });
+            _context.ProcessUserAccesses.Local.Add(new ProcessUserAccess { UserId = _userid, DbprocessId = p.Id, RoleId = "U" });
         });
 
-        _context.Permissions.Local.Where(r => r.Granted == false).ToList().ForEach(p =>
+        _context.Dbprocesses.Local.Where(r => r.Granted == false).ToList().ForEach(p =>
         {
-          var dbpa = _context.PermissionAssignments.Local.FirstOrDefault(r => r.UserId == _userid && r.PermissionId == p.PermissionId);
+          var dbpa = _context.ProcessUserAccesses.Local.FirstOrDefault(r => r.UserId == _userid && r.DbprocessId == p.Id);
           if (dbpa != null)
-            _context.PermissionAssignments.Local.Remove(dbpa);
+            _context.ProcessUserAccesses.Local.Remove(dbpa);
         });
 #endif
       }
@@ -287,16 +286,16 @@ namespace CI.DS.Visual.Views
       {
         _context.Users.Local.ToList().ForEach(u =>
         {
-          var dbpa = _context.PermissionAssignments.Local.FirstOrDefault(r => r.UserId == u.UserIntId && r.PermissionId == _permid);
+          var dbpa = _context.ProcessUserAccesses.Local.FirstOrDefault(r => r.UserId == u.UserIntId && r.DbprocessId == _permid);
           if (dbpa != null)
           {
             if (u.Granted == true)
-              dbpa.Status = "G";
+              Debugger.Break(); //             dbpa.Status = "G";
             else
-              _context.PermissionAssignments.Local.Remove(dbpa);
+              _context.ProcessUserAccesses.Local.Remove(dbpa);
           }
           else if (u.Granted == true)
-            _context.PermissionAssignments.Local.Add(new PermissionAssignment { UserId = u.UserIntId, PermissionId = _permid, Status = "G" });
+            _context.ProcessUserAccesses.Local.Add(new ProcessUserAccess { UserId = u.UserIntId, DbprocessId = _permid, RoleId = "U" });
         });
       }
     }
@@ -304,31 +303,31 @@ namespace CI.DS.Visual.Views
     internal async Task Recalc(FrameworkElement s)
     {
       var dc = ((FrameworkElement)s.TemplatedParent).DataContext;
-      if (dc is Permission perm && _userid > 0)
+      if (dc is Dbprocess perm && _userid > 0)
       {
-        var dbpa = _context.PermissionAssignments.Local.FirstOrDefault(r => r.UserId == _userid && r.PermissionId == perm.PermissionId);
+        var dbpa = _context.ProcessUserAccesses.Local.FirstOrDefault(r => r.UserId == _userid && r.DbprocessId == perm.Id);
         if (dbpa == null && perm.Granted == true)
         {
-          _context.PermissionAssignments.Local.Add(new PermissionAssignment { UserId = _userid, PermissionId = perm.PermissionId, Status = "G" });
+          _context.ProcessUserAccesses.Local.Add(new ProcessUserAccess { UserId = _userid, DbprocessId = perm.Id, RoleId = "U" });
           _isDirty = true;
         }
         if (dbpa != null && perm.Granted == false)
         {
-          _context.PermissionAssignments.Local.Remove(dbpa);
+          _context.ProcessUserAccesses.Local.Remove(dbpa);
           _isDirty = true;
         }
       }
       else if (dc is User user && _permid > 0)
       {
-        var dbpa = _context.PermissionAssignments.Local.FirstOrDefault(r => r.UserId == user.UserIntId && r.PermissionId == _permid);
+        var dbpa = _context.ProcessUserAccesses.Local.FirstOrDefault(r => r.UserId == user.UserIntId && r.DbprocessId == _permid);
         if (dbpa == null && user.Granted == true)
         {
-          _context.PermissionAssignments.Local.Add(new PermissionAssignment { UserId = user.UserIntId, PermissionId = _permid, Status = "G" });
+          _context.ProcessUserAccesses.Local.Add(new ProcessUserAccess { UserId = user.UserIntId, DbprocessId = _permid, RoleId = "U" });
           _isDirty = true;
         }
         if (dbpa != null && user.Granted == false)
         {
-          _context.PermissionAssignments.Local.Remove(dbpa);
+          _context.ProcessUserAccesses.Local.Remove(dbpa);
           _isDirty = true;
         }
       }
@@ -338,17 +337,20 @@ namespace CI.DS.Visual.Views
       if (_userid > 0 && _permid < 0)
       {
         ufp.Text = $"---";
-        pfu.Text = $"{_context.Users.Local.FirstOrDefault(r => r.UserIntId == _userid)?.UserId}  has  {_context.Permissions.Local.Where(r => r.Granted == true).Count()}  permissions:";
+        pfu.Text = $"{_context.Users.Local.FirstOrDefault(r => r.UserIntId == _userid)?.UserId}  can run  {_context.Dbprocesses.Local.Where(r => r.Granted == true).Count()}  Dbprocesses:";
       }
       else if (_userid < 0 && _permid > 0)
       {
         pfu.Text = $"---";
-        ufp.Text = $"{_context.Permissions.Local.FirstOrDefault(r => r.PermissionId == _permid)?.Name}  assigned to  {_context.Users.Local.Where(r => r.Granted == true).Count()}  users:";
+        ufp.Text = $"{_context.Dbprocesses.Local.FirstOrDefault(r => r.Id == _permid)?.DbprocessName}  assigned to  {_context.Users.Local.Where(r => r.Granted == true).Count()}  users:";
       }
     }
 
 
 
-    async void onTogglePermission(object s, RoutedEventArgs e) => await ((UserSpSelectorView)s).Recalc((FrameworkElement)s); //todo: 
+    async void onTogglePermission(object s, RoutedEventArgs e)
+    {
+      await Recalc((FrameworkElement)s); //todo: 
+    }
   }
 }
