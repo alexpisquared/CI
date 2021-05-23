@@ -232,9 +232,8 @@
           <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <Views:BrandTitleUserControl Margin="10,3,10,10" Opacity="1" Grid.Row="1" />
-        
-        
+        <Views:BrandTitleUserControl Margin="10,3,10,10" Grid.Row="1" Height="50" />
+        <TextBlock Grid.Row="1" FontSize="22" Text="{Binding CurrentRole}" d:Text="Admin" FontWeight="SemiBold" Margin="260 0" Height="40"/>
 
         <StackPanel Margin="0,0,6,6" HorizontalAlignment="Right" VerticalAlignment="Bottom" Grid.Row="1" Orientation="Horizontal">
           <StackPanel.Effect>
@@ -242,7 +241,7 @@
           </StackPanel.Effect>
           <Label     FontSize="11" Content="Hello " />
           <TextBlock FontSize="11" Text="{Binding CurrentUser}" FontWeight="SemiBold" d:Text="(alex.pigida) - mtUATsqldb - Total 0 matches found in   2.76 sec."/>
-          
+
           <Menu Background="Transparent" BorderThickness="0" >
             <Menu.Resources>
               <Style TargetType="{x:Type MenuItem}">
