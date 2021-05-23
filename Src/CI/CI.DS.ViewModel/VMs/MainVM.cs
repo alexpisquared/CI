@@ -24,7 +24,7 @@ namespace CI.DS.ViewModel.VMs
     {
       _logger = logger;
       _config = config;
-      _selectedVM = new StoredProcListVM(logger, config, this);
+      _selectedVM = new UserSpSelectorVM(logger, config, this);
       UpdateViewCommand = new UpdateViewCommand(this);
 
       _config["ServerList"].Split(" ").ToList().ForEach(r => _sqlServers.Add(r));

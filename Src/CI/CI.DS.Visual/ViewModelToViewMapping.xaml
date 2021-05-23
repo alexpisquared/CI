@@ -24,4 +24,7 @@
   <DataTemplate DataType="{x:Type vm:ValidationDemoVM}" >
     <local:ValidationDemoView/>
   </DataTemplate>
+  <DataTemplate DataType="{x:Type vm:UserSpSelectorVM}" >
+    <local:UserSpSelectorView/>
+  </DataTemplate>
 </ResourceDictionary>
