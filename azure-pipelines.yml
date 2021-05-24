@@ -23,6 +23,11 @@ variables:
 steps:
 - task: NuGetToolInstaller@1
 
+- checkout: self
+- checkout: MyGitHubRepo1
+- checkout: MyGitHubRepo2
+- script: dir $(Build.SourcesDirectory)
+
 - task: NuGetCommand@2
   inputs:
     restoreSolution: '$(solution)'
