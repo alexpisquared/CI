@@ -32,6 +32,17 @@ steps:
   inputs:
     restoreSolution: '$(solution)'
 
+- task: UseDotNet@2
+  displayName: 'Use .NET Core sdk'
+  inputs:
+    packageType: 'sdk'
+    version: '5.x'
+
+- task: DotNetCoreCLI@2
+  inputs:
+    command: restore
+    projects: '**\*.csproj'
+
 - task: VSBuild@1
   inputs:
     solution: '$(solution)'
