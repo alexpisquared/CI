@@ -53,7 +53,8 @@
     <DataTemplate x:Key="DblTemplate">
       <Grid Width="360" Margin="0 -4" Style="{StaticResource gi}" FocusVisualStyle="{x:Null}" >
         <stb:HighlightableTextBlock Text="{Binding Name}" SearchText="{Binding Text, ElementName=tbxDblSearch}" ToolTip="{Binding Notes}" />
-        <ToggleButton IsChecked="{Binding IsActive, UpdateSourceTrigger=PropertyChanged}" Click="ToggleButton_Click" Padding="0 0 0 -4">
+        <ToggleButton Command="{Binding DataContext.SaveReload, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}" Padding="0 0 0 -4"
+                      IsChecked="{Binding IsActive, UpdateSourceTrigger=PropertyChanged}" >
           <TextBlock       Text="{Binding IsActive, UpdateSourceTrigger=PropertyChanged, Converter={cnv:BoolToCharConverter}}" FontFamily="Wingdings" FontSize="34" 
                      Foreground="{Binding IsActive, UpdateSourceTrigger=PropertyChanged, Converter={cnv:BoolToColorConverter}}" />
         </ToggleButton>
@@ -62,9 +63,7 @@
 
     <DataTemplate x:Key="SpdTemplate">
       <StackPanel  Margin="0 -5" Orientation="Horizontal" FocusVisualStyle="{x:Null}" >
-        <TextBlock Margin="0 -2.5" Padding="0 3" Text="{Binding DBName, FallbackValue='Inventory'}" />
-        <TextBlock Margin="0 -2.5" Padding="0 3" Text="." />
-        <stb:HighlightableTextBlock Text="{Binding SPName}" SearchText="{Binding Text, ElementName=tbxSpdSearch}" ToolTip="{Binding Definition}" Margin="0 -2.5" >
+        <stb:HighlightableTextBlock Text="{Binding FullName}" SearchText="{Binding Text, ElementName=tbxSpdSearch}" ToolTip="{Binding Definition}" Margin="0 -2.5" >
           <stb:HighlightableTextBlock.InputBindings>
             <MouseBinding MouseAction="LeftDoubleClick" 
                           Command="{Binding DataContext.UpdateViewCommand,  RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}"
@@ -93,8 +92,8 @@
     <TextBlock Text="Stored Procedure Selector" FontSize="20" Margin="0 10" />
 
     <StackPanel Grid.Row="1" Grid.Column="0" >
-      <Label  Content="_Search Databases" Target="{Binding ElementName=tbxDblSearch}"/>
-      <TextBox Text="{Binding SearchString, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Stretch" x:Name="tbxDblSearch" />
+      <Label  Content="Search _Databases" Target="{Binding ElementName=tbxDblSearch}"/>
+      <TextBox Text="{Binding SearchStringDB, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Stretch" x:Name="tbxDblSearch" />
 
       <Grid >
         <Grid.ColumnDefinitions>
@@ -114,8 +113,8 @@
                 SelectedItem="{Binding SelectDBL, Mode=TwoWay}" />
 
     <StackPanel Grid.Row="1" Grid.Column="2" >
-      <Label  Content="_Search DB Process" Target="{Binding ElementName=tbxSpdSearch}"/>
-      <TextBox Text="{Binding SearchString, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Stretch" x:Name="tbxSpdSearch" />
+      <Label  Content="_Search Stored Procedures" Target="{Binding ElementName=tbxSpdSearch}"/>
+      <TextBox Text="{Binding SearchStringSP, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Stretch" x:Name="tbxSpdSearch" />
 
       <Grid >
         <Grid.ColumnDefinitions>
@@ -136,13 +135,6 @@
 
 
     <StackPanel Grid.Row="2" Grid.Column="2" Margin="30 10" HorizontalAlignment="Right" VerticalAlignment="Bottom" Orientation="Horizontal">
-      <Button Padding="0 0 0 3" Height="50" Width="50" Content="_Save" ToolTip="Save changes to DB" Command="{Binding SaveToDB}" Background="{DynamicResource MenuItemBackground3}" >
-        <Button.Resources>
-          <Style TargetType="{x:Type Border}">
-            <Setter Property="CornerRadius" Value="25"/>
-          </Style>
-        </Button.Resources>
-      </Button>
       <Button Content="_Go ►" ToolTip="Go to Parameter Manager for the selected SP" IsDefault="True" Background="{DynamicResource MenuItemBackground3}" Command="{Binding UpdateViewCommand}" CommandParameter="{Binding SelectSPD}" 
               Padding="0 0 0 3" Height="50" Width="50" >
         <Button.Resources>

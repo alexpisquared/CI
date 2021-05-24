@@ -26,9 +26,9 @@ namespace CI.DS.ViewModel.VMs
     readonly ILogger _logger;
     readonly IConfigurationRoot _config;
     readonly InventoryContext _dbx;
-    readonly List<SpdAdm> _spdl = new();
     readonly List<Database> _dbll = new();
-    string _searchString = "", _report = "sql con str", _sqlConStr = "sql con str";
+    readonly List<SpdAdm> _spdl = new();
+    string _searchStringDB = "", _searchStringSP = "", _report = "sql con str", _sqlConStr = "sql con str";
 
     public StoredProcListVM(ILogger logger, IConfigurationRoot config, MainVM mainVM)
     {
@@ -40,8 +40,12 @@ namespace CI.DS.ViewModel.VMs
 
       UpdateViewCommand = new UpdateViewCommand(mainVM);//{ GestureKey = Key.F5, GestureModifier = ModifierKeys.None, MouseGesture = MouseAction.RightClick };
 
-      IsBusy = Visibility.Visible;
+      reLoadBoth();
+    }
 
+    void reLoadBoth()
+    {
+      IsBusy = Visibility.Visible;
       var sw = Stopwatch.StartNew();
 
       Task.Run(() =>
@@ -54,25 +58,26 @@ namespace CI.DS.ViewModel.VMs
         return (dbll, spdl);
       }).ContinueWith(_ =>
       {
+        _dbll.Clear();
         _.Result.dbll.ForEach(r => _dbll.Add(r));
         DblCollectionView = CollectionViewSource.GetDefaultView(_dbll);
         DblCollectionView.Filter = filterdbls;
         //DblCollectionView.GroupDescriptions.Add(new PropertyGroupDescription(nameof(Database.Name)));
         DblCollectionView.SortDescriptions.Add(new SortDescription(nameof(Database.Name), ListSortDirection.Ascending));
 
+        _spdl.Clear();
         _.Result.spdl.ForEach(r => _spdl.Add(r));
         SpdCollectionView = CollectionViewSource.GetDefaultView(_spdl);
         SpdCollectionView.Filter = filterSPDs;
         SpdCollectionView.GroupDescriptions.Add(new PropertyGroupDescription(nameof(SpdAdm.Schema)));
-        SpdCollectionView.SortDescriptions.Add(new SortDescription(nameof(SpdAdm.UFName), ListSortDirection.Ascending));
+        SpdCollectionView.SortDescriptions.Add(new SortDescription(nameof(SpdAdm.FullName), ListSortDirection.Ascending));
 
         Report = $"Loaded {_dbll.Count} DBs, {_spdl.Count} SPs in {sw.ElapsedMilliseconds:N0} ms.";
+
+        IsBusy = Visibility.Collapsed;
         Bpr.Tick();
       }, TaskScheduler.FromCurrentSynchronizationContext());
     }
-
-    bool filterSPDs(object obj) => obj is SpdAdm && ((obj as SpdAdm)?.SPName.Contains(SearchString, StringComparison.InvariantCultureIgnoreCase) ?? false);
-    bool filterdbls(object obj) => obj is Database && ((obj as Database)?.Name.Contains(SearchString, StringComparison.InvariantCultureIgnoreCase) ?? false);
 
     List<SpdAdm> loadAllSPs(Database db) // async Task<List<SpdAdm>> loadAllSPs(Database r)
     {
@@ -84,64 +89,66 @@ namespace CI.DS.ViewModel.VMs
 
         var connectionString = string.Format(_config["SqlConStrSansDBS"], db.Name);
 
-        using (Microsoft.Data.SqlClient.SqlConnection connection = new(connectionString))
+        using var connection = new Microsoft.Data.SqlClient.SqlConnection(connectionString);
+        connection.Open();
+
+        using var command = connection.CreateCommand();
+        command.CommandText = _sql;
+
+        using var reader = /*await*/ command.ExecuteReader/*Async*/();
+        if (!reader.HasRows)
         {
-          if (connection.State.Equals(ConnectionState.Closed))
-            connection.Open();
-
-          using var command = connection.CreateCommand();
-          command.CommandText = _sql;
-
-          using var reader = /*await*/ command.ExecuteReader/*Async*/();
-          if (!reader.HasRows)
-          {
-            Debug.WriteLine("No rows found.");
-          }
-          else
-          {
-            while (reader.Read())
-            {
-              try
-              {
-                var vals = new object[reader.FieldCount];
-                //Debug.WriteLine($"Depth:{reader.Depth}   {reader.GetValues(vals)}: {string.Join('\t', vals)}");
-                rv.Add(new SpdAdm(
-                  db.Name,
-                  reader.GetString("Schema"),
-                  reader.GetString("SPName"),
-                  reader.IsDBNull("Parameters") ? "" : reader.GetString("Parameters"),
-                  reader.IsDBNull("Definition") ? "~DBNull (no access to definition)" : reader.GetString("Definition"),
-                  reader.GetInt32("HasExecPerm")));
-              }
-              catch (SqlNullValueException ex) { ex.Log(); _logger.LogError(ex.ToString()); }
-              catch (Exception ex) { ex.Log(); _logger.LogError(ex.ToString()); }
-            }
-          }
-
-          reader.Close();
-          connection.Close();
+          Debug.WriteLine("No rows found.");
         }
+        else
+        {
+          while (reader.Read())
+          {
+            try
+            {
+              var vals = new object[reader.FieldCount];
+              //Debug.WriteLine($"Depth:{reader.Depth}   {reader.GetValues(vals)}: {string.Join('\t', vals)}");
+              rv.Add(new SpdAdm(
+                db.Name,
+                reader.GetString("Schema"),
+                reader.GetString("SPName"),
+                reader.IsDBNull("Parameters") ? "" : reader.GetString("Parameters"),
+                reader.IsDBNull("Definition") ? "~DBNull (no access to definition)" : reader.GetString("Definition"),
+                reader.GetInt32("HasExecPerm")));
+            }
+            catch (SqlNullValueException ex) { ex.Log(); _logger.LogError(ex.ToString()); }
+            catch (Exception ex) { ex.Log(); _logger.LogError(ex.ToString()); }
+          }
+        }
+
+        reader.Close();
+        connection.Close();
       }
       catch (SqlNullValueException ex) { ex.Log(); _logger.LogError(ex.ToString()); }
       catch (Exception ex) { ex.Log(); _logger.LogError(ex.ToString()); }
-      finally
-      {
-        IsBusy = Visibility.Collapsed;
-      }
+      finally { IsBusy = Visibility.Collapsed; }
       return rv;
     }
+
+    bool filterSPDs(object obj) => obj is SpdAdm && ((obj as SpdAdm)?.FullName.Contains(SearchStringSP, StringComparison.InvariantCultureIgnoreCase) ?? false);
+    bool filterdbls(object obj) => obj is Database && ((obj as Database)?.Name.Contains(SearchStringDB, StringComparison.InvariantCultureIgnoreCase) ?? false);
 
     ICollectionView _spdv; public ICollectionView SpdCollectionView { get => _spdv; set => SetProperty(ref _spdv, value); }
     ICollectionView _dblv; public ICollectionView DblCollectionView { get => _dblv; set => SetProperty(ref _dblv, value); }
     Database? _selectDBL; public Database? SelectDBL { get => _selectDBL; set => SetProperty(ref _selectDBL, value); }
     SpdAdm? _selectSPD; public SpdAdm? SelectSPD { get => _selectSPD; set => SetProperty(ref _selectSPD, value); }
-    public string SearchString { get => _searchString; set { SetProperty(ref _searchString, value); SpdCollectionView.Refresh(); } }
+    public string SearchStringDB { get => _searchStringDB; set { SetProperty(ref _searchStringDB, value); DblCollectionView.Refresh(); } }
+    public string SearchStringSP { get => _searchStringSP; set { SetProperty(ref _searchStringSP, value); SpdCollectionView.Refresh(); } }
     public string SqlConStr { get => _sqlConStr; set => SetProperty(ref _sqlConStr, value); }
     public string Report { get => _report; set => SetProperty(ref _report, value); }
     Visibility _isBusy; public Visibility IsBusy { get => _isBusy; set => SetProperty(ref _isBusy, value); }
 
     public ICommand UpdateViewCommand { get; set; }
-    ICommand? _saveToDB; public ICommand SaveToDB => _saveToDB ??= new RelayCommand(performSaveToDB); void performSaveToDB() => Report = $"{_dbx.SaveChanges()} rows saved";
+    ICommand? _saveToDB; public ICommand SaveReload => _saveToDB ??= new RelayCommand(performSaveToDB); void performSaveToDB()
+    {
+      Report = $"{_dbx.SaveChanges()} rows saved";
+      reLoadBoth();
+    }
 
     public IConfigurationRoot Config => _config;
     public ILogger Logger => _logger;
