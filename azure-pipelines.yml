@@ -1,3 +1,14 @@
+resources:
+  repositories:
+  - repository: MyGitHubRepo1
+    type: github
+    endpoint: alexpisquared
+    name: alexpisquared/CI
+  - repository: MyGitHubRepo2
+    type: github
+    endpoint: alexpisquared
+    name: alexpisquared/CI-Reimagined-Invention
+
 trigger:
 - main
 
