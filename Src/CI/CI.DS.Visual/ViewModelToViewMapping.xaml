@@ -27,4 +27,7 @@
   <DataTemplate DataType="{x:Type vm:UserSpSelectorVM}" >
     <local:UserSpSelectorView/>
   </DataTemplate>
+  <DataTemplate DataType="{x:Type vm:UserSpAssignerVM}" >
+    <local:UserSpAssignerView/>
+  </DataTemplate>
 </ResourceDictionary>
