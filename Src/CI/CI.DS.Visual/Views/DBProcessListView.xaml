@@ -11,21 +11,6 @@
   </UserControl.InputBindings>
   <UserControl.Resources>
 
-    <Style TargetType="{x:Type stb:HighlightableTextBlock}">
-      <Setter Property="ToolTipService.ShowDuration" Value="999999" />
-      <Setter Property="HighlightForeground" Value="#c00" />
-      <Setter Property="HighlightBackground" Value="#fcc" />
-      <Setter Property="Template">
-        <Setter.Value>
-          <ControlTemplate TargetType="{x:Type stb:HighlightableTextBlock}">
-            <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
-              <TextBlock x:Name="PART_TEXT"/>
-            </Border>
-          </ControlTemplate>
-        </Setter.Value>
-      </Setter>
-    </Style>
-
     <DataTemplate x:Key="myTaskTemplate">
       <stb:HighlightableTextBlock Text="{Binding UFName}" SearchText="{Binding Text, ElementName=tbxSearch}" ToolTip="{Binding}" Margin="0 -2.5" >
         <stb:HighlightableTextBlock.InputBindings>

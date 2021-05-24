@@ -13,21 +13,6 @@
   </UserControl.InputBindings>
   <UserControl.Resources>
 
-    <Style TargetType="{x:Type stb:HighlightableTextBlock}">
-      <Setter Property="ToolTipService.ShowDuration" Value="999999" />
-      <Setter Property="HighlightForeground" Value="#c00" />
-      <Setter Property="HighlightBackground" Value="#fcc" />
-      <Setter Property="Template">
-        <Setter.Value>
-          <ControlTemplate TargetType="{x:Type stb:HighlightableTextBlock}">
-            <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
-              <TextBlock x:Name="PART_TEXT"/>
-            </Border>
-          </ControlTemplate>
-        </Setter.Value>
-      </Setter>
-    </Style>
-
     <Style TargetType="ToggleButton">
       <Setter Property="VerticalAlignment"          Value="Center"  />
       <Setter Property="HorizontalAlignment"        Value="Right"  />
