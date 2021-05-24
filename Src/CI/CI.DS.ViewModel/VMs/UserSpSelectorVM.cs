@@ -1,9 +1,8 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using CI.DS.ViewModel.Commands;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
 using System.Windows.Input;
-using Microsoft.Toolkit.Mvvm.Input;
-using CI.DS.ViewModel.Commands;
 
 namespace CI.DS.ViewModel.VMs
 {
@@ -21,6 +20,9 @@ namespace CI.DS.ViewModel.VMs
       UpdateViewCommand = new UpdateViewCommand(mainVM);//{ GestureKey = Key.F5, GestureModifier = ModifierKeys.None, MouseGesture = MouseAction.RightClick };
     }
 
+    string _sqlCSt; public string SqlConStr { get => _sqlCSt; set => SetProperty(ref _sqlCSt, value); }
+    string _report; public string Report { get => _report; set => SetProperty(ref _report, value); }
+ 
     public ICommand UpdateViewCommand { get; set; }
   }
 }

@@ -1,6 +1,7 @@
 ﻿using CI.Standard.Lib.Extensions;
 using DB.Inventory.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.ObjectModel;
@@ -12,6 +13,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
+using System.Windows.Input;
 
 namespace CI.DS.Visual.Views
 {
@@ -19,11 +21,11 @@ namespace CI.DS.Visual.Views
   {
     readonly CollectionViewSource _userViewSource, _permViewSource;
     InventoryContext _context;
-    bool _loaded, _isDbg, _isDirty;
     string? _last = null;
+    bool _loaded, _isDbg, _isDirty;
     int _userid, _permid;
     ILogger _logger;
-    Microsoft.Extensions.Configuration.IConfigurationRoot _config;
+    IConfigurationRoot _config;
     public static readonly DependencyProperty BlurProperty = DependencyProperty.Register("Blur", typeof(double), typeof(UserSpSelectorView), new PropertyMetadata(.0)); public double Blur { get => (double)GetValue(BlurProperty); set => SetValue(BlurProperty, value); }
     public UserSpSelectorView()
     {
@@ -31,16 +33,8 @@ namespace CI.DS.Visual.Views
 
       _userViewSource = (CollectionViewSource)FindResource(nameof(_userViewSource));
       _permViewSource = (CollectionViewSource)FindResource(nameof(_permViewSource));
-
-      //todo: themeSelector.ThemeApplier = ApplyTheme;
-    } //todo:
-    public UserSpSelectorView(ILogger logger, Microsoft.Extensions.Configuration.IConfigurationRoot config)
-    {
-      _userViewSource = (CollectionViewSource)FindResource(nameof(_userViewSource));
-      _permViewSource = (CollectionViewSource)FindResource(nameof(_permViewSource));
-
-      init(logger, config);
-    } //todo:
+    }
+    public UserSpSelectorView(ILogger logger, Microsoft.Extensions.Configuration.IConfigurationRoot config) : this() => init(logger, config);
     void init(ILogger logger, Microsoft.Extensions.Configuration.IConfigurationRoot config)
     {
 #if DEBUG
@@ -60,9 +54,33 @@ namespace CI.DS.Visual.Views
     }
     async void onLoaded(object s, RoutedEventArgs e)
     {
-      init(((ViewModel.VMs.UserSpSelectorVM)DataContext)._logger, ((CI.DS.ViewModel.VMs.UserSpSelectorVM)DataContext)._config);
+      var vm = (ViewModel.VMs.UserSpSelectorVM)DataContext;
+      init(vm._logger, vm._config);
 
       await loadEF();
+
+      if (vm._mainVM.StoredProcDetail != null)
+      {
+        ((ObservableCollection<Dbprocess>)_permViewSource.Source).Where(r => r.StoredProcName == vm._mainVM.StoredProcDetail.SPName).ToList().ForEach(r => r.Selectd = true);
+
+        for (var i = 0; i < dgPerm.Items.Count; i++)
+        {
+          var row = (DataGridRow)dgPerm.ItemContainerGenerator.ContainerFromIndex(i);
+          var cellContent = dgPerm.Columns[0].GetCellContent(row) as TextBlock;
+          if (cellContent != null && cellContent.Text.Contains(vm._mainVM.StoredProcDetail.SPName))
+          {
+            dgPerm.SelectionUnit = DataGridSelectionUnit.FullRow;
+            var item = dgPerm.Items[i];
+            dgPerm.SelectedItem = item;
+            dgPerm.SelectedIndex = i;
+            dgPerm.ScrollIntoView(item);
+            row.MoveFocus(new TraversalRequest(FocusNavigationDirection.Next));
+            dgPerm.SelectionUnit = DataGridSelectionUnit.Cell;
+            //complicated: dgPerm_SelectedCellsChanged(s, null);
+            break;
+          }
+        }
+      }
 
       ufp.Text = pfu.Text = "";
 
@@ -80,16 +98,12 @@ namespace CI.DS.Visual.Views
     }
     async void onSave(object s, RoutedEventArgs e) => await saveIfDirty();
     void dgPermReset(object s, RoutedEventArgs e) { ((ObservableCollection<Dbprocess>)_permViewSource.Source).ToList().ForEach(r => r.Granted = null); dgPerm.Items.Refresh(); }
-    void dgUserReset(object s, RoutedEventArgs e) { ((ObservableCollection<User/*  */>)_userViewSource.Source).ToList().ForEach(r => r.Granted = null); dgUser.Items.Refresh(); }
+    void dgUserReset(object s, RoutedEventArgs e) { ((ObservableCollection<User/* */>)_userViewSource.Source).ToList().ForEach(r => r.Granted = null); dgUser.Items.Refresh(); }
     void onSettings(object s, RoutedEventArgs e) { }
     async void onAudio(object s, RoutedEventArgs e) { _isDbg = false; SystemSounds.Hand.Play(); await Task.Delay(300000); _isDbg = true; }
     async void cbxSrvr_SelectionChanged(object s, SelectionChangedEventArgs e) { if (_loaded) await loadEF(); }
-    void dgPerm_SelectionChanged(object s, SelectionChangedEventArgs e)   /**/{; Debug.Write($"** {((FrameworkElement)s).Name} \t SelectionChanged"); }
-    void dgUser_SelectionChanged(object s, SelectionChangedEventArgs e)   /**/
-    {
-      Debug.Write($"** {((FrameworkElement)s).Name} \t SelectionChanged"); ;
-      //if (_loaded && e.RemovedItems.Count > 0 && (e.RemovedItems[0] as User) != null && (e.RemovedItems[0] as User)?.Selectd == true)        (e.RemovedItems[0] as User).Selectd = false;
-    }
+    void dgPerm_SelectionChanged(object s, SelectionChangedEventArgs e) /**/{; Debug.Write($"** {((FrameworkElement)s).Name} \t SelectionChanged"); }
+    void dgUser_SelectionChanged(object s, SelectionChangedEventArgs e) /**/{; Debug.Write($"** {((FrameworkElement)s).Name} \t SelectionChanged"); ; }      //if (_loaded && e.RemovedItems.Count > 0 && (e.RemovedItems[0] as User) != null && (e.RemovedItems[0] as User)?.Selectd == true)        (e.RemovedItems[0] as User).Selectd = false;
     void dgUser_GotFocus(object s, RoutedEventArgs e)  /**/{ if (_last != "U") { Debug.Write(" p->U-▒▒▒▒ "); } }
     void dgPerm_GotFocus(object s, RoutedEventArgs e)  /**/{ if (_last != "P") { Debug.Write(" u->P-░░░░ "); } }
     void dgUser_LostFocus(object s, RoutedEventArgs e) /**/{; Debug.Write($"■▀▄ {((FrameworkElement)s).Name}  LostFocus  "); _last = "U"; }
@@ -152,7 +166,7 @@ namespace CI.DS.Visual.Views
     async Task resetUserUnselectPerm()
     {
       await Task.Delay(100);
-      ((ObservableCollection<User/*  */>)_userViewSource.Source).ToList().ForEach(r => r.Granted = null);
+      ((ObservableCollection<User/* */>)_userViewSource.Source).ToList().ForEach(r => r.Granted = null);
       ((ObservableCollection<Dbprocess>)_permViewSource.Source).ToList().ForEach(r => r.Selectd = false);
       dgUser.Items.Refresh(); dgPerm.Items.Refresh();
     }
@@ -160,7 +174,7 @@ namespace CI.DS.Visual.Views
     {
       await Task.Delay(100);
       ((ObservableCollection<Dbprocess>)_permViewSource.Source).ToList().ForEach(r => r.Granted = null);
-      ((ObservableCollection<User/*  */>)_userViewSource.Source).ToList().ForEach(r => r.Selectd = false);
+      ((ObservableCollection<User/* */>)_userViewSource.Source).ToList().ForEach(r => r.Selectd = false);
       dgPerm.Items.Refresh(); dgUser.Items.Refresh();
     }
     async Task<int> saveIfDirty(bool skipUdate = false)
@@ -293,7 +307,7 @@ namespace CI.DS.Visual.Views
       }
     }
 
-    async void onTogglePermission(object s, RoutedEventArgs e) 
+    async void onTogglePermission(object s, RoutedEventArgs e)
     {
       var dc = ((FrameworkElement)((FrameworkElement)s).TemplatedParent).DataContext;
       if (dc is Dbprocess perm && _userid > 0)

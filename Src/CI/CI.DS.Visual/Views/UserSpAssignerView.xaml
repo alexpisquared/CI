@@ -67,9 +67,6 @@
       </DataTemplate>
 
 
-
-
-
       <CollectionViewSource x:Key="_userViewSource"/>
       <CollectionViewSource x:Key="_permViewSource"/>
 

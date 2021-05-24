@@ -33,6 +33,7 @@ namespace CI.DS.ViewModel.VMs
       _currentuser = $"{Environment.UserName}"; //todo: use AD to get proper name, auto add current user to DB. auto-add roles, if missing.
     }
 
+    public StoredProcDetail StoredProcDetail { get; internal set; }
     public ObservableCollection<string> SqlServers { get => _sqlServers; set => SetProperty(ref _sqlServers, value, true); }
 
     [Required(AllowEmptyStrings = false, ErrorMessage = "This field {0} may not be empty.")]
@@ -54,12 +55,12 @@ namespace CI.DS.ViewModel.VMs
         Task.Run(async () => await Task.Delay(333)).ContinueWith(_ => { SetProperty(ref _selectedVM, value); }, TaskScheduler.FromCurrentSynchronizationContext());
       }
     }
-    bool _RunAnimation = false; public bool RunAnimation { get => _RunAnimation; set => SetProperty(ref _RunAnimation, value); }
+    bool _runAnimation = false; public bool RunAnimation { get => _runAnimation; set => SetProperty(ref _runAnimation, value); }
+    string _currentuser; public string CurrentUser { get => _currentuser; set => SetProperty(ref _currentuser, value); }
+    string _currentRole; public string CurrentRole { get => _currentRole; set => SetProperty(ref _currentRole, value); }
 
     public ICommand UpdateViewCommand { get; set; }
     public IConfigurationRoot Config { get => _config; }
     public ILogger Logger { get => _logger; }
-
-    string _currentuser; public string CurrentUser { get => _currentuser; set => SetProperty(ref _currentuser, value); }
   }
 }

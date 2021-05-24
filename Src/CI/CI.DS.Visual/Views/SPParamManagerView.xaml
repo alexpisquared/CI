@@ -86,14 +86,14 @@
           </Style>
         </Button.Resources>
       </Button>
-      <Button Padding="0 0 0 3" Height="50" Width="50" Content="◄ _OK" ToolTip="Go back to SP selector " Background="{DynamicResource MenuItemBackground3}" Command="{Binding UpdateViewCommand}" CommandParameter="Spsl" x:Name="focus0" IsDefault="True" >
+      <Button Padding="0 0 0 3" Height="50" Width="50" Content="◄ _OK" ToolTip="Back to SP selector" Background="{DynamicResource MenuItemBackground3}" Command="{Binding UpdateViewCommand}" CommandParameter="Spsl" >
         <Button.Resources>
           <Style TargetType="{x:Type Border}">
             <Setter Property="CornerRadius" Value="25"/>
           </Style>
         </Button.Resources>
       </Button>
-      <Button Padding="0 0 0 3" Height="50" Width="50" Content="UA ►" ToolTip="User Assignment" Background="{DynamicResource MenuItemBackground3}" Command="{Binding UpdateViewCommand}" CommandParameter="USpS" >
+      <Button Padding="0 0 0 3" Height="50" Width="50" Content="_UA ►" ToolTip="User Assignment"     Background="{DynamicResource MenuItemBackground3}" Command="{Binding UpdateViewCommand}" CommandParameter="USpS" x:Name="focus0" IsDefault="True" >
         <Button.Resources>
           <Style TargetType="{x:Type Border}">
             <Setter Property="CornerRadius" Value="25"/>

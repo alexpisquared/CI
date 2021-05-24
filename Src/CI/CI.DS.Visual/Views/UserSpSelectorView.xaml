@@ -261,16 +261,10 @@
         <ColumnDefinition Width="*"/>
       </Grid.ColumnDefinitions>
 
-      <TextBlock Grid.ColumnSpan="3" Text="User - Stored Procedure Selector" FontSize="20" Margin="0 10" />
+      <TextBlock Grid.ColumnSpan="3" Text="User - Stored Procedure Selector" FontSize="20" Margin="10" />
       <TextBlock Grid.ColumnSpan="3" Text="{Binding SqlConStr}" FontSize="10" HorizontalAlignment="Right" VerticalAlignment="Top"    Margin="5" d:Text="Sql con str" />
+      <TextBlock Grid.ColumnSpan="3" Text="Title"               FontSize="10" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="5" x:Name="tbkTitle" d:Text="(alex.pigida) - mtUATsqldb - Total 0 matches found in   2.76 sec."/>
       <TextBlock Grid.ColumnSpan="3" Text="{Binding Report}"    FontSize="10" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="5" d:Text="Hello. Is everything OK?" />
-
-      <StackPanel Margin="6" HorizontalAlignment="Right" VerticalAlignment="Bottom">
-        <StackPanel.Effect>
-          <BlurEffect Radius="{Binding ElementName=wnd, Path=Blur, FallbackValue=0}" />
-        </StackPanel.Effect>
-        <TextBlock Text="Title" FontSize="11" FontWeight="SemiBold" x:Name="tbkTitle" d:Text="(alex.pigida) - mtUATsqldb - Total 0 matches found in   2.76 sec."/>
-      </StackPanel>
 
       <Grid Grid.Row="1" Grid.RowSpan="2" Margin="8">
         <Border>

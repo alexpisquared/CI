@@ -1,11 +1,11 @@
-﻿using CI.Standard.Lib.Extensions;
+﻿using CI.DS.ViewModel.Commands;
 using CI.Standard.Lib.Extensions;
-using CI.DS.ViewModel.Commands;
 using DB.Inventory.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
+using Microsoft.Toolkit.Mvvm.Input;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -13,7 +13,6 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using Microsoft.Toolkit.Mvvm.Input;
 
 namespace CI.DS.ViewModel.VMs
 {
@@ -31,6 +30,7 @@ namespace CI.DS.ViewModel.VMs
       _config = config;
       _dbCnxt = new(_config["SqlConStr"]);
 
+      mainVM.StoredProcDetail = spd;
       UpdateViewCommand = new UpdateViewCommand(mainVM);
 
       ValidateAllProperties();
@@ -104,22 +104,11 @@ namespace CI.DS.ViewModel.VMs
       }
     }
 
-    //public SpdAdm SpdAdm { get; set; }
-
     public Dbprocess? Dbprocess { get => _dpprocess; set => SetProperty(ref _dpprocess, value); }
+    public string Report { get => _report; set => SetProperty(ref _report, value); }
     public ObservableCollection<Parameter> Parameters { get; } = new ObservableCollection<Parameter>();
 
     public ICommand UpdateViewCommand { get; set; }
-    ICommand? _saveToDB; public ICommand SaveToDB => _saveToDB ??= new RelayCommand(performSaveToDB);
-
-
-    void performSaveToDB()
-    {
-      var rowsSaved = _dbCnxt.SaveChanges();
-      Report = $"{rowsSaved} rows saved";
-    }
-
-
-    public string Report { get => _report; set => SetProperty(ref _report, value); }
+    ICommand? _saveToDB; public ICommand SaveToDB => _saveToDB ??= new RelayCommand(performSaveToDB); void performSaveToDB() => Report = $"{_dbCnxt.SaveChanges()} rows saved";
   }
 }
