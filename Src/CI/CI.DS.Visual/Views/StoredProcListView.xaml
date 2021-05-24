@@ -35,41 +35,47 @@
       <Setter Property="Height"                     Value="26"  />
       <Setter Property="Width"                      Value="60"  />
       <Setter Property="Margin"                     Value="0"  />
-      <Setter Property="FocusVisualStyle"     Value="{x:Null}" />
+      <Setter Property="FocusVisualStyle"           Value="{x:Null}" />
     </Style>
 
+    <Style TargetType="Grid" x:Key="gi">
+      <Setter Property="FocusVisualStyle"           Value="{x:Null}" />
+      <Style.Triggers>
+        <DataTrigger Binding="{Binding IsActive}" Value="True">
+          <Setter Property="ToolTip" Value="Database included. Click check-mark to exclude."/>
+          <Setter Property="Background" Value="LightGreen"/>
+        </DataTrigger>
+        <DataTrigger Binding="{Binding IsActive}" Value="False">
+          <Setter Property="ToolTip" Value="Database excluded. Click  X-mark  to include."/>
+        </DataTrigger>
+      </Style.Triggers>
+    </Style>
     <DataTemplate x:Key="DblTemplate">
-      <Grid Width="360">
-        <stb:HighlightableTextBlock Text="{Binding Name}" SearchText="{Binding Text, ElementName=tbxDblSearch}" ToolTip="{Binding Notes}" Margin="0 -2.5" >
-          <!--<stb:HighlightableTextBlock.InputBindings>
-            <MouseBinding MouseAction="LeftDoubleClick" 
-                        Command="{Binding DataContext.UpdateViewCommand,  RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}"
-                        CommandParameter="{Binding DataContext.SelectSPD, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}" />
-          </stb:HighlightableTextBlock.InputBindings>-->
-        </stb:HighlightableTextBlock>
-        <ToggleButton IsChecked="{Binding IsActive, UpdateSourceTrigger=PropertyChanged}" Click="ToggleButton_Click" >
-          <TextBlock       Text="{Binding IsActive, UpdateSourceTrigger=PropertyChanged, Converter={cnv:BoolToCharConverter}}" FontFamily="Wingdings" FontSize="26"
+      <Grid Width="360" Margin="0 -4" Style="{StaticResource gi}" FocusVisualStyle="{x:Null}" >
+        <stb:HighlightableTextBlock Text="{Binding Name}" SearchText="{Binding Text, ElementName=tbxDblSearch}" ToolTip="{Binding Notes}" />
+        <ToggleButton IsChecked="{Binding IsActive, UpdateSourceTrigger=PropertyChanged}" Click="ToggleButton_Click" Padding="0 0 0 -4">
+          <TextBlock       Text="{Binding IsActive, UpdateSourceTrigger=PropertyChanged, Converter={cnv:BoolToCharConverter}}" FontFamily="Wingdings" FontSize="34" 
                      Foreground="{Binding IsActive, UpdateSourceTrigger=PropertyChanged, Converter={cnv:BoolToColorConverter}}" />
         </ToggleButton>
       </Grid>
     </DataTemplate>
 
     <DataTemplate x:Key="SpdTemplate">
-      <StackPanel Orientation="Horizontal">
-        <TextBlock Margin="0 -2.5" Padding="0 3" Text="{Binding DBName, FallbackValue='BP'}" />
+      <StackPanel  Margin="0 -5" Orientation="Horizontal" FocusVisualStyle="{x:Null}" >
+        <TextBlock Margin="0 -2.5" Padding="0 3" Text="{Binding DBName, FallbackValue='Inventory'}" />
         <TextBlock Margin="0 -2.5" Padding="0 3" Text="." />
         <stb:HighlightableTextBlock Text="{Binding SPName}" SearchText="{Binding Text, ElementName=tbxSpdSearch}" ToolTip="{Binding Definition}" Margin="0 -2.5" >
           <stb:HighlightableTextBlock.InputBindings>
             <MouseBinding MouseAction="LeftDoubleClick" 
-                        Command="{Binding DataContext.UpdateViewCommand,  RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}"
-                        CommandParameter="{Binding DataContext.SelectSPD, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}" />
+                          Command="{Binding DataContext.UpdateViewCommand,  RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}"
+                          CommandParameter="{Binding DataContext.SelectSPD, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}" />
           </stb:HighlightableTextBlock.InputBindings>
         </stb:HighlightableTextBlock>
       </StackPanel>
     </DataTemplate>
 
   </UserControl.Resources>
-  <Grid Margin="30,10,30,10" >
+  <Grid Margin="30 10" >
     <Grid.ColumnDefinitions>
       <ColumnDefinition Width="Auto" />
       <ColumnDefinition Width="30" />
