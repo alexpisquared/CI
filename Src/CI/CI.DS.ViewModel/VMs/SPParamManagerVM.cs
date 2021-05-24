@@ -20,7 +20,7 @@ namespace CI.DS.ViewModel.VMs
   {
     readonly ILogger _logger;
     readonly IConfigurationRoot _config;
-    readonly InventoryContext _dbCnxt;
+    readonly InventoryContext _dbx;
     string _report = "So far - so good";
     Dbprocess? _dpprocess;
 
@@ -28,7 +28,7 @@ namespace CI.DS.ViewModel.VMs
     {
       _logger = logger;
       _config = config;
-      _dbCnxt = new(_config["SqlConStr"]);
+      _dbx = new(_config["SqlConStr"]);
 
       mainVM.StoredProcDetail = spd;
       UpdateViewCommand = new UpdateViewCommand(mainVM);
@@ -52,11 +52,11 @@ namespace CI.DS.ViewModel.VMs
     {
       try
       {
-        await _dbCnxt.Databases.LoadAsync();
-        await _dbCnxt.Dbprocesses.LoadAsync();
-        await _dbCnxt.Parameters.LoadAsync();
+        await _dbx.Databases.LoadAsync();
+        await _dbx.Dbprocesses.LoadAsync();
+        await _dbx.Parameters.LoadAsync();
 
-        var sp = _dbCnxt.Dbprocesses.Local.FirstOrDefault(r => spd.SPName.Equals(r.StoredProcName));
+        var sp = _dbx.Dbprocesses.Local.FirstOrDefault(r => spd.SPName.Equals(r.StoredProcName));
         if (sp is null) sp = await createNewDBProcessAndStoreToDB(spd);
         if (sp is null) throw new ArgumentNullException("Impossible!!!");
 
@@ -86,12 +86,12 @@ namespace CI.DS.ViewModel.VMs
           });
       });
 
-      var newDBP = _dbCnxt.Dbprocesses.Add(ndp);
+      var newDBP = _dbx.Dbprocesses.Add(ndp);
 
-      var rowsSaved = await _dbCnxt.SaveChangesAsync();
+      var rowsSaved = await _dbx.SaveChangesAsync();
       Report = $"New SP  '{spd.SPName}'  with  {ndp.Parameters.Count}  parameters added to DB.\r\n(all  {rowsSaved}  rows saved)";
 
-      return await _dbCnxt.Dbprocesses.FirstOrDefaultAsync(r => r.StoredProcName.Equals(spd.SPName));
+      return await _dbx.Dbprocesses.FirstOrDefaultAsync(r => r.StoredProcName.Equals(spd.SPName));
     }
     string defaultValue(string dbTypeName)
     {
@@ -109,6 +109,6 @@ namespace CI.DS.ViewModel.VMs
     public ObservableCollection<Parameter> Parameters { get; } = new ObservableCollection<Parameter>();
 
     public ICommand UpdateViewCommand { get; set; }
-    ICommand? _saveToDB; public ICommand SaveToDB => _saveToDB ??= new RelayCommand(performSaveToDB); void performSaveToDB() => Report = $"{_dbCnxt.SaveChanges()} rows saved";
+    ICommand? _saveToDB; public ICommand SaveToDB => _saveToDB ??= new RelayCommand(performSaveToDB); void performSaveToDB() => Report = $"{_dbx.SaveChanges()} rows saved";
   }
 }

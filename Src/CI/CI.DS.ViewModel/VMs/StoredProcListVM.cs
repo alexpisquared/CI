@@ -17,6 +17,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Data;
 using System.Windows.Input;
+using Microsoft.Toolkit.Mvvm.Input;
 
 namespace CI.DS.ViewModel.VMs
 {
@@ -27,7 +28,7 @@ namespace CI.DS.ViewModel.VMs
     readonly InventoryContext _dbx;
     readonly List<SpdAdm> _spdl = new();
     readonly List<Database> _dbll = new();
-    string _searchString = "", _Report = "sql con str", _sqlConStr = "sql con str";
+    string _searchString = "", _report = "sql con str", _sqlConStr = "sql con str";
 
     public StoredProcListVM(ILogger logger, IConfigurationRoot config, MainVM mainVM)
     {
@@ -43,15 +44,12 @@ namespace CI.DS.ViewModel.VMs
 
       var sw = Stopwatch.StartNew();
 
-      Task.Run(async () =>
+      Task.Run(() =>
       {
+        var dbll = _dbx.Databases.ToList();
         var spdl = new List<SpdAdm>();
 
-        var dbll = await _dbx.Databases.ToListAsync();
-
-        dbll.Where(d => d.IsActive == true).ToList().ForEach(async r =>
-          (await loadAllSPs(r)).ForEach(m => spdl.Add(m))
-        );
+        dbll.Where(d => d.IsActive == true).ToList().ForEach(r => loadAllSPs(r).ForEach(m => spdl.Add(m))); // dbll.Where(d => d.IsActive == true).ToList().ForEach(async r => (await loadAllSPs(r)).ForEach(m => spdl.Add(m)));
 
         return (dbll, spdl);
       }).ContinueWith(_ =>
@@ -76,67 +74,75 @@ namespace CI.DS.ViewModel.VMs
     bool filterSPDs(object obj) => obj is SpdAdm && ((obj as SpdAdm)?.SPName.Contains(SearchString, StringComparison.InvariantCultureIgnoreCase) ?? false);
     bool filterdbls(object obj) => obj is Database && ((obj as Database)?.Name.Contains(SearchString, StringComparison.InvariantCultureIgnoreCase) ?? false);
 
-    async Task<List<SpdAdm>> loadAllSPs(Database r)
+    List<SpdAdm> loadAllSPs(Database db) // async Task<List<SpdAdm>> loadAllSPs(Database r)
     {
       List<SpdAdm> rv = new();
-      var connection = _dbx.Database.GetDbConnection();
-
       try
       {
-        if (connection.State.Equals(ConnectionState.Closed))
-          connection.Open();
+        var audit = $"** WhereAmI:  {_config["WhereAmI"]}    {_config["SqlConStrSansDBS"]}  ";
+        Debug.WriteLine(audit);
 
-        using var command = connection.CreateCommand();
-        command.CommandText = _sql;
+        var connectionString = string.Format(_config["SqlConStrSansDBS"], db.Name);
 
-        using var reader = await command.ExecuteReaderAsync();
-        if (!reader.HasRows)
+        using (Microsoft.Data.SqlClient.SqlConnection connection = new(connectionString))
         {
-          Debug.WriteLine("No rows found.");
-        }
-        else
-        {
-          while (reader.Read())
+          if (connection.State.Equals(ConnectionState.Closed))
+            connection.Open();
+
+          using var command = connection.CreateCommand();
+          command.CommandText = _sql;
+
+          using var reader = /*await*/ command.ExecuteReader/*Async*/();
+          if (!reader.HasRows)
           {
-            try
-            {
-              var vals = new object[reader.FieldCount];
-              Debug.WriteLine($"Depth:{reader.Depth}   {reader.GetValues(vals)}: {string.Join('\t', vals)}");
-              rv.Add(new SpdAdm(
-                reader.GetString("Schema"),
-                reader.GetString("SPName"),
-                reader.IsDBNull("Parameters") ? "" : reader.GetString("Parameters"),
-                reader.IsDBNull("Definition") ? "~DBNull (no access to definition)" : reader.GetString("Definition"),
-                reader.GetInt32("HasExecPerm")));
-            }
-            catch (SqlNullValueException ex) { ex.Log(); _logger.LogError(ex.ToString()); }
-            catch (Exception ex) { ex.Log(); _logger.LogError(ex.ToString()); }
+            Debug.WriteLine("No rows found.");
           }
-        }
+          else
+          {
+            while (reader.Read())
+            {
+              try
+              {
+                var vals = new object[reader.FieldCount];
+                //Debug.WriteLine($"Depth:{reader.Depth}   {reader.GetValues(vals)}: {string.Join('\t', vals)}");
+                rv.Add(new SpdAdm(
+                  db.Name,
+                  reader.GetString("Schema"),
+                  reader.GetString("SPName"),
+                  reader.IsDBNull("Parameters") ? "" : reader.GetString("Parameters"),
+                  reader.IsDBNull("Definition") ? "~DBNull (no access to definition)" : reader.GetString("Definition"),
+                  reader.GetInt32("HasExecPerm")));
+              }
+              catch (SqlNullValueException ex) { ex.Log(); _logger.LogError(ex.ToString()); }
+              catch (Exception ex) { ex.Log(); _logger.LogError(ex.ToString()); }
+            }
+          }
 
-        reader.Close();
+          reader.Close();
+          connection.Close();
+        }
       }
       catch (SqlNullValueException ex) { ex.Log(); _logger.LogError(ex.ToString()); }
       catch (Exception ex) { ex.Log(); _logger.LogError(ex.ToString()); }
       finally
       {
-        connection.Close();
         IsBusy = Visibility.Collapsed;
       }
-
       return rv;
     }
 
     ICollectionView _spdv; public ICollectionView SpdCollectionView { get => _spdv; set => SetProperty(ref _spdv, value); }
     ICollectionView _dblv; public ICollectionView DblCollectionView { get => _dblv; set => SetProperty(ref _dblv, value); }
-    Database? _selectDBL; public Database SelectDBL { get => _selectDBL; set => SetProperty(ref _selectDBL, value); }
+    Database? _selectDBL; public Database? SelectDBL { get => _selectDBL; set => SetProperty(ref _selectDBL, value); }
     SpdAdm? _selectSPD; public SpdAdm? SelectSPD { get => _selectSPD; set => SetProperty(ref _selectSPD, value); }
     public string SearchString { get => _searchString; set { SetProperty(ref _searchString, value); SpdCollectionView.Refresh(); } }
     public string SqlConStr { get => _sqlConStr; set => SetProperty(ref _sqlConStr, value); }
-    public string Report { get => _Report; set => SetProperty(ref _Report, value); }
+    public string Report { get => _report; set => SetProperty(ref _report, value); }
     Visibility _isBusy; public Visibility IsBusy { get => _isBusy; set => SetProperty(ref _isBusy, value); }
 
     public ICommand UpdateViewCommand { get; set; }
+    ICommand? _saveToDB; public ICommand SaveToDB => _saveToDB ??= new RelayCommand(performSaveToDB); void performSaveToDB() => Report = $"{_dbx.SaveChanges()} rows saved";
+
     public IConfigurationRoot Config => _config;
     public ILogger Logger => _logger;
 

@@ -89,7 +89,10 @@ namespace CI.Visual.Lib.Helpers
       ""WhereAmI"": ""{{0}}"",
       ""LogFolder"": ""\\\\bbsfile01\\Public\\AlexPi\\Misc\\Logs\\[RenameMe].DFLT..txt"",
       ""ServerList"": "".\\sqlexpress mtDEVsqldb mtUATsqldb mtPRDsqldb"",
-      ""SqlConStr"": ""Server=mtDEVsqldb;Database=Inventory;Trusted_Connection=True;"",
+      ""SqlConStr"": ""Server=mtDEVsqldb;Database=Inventory;Trusted_Connection=True;Connection Timeout=2"",
+      ""SqlConStrSansEnv"": ""Server=mt{0}sqldb;Database=Inventory;Trusted_Connection=True;Connection Timeout=2"",
+      ""SqlConStrSansSvr"": ""Server={0};Database=Inventory;Trusted_Connection=True;Connection Timeout=2"",
+      ""SqlConStrSansDBS"": ""Server=mtDEVsqldb;Database={0};Trusted_Connection=True;Connection Timeout=2"",
       ""AppSettings"": {{
         ""ServerList"": "".\\sqlexpress mtDEVsqldb mtUATsqldb mtPRDsqldb"",
         ""KeyVaultURL"": ""<moved to a safer place>""

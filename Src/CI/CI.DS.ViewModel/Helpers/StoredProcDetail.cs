@@ -1,13 +1,13 @@
 ﻿namespace CI.DS.ViewModel
 {
-  public class SpdAdm : StoredProcDetail { public SpdAdm(string s, string n, string p, string d, int e) : base(s, n, p, d, e) { } }
-  public class SpdUsr : StoredProcDetail { public SpdUsr(string s, string n, string p, string d, int e) : base(s, n, p, d, e) { } }
-  public class SpdFbk : StoredProcDetail { public SpdFbk(string s, string n, string p, string d, int e) : base(s, n, p, d, e) { } }
+  public class SpdAdm : StoredProcDetail { public SpdAdm(string db, string s, string n, string p, string d, int e) : base(db, s, n, p, d, e) { } }
+  public class SpdUsr : StoredProcDetail { public SpdUsr(string db, string s, string n, string p, string d, int e) : base(db, s, n, p, d, e) { } }
+  public class SpdFbk : StoredProcDetail { public SpdFbk(string db, string s, string n, string p, string d, int e) : base(db, s, n, p, d, e) { } }
   public abstract class StoredProcDetail
   {
     string _spName = "";
 
-    public StoredProcDetail(string s, string n, string p, string d, int e) => (Schema, SPName, Parameters, Definition, HasExecPerm) = (s, n, p, d, e);
+    public StoredProcDetail(string db, string s, string n, string p, string d, int e) => (DBName, Schema, SPName, Parameters, Definition, HasExecPerm) = (db, s, n, p, d, e);
 
     public string Schema { get; set; }
     public string SPName { get => _spName; private set => UFName = generateUserFriendlyName(_spName = value); }

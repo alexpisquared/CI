@@ -135,7 +135,14 @@
                 SelectedItem="{Binding SelectSPD, Mode=TwoWay}" />
 
 
-    <StackPanel Grid.Row="2" Grid.Column="2" Margin="30 10" HorizontalAlignment="Right" VerticalAlignment="Bottom">
+    <StackPanel Grid.Row="2" Grid.Column="2" Margin="30 10" HorizontalAlignment="Right" VerticalAlignment="Bottom" Orientation="Horizontal">
+      <Button Padding="0 0 0 3" Height="50" Width="50" Content="_Save" ToolTip="Save changes to DB" Command="{Binding SaveToDB}" Background="{DynamicResource MenuItemBackground3}" >
+        <Button.Resources>
+          <Style TargetType="{x:Type Border}">
+            <Setter Property="CornerRadius" Value="25"/>
+          </Style>
+        </Button.Resources>
+      </Button>
       <Button Content="_Go ►" ToolTip="Go to Parameter Manager for the selected SP" IsDefault="True" Background="{DynamicResource MenuItemBackground3}" Command="{Binding UpdateViewCommand}" CommandParameter="{Binding SelectSPD}" 
               Padding="0 0 0 3" Height="50" Width="50" >
         <Button.Resources>
@@ -147,7 +154,7 @@
     </StackPanel>
 
     <!--<Viewbox Grid.Row="1" Grid.RowSpan="2" Visibility="{Binding IsBusy, UpdateSourceTrigger=PropertyChanged, Converter={cnv:BoolToVisibilityConverter}}" >-->
-    <Grid Grid.Row="1" Grid.RowSpan="2" Background="#8888" Margin="-10" Visibility="{Binding IsBusy}" d:Visibility="Collapsed" >
+    <Grid Grid.Row="1" Grid.RowSpan="2" Grid.ColumnSpan="3" Background="#8888" Margin="-10" Visibility="{Binding IsBusy}" d:Visibility="Collapsed" >
       <Viewbox>
         <TextBlock Text="Loading..." RenderTransformOrigin="0.5,0.5" Padding="10" Foreground="#f60" >
           <TextBlock.RenderTransform>

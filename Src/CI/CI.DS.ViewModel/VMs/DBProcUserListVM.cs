@@ -78,6 +78,7 @@ namespace CI.DS.ViewModel.VMs
               var vals = new object [reader.FieldCount];
               Debug.WriteLine($"Depth:{reader.Depth}   {reader.GetValues(vals)}: {string.Join('\t', vals)}");
               rv.Add(new SpdUsr(
+                "???",
                 reader.GetString("Schema"),
                 reader.GetString("SPName"),
                 reader.IsDBNull("Parameters") ? "" : reader.GetString("Parameters"),
