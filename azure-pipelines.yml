@@ -38,13 +38,13 @@ steps:
     packageType: 'sdk'
     version: '5.x'
 
-# - task: DotNetCoreCLI@2
-#   inputs:
-#     command: 'restore'
-#     arguments: '-r $(BuildPlatform)'
-#     projects: '**\*.csproj'
-#     feedsToUse: 'select'
-#     verbosityRestore: 'Diagnostic'
+- task: DotNetCoreCLI@2
+  inputs:
+    command: 'restore'
+    arguments: '-r $(BuildPlatform)'
+    projects: '**\*.csproj'
+    feedsToUse: 'select'
+    verbosityRestore: 'Diagnostic'
 
 - task: VSBuild@1
   inputs:
