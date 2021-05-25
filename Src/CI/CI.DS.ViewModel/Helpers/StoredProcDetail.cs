@@ -20,6 +20,6 @@
 
     string generateUserFriendlyName(string val) => val.ToSentence();
 
-    public override string ToString() => $"{Schema}.{SPName}\r\n  ({Parameters})";
+    public override string ToString() => $"{DBName}.{Schema}.{SPName}\r\n  ({Parameters})";
   }
 }

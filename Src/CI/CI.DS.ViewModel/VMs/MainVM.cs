@@ -1,4 +1,5 @@
-﻿using CI.DS.ViewModel.Commands;
+﻿using CI.Standard.Lib.Extensions;
+using CI.DS.ViewModel.Commands;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
@@ -8,6 +9,9 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Microsoft.Toolkit.Mvvm.Input;
+using DB.Inventory.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace CI.DS.ViewModel.VMs
 {
@@ -26,6 +30,7 @@ namespace CI.DS.ViewModel.VMs
       _config = config;
       _selectedVM = new StoredProcListVM(logger, config, this);
       UpdateViewCommand = new UpdateViewCommand(this);
+      _resetDbCommand = null;
 
       _config["ServerList"].Split(" ").ToList().ForEach(r => _sqlServers.Add(r));
       _userPrefs = UserPrefs.Load<UserPrefs>();
@@ -63,5 +68,36 @@ namespace CI.DS.ViewModel.VMs
     public ICommand UpdateViewCommand { get; set; }
     public IConfigurationRoot Config { get => _config; }
     public ILogger Logger { get => _logger; }
+
+    ICommand? _resetDbCommand; public ICommand ResetDbCommand => _resetDbCommand ??= new RelayCommand(ResetDb); async void ResetDb()
+    {
+      using var dbx = new InventoryContext(_config["SqlConStr"]);
+      try
+      {
+#if DEBUG
+        dbx.Database.ExecuteSqlRaw("--SET FOREIGN_KEY_CHECKS=0;");
+
+        dbx.Database.ExecuteSqlRaw("TRUNCATE TABLE dpl.[Process_UserAccess]");
+        dbx.Database.ExecuteSqlRaw("TRUNCATE TABLE dpl.[Parameter]");
+
+        dbx.Roles.RemoveRange(dbx.Roles.ToList());
+        dbx.Databases.RemoveRange(dbx.Databases.ToList());
+        dbx.Dbprocesses.RemoveRange(dbx.Dbprocesses.ToList());
+
+        var now = DateTime.Now;
+        await dbx.Roles.AddRangeAsync(new[] {
+        new Role { Id = "A", RoleName = "Admin", RoleDescription = "Administrator [as per DB Reset]", Created = now },
+        new Role { Id = "U", RoleName = "User", RoleDescription = "Regular end user", Created = now }});
+
+        var rowsaffected = await dbx.SaveChangesAsync();
+
+        _logger.LogDebug($"Reset DB command has been performed by {_currentuser} resulting in {rowsaffected} rows affected.");
+#else
+      _logger.LogCritical($"Reset DB command has been attempted ...futilely   (courtesy of{_currentuser}).");
+#endif
+      }
+      catch (Exception ex) { ex.Log(); _logger.LogError(ex, "Really?"); }
+      finally { dbx.Database.ExecuteSqlRaw("-- SET FOREIGN_KEY_CHECKS=1;"); }
+    }
   }
 }

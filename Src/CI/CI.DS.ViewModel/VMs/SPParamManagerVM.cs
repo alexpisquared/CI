@@ -67,7 +67,8 @@ namespace CI.DS.ViewModel.VMs
     async Task<Dbprocess> createNewDBProcessAndStoreToDB(SpdAdm spd)
     {
       var now = DateTime.Now;
-      var ndp = new Dbprocess { Created = now, DbprocessName = spd.UFName, StoredProcName = spd.SPName, Parameters = new List<Parameter>() };
+      var did = (await _dbx.Databases.FirstOrDefaultAsync(r => r.Name == spd.DBName))?.Id ?? (await _dbx.Databases.FirstOrDefaultAsync())?.Id ?? 0;
+      var ndp = new Dbprocess { Created = now, DatabaseId = did, DbprocessName = spd.UFName, StoredProcName = spd.SPName, Parameters = new List<Parameter>() };
 
       spd.Parameters.Split(',', StringSplitOptions.RemoveEmptyEntries).ToList().ForEach(param =>
       {
