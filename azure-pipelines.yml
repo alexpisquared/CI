@@ -34,13 +34,8 @@ steps:
 
 - task: NuGetCommand@2
   inputs:
-    command: 'restore'
-    restoreSolution: '**/*.sln'
-    feedsToUse: 'select'
-
-- task: NuGetCommand@2
-  inputs:
     restoreSolution: '$(solution)'
+    packagesdirectory: '..\packages'
 
 - task: UseDotNet@2
   inputs:
