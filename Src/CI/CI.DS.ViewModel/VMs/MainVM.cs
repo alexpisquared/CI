@@ -77,8 +77,8 @@ namespace CI.DS.ViewModel.VMs
 #if DEBUG
         dbx.Database.ExecuteSqlRaw("--SET FOREIGN_KEY_CHECKS=0;");
 
-        dbx.Database.ExecuteSqlRaw("TRUNCATE TABLE dpl.[Process_UserAccess]");
-        dbx.Database.ExecuteSqlRaw("TRUNCATE TABLE dpl.[Parameter]");
+        var ra1 = dbx.Database.ExecuteSqlRaw("TRUNCATE TABLE dpl.[Process_UserAccess]");
+        var ra2 = dbx.Database.ExecuteSqlRaw("TRUNCATE TABLE dpl.[Parameter]");
 
         dbx.Roles.RemoveRange(dbx.Roles.ToList());
         dbx.Databases.RemoveRange(dbx.Databases.ToList());
@@ -91,9 +91,11 @@ namespace CI.DS.ViewModel.VMs
 
         var rowsaffected = await dbx.SaveChangesAsync();
 
+        var ra3 = dbx.Database.ExecuteSqlRaw("INSERT INTO dpl.[Database] (Name, Notes, IsActive) SELECT name, '** Initial load. ', 0 FROM sys.databases WHERE (database_id > 4) ORDER BY name");
+
         _logger.LogDebug($"Reset DB command has been performed by {_currentuser} resulting in {rowsaffected} rows affected.");
 #else
-      _logger.LogCritical($"Reset DB command has been attempted ...futilely   (courtesy of{_currentuser}).");
+      _logger.LogCritical($"Reset DB command has been attempted ...futilely   (courtesy of {_currentuser}).");
 #endif
       }
       catch (Exception ex) { ex.Log(); _logger.LogError(ex, "Really?"); }
