@@ -31,7 +31,7 @@ steps:
 - checkout: MyGitHubRepo0
 # - checkout: MyGitHubRepo1
 # - checkout: MyGitHubRepo2
-# - script: dir $(Build.SourcesDirectory)
+- script: dir $(Build.SourcesDirectory)
 
 # - task: UseDotNet@2
 #   inputs:
