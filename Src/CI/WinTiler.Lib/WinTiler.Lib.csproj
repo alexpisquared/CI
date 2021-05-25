@@ -8,7 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\ScSv\Src\AlexPi.Scr\WindowsFormsLib\WindowsFormsLib.csproj" />
+    <ProjectReference Include="..\..\..\..\AAV.Shared\Src\Net6.0\WindowsFormsLib\WindowsFormsLib.csproj" />
     <ProjectReference Include="..\CI.Standard.Lib\CI.Standard.Lib.csproj" />
     <ProjectReference Include="..\CI.Visual.Lib\CI.Visual.Lib.csproj" />
 
