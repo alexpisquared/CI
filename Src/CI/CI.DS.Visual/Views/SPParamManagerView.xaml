@@ -43,11 +43,7 @@
     <StackPanel Orientation="Horizontal" Margin="50 0 0 0" HorizontalAlignment="Center">
       <StackPanel>
         <Label Content="Stored Procedure Name" />
-        <StackPanel Orientation="Horizontal">
-          <TextBlock FontSize="20" Foreground="#44f" Padding="0 3" Text="{Binding Dbprocess.Database.Name, FallbackValue='usp_storedprocofsignificantimportance'}" />
-          <TextBlock FontSize="20" Foreground="#44f" Padding="0 3" Text="."   />
-          <TextBlock FontSize="20" Foreground="#44f" Padding="0 3" Text="{Binding Dbprocess.StoredProcName, FallbackValue='usp_storedprocofsignificantimportance'}"/>
-        </StackPanel>
+        <TextBlock FontSize="20" Foreground="#44f" Padding="0 3" Text="{Binding Dbprocess.DB_SP_Name, FallbackValue='usp_storedprocofsignificantimportance'}"/>
       </StackPanel>
       <Rectangle Width="26" />
       <StackPanel>
@@ -86,14 +82,16 @@
           </Style>
         </Button.Resources>
       </Button>
-      <Button Padding="0 0 0 3" Height="50" Width="50" Content="◄ _OK" ToolTip="Back to SP selector" Background="{DynamicResource MenuItemBackground3}" Command="{Binding UpdateViewCommand}" CommandParameter="Spsl" >
+      <Button Content="t" FontFamily="Wingdings 3" FontSize="22" Padding="0 0 3 0" 
+              Height="50" Width="50" ToolTip="Back to SP selector" Background="{DynamicResource MenuItemBackground3}" Command="{Binding UpdateViewCommand}" CommandParameter="Spsl" >
         <Button.Resources>
           <Style TargetType="{x:Type Border}">
             <Setter Property="CornerRadius" Value="25"/>
           </Style>
         </Button.Resources>
       </Button>
-      <Button Padding="0 0 0 3" Height="50" Width="50" Content="_UA ►" ToolTip="User Assignment"     Background="{DynamicResource MenuItemBackground3}" Command="{Binding UpdateViewCommand}" CommandParameter="USpS" x:Name="focus0" IsDefault="True" >
+      <Button Content="u" FontFamily="Wingdings 3" FontSize="22" Padding="6 0 0 0" IsDefault="True" 
+              Height="50" Width="50" ToolTip="User Assignment"     Background="{DynamicResource MenuItemBackground3}" Command="{Binding UpdateViewCommand}" CommandParameter="USpS" x:Name="focus0" >
         <Button.Resources>
           <Style TargetType="{x:Type Border}">
             <Setter Property="CornerRadius" Value="25"/>

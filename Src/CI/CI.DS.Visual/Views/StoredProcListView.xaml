@@ -120,8 +120,9 @@
 
 
     <StackPanel Grid.Row="2" Grid.Column="2" Margin="30 10" HorizontalAlignment="Right" VerticalAlignment="Bottom" Orientation="Horizontal">
-      <Button Content="_Go ►" ToolTip="Go to Parameter Manager for the selected SP" IsDefault="True" Background="{DynamicResource MenuItemBackground3}" Command="{Binding UpdateViewCommand}" CommandParameter="{Binding SelectSPD}" 
-              Padding="0 0 0 3" Height="50" Width="50" >
+      <Button Content="u" FontFamily="Wingdings 3" FontSize="22" Padding="6 0 0 0" IsDefault="True" 
+              ToolTip="Go to Parameter Manager for the selected SP" Background="{DynamicResource MenuItemBackground3}" Command="{Binding UpdateViewCommand}" CommandParameter="{Binding SelectSPD}" 
+              Height="50" Width="50" >
         <Button.Resources>
           <Style TargetType="{x:Type Border}">
             <Setter Property="CornerRadius" Value="25"/>

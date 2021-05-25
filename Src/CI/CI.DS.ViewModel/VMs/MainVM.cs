@@ -31,6 +31,7 @@ namespace CI.DS.ViewModel.VMs
       _userPrefs = UserPrefs.Load<UserPrefs>();
       SqlServer = _userPrefs.SqlServer;
       _currentuser = $"{Environment.UserName}"; //todo: use AD to get proper name, auto add current user to DB. auto-add roles, if missing.
+      _currentRole = "Admin";
     }
 
     public StoredProcDetail StoredProcDetail { get; internal set; }

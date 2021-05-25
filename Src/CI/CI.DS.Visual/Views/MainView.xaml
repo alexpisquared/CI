@@ -211,13 +211,13 @@
           <ScaleTransform ScaleX="{Binding ZV, ElementName=wnd, FallbackValue=1}" ScaleY="{Binding ZV, ElementName=wnd, FallbackValue=1}" />
         </Grid.LayoutTransform>
         <Grid.RowDefinitions>
-          <RowDefinition Height="7.475"/>
-          <RowDefinition Height="57.525"/>
+          <RowDefinition Height="7"/>
+          <RowDefinition Height="Auto"/>
           <RowDefinition Height="Auto"/>
           <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <Views:BrandTitleUserControl Margin="10,3,10,10" Grid.Row="1" Height="50" />
+        <Views:BrandTitleUserControl Grid.Row="1" HorizontalAlignment="Left" />
         <TextBlock Grid.Row="1" FontSize="22" Text="{Binding CurrentRole}" d:Text="Admin" FontWeight="SemiBold" Margin="260 0" Height="40"/>
 
         <StackPanel Margin="0,0,6,6" HorizontalAlignment="Right" VerticalAlignment="Bottom" Grid.Row="1" Orientation="Horizontal">
