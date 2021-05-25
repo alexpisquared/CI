@@ -32,10 +32,6 @@ steps:
   inputs:
     versionSpec: 
 
-- task: NuGetCommand@2
-  inputs:
-    restoreSolution: '$(solution)'
-    packagesdirectory: '..\packages'
 
 - task: UseDotNet@2
   inputs:
