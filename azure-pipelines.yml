@@ -36,7 +36,7 @@ steps:
 - task: UseDotNet@2
   inputs:
     packageType: 'sdk'
-    version: '5.x'
+    version: '5.x'                   #27 72s
 
 - task: DotNetCoreCLI@2
   inputs:
@@ -46,7 +46,7 @@ steps:
       **\WindowsFormsLib.csproj
       **\SpeechSynthLib.csproj
     feedsToUse: 'select'
-    verbosityRestore: 'Quiet'
+    verbosityRestore: 'Quiet'        #12 24s
 
 # - task: MSBuild@1    
 #   inputs:
