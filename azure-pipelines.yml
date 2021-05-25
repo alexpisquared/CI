@@ -8,10 +8,10 @@ resources:
     type: github
     endpoint: alexpisquared
     name: alexpisquared/CI
-  - repository: MyGitHubRepo2
-    type: github
-    endpoint: alexpisquared
-    name: alexpisquared/CI-Reimagined-Invention
+  # - repository: MyGitHubRepo2
+  #   type: github
+  #   endpoint: alexpisquared
+  #   name: alexpisquared/CI-Reimagined-Invention
 
 trigger:
 - main
@@ -30,7 +30,7 @@ steps:
 - checkout: self
 - checkout: MyGitHubRepo0
 - checkout: MyGitHubRepo1
-- checkout: MyGitHubRepo2
+# - checkout: MyGitHubRepo2
 - script: dir $(Build.SourcesDirectory)
 
 - task: UseDotNet@2
