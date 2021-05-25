@@ -28,30 +28,23 @@ steps:
 - task: NuGetToolInstaller@1
 
 - checkout: self
+- checkout: MyGitHubRepo0
 - checkout: MyGitHubRepo1
 - checkout: MyGitHubRepo2
 - script: dir $(Build.SourcesDirectory)
 
-- task: NuGetToolInstaller@1
-  inputs:
-    versionSpec: 
-
-
 - task: UseDotNet@2
-  inputs:
-    packageType: 'sdk'
-    version: 
-
-- task: UseDotNet@2
-  displayName: 'Use .NET Core sdk'
   inputs:
     packageType: 'sdk'
     version: '5.x'
 
 - task: DotNetCoreCLI@2
   inputs:
-    command: restore
+    command: 'restore'
+    arguments: '-r $(BuildPlatform)'
     projects: '**\*.csproj'
+    feedsToUse: 'select'
+    verbosityRestore: 'Diagnostic'
 
 - task: VSBuild@1
   inputs:
@@ -62,7 +55,7 @@ steps:
 
 - task: CopyFiles@2
   inputs:
-    SourceFolder: '[SLN-folder]\\[CsProj-folder]\\bin\\Release'
+    SourceFolder: 'Src\\CI\\CI.DataSmarts\\bin\\Release'
     Contents: '**'
     TargetFolder: '$(Build.ArtifactStagingDirectory)'
     CleanTargetFolder: true
