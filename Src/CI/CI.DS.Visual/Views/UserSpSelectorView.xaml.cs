@@ -20,12 +20,13 @@ namespace CI.DS.Visual.Views
   public partial class UserSpSelectorView : UserControl
   {
     readonly CollectionViewSource _userViewSource, _permViewSource;
-    InventoryContext _context;
+    InventoryContext _dbx;
     string? _last = null;
     bool _loaded, _isDbg, _isDirty;
     int _userid, _permid;
-    ILogger _logger;
-    IConfigurationRoot _config;
+    IConfigurationRoot? _config;
+    ILogger? _logger;
+    const string _fallbackConStr = @"Server=.\sqlexpress;Database=Inventory;Trusted_Connection=True";
     public static readonly DependencyProperty BlurProperty = DependencyProperty.Register("Blur", typeof(double), typeof(UserSpSelectorView), new PropertyMetadata(.0)); public double Blur { get => (double)GetValue(BlurProperty); set => SetValue(BlurProperty, value); }
     public UserSpSelectorView()
     {
@@ -34,8 +35,8 @@ namespace CI.DS.Visual.Views
       _userViewSource = (CollectionViewSource)FindResource(nameof(_userViewSource));
       _permViewSource = (CollectionViewSource)FindResource(nameof(_permViewSource));
     }
-    public UserSpSelectorView(ILogger logger, Microsoft.Extensions.Configuration.IConfigurationRoot config) : this() => init(logger, config);
-    void init(ILogger logger, Microsoft.Extensions.Configuration.IConfigurationRoot config)
+    public UserSpSelectorView(ILogger logger, IConfigurationRoot config) : this() => init(logger, config);
+    void init(ILogger logger, IConfigurationRoot config)
     {
 #if DEBUG
       _isDbg = true;
@@ -50,7 +51,7 @@ namespace CI.DS.Visual.Views
       var svrs = _config["ServerList"].Split(" ").ToList();
       cbxSrvr.ItemsSource = svrs;
       cbxSrvr.SelectedIndex = 0;
-      _context = new(string.Format(_config["SqlConStr"], svrs.First()));
+      _dbx = new(string.Format(_config["SqlConStr"], svrs.First()));
     }
     async void onLoaded(object s, RoutedEventArgs e)
     {
@@ -66,8 +67,7 @@ namespace CI.DS.Visual.Views
         for (var i = 0; i < dgPerm.Items.Count; i++)
         {
           var row = (DataGridRow)dgPerm.ItemContainerGenerator.ContainerFromIndex(i);
-          var cellContent = dgPerm.Columns[0].GetCellContent(row) as TextBlock;
-          if (cellContent != null && cellContent.Text.Contains(vm._mainVM.StoredProcDetail.SPName))
+          if (dgPerm.Columns[0].GetCellContent(row) is TextBlock cellContent && cellContent.Text.Contains(vm._mainVM.StoredProcDetail.SPName))
           {
             dgPerm.SelectionUnit = DataGridSelectionUnit.FullRow;
             var item = dgPerm.Items[i];
@@ -196,7 +196,7 @@ namespace CI.DS.Visual.Views
 #if SaveForDevOnly //         if (true)// Environment.MachineName == "RAZER1" || new[] { ".", @"mtUATsqldb" }.Contains(cbxSrvr.SelectedValue))
         MessageBox.Show(this, "Press any key to continue...\n\n\t...or any other key to quit", "Changes Saved ...NOT!!! (SaveForDevOnly is ON) :(", MessageBoxButton.OK, MessageBoxImage.Information);
 #else
-        rowsSaved = await _context.SaveChangesAsync();
+        rowsSaved = await _dbx.SaveChangesAsync();
 #endif
 
         if (rowsSaved > 0)
@@ -217,29 +217,29 @@ namespace CI.DS.Visual.Views
       try
       {
         await Task.Delay(60);
-        _context = new(string.Format(_config["SqlConStr"], cbxSrvr.SelectedValue));
-        await _context.Users.LoadAsync();
-        await _context.Databases.LoadAsync();
-        await _context.Dbprocesses.LoadAsync();
-        await _context.ProcessUserAccesses.LoadAsync();
-        tbkTitle.Text = _isDbg ? $"A:{_context.Applications.Local.Count} ◄ P:{_context.Dbprocesses.Local.Count} ◄ pa:{_context.ProcessUserAccesses.Local.Count} ◄ u:{_context.Users.Local.Count}" : "";
+        _dbx = new(string.Format(_config?["SqlConStr"] ?? _fallbackConStr, cbxSrvr.SelectedValue));
+        await _dbx.Users.LoadAsync();
+        await _dbx.Databases.LoadAsync();
+        await _dbx.Dbprocesses.LoadAsync();
+        await _dbx.ProcessUserAccesses.LoadAsync();
+        tbkTitle.Text = _isDbg ? $"A:{_dbx.Applications.Local.Count} ◄ P:{_dbx.Dbprocesses.Local.Count} ◄ pa:{_dbx.ProcessUserAccesses.Local.Count} ◄ u:{_dbx.Users.Local.Count}" : "";
 
         dgPerm.SelectedIndex = -1;
         dgUser.SelectedIndex = -1;
 
-        _userViewSource.Source = _context.Users.Local.ToObservableCollection();
+        _userViewSource.Source = _dbx.Users.Local.ToObservableCollection();
         _userViewSource.SortDescriptions.Add(new SortDescription(nameof(User.UserId), ListSortDirection.Ascending));
 
-        _permViewSource.Source = _context.Dbprocesses.Local.ToObservableCollection();
+        _permViewSource.Source = _dbx.Dbprocesses.Local.ToObservableCollection();
         _permViewSource.SortDescriptions.Add(new SortDescription(nameof(Dbprocess.DbprocessName), ListSortDirection.Ascending)); //tu: instead of  .OrderBy(r => r.UserId); lest forfeit CanUserAddRows.
 
-        btnAddMe.Visibility = _context.Users.Local.Any(r => r.UserId == $@"{Environment.UserDomainName}\{Environment.UserName}") ? Visibility.Collapsed : Visibility.Visible;
+        btnAddMe.Visibility = _dbx.Users.Local.Any(r => r.UserId == $@"{Environment.UserDomainName}\{Environment.UserName}") ? Visibility.Collapsed : Visibility.Visible;
       }
       catch (Exception ex) { _logger.LogError($"{ex}"); ex.Pop(null); }
     }
     async void onAddMe(object s, RoutedEventArgs e)
     {
-      _context.Users.Local.Add(new User { UserId = $@"{Environment.UserDomainName}\{Environment.UserName}", AdminAccess = 0, Type = "U", Status = "A" });
+      _dbx.Users.Local.Add(new User { UserId = $@"{Environment.UserDomainName}\{Environment.UserName}", AdminAccess = 0, Type = "U", Status = "A" });
       _isDirty = true;
       await saveIfDirty(true);
       btnAddMe.Visibility = Visibility.Collapsed;
@@ -247,10 +247,10 @@ namespace CI.DS.Visual.Views
     void updateCrosRefTable()
     {
       Debug.Write("    Upd xRef  " +
-        $"G:{_context.Dbprocesses.Local.Where(r => r.Granted == true).Count()}  +  " +
-        $"f:{_context.Dbprocesses.Local.Where(r => r.Granted == false).Count()}  +  " +
-        $"n:{_context.Dbprocesses.Local.Where(r => r.Granted is null).Count()}  =  " +
-        $"n:{_context.Dbprocesses.Local.Count}" +
+        $"G:{_dbx.Dbprocesses.Local.Where(r => r.Granted == true).Count()}  +  " +
+        $"f:{_dbx.Dbprocesses.Local.Where(r => r.Granted == false).Count()}  +  " +
+        $"n:{_dbx.Dbprocesses.Local.Where(r => r.Granted is null).Count()}  =  " +
+        $"n:{_dbx.Dbprocesses.Local.Count}" +
         $"   ");
 
       if (_userid > 0 && _permid < 0)
@@ -270,39 +270,39 @@ namespace CI.DS.Visual.Views
             _context.ProcessUserAccesses.Local.Add(new ProcessUserAccess { UserId = _userid, DbprocessId = p.DbprocessId , RoleId = "U"});
         });
 #else
-        _context.Dbprocesses.Local.Where(r => r.Granted == true).ToList().ForEach(p =>
+        _dbx.Dbprocesses.Local.Where(r => r.Granted == true).ToList().ForEach(p =>
         {
-          var dbpa = _context.ProcessUserAccesses.Local.FirstOrDefault(r => r.UserId == _userid && r.DbprocessId == p.Id);
+          var dbpa = _dbx.ProcessUserAccesses.Local.FirstOrDefault(r => r.UserId == _userid && r.DbprocessId == p.Id);
           if (dbpa != null)
           {
             Debugger.Break(); //             if (dbpa.Status != "G")              dbpa.Status = "G";
           }
           else
-            _context.ProcessUserAccesses.Local.Add(new ProcessUserAccess { UserId = _userid, DbprocessId = p.Id, RoleId = "U" });
+            _dbx.ProcessUserAccesses.Local.Add(new ProcessUserAccess { UserId = _userid, DbprocessId = p.Id, RoleId = "U" });
         });
 
-        _context.Dbprocesses.Local.Where(r => r.Granted == false).ToList().ForEach(p =>
+        _dbx.Dbprocesses.Local.Where(r => r.Granted == false).ToList().ForEach(p =>
         {
-          var dbpa = _context.ProcessUserAccesses.Local.FirstOrDefault(r => r.UserId == _userid && r.DbprocessId == p.Id);
+          var dbpa = _dbx.ProcessUserAccesses.Local.FirstOrDefault(r => r.UserId == _userid && r.DbprocessId == p.Id);
           if (dbpa != null)
-            _context.ProcessUserAccesses.Local.Remove(dbpa);
+            _dbx.ProcessUserAccesses.Local.Remove(dbpa);
         });
 #endif
       }
       else if (_userid < 0 && _permid > 0)
       {
-        _context.Users.Local.ToList().ForEach(u =>
+        _dbx.Users.Local.ToList().ForEach(u =>
         {
-          var dbpa = _context.ProcessUserAccesses.Local.FirstOrDefault(r => r.UserId == u.UserIntId && r.DbprocessId == _permid);
+          var dbpa = _dbx.ProcessUserAccesses.Local.FirstOrDefault(r => r.UserId == u.UserIntId && r.DbprocessId == _permid);
           if (dbpa != null)
           {
             if (u.Granted == true)
               Debugger.Break(); //             dbpa.Status = "G";
             else
-              _context.ProcessUserAccesses.Local.Remove(dbpa);
+              _dbx.ProcessUserAccesses.Local.Remove(dbpa);
           }
           else if (u.Granted == true)
-            _context.ProcessUserAccesses.Local.Add(new ProcessUserAccess { UserId = u.UserIntId, DbprocessId = _permid, RoleId = "U" });
+            _dbx.ProcessUserAccesses.Local.Add(new ProcessUserAccess { UserId = u.UserIntId, DbprocessId = _permid, RoleId = "U" });
         });
       }
     }
@@ -312,29 +312,29 @@ namespace CI.DS.Visual.Views
       var dc = ((FrameworkElement)((FrameworkElement)s).TemplatedParent).DataContext;
       if (dc is Dbprocess perm && _userid > 0)
       {
-        var dbpa = _context.ProcessUserAccesses.Local.FirstOrDefault(r => r.UserId == _userid && r.DbprocessId == perm.Id);
+        var dbpa = _dbx.ProcessUserAccesses.Local.FirstOrDefault(r => r.UserId == _userid && r.DbprocessId == perm.Id);
         if (dbpa == null && perm.Granted == true)
         {
-          _context.ProcessUserAccesses.Local.Add(new ProcessUserAccess { UserId = _userid, DbprocessId = perm.Id, RoleId = "U" });
+          _dbx.ProcessUserAccesses.Local.Add(new ProcessUserAccess { UserId = _userid, DbprocessId = perm.Id, RoleId = "U" });
           _isDirty = true;
         }
         if (dbpa != null && perm.Granted == false)
         {
-          _context.ProcessUserAccesses.Local.Remove(dbpa);
+          _dbx.ProcessUserAccesses.Local.Remove(dbpa);
           _isDirty = true;
         }
       }
       else if (dc is User user && _permid > 0)
       {
-        var dbpa = _context.ProcessUserAccesses.Local.FirstOrDefault(r => r.UserId == user.UserIntId && r.DbprocessId == _permid);
+        var dbpa = _dbx.ProcessUserAccesses.Local.FirstOrDefault(r => r.UserId == user.UserIntId && r.DbprocessId == _permid);
         if (dbpa == null && user.Granted == true)
         {
-          _context.ProcessUserAccesses.Local.Add(new ProcessUserAccess { UserId = user.UserIntId, DbprocessId = _permid, RoleId = "U" });
+          _dbx.ProcessUserAccesses.Local.Add(new ProcessUserAccess { UserId = user.UserIntId, DbprocessId = _permid, RoleId = "U" });
           _isDirty = true;
         }
         if (dbpa != null && user.Granted == false)
         {
-          _context.ProcessUserAccesses.Local.Remove(dbpa);
+          _dbx.ProcessUserAccesses.Local.Remove(dbpa);
           _isDirty = true;
         }
       }
@@ -344,12 +344,12 @@ namespace CI.DS.Visual.Views
       if (_userid > 0 && _permid < 0)
       {
         ufp.Text = $"---";
-        pfu.Text = $"{_context.Users.Local.FirstOrDefault(r => r.UserIntId == _userid)?.UserId}  can run  {_context.Dbprocesses.Local.Where(r => r.Granted == true).Count()}  Dbprocesses:";
+        pfu.Text = $"{_dbx.Users.Local.FirstOrDefault(r => r.UserIntId == _userid)?.UserId}  can run  {_dbx.Dbprocesses.Local.Where(r => r.Granted == true).Count()}  Dbprocesses:";
       }
       else if (_userid < 0 && _permid > 0)
       {
         pfu.Text = $"---";
-        ufp.Text = $"{_context.Dbprocesses.Local.FirstOrDefault(r => r.Id == _permid)?.DbprocessName}  assigned to  {_context.Users.Local.Where(r => r.Granted == true).Count()}  users:";
+        ufp.Text = $"{_dbx.Dbprocesses.Local.FirstOrDefault(r => r.Id == _permid)?.DbprocessName}  assigned to  {_dbx.Users.Local.Where(r => r.Granted == true).Count()}  users:";
       }
     }
   }
