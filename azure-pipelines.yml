@@ -41,8 +41,10 @@ steps:
 - task: DotNetCoreCLI@2
   inputs:
     command: 'restore'
-    projects: '**\WindowsFormsLib.csproj;**\SpeechSynthLib.csproj'
     # projects: '**\*.csproj'
+    projects: |
+      **\WindowsFormsLib.csproj
+      **\SpeechSynthLib.csproj
     feedsToUse: 'select'
     verbosityRestore: 'Quiet'
 
