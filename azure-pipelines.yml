@@ -27,44 +27,44 @@ variables:
 steps:
 - task: NuGetToolInstaller@1
 
-- checkout: self
+# - checkout: self
 - checkout: MyGitHubRepo0
 # - checkout: MyGitHubRepo1
 # - checkout: MyGitHubRepo2
-- script: dir $(Build.SourcesDirectory)
+# - script: dir $(Build.SourcesDirectory)
 
-- task: UseDotNet@2
-  inputs:
-    packageType: 'sdk'
-    version: '5.x'
+# - task: UseDotNet@2
+#   inputs:
+#     packageType: 'sdk'
+#     version: '5.x'
 
-- task: DotNetCoreCLI@2
-  inputs:
-    command: 'restore'
-    arguments: '-r $(BuildPlatform)'
-    projects: '**\*.csproj'
-    feedsToUse: 'select'
-    verbosityRestore: 'Diagnostic'
+# - task: DotNetCoreCLI@2
+#   inputs:
+#     command: 'restore'
+#     arguments: '-r $(BuildPlatform)'
+#     projects: '**\*.csproj'
+#     feedsToUse: 'select'
+#     verbosityRestore: 'Diagnostic'
 
-- task: VSBuild@1
-  inputs:
-    solution: '$(solution)'
-    msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:DesktopBuildPackageLocation="$(build.artifactStagingDirectory)\WebApp.zip" /p:DeployIisAppPath="Default Web Site"'
-    platform: '$(buildPlatform)'
-    configuration: '$(buildConfiguration)'
+# - task: VSBuild@1
+#   inputs:
+#     solution: '$(solution)'
+#     msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:DesktopBuildPackageLocation="$(build.artifactStagingDirectory)\WebApp.zip" /p:DeployIisAppPath="Default Web Site"'
+#     platform: '$(buildPlatform)'
+#     configuration: '$(buildConfiguration)'
 
-- task: CopyFiles@2
-  inputs:
-    # SourceFolder: 'Src\\CI\\CI.DataSmarts\\bin\\Release'
-    SourceFolder: 'Src\\Net6.0\\WindowsFormsLib\\bin\\Release'
-    Contents: '**'
-    TargetFolder: '$(Build.ArtifactStagingDirectory)'
-    CleanTargetFolder: true
-    OverWrite: true
-    retryCount: '10'
+# - task: CopyFiles@2
+#   inputs:
+#     # SourceFolder: 'Src\\CI\\CI.DataSmarts\\bin\\Release'
+#     SourceFolder: 'Src\\Net6.0\\WindowsFormsLib\\bin\\Release'
+#     Contents: '**'
+#     TargetFolder: '$(Build.ArtifactStagingDirectory)'
+#     CleanTargetFolder: true
+#     OverWrite: true
+#     retryCount: '10'
     
-- task: PublishBuildArtifacts@1
-  inputs:
-    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-    ArtifactName: 'drop'
-    publishLocation: 'Container'
+# - task: PublishBuildArtifacts@1
+#   inputs:
+#     PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+#     ArtifactName: 'drop'
+#     publishLocation: 'Container'
