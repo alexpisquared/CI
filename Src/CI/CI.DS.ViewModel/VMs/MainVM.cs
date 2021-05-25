@@ -34,7 +34,7 @@ namespace CI.DS.ViewModel.VMs
       _currentRole = "Admin";
     }
 
-    public StoredProcDetail StoredProcDetail { get; internal set; }
+    public StoredProcDetail? StoredProcDetail { get; internal set; } = null;
     public ObservableCollection<string> SqlServers { get => _sqlServers; set => SetProperty(ref _sqlServers, value, true); }
 
     [Required(AllowEmptyStrings = false, ErrorMessage = "This field {0} may not be empty.")]
