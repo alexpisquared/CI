@@ -51,8 +51,10 @@ steps:
 
 - task: DotNetCoreCLI@2
   inputs:
-    command: restore
+    command: 'restore'
     projects: '**\*.csproj'
+    feedsToUse: 'select'
+    verbosityRestore: 'Diagnostic'
 
 - task: VSBuild@1
   inputs:
