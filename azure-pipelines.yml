@@ -1,5 +1,9 @@
 resources:
   repositories:
+  - repository: MyGitHubRepo0
+    type: github
+    endpoint: alexpisquared
+    name: alexpisquared/AAV.Shared
   - repository: MyGitHubRepo1
     type: github
     endpoint: alexpisquared
@@ -32,15 +36,6 @@ steps:
   inputs:
     versionSpec: 
 
-- task: NuGetCommand@2
-  inputs:
-    command: 'restore'
-    restoreSolution: '**/*.sln'
-    feedsToUse: 'select'
-
-- task: NuGetCommand@2
-  inputs:
-    restoreSolution: '$(solution)'
 
 - task: UseDotNet@2
   inputs:
