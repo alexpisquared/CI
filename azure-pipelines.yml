@@ -4,10 +4,10 @@ resources:
     type: github
     endpoint: alexpisquared
     name: alexpisquared/AAV.Shared
-  # - repository: MyGitHubRepo1
-  #   type: github
-  #   endpoint: alexpisquared
-  #   name: alexpisquared/CI
+  - repository: MyGitHubRepo1
+    type: github
+    endpoint: alexpisquared
+    name: alexpisquared/CI
   # - repository: MyGitHubRepo2
   #   type: github
   #   endpoint: alexpisquared
@@ -29,7 +29,7 @@ steps:
 
 - checkout: self
 - checkout: MyGitHubRepo0
-# - checkout: MyGitHubRepo1
+- checkout: MyGitHubRepo1
 # - checkout: MyGitHubRepo2
 - script: dir $(Build.SourcesDirectory)
 
@@ -41,10 +41,9 @@ steps:
 - task: DotNetCoreCLI@2
   inputs:
     command: 'restore'
-    arguments: '-r $(BuildPlatform)'
     projects: '**\*.csproj'
     feedsToUse: 'select'
-    verbosityRestore: 'Diagnostic'
+    verbosityRestore: 'Quiet'
 
 - task: VSBuild@1
   inputs:
@@ -53,18 +52,18 @@ steps:
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
 
-- task: CopyFiles@2
-  inputs:
-    # SourceFolder: 'Src\\CI\\CI.DataSmarts\\bin\\Release'
-    SourceFolder: 'Src\\Net6.0\\WindowsFormsLib\\bin\\Release'
-    Contents: '**'
-    TargetFolder: '$(Build.ArtifactStagingDirectory)'
-    CleanTargetFolder: true
-    OverWrite: true
-    retryCount: '10'
+# - task: CopyFiles@2
+#   inputs:
+#     # SourceFolder: 'Src\\CI\\CI.DataSmarts\\bin\\Release'
+#     SourceFolder: 'Src\\Net6.0\\WindowsFormsLib\\bin\\Release'
+#     Contents: '**'
+#     TargetFolder: '$(Build.ArtifactStagingDirectory)'
+#     CleanTargetFolder: true
+#     OverWrite: true
+#     retryCount: '10'
     
-- task: PublishBuildArtifacts@1
-  inputs:
-    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-    ArtifactName: 'drop'
-    publishLocation: 'Container'
+# - task: PublishBuildArtifacts@1
+#   inputs:
+#     PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+#     ArtifactName: 'drop'
+#     publishLocation: 'Container'
