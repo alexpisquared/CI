@@ -48,13 +48,16 @@ steps:
     feedsToUse: 'select'
     verbosityRestore: 'Quiet'
 
-- task: MSBuild@1
-  inputs:
-    solution: '**/*.sln'
+# - task: MSBuild@1    
+#   inputs:
+#     solution: '**/CI.DPL.sln'
+##[error]C:\hostedtoolcache\windows\dotnet\sdk\5.0.300\Sdks\Microsoft.NET.Sdk\targets\Microsoft.PackageDependencyResolution.targets(241,5): Error NETSDK1004: Assets file 'D:\a\1\s\AAV.Shared\Src\Net6.0\AAV.WPF\obj\project.assets.json' not found. Run a NuGet package restore to generate this file.
+
 
 - task: VSBuild@1
   inputs:
-    solution: '$(solution)'
+    # solution: '$(solution)'
+    solution: '**/CI.DPL.sln'
     msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:DesktopBuildPackageLocation="$(build.artifactStagingDirectory)\WebApp.zip" /p:DeployIisAppPath="Default Web Site"'
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
