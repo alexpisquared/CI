@@ -1,5 +1,9 @@
 resources:
   repositories:
+  - repository: MyGitHubRepo0
+    type: github
+    endpoint: alexpisquared
+    name: alexpisquared/AAV.Shared
   - repository: MyGitHubRepo1
     type: github
     endpoint: alexpisquared
