@@ -8,10 +8,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\AAV.Shared\Src\Net6.0\WindowsFormsLib\WindowsFormsLib.csproj" />
-    <ProjectReference Include="..\CI.Standard.Lib\CI.Standard.Lib.csproj" />
-    <ProjectReference Include="..\CI.Visual.Lib\CI.Visual.Lib.csproj" />
-
+    <ProjectReference Include="..\..\..\..\CI-Reimagined-Invention\Src\CI-RI\CI.Standard.Lib\CI.Standard.Lib.csproj" />
+    <ProjectReference Include="..\..\..\..\CI-Reimagined-Invention\Src\CI-RI\CI.Visual.Lib\CI.Visual.Lib.csproj" />
+    <ProjectReference Include="..\..\..\..\CI-Reimagined-Invention\Src\CI-RI\WindowsFormsLib\WindowsFormsLib.csproj" />
   </ItemGroup>
 
 </Project>

@@ -27,7 +27,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AsyncSocketLib", "AsyncSock
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AsyncSocketTester", "AsyncSocketTester\AsyncSocketTester.csproj", "{7426870D-0609-4D1D-B432-C38628BC747C}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CI.Visual.Lib", "CI.Visual.Lib\CI.Visual.Lib.csproj", "{AE96A3DC-DF2B-47DF-BBB8-9B8FF39A6BE7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CI.Visual.Lib", "..\..\..\CI-Reimagined-Invention\Src\CI-RI\CI.Visual.Lib\CI.Visual.Lib.csproj", "{AE96A3DC-DF2B-47DF-BBB8-9B8FF39A6BE7}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "POCs", "POCs", "{3B6570B3-94D9-4D8F-A415-C8F3F0B680B5}"
 EndProject
@@ -91,11 +91,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CI.POC.App.A", "CI.POC.App.
 EndProject
 Project("{C7167F0D-BC9F-4E6E-AFE1-012C56B48DB5}") = "CI.POC.B", "CI.POC.B\CI.POC.B.wapproj", "{3DA4196B-0C6B-45DD-820B-C0018E4E3280}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CI.Standard.Lib", "CI.Standard.Lib\CI.Standard.Lib.csproj", "{847933D2-544D-472A-A88C-0704D5956C9D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CI.Standard.Lib", "..\..\..\CI-Reimagined-Invention\Src\CI-RI\CI.Standard.Lib\CI.Standard.Lib.csproj", "{847933D2-544D-472A-A88C-0704D5956C9D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataSourcesGenWpfApp", "DataSourcesGenWpfApp\DataSourcesGenWpfApp.csproj", "{C135604A-385D-41A3-8497-CD80E9DBD8EF}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WindowsFormsLib", "..\..\..\AAV.Shared\Src\Net6.0\WindowsFormsLib\WindowsFormsLib.csproj", "{90466379-2AB2-4EEB-817B-86D6C96C1EBE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WindowsFormsLib", "..\..\..\CI-Reimagined-Invention\Src\CI-RI\WindowsFormsLib\WindowsFormsLib.csproj", "{90466379-2AB2-4EEB-817B-86D6C96C1EBE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
