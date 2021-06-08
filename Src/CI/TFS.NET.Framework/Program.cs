@@ -58,7 +58,7 @@ namespace TFS
             foreach (var file in files)
             {
               if ((++i) % 11 == 0)
-                Console.Write($"{i,8:N0} / {files.Count():N0} {file.ServerItem}                                                                                                          \r");
+                Console.Write($"{i,8:N0} / {files.Count():N0} {file.ServerItem,-400}                                                        \r");
 
               if (textPatterns == null)
               {
@@ -97,7 +97,9 @@ namespace TFS
       catch (Exception ex) { Console.ForegroundColor = ConsoleColor.Yellow; Console.WriteLine($"{ex}"); Console.ForegroundColor = ConsoleColor.Gray; }
       finally
       {
-        File.AppendAllText(details, $"\n from - to = took:  {now:HH:mm} - {DateTime.Now:HH:mm} = {(DateTime.Now - now).TotalMinutes:N1} min");
+        var report = $"\n from - to = took:  {now:HH:mm} - {DateTime.Now:HH:mm} = {(DateTime.Now - now).TotalMinutes:N1} min";
+        Console.WriteLine(report);
+        File.AppendAllText(details, report );
       }
 
       //Console.ForegroundColor = ConsoleColor.DarkGreen;      Console.WriteLine("======== Press any key ");      Console.ResetColor();      Console.ReadKey();
