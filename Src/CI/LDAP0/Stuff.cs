@@ -15,15 +15,23 @@ namespace LDAP0
     readonly StyleSheet _styleSheet = new StyleSheet(Color.Gray);
     public Stuff()
     {
+      _styleSheet.AddStyle("Terminated", Color.LimeGreen);
       _styleSheet.AddStyle("[D,d]isabled", Color.Red);
       _styleSheet.AddStyle("(?i)CORPORATE", Color.LightBlue);
       _styleSheet.AddStyle("[P-p]igida", Color.LightBlue);
       _styleSheet.AddStyle("[A,a]lex", Color.LightBlue);
     }
 
-    public void allUsersModern(string searchStr)
+    public void allUsersModern(string searchStr) // slow but ...
     {
-      _styleSheet.AddStyle($"(?i){searchStr}", Color.Orange); // styleSheet.AddStyle("rain[a-z]*", Color.MediumSlateBlue, match => match.ToUpper());
+      var need = true;
+      foreach (var item in _styleSheet.Styles)
+      {
+        if (item.Target.Value == $"(?i){searchStr}")
+          need = false;
+      }
+      if (need)
+        _styleSheet.AddStyle($"(?i){searchStr}", Color.Orange); // styleSheet.AddStyle("rain[a-z]*", Color.MediumSlateBlue, match => match.ToUpper());
 
       Console.WriteLineStyled($"... search: {searchStr}:", _styleSheet);
       try
@@ -33,7 +41,12 @@ namespace LDAP0
         using var search = new PrincipalSearcher(u);
         var sw = Stopwatch.StartNew();
 
+        var allcount = search.FindAll().Count();
+        Console.WriteLine($"\n** {sw.ElapsedMilliseconds,6:N0} ms  to find allcount: {allcount}\n\n", Color.DarkGreen);
+
         Console.WriteLine($"Name                SamAcntName       UserPrincipalName          Enabld BadAtmp  Description                  DistinguishedName     ", Color.DarkGray);
+
+        sw = Stopwatch.StartNew();
 
         foreach (UserPrincipal up in search.FindAll().Where(r => r != null && (
           (r.DistinguishedName != null && r.DistinguishedName.Contains(searchStr, StringComparison.InvariantCultureIgnoreCase)) ||
@@ -42,14 +55,14 @@ namespace LDAP0
           Console.WriteLineStyled($"{up.Name,-20}{up.SamAccountName,-18}{up.UserPrincipalName,-26} {up.Enabled,-5} {up.LastBadPasswordAttempt,9:yy-MM-dd} {up.Description,-26}   {up.DistinguishedName}  ", _styleSheet);
         }
 
-        Console.WriteLine($"\n*** ElapsedMilliseconds{sw.ElapsedMilliseconds,6:N0} ms \n\n", Color.DarkGreen);
+        Console.WriteLine($"\n** {sw.ElapsedMilliseconds,6:N0} ms \n\n", Color.DarkGreen);
 
         search.Dispose();
       }
       catch (Exception e) { Console.WriteLine("Error: " + e.Message); }
       Console.ResetColor();
     }
-    public void allUsersSimple(string searchStr, string property = "mail")
+    public void allUsersSimple(string searchStr, string property = "mail") // fast but nobody is findable
     {
       _styleSheet.AddStyle($"(?i){searchStr}", Color.Orange); // styleSheet.AddStyle("rain[a-z]*", Color.MediumSlateBlue, match => match.ToUpper());
       _styleSheet.AddStyle(property, Color.Lime);
@@ -75,7 +88,7 @@ namespace LDAP0
             Console.WriteLineStyled($"{++i,4}  {result.Properties["cn"][0],-26} {result.Properties[property][0],-28} {result.Properties["adspath"][0]}", _styleSheet);
           }
         }
-        Console.WriteLine($"*** ElapsedMilliseconds{sw.ElapsedMilliseconds,6:N0} ms \n\n", Color.Cyan);
+        Console.WriteLine($"** {sw.ElapsedMilliseconds,6:N0} ms \n\n", Color.Cyan);
       }
       catch (Exception e)
       {

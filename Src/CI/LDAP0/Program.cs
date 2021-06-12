@@ -1,6 +1,6 @@
 ﻿var c = new LDAP0.Stuff();
 
-//c.allUsersSimple("ta@ci.com");
-c.allUsersModern("vendor");
+//c.allUsersSimple("char");
+c.allUsersModern("chart");
 //c.list0_Yellow();
 //c.allAttributes();
