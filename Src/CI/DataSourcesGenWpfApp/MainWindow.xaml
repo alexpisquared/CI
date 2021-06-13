@@ -78,7 +78,7 @@
       </DataGrid.Columns>
     </DataGrid>
     
-    <Button Grid.Column="2" HorizontalAlignment="Right" Margin="-26" VerticalAlignment="Top" IsCancel="True" Click="Button_Click" />
+    <Button Grid.Column="2" HorizontalAlignment="Right" Margin="-26" VerticalAlignment="Top" IsCancel="True" Click="onClose" />
 
   </Grid>
 </Window>

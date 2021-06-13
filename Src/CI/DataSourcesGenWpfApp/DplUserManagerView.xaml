@@ -1,0 +1,96 @@
+﻿<Window x:Class="DataSourcesGenWpfApp.DplUserManagerView" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d" xmlns:local="clr-namespace:DataSourcesGenWpfApp" Title="DplUserManagerView" Height="450" Width="1800" Loaded="Window_Loaded"
+        Left="1920" Top="1600">
+  <Window.Resources>
+    <local:DplUserManagerData x:Key="dplUserManagerData"/>
+    <CollectionViewSource x:Key="userViewSource" Source="{Binding User, Source={StaticResource dplUserManagerData}}"/>
+    <CollectionViewSource x:Key="roleViewSource" Source="{Binding Role, Source={StaticResource dplUserManagerData}}"/>
+  </Window.Resources>
+  <Grid DataContext="{StaticResource userViewSource}">
+    <Grid.RowDefinitions>
+      <RowDefinition Height="188*"/>
+      <RowDefinition Height="231*"/>
+    </Grid.RowDefinitions>
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="3*"/>
+      <ColumnDefinition Width="1*"/>
+      <ColumnDefinition Width="11"/>
+      <ColumnDefinition Width="179"/>
+      <ColumnDefinition Width="99"/>
+      <ColumnDefinition Width="99"/>
+    </Grid.ColumnDefinitions>
+
+    <DataGrid x:Name="userDataGrid" AutoGenerateColumns="False" EnableRowVirtualization="True" ItemsSource="{Binding}" RowDetailsVisibilityMode="VisibleWhenSelected">
+      <DataGrid.Columns>
+        <DataGridTextColumn         Binding="{Binding FullName}"          Header="Full Name" />
+        <DataGridTextColumn         Binding="{Binding UserPrincipalName}" Header="User Principal Name" />
+        <DataGridTextColumn         Binding="{Binding SamAccountName}"    Header="Sam Account Name" />
+        <DataGridTextColumn         Binding="{Binding Domain}"            Header="Domain" />
+        <DataGridTextColumn         Binding="{Binding Notes}"             Header="Notes" Width="*"/>
+        <DataGridTextColumn         Binding="{Binding RoleID}"            Header="Role ID"/>
+        <DataGridComboBoxColumn ItemsSource="{Binding Source={StaticResource roleViewSource}}" DisplayMemberPath="RoleName" SelectedValuePath="ID" SelectedValueBinding="{Binding RoleID}" Width="90" Header="Role"/>
+      </DataGrid.Columns>
+    </DataGrid>
+
+    <Grid x:Name="grid1" Grid.Column="1" Margin="5" Grid.RowSpan="2" >
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="Auto"/>
+        <ColumnDefinition Width="Auto"/>
+      </Grid.ColumnDefinitions>
+      <Grid.RowDefinitions>
+        <RowDefinition Height="Auto"/>
+        <RowDefinition Height="Auto"/>
+        <RowDefinition Height="Auto"/>
+        <RowDefinition Height="Auto"/>
+        <RowDefinition Height="Auto"/>
+        <RowDefinition Height="Auto"/>
+        <RowDefinition Height="Auto"/>
+        <RowDefinition Height="Auto"/>
+      </Grid.RowDefinitions>
+      <Label Content="ID:" Grid.Column="0" HorizontalAlignment="Left" Margin="3" Grid.Row="0" VerticalAlignment="Center"/>
+      <TextBox x:Name="iDTextBox" Grid.Column="1" HorizontalAlignment="Left" Height="23" Margin="3" Grid.Row="0" Text="{Binding ID, Mode=OneWay}" VerticalAlignment="Center" Width="120"/>
+      <Label Content="Role ID:" Grid.Column="0" HorizontalAlignment="Left" Margin="3" Grid.Row="1" VerticalAlignment="Center"/>
+      <TextBox x:Name="roleIDTextBox" Grid.Column="1" HorizontalAlignment="Left" Height="23" Margin="3" Grid.Row="1" Text="{Binding RoleID, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" VerticalAlignment="Center" Width="120"/>
+      <Label Content="Full Name:" Grid.Column="0" HorizontalAlignment="Left" Margin="3" Grid.Row="2" VerticalAlignment="Center"/>
+      <TextBox x:Name="fullNameTextBox" Grid.Column="1" HorizontalAlignment="Left" Height="23" Margin="3" Grid.Row="2" Text="{Binding FullName, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" VerticalAlignment="Center" Width="120"/>
+      <Label Content="User Principal Name:" Grid.Column="0" HorizontalAlignment="Left" Margin="3" Grid.Row="3" VerticalAlignment="Center"/>
+      <TextBox x:Name="userPrincipalNameTextBox" Grid.Column="1" HorizontalAlignment="Left" Height="23" Margin="3" Grid.Row="3" Text="{Binding UserPrincipalName, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" VerticalAlignment="Center" Width="120"/>
+      <Label Content="Sam Account Name:" Grid.Column="0" HorizontalAlignment="Left" Margin="3" Grid.Row="4" VerticalAlignment="Center"/>
+      <TextBox x:Name="samAccountNameTextBox" Grid.Column="1" HorizontalAlignment="Left" Height="23" Margin="3" Grid.Row="4" Text="{Binding SamAccountName, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" VerticalAlignment="Center" Width="120"/>
+      <Label Content="Domain:" Grid.Column="0" HorizontalAlignment="Left" Margin="3" Grid.Row="5" VerticalAlignment="Center"/>
+      <TextBox x:Name="domainTextBox" Grid.Column="1" HorizontalAlignment="Left" Height="23" Margin="3" Grid.Row="5" Text="{Binding Domain, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" VerticalAlignment="Center" Width="120"/>
+      <Label Content="Notes:" Grid.Column="0" HorizontalAlignment="Left" Margin="3" Grid.Row="6" VerticalAlignment="Center"/>
+      <TextBox x:Name="notesTextBox" Grid.Column="1" HorizontalAlignment="Left" Height="23" Margin="3" Grid.Row="6" Text="{Binding Notes, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" VerticalAlignment="Center" Width="120"/>
+      <Label Content="Created:" Grid.Column="0" HorizontalAlignment="Left" Margin="3" Grid.Row="7" VerticalAlignment="Center"/>
+      <DatePicker x:Name="createdDatePicker" Grid.Column="1" HorizontalAlignment="Left" Margin="3" Grid.Row="7" SelectedDate="{Binding Created, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" VerticalAlignment="Center"/>
+    </Grid>
+    <ListBox   Grid.Column="3" DisplayMemberPath="RoleName" ItemsSource="{Binding Source={StaticResource roleViewSource}}" Margin="5" SelectedValuePath="ID" SelectedValue="{Binding RoleID, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" Grid.Row="1"/>
+    <ComboBox  Grid.Column="4" DisplayMemberPath="RoleName" ItemsSource="{Binding Source={StaticResource roleViewSource}}" Margin="5" SelectedValuePath="ID" SelectedValue="{Binding RoleID, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" Grid.Row="1"/>
+    <ComboBox  Grid.Column="5" DisplayMemberPath="RoleName" ItemsSource="{Binding Source={StaticResource roleViewSource}}" Margin="5" SelectedValuePath="ID" SelectedValue="{Binding RoleID, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" Grid.Row="1">
+      <ComboBox.ItemsPanel>
+        <ItemsPanelTemplate>
+          <VirtualizingStackPanel/>
+        </ItemsPanelTemplate>
+      </ComboBox.ItemsPanel>
+    </ComboBox>
+
+    <Grid   Grid.Column="3" Margin="5" VerticalAlignment="Top">
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="Auto"/>
+        <ColumnDefinition Width="Auto"/>
+      </Grid.ColumnDefinitions>
+      <Grid.RowDefinitions>
+        <RowDefinition Height="Auto"/>
+      </Grid.RowDefinitions>
+      <Label Content="Role" Grid.Column="0" HorizontalAlignment="Left" Margin="3" Grid.Row="0" VerticalAlignment="Center"/>
+      <ComboBox x:Name="roleIDComboBox" Grid.Column="1" DisplayMemberPath="RoleID" HorizontalAlignment="Left" Height="Auto" ItemsSource="{Binding}" Margin="3" Grid.Row="0" VerticalAlignment="Center" Width="120">
+        <ComboBox.ItemsPanel>
+          <ItemsPanelTemplate>
+            <VirtualizingStackPanel/>
+          </ItemsPanelTemplate>
+        </ComboBox.ItemsPanel>
+      </ComboBox>
+
+      <Button Grid.Column="3" HorizontalAlignment="Right" Margin="0,-26,84,0" VerticalAlignment="Top" IsCancel="True" Click="onClose" />
+    </Grid>
+  </Grid>
+</Window>

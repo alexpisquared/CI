@@ -26,6 +26,6 @@ namespace DataSourcesGenWpfApp
       dBProcess_UserAccessViewSource.View.MoveCurrentToFirst();
     }
 
-    void Button_Click(object sender, RoutedEventArgs e) => Close();
+    void onClose(object s, RoutedEventArgs e) => Close();
   }
 }
