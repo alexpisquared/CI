@@ -7,7 +7,7 @@
   </Window.Resources>
   <Grid DataContext="{StaticResource userViewSource}">
     <Grid.RowDefinitions>
-      <RowDefinition Height="188*"/>
+      <RowDefinition Height="Auto"/>
       <RowDefinition Height="231*"/>
     </Grid.RowDefinitions>
     <Grid.ColumnDefinitions>
@@ -19,7 +19,7 @@
       <ColumnDefinition Width="99"/>
     </Grid.ColumnDefinitions>
 
-    <DataGrid x:Name="userDataGrid" AutoGenerateColumns="False" EnableRowVirtualization="True" ItemsSource="{Binding}" RowDetailsVisibilityMode="VisibleWhenSelected">
+    <DataGrid AutoGenerateColumns="False" EnableRowVirtualization="True" ItemsSource="{Binding}" RowDetailsVisibilityMode="VisibleWhenSelected" CanUserAddRows="False">
       <DataGrid.Columns>
         <DataGridTextColumn         Binding="{Binding FullName}"          Header="Full Name" />
         <DataGridTextColumn         Binding="{Binding UserPrincipalName}" Header="User Principal Name" />
@@ -30,6 +30,32 @@
         <DataGridComboBoxColumn ItemsSource="{Binding Source={StaticResource roleViewSource}}" DisplayMemberPath="RoleName" SelectedValuePath="ID" SelectedValueBinding="{Binding RoleID}" Width="90" Header="Role"/>
       </DataGrid.Columns>
     </DataGrid>
+    <DataGrid AutoGenerateColumns="False" EnableRowVirtualization="True" ItemsSource="{Binding}" Grid.Row="1" RowDetailsVisibilityMode="VisibleWhenSelected" CanUserAddRows="False">
+      <DataGrid.Columns>
+        <DataGridTextColumn         Binding="{Binding FullName}"          Header="Full Name" />
+        <DataGridTextColumn         Binding="{Binding UserPrincipalName}" Header="User Principal Name" />
+        <DataGridTextColumn         Binding="{Binding SamAccountName}"    Header="Sam Account Name" />
+        <DataGridTextColumn         Binding="{Binding Domain}"            Header="Domain" />
+        <DataGridTextColumn         Binding="{Binding Notes}"             Header="Notes" Width="*"/>
+        <DataGridTextColumn         Binding="{Binding RoleID}"            Header="RoleID"/>
+        
+        <DataGridTemplateColumn Header="Role id+++">
+          <DataGridTemplateColumn.CellEditingTemplate>
+            <DataTemplate>
+              <ComboBox         ItemsSource="{Binding Source={StaticResource roleViewSource}}" DisplayMemberPath="RoleName"                        SelectedValue="{Binding RoleID,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" IsEditable="False" />
+            </DataTemplate>
+          </DataGridTemplateColumn.CellEditingTemplate>
+          <DataGridTemplateColumn.CellTemplate>
+            <DataTemplate>
+              <TextBlock Text="{Binding RoleID}" />
+            </DataTemplate>
+          </DataGridTemplateColumn.CellTemplate>
+        </DataGridTemplateColumn>
+      </DataGrid.Columns>
+    </DataGrid>
+
+
+
 
     <Grid x:Name="grid1" Grid.Column="1" Margin="5" Grid.RowSpan="2" >
       <Grid.ColumnDefinitions>
