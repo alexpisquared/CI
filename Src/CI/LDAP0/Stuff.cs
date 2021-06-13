@@ -16,13 +16,52 @@ namespace LDAP0
     public Stuff()
     {
       _styleSheet.AddStyle("Terminated", Color.LimeGreen);
+      _styleSheet.AddStyle("False", Color.LimeGreen);
       _styleSheet.AddStyle("[D,d]isabled", Color.Red);
       _styleSheet.AddStyle("(?i)CORPORATE", Color.LightBlue);
       _styleSheet.AddStyle("[P-p]igida", Color.LightBlue);
       _styleSheet.AddStyle("[A,a]lex", Color.LightBlue);
     }
 
-    public void allUsersModern(string searchStr) // slow but ...
+    public void ModernLdapFinder1st100(string searchStr, bool isEnabledOnly = true)
+    {
+      safeStyleAdd(searchStr);
+
+      Console.WriteLineStyled($"... search: {searchStr}:", _styleSheet);
+      try
+      {
+        using var ctx = new PrincipalContext(ContextType.Domain, "corporate.ciglobe.net");
+        using var u = new UserPrincipal(ctx);
+        using var ps = new PrincipalSearcher(u);
+
+        u.Enabled = isEnabledOnly;
+        if (!string.IsNullOrEmpty(searchStr))
+          u.DisplayName = $"*{searchStr}*";
+        ps.QueryFilter = u;
+
+        var sw = Stopwatch.StartNew();
+        var lst = ps.FindAll().Take(100);
+
+        Console.WriteLine($"Name                  VoiceTelephoneNumber      UserPrincipalName              LastLog  Description                         Context.Name           DistinguishedName     ", Color.DarkGray);
+
+        sw = Stopwatch.StartNew();
+        foreach (UserPrincipal up in lst)
+        {
+          Console.WriteLineStyled($"{up.Name,-22}{up.VoiceTelephoneNumber,-26}{up.UserPrincipalName,-31}{up.LastLogon:yy-MM-dd} {up.Description,-36}{up.Context.Name}  {up.DistinguishedName}  ", _styleSheet);
+          if (up.Name != up.DisplayName) Console.WriteLine($"{up.DisplayName}", Color.Lime);
+          if (!up.UserPrincipalName.StartsWith(up.SamAccountName, StringComparison.InvariantCultureIgnoreCase)) Console.WriteLine($"                                                {up.SamAccountName} ", Color.Lime);
+        }
+
+        Console.WriteLine($"\n**   {lst.Count():N0} / {sw.ElapsedMilliseconds,6:N0} ms  ==>  {lst.Count() / sw.Elapsed.TotalSeconds,6:N2} r/s \n\n", Color.DarkCyan);
+        Console.WriteLine($"\n**   {lst.Count():N0} / {sw.ElapsedMilliseconds,6:N0} ms  ==>  {lst.Count() / sw.Elapsed.TotalSeconds,6:N2} r/s \n\n", Color.DarkCyan);
+
+        ps.Dispose();
+      }
+      catch (Exception e) { Console.WriteLine("Error: " + e.Message); }
+      Console.ResetColor();
+    }
+
+    private void safeStyleAdd(string searchStr)
     {
       var need = true;
       foreach (var item in _styleSheet.Styles)
@@ -32,36 +71,8 @@ namespace LDAP0
       }
       if (need)
         _styleSheet.AddStyle($"(?i){searchStr}", Color.Orange); // styleSheet.AddStyle("rain[a-z]*", Color.MediumSlateBlue, match => match.ToUpper());
-
-      Console.WriteLineStyled($"... search: {searchStr}:", _styleSheet);
-      try
-      {
-        var AD = new PrincipalContext(ContextType.Domain, "corporate.ciglobe.net");
-        var u = new UserPrincipal(AD);
-        using var search = new PrincipalSearcher(u);
-        var sw = Stopwatch.StartNew();
-
-        var allcount = search.FindAll().Count();
-        Console.WriteLine($"\n** {sw.ElapsedMilliseconds,6:N0} ms  to find allcount: {allcount}\n\n", Color.DarkGreen);
-
-        Console.WriteLine($"Name                SamAcntName       UserPrincipalName          Enabld BadAtmp  Description                  DistinguishedName     ", Color.DarkGray);
-
-        sw = Stopwatch.StartNew();
-
-        foreach (UserPrincipal up in search.FindAll().Where(r => r != null && (
-          (r.DistinguishedName != null && r.DistinguishedName.Contains(searchStr, StringComparison.InvariantCultureIgnoreCase)) ||
-          (r.Description != null && r.Description.Contains(searchStr, StringComparison.InvariantCultureIgnoreCase)))))
-        {
-          Console.WriteLineStyled($"{up.Name,-20}{up.SamAccountName,-18}{up.UserPrincipalName,-26} {up.Enabled,-5} {up.LastBadPasswordAttempt,9:yy-MM-dd} {up.Description,-26}   {up.DistinguishedName}  ", _styleSheet);
-        }
-
-        Console.WriteLine($"\n** {sw.ElapsedMilliseconds,6:N0} ms \n\n", Color.DarkGreen);
-
-        search.Dispose();
-      }
-      catch (Exception e) { Console.WriteLine("Error: " + e.Message); }
-      Console.ResetColor();
     }
+
     public void allUsersSimple(string searchStr, string property = "mail") // fast but nobody is findable
     {
       _styleSheet.AddStyle($"(?i){searchStr}", Color.Orange); // styleSheet.AddStyle("rain[a-z]*", Color.MediumSlateBlue, match => match.ToUpper());
