@@ -21,7 +21,7 @@ namespace LDAP0
       _styleSheet.AddStyle("(?i)CORPORATE", Color.LightBlue);
       _styleSheet.AddStyle("[P-p]igida", Color.LightBlue);
       _styleSheet.AddStyle("[A,a]lex", Color.LightBlue);
-      _styleSheet.AddStyle("Service Accounts", Color.White);
+      _styleSheet.AddStyle("Accounts", Color.Lime);
       _styleSheet.AddStyle("OU=Active Users,OU=CI Users,DC=corporate,DC=ciglobe,DC=net", Color.Blue);
     }
 
