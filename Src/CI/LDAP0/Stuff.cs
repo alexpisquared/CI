@@ -21,6 +21,8 @@ namespace LDAP0
       _styleSheet.AddStyle("(?i)CORPORATE", Color.LightBlue);
       _styleSheet.AddStyle("[P-p]igida", Color.LightBlue);
       _styleSheet.AddStyle("[A,a]lex", Color.LightBlue);
+      _styleSheet.AddStyle("Service Accounts", Color.White);
+      _styleSheet.AddStyle("OU=Active Users,OU=CI Users,DC=corporate,DC=ciglobe,DC=net", Color.Blue);
     }
 
     public void ModernLdapFinder1st100(string searchStr, bool isEnabledOnly = true)
@@ -33,6 +35,9 @@ namespace LDAP0
         using var ctx = new PrincipalContext(ContextType.Domain, "corporate.ciglobe.net");
         using var u = new UserPrincipal(ctx);
         using var ps = new PrincipalSearcher(u);
+
+        //GroupPrincipal group = GroupPrincipal.FindByIdentity(ctx, IdentityType.DistinguishedName, @"CN=Burgess\, Marcia,OU=Active Users,OU=CI Users,DC=corporate,DC=ciglobe,DC=net");
+        //((Principal)u).DistinguishedName = $"*{searchStr}*";
 
         u.Enabled = isEnabledOnly;
         if (!string.IsNullOrEmpty(searchStr))
@@ -47,8 +52,15 @@ namespace LDAP0
         sw = Stopwatch.StartNew();
         foreach (UserPrincipal up in lst)
         {
-          Console.WriteLineStyled($"{up.Name,-22}{up.VoiceTelephoneNumber,-26}{up.UserPrincipalName,-31}{up.LastLogon:yy-MM-dd} {up.Description,-36}{up.Context.Name}  {up.DistinguishedName}  ", _styleSheet);
+          Console.WriteLineStyled($"{up.Name,-22}{up.VoiceTelephoneNumber,-26}" +
+            $"{up.UserPrincipalName,-34}" +
+            $"{up.EmailAddress,-31}" +
+            $"{up.LastLogon:yy-MM-dd} {up.Description,-36}{up.Context.Name}  {up.DistinguishedName}  ", _styleSheet);
+
           if (up.Name != up.DisplayName) Console.WriteLine($"{up.DisplayName}", Color.Lime);
+
+          if (!up.UserPrincipalName.Equals(up.EmailAddress, StringComparison.InvariantCultureIgnoreCase)) Console.WriteLine($"                                                                                  {up.UserPrincipalName}", Color.Yellow);
+
           if (!up.UserPrincipalName.StartsWith(up.SamAccountName, StringComparison.InvariantCultureIgnoreCase)) Console.WriteLine($"                                                {up.SamAccountName} ", Color.Lime);
         }
 
