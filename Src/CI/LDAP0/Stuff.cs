@@ -6,23 +6,25 @@ using System.DirectoryServices.AccountManagement;
 using System.Drawing;
 using System.Linq;
 using System.Security.Principal;
+using System.Text;
 using Console = Colorful.Console;
 
 namespace LDAP0
 {
   public class Stuff
   {
-    readonly StyleSheet _styleSheet = new StyleSheet(Color.White);
+    string iii = "OU=Active Users,OU=CI Users,DC=corporate,DC=ciglobe,DC=net";
+    readonly StyleSheet _styleSheet = new StyleSheet(Color.DarkGray);
     public Stuff()
     {
       _styleSheet.AddStyle("Terminated", Color.LimeGreen);
       _styleSheet.AddStyle("False", Color.LimeGreen);
       _styleSheet.AddStyle("[D,d]isabled", Color.Red);
       _styleSheet.AddStyle("(?i)CORPORATE", Color.LightBlue);
-      _styleSheet.AddStyle("[P-p]igida", Color.LightBlue);
+      _styleSheet.AddStyle("[P-p]igida", Color.Lime);
       _styleSheet.AddStyle("[A,a]lex", Color.LightBlue);
       _styleSheet.AddStyle("Accounts", Color.Lime);
-      _styleSheet.AddStyle("OU=Active Users,OU=CI Users,DC=corporate,DC=ciglobe,DC=net", Color.Blue);
+      _styleSheet.AddStyle(iii, Color.Blue);
     }
 
     public void ModernLdapFinder1st100(string searchStr, bool isEnabledOnly = true)
@@ -31,7 +33,7 @@ namespace LDAP0
 
       if (!OperatingSystem.IsWindows()) return;
 
-      Console.WriteLineStyled($"... searching: {searchStr}:", _styleSheet);
+      Console.WriteLineStyled($"\n... Searching: {searchStr}:", _styleSheet);
 
       try
       {
@@ -47,38 +49,57 @@ namespace LDAP0
           upf.DisplayName = $"*{searchStr}*";
         ps.QueryFilter = upf;
 
-        var sw = Stopwatch.StartNew();
-        var lst = ps.FindAll().Take(10000).Where(r => r is UserPrincipal up && up.EmailAddress != null && r.DistinguishedName.Contains("Active Users")).OrderBy(r => r.Name);
-        Console.WriteLine($"\n**   {lst.Count():N0} / {sw.ElapsedMilliseconds,6:N0} ms  ==>  {lst.Count() / sw.Elapsed.TotalSeconds,6:N0} r/s ", Color.Cyan);
+        var sw1 = Stopwatch.StartNew();
+        var lst = ps.FindAll().Take(10000).Where(r => r is UserPrincipal up
+          && up.EmailAddress != null
+          //&& r.DistinguishedName.Contains("Active Users")
+          //&& !up.UserPrincipalName.Equals(up.EmailAddress, StringComparison.InvariantCultureIgnoreCase)
+          && !up.DistinguishedName.Contains(iii)
+        )
+          .OrderBy(r => r.DistinguishedName.Split(new string[] { "OU=", "DC=" }, StringSplitOptions.RemoveEmptyEntries).Skip(1).First()) //.OrderByDescending(r => ((UserPrincipal)r).LastLogon).ThenBy(r => r.Name)
+        ;
+        sw1.Stop();
+        Console.WriteLine($"**{lst.Count(),5:N0} / {sw1.ElapsedMilliseconds,6:N0} ms  ==>  {lst.Count() / sw1.Elapsed.TotalSeconds,6:N0} r/s    LDAP - FindAll()", Color.Cyan);
 
         //Console.WriteLine($"Name                  VoiceTelephoneNumber      UserPrincipalName              LastLog  Description                         Context.Name           DistinguishedName     ", Color.DarkGray);
 
-        sw = Stopwatch.StartNew();
+        var sw2 = Stopwatch.StartNew();
         int i = 0;
         foreach (UserPrincipal up in lst)
         {
-          if (i++ > 54) break;
-          Console.WriteLineStyled($"{up.Name,-32}" +
+          if (i++ > 11540) break;
+          Console.WriteLineStyled($"{i,4} {up.Name,-50}" +
             //$"{up.VoiceTelephoneNumber,-26}" +
-            //$"{up.UserPrincipalName,-44}" +
-            $"{up.EmailAddress,-31}" +
+            //$"{up.SamAccountName,14}==" +            $"{up.UserPrincipalName,-44}" +
+            //$"{up.EmailAddress,-40}" +
             //$"{up.LastLogon:yy-MM-dd} " +
-            $"{up.Description,-42}" +
-            $"{up.Context.Name}  " +
-            $"{up.DistinguishedName}  ", _styleSheet);
+            //$"{up.Description,-50}" +
+            //$"{up.Context.Name}  " +
+            $"{dn(up)}  ", _styleSheet);
 
           //if (up.Name != up.DisplayName) Console.WriteLine($"{up.DisplayName}", Color.Lime);
-          //if (!up.UserPrincipalName.Equals(up.EmailAddress, StringComparison.InvariantCultureIgnoreCase)) Console.WriteLine($"                                                                                  {up.UserPrincipalName}", Color.Yellow);
+          //if (!up.UserPrincipalName.Equals(up.EmailAddress, StringComparison.InvariantCultureIgnoreCase)) Console.WriteLine($"                                {up.UserPrincipalName}        :upn  ^^ eml", Color.Yellow);
           //if (!up.UserPrincipalName.StartsWith(up.SamAccountName, StringComparison.InvariantCultureIgnoreCase)) Console.WriteLine($"                                                {up.SamAccountName} ", Color.Lime);
         }
 
-
-        Console.WriteLine($"\n**   {lst.Count():N0} / {sw.ElapsedMilliseconds,6:N0} ms  ==>  {lst.Count() / sw.Elapsed.TotalSeconds,6:N0} r/s ", Color.Cyan);
+        Console.WriteLine($"**{lst.Count(),5:N0} / {sw1.ElapsedMilliseconds,6:N0} ms  ==>  {lst.Count() / sw1.Elapsed.TotalSeconds,6:N0} r/s    LDAP - FindAll()", Color.Cyan);
+        Console.WriteLine($"**{lst.Count(),5:N0} / {sw2.ElapsedMilliseconds,6:N0} ms  ==>  {lst.Count() / sw2.Elapsed.TotalSeconds,6:N0} r/s ", Color.Cyan);
 
         ps.Dispose();
       }
       catch (Exception e) { Console.WriteLine("Error: " + e.Message); }
       Console.ResetColor();
+    }
+
+    static string dn(UserPrincipal up)
+    {
+      var l = up.DistinguishedName.Split(new string[] { "OU=", "DC=" }, StringSplitOptions.RemoveEmptyEntries).Skip(1);
+      StringBuilder sb = new();
+      foreach (var item in l)
+      {
+        sb.Append($"{item,-32}");
+      }
+      return sb.ToString();
     }
 
     private void safeStyleAdd(string searchStr)
