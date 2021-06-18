@@ -12,7 +12,7 @@ namespace LDAP0
 {
   public class Stuff
   {
-    readonly StyleSheet _styleSheet = new StyleSheet(Color.Gray);
+    readonly StyleSheet _styleSheet = new StyleSheet(Color.White);
     public Stuff()
     {
       _styleSheet.AddStyle("Terminated", Color.LimeGreen);
@@ -29,43 +29,51 @@ namespace LDAP0
     {
       safeStyleAdd(searchStr);
 
-      Console.WriteLineStyled($"... search: {searchStr}:", _styleSheet);
+      if (!OperatingSystem.IsWindows()) return;
+
+      Console.WriteLineStyled($"... searching: {searchStr}:", _styleSheet);
+
       try
       {
         using var ctx = new PrincipalContext(ContextType.Domain, "corporate.ciglobe.net");
-        using var u = new UserPrincipal(ctx);
-        using var ps = new PrincipalSearcher(u);
+        using var upf = new UserPrincipal(ctx);
+        using var ps = new PrincipalSearcher(upf);
 
         //GroupPrincipal group = GroupPrincipal.FindByIdentity(ctx, IdentityType.DistinguishedName, @"CN=Burgess\, Marcia,OU=Active Users,OU=CI Users,DC=corporate,DC=ciglobe,DC=net");
         //((Principal)u).DistinguishedName = $"*{searchStr}*";
 
-        u.Enabled = isEnabledOnly;
+        upf.Enabled = isEnabledOnly;
         if (!string.IsNullOrEmpty(searchStr))
-          u.DisplayName = $"*{searchStr}*";
-        ps.QueryFilter = u;
+          upf.DisplayName = $"*{searchStr}*";
+        ps.QueryFilter = upf;
 
         var sw = Stopwatch.StartNew();
-        var lst = ps.FindAll().Take(100);
+        var lst = ps.FindAll().Take(10000).Where(r => r is UserPrincipal up && up.EmailAddress != null && r.DistinguishedName.Contains("Active Users")).OrderBy(r => r.Name);
+        Console.WriteLine($"\n**   {lst.Count():N0} / {sw.ElapsedMilliseconds,6:N0} ms  ==>  {lst.Count() / sw.Elapsed.TotalSeconds,6:N0} r/s ", Color.Cyan);
 
-        Console.WriteLine($"Name                  VoiceTelephoneNumber      UserPrincipalName              LastLog  Description                         Context.Name           DistinguishedName     ", Color.DarkGray);
+        //Console.WriteLine($"Name                  VoiceTelephoneNumber      UserPrincipalName              LastLog  Description                         Context.Name           DistinguishedName     ", Color.DarkGray);
 
         sw = Stopwatch.StartNew();
+        int i = 0;
         foreach (UserPrincipal up in lst)
         {
-          Console.WriteLineStyled($"{up.Name,-22}{up.VoiceTelephoneNumber,-26}" +
-            $"{up.UserPrincipalName,-34}" +
+          if (i++ > 54) break;
+          Console.WriteLineStyled($"{up.Name,-32}" +
+            //$"{up.VoiceTelephoneNumber,-26}" +
+            //$"{up.UserPrincipalName,-44}" +
             $"{up.EmailAddress,-31}" +
-            $"{up.LastLogon:yy-MM-dd} {up.Description,-36}{up.Context.Name}  {up.DistinguishedName}  ", _styleSheet);
+            //$"{up.LastLogon:yy-MM-dd} " +
+            $"{up.Description,-42}" +
+            $"{up.Context.Name}  " +
+            $"{up.DistinguishedName}  ", _styleSheet);
 
-          if (up.Name != up.DisplayName) Console.WriteLine($"{up.DisplayName}", Color.Lime);
-
-          if (!up.UserPrincipalName.Equals(up.EmailAddress, StringComparison.InvariantCultureIgnoreCase)) Console.WriteLine($"                                                                                  {up.UserPrincipalName}", Color.Yellow);
-
-          if (!up.UserPrincipalName.StartsWith(up.SamAccountName, StringComparison.InvariantCultureIgnoreCase)) Console.WriteLine($"                                                {up.SamAccountName} ", Color.Lime);
+          //if (up.Name != up.DisplayName) Console.WriteLine($"{up.DisplayName}", Color.Lime);
+          //if (!up.UserPrincipalName.Equals(up.EmailAddress, StringComparison.InvariantCultureIgnoreCase)) Console.WriteLine($"                                                                                  {up.UserPrincipalName}", Color.Yellow);
+          //if (!up.UserPrincipalName.StartsWith(up.SamAccountName, StringComparison.InvariantCultureIgnoreCase)) Console.WriteLine($"                                                {up.SamAccountName} ", Color.Lime);
         }
 
-        Console.WriteLine($"\n**   {lst.Count():N0} / {sw.ElapsedMilliseconds,6:N0} ms  ==>  {lst.Count() / sw.Elapsed.TotalSeconds,6:N2} r/s \n\n", Color.DarkCyan);
-        Console.WriteLine($"\n**   {lst.Count():N0} / {sw.ElapsedMilliseconds,6:N0} ms  ==>  {lst.Count() / sw.Elapsed.TotalSeconds,6:N2} r/s \n\n", Color.DarkCyan);
+
+        Console.WriteLine($"\n**   {lst.Count():N0} / {sw.ElapsedMilliseconds,6:N0} ms  ==>  {lst.Count() / sw.Elapsed.TotalSeconds,6:N0} r/s ", Color.Cyan);
 
         ps.Dispose();
       }
