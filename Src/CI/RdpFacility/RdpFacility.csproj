@@ -30,8 +30,4 @@
     <DebugSymbols>false</DebugSymbols>
   </PropertyGroup>
 
-  <ItemGroup>
-    <Compile Include="\g\AAV.Shared\Src\AsLink\PlatformNeutral\EvLogHelperBase.cs" Link="EvLogHelperBase.cs" />
-  </ItemGroup>
-
 </Project>
