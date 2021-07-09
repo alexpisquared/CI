@@ -53,6 +53,13 @@ steps:
 #     solution: '**/CI.DPL.sln'
 ##[error]C:\hostedtoolcache\windows\dotnet\sdk\5.0.300\Sdks\Microsoft.NET.Sdk\targets\Microsoft.PackageDependencyResolution.targets(241,5): Error NETSDK1004: Assets file 'D:\a\1\s\AAV.Shared\Src\Net6.0\AAV.WPF\obj\project.assets.json' not found. Run a NuGet package restore to generate this file.
 
+## Jl9: fixing  error NETSDK1004: Assets file project.assets.json not found. Run a NuGet package restore to generate this file.
+- task: NuGetCommand@2
+  inputs:
+    command: 'restore'
+    restoreSolution: '**/*.sln'
+    feedsToUse: 'select'
+##
 
 - task: VSBuild@1
   inputs:
