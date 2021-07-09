@@ -20,7 +20,7 @@ pool:
   vmImage: 'windows-latest'
 
 variables:
-  solution: '**/*.sln'
+  solution: '**/CI.Azure.CDCI*.sln'
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
 
