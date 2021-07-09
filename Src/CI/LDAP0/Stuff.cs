@@ -27,6 +27,19 @@ namespace LDAP0
       _styleSheet.AddStyle(iii, Color.Blue);
     }
 
+
+    public void FromProd(string searchStr)
+    {
+      safeStyleAdd(searchStr);
+
+      Console.WriteLineStyled($"\n... Searching: {searchStr}:", _styleSheet);
+
+      //CI.LDAP.Lib.LdapHelper.GetAll().ForEach(r => Colorful.Console.WriteLineStyled($"{r}", _styleSheet));
+
+      CI.LDAP.Lib.LdapHelper.ModernLdapFinder(searchStr).ForEach(r => Console.WriteLineStyled($"{r}", _styleSheet));
+
+    }
+
     public void ModernLdapFinder1st100(string searchStr, bool isEnabledOnly = true)
     {
       safeStyleAdd(searchStr);
@@ -51,7 +64,7 @@ namespace LDAP0
 
         var sw1 = Stopwatch.StartNew();
         var lst = ps.FindAll().Take(10000).Where(r => r is UserPrincipal up
-          && up.EmailAddress != null
+          //&& up.EmailAddress != null
           //&& r.DistinguishedName.Contains("Active Users")
           //&& !up.UserPrincipalName.Equals(up.EmailAddress, StringComparison.InvariantCultureIgnoreCase)
           && !up.DistinguishedName.Contains(iii)
@@ -81,8 +94,7 @@ namespace LDAP0
           //if (!up.UserPrincipalName.Equals(up.EmailAddress, StringComparison.InvariantCultureIgnoreCase)) Console.WriteLine($"                                {up.UserPrincipalName}        :upn  ^^ eml", Color.Yellow);
           //if (!up.UserPrincipalName.StartsWith(up.SamAccountName, StringComparison.InvariantCultureIgnoreCase)) Console.WriteLine($"                                                {up.SamAccountName} ", Color.Lime);
         }
-
-        Console.WriteLine($"**{lst.Count(),5:N0} / {sw1.ElapsedMilliseconds,6:N0} ms  ==>  {lst.Count() / sw1.Elapsed.TotalSeconds,6:N0} r/s    LDAP - FindAll()", Color.Cyan);
+                
         Console.WriteLine($"**{lst.Count(),5:N0} / {sw2.ElapsedMilliseconds,6:N0} ms  ==>  {lst.Count() / sw2.Elapsed.TotalSeconds,6:N0} r/s ", Color.Cyan);
 
         ps.Dispose();
