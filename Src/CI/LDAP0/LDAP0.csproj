@@ -1,9 +1,14 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>net5.0</TargetFramework>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="..\..\..\..\CI-Reimagined-Invention\Src\CI-RI\CI.LDAP.Lib\ADUser.cs" Link="ADUser.cs" />
+    <Compile Include="..\..\..\..\CI-Reimagined-Invention\Src\CI-RI\CI.LDAP.Lib\LdapHelper.cs" Link="LdapHelper.cs" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Colorful.Console" Version="1.2.15" />
