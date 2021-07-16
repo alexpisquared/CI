@@ -1,5 +1,5 @@
 ﻿using CI.Standard.Lib.Extensions;
-using DB.Inventory.Models;
+using DB.Inventory.Dbo.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;

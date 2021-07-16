@@ -1,4 +1,4 @@
-﻿using DB.Inventory.Models;
+﻿using DB.Inventory.Dbo.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.ComponentModel;
@@ -51,7 +51,7 @@ namespace CI.PermissionManager
       _permissionDataGrid.Items.Refresh();      // this forces the grid to refresh to latest values
       _applicationPermissionsDataGrid.Items.Refresh();
     }
-    //void onExit(object s, RoutedEventArgs e) => App.Current.Shutdown();
+    //void OnExit(object s, RoutedEventArgs e) => App.Current.Shutdown();
 
     protected override void OnClosing(CancelEventArgs e)
     {
