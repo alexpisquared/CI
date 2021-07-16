@@ -1,4 +1,7 @@
 ﻿using System;
+using Microsoft.TeamFoundation;
+//using Microsoft.TeamFoundation.Client;
+//using Microsoft.TeamFoundation.VersionControl.Client;
 
 namespace TFS
 {
@@ -6,7 +9,11 @@ namespace TFS
   {
     static void Main(string[] args)
     {
-      Console.WriteLine("Hello World!");
+      Console.WriteLine($"Hello World!  " +
+        $"{Microsoft.TeamFoundation.Common.StructureType.ProjectLifecycle}" +
+        $"{Microsoft.TeamFoundation.Common.StructureType.ProjectLifecycle}" +
+        $"{Microsoft.TeamFoundation.Common.StructureType.ProjectLifecycle}" +
+        $"");
     }
   }
 }
