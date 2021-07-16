@@ -11,5 +11,8 @@ namespace DB.Inventory.Dbo.Models
         public int PermissionId { get; set; }
         public string Status { get; set; }
         public long TblId { get; set; }
+
+        public virtual Permission Permission { get; set; }
+        public virtual User User { get; set; }
     }
 }

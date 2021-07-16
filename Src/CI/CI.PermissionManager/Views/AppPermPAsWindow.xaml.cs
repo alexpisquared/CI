@@ -1,4 +1,4 @@
-﻿using DB.Inventory.Dbo.Models;
+﻿using DB.Inventory.Models;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel;
 using System.Linq;
@@ -31,7 +31,7 @@ namespace CI.PermissionManager.Views
       Title = $"A:{_context.Applications.Local.Count} ◄ P:{_context.Permissions.Local.Count} ◄ pa:{_context.PermissionAssignments.Local.Count} ◄ u:{_context.Users.Local.Count}";
 
       _applicationViewSource.Source = _context.Applications.Local.ToObservableCollection();//.OrderBy(r => r.AppName);
-      _applicationViewSource.SortDescriptions.Add(new SortDescription(nameof(DB.Inventory.Dbo.Models.Application.AppName), ListSortDirection.Ascending));
+      _applicationViewSource.SortDescriptions.Add(new SortDescription(nameof(DB.Inventory.Models.Application.AppName), ListSortDirection.Ascending));
       dg1.SelectedIndex = -1;
     }
     void onSave(object s, RoutedEventArgs e)

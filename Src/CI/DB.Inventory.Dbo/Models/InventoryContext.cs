@@ -5447,6 +5447,18 @@ namespace DB.Inventory.Dbo.Models
                     .IsFixedLength(true);
 
                 entity.Property(e => e.UserId).HasColumnName("UserID");
+
+                entity.HasOne(d => d.Permission)
+                    .WithMany(p => p.PermissionAssignments)
+                    .HasForeignKey(d => d.PermissionId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_PermissionAssignments_Permissions");
+
+                entity.HasOne(d => d.User)
+                    .WithMany(p => p.PermissionAssignments)
+                    .HasForeignKey(d => d.UserId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_PermissionAssignments_Users");
             });
 
             modelBuilder.Entity<PermissionAssignmentsBob>(entity =>

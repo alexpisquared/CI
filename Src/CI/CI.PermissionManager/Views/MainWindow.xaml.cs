@@ -1,4 +1,4 @@
-﻿using DB.Inventory.Dbo.Models;
+﻿using DB.Inventory.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.ComponentModel;

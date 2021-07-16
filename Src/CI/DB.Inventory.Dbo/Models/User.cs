@@ -13,6 +13,7 @@ namespace DB.Inventory.Dbo.Models
             GroupUserGroups = new HashSet<GroupUser>();
             GroupUserUsers = new HashSet<GroupUser>();
             NewIssueAllocations = new HashSet<NewIssueAllocation>();
+            PermissionAssignments = new HashSet<PermissionAssignment>();
         }
 
         public string UserId { get; set; }
@@ -25,5 +26,6 @@ namespace DB.Inventory.Dbo.Models
         public virtual ICollection<GroupUser> GroupUserGroups { get; set; }
         public virtual ICollection<GroupUser> GroupUserUsers { get; set; }
         public virtual ICollection<NewIssueAllocation> NewIssueAllocations { get; set; }
+        public virtual ICollection<PermissionAssignment> PermissionAssignments { get; set; }
     }
 }
