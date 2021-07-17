@@ -196,10 +196,11 @@ namespace CI.PermissionManager.Views
       {
         await Task.Delay(60);
         _context = new(string.Format(_config["SqlConStr"], cbxSrvr.SelectedValue));
+        Title = _isDbg ? $"sql:{cbxSrvr.SelectedValue}  ...  " : "";
         await _context.Users.LoadAsync();
         await _context.Permissions.LoadAsync();
         await _context.PermissionAssignments.LoadAsync();
-        Title = _isDbg ? $"A:{_context.Applications.Local.Count} ◄ P:{_context.Permissions.Local.Count} ◄ pa:{_context.PermissionAssignments.Local.Count} ◄ u:{_context.Users.Local.Count}" : "";
+        Title = _isDbg ? $"sql:{cbxSrvr.SelectedValue}  A:{_context.Applications.Local.Count} ◄ P:{_context.Permissions.Local.Count} ◄ pa:{_context.PermissionAssignments.Local.Count} ◄ u:{_context.Users.Local.Count}" : "";
 
         dgPerm.SelectedIndex = -1;
         dgUser.SelectedIndex = -1;
