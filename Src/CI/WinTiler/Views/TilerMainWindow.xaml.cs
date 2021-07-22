@@ -42,7 +42,7 @@ namespace WinTiler.Views
     }
     async Task findWindows()
     {
-      ctrlPanel.IsEnabled = false;
+      ctrlPanel.Visibility = Visibility.Hidden; // ctrlPanel.IsEnabled = false; :too flashy
       Title = "Finding ...";
       _timer.Stop();
       try
@@ -55,7 +55,7 @@ namespace WinTiler.Views
       catch (Exception ex) { _logger.LogError(ex, $""); ex.Pop(this); }
       finally
       {
-        ctrlPanel.IsEnabled = true;
+        ctrlPanel.Visibility = Visibility.Visible; // ctrlPanel.IsEnabled = true;
         _timer.Start();
       }
     }
