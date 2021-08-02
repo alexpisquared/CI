@@ -3,7 +3,8 @@
                 xmlns:system="clr-namespace:System;assembly=mscorlib"
                 xmlns:Views="clr-namespace:WinTiler.Views" x:Name="wnd" x:Class="WinTiler.Views.TilerMainWindow" mc:Ignorable="d"
                 Title="Window Tiler - Loading ..." Height="380" Width="750" MinWidth="750" MaxWidth="750"
-                Style="{DynamicResource WindowStyle_Aav0}" Loaded="onLoaded">
+                Style="{DynamicResource WindowStyle_Aav0}" Loaded="onLoaded" 
+                Icon="/WinTiler;component/Assets/favicon.ico">
   <lnk:WindowBase.Resources>
     <ResourceDictionary>
       <ResourceDictionary.MergedDictionaries>
@@ -180,7 +181,11 @@
   </WindowChrome.WindowChrome>
   <Border Style="{StaticResource BorderStyle_Aav0}">
     <Grid>
-      <Grid x:Name="ZommablePanel" >
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="243*"/>
+        <ColumnDefinition Width="125*"/>
+      </Grid.ColumnDefinitions>
+      <Grid x:Name="ZommablePanel" Grid.ColumnSpan="2" >
         <Grid.Resources>
           <Style TargetType="{x:Type Border}">
             <Setter Property="CornerRadius"     Value="4"/>
@@ -193,7 +198,9 @@
           <ScaleTransform ScaleX="{Binding ZV, ElementName=wnd, FallbackValue=1}" ScaleY="{Binding ZV, ElementName=wnd, FallbackValue=1}" />
         </Grid.LayoutTransform>
         <Grid.ColumnDefinitions>
-          <ColumnDefinition Width="*"/>
+          <ColumnDefinition Width="143*"/>
+          <ColumnDefinition Width="38*"/>
+          <ColumnDefinition Width="456*"/>
           <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
@@ -202,13 +209,13 @@
           <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <Rectangle Grid.ColumnSpan="2"          Fill="#1000" Margin="-3 -3 -3 -0" />
-        <Rectangle Grid.Column="1" Grid.Row="1" Fill="#1fff" Margin="-0 0 -3 -3" />
+        <Rectangle Grid.ColumnSpan="4"          Fill="#1000" Margin="-3,-3,-3,312" Grid.RowSpan="2" />
+        <Rectangle Grid.Column="3" Grid.Row="1" Fill="#1fff" Margin="-0 0 -3 -3" Grid.RowSpan="2" />
 
-        <TextBlock Grid.ColumnSpan="2" Text="{Binding Title, ElementName=wnd}" FontSize="18" FontWeight="SemiBold" x:Name="tbkTitle" d:Text="(alex.pigida) - mtUATsqldb - Total 0 matches found in   2.76 sec." Margin="10 5 0 5"/>
-        <Label Grid.Column="1" FontSize="18" FontWeight="SemiBold" x:Name="tbkTitl2" d:Content="_321" HorizontalAlignment="Center"/>
+        <TextBlock Grid.ColumnSpan="4" Text="{Binding Title, ElementName=wnd}" FontSize="18" FontWeight="SemiBold" x:Name="tbkTitle" d:Text="(alex.pigida) - mtUATsqldb - Total 0 matches found in   2.76 sec." Margin="10,0,0,0"/>
+        <Label Grid.Column="3" FontSize="18" FontWeight="SemiBold" x:Name="tbkTitl2" d:Content="_321" HorizontalAlignment="Center"/>
 
-        <StackPanel Grid.Column="1" Grid.Row="1" Orientation="Vertical" x:Name="ctrlPanel" Margin="5">
+        <StackPanel Grid.Column="3" Grid.Row="1" Orientation="Vertical" x:Name="ctrlPanel" Margin="5,5,5,5">
           <CheckBox Content="_SkipMin" x:Name="chkSM" Margin="5 10 5 5" IsChecked="True" />
           <Button   Content="_Find"    Click="onFind" />
           <Button   Content="_Tile"    Click="onTile" />
@@ -219,9 +226,17 @@
           <Button   Click="onExit" IsCancel="True" />-->
         </StackPanel>
 
-        <ListBox Grid.Row="1" Grid.RowSpan="2" Margin="0" BorderThickness="0" Width="443"
-                 ItemsSource="{Binding St.AllWindows}" ItemTemplate="{StaticResource myTaskTemplate}" />
+        <ListBox Grid.Row="1" Margin="97,0,97,0" BorderThickness="0" Width="443"
+                 ItemsSource="{Binding St.AllWindows}" ItemTemplate="{StaticResource myTaskTemplate}" Grid.ColumnSpan="3" />
       </Grid>
+      <StackPanel Orientation="Horizontal" VerticalAlignment="Bottom" HorizontalAlignment="Right" Grid.ColumnSpan="2">
+        <Image Source="/WinTiler;component/Assets/A_Icon.ico" Height="40"/>
+        <Image Source="/WinTiler;component/Assets/F_Icon.ico" Height="40"/>
+        <Image Source="/WinTiler;component/Assets/favicon.ico" Height="40"/>
+        <Image Source="/WinTiler;component/Assets/ICN_SpriteKit.ico" Height="40"/>
+        <Image Source="/WinTiler;component/Assets/T_Icon.ico" Height="40"/>
+        <Image Source="/WinTiler;component/Assets/W_Icon.ico" Height="40"/>
+      </StackPanel>
     </Grid>
   </Border>
 
