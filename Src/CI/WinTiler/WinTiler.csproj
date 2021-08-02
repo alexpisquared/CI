@@ -7,18 +7,26 @@
     <Nullable>enable</Nullable>
     <LangVersion>latest</LangVersion>
     <UserSecretsId>ce68def6-d556-473d-af22-994586c1b4eb</UserSecretsId>
-    <ApplicationIcon>C:\g\CI\Src\CI\WinTiler\Assets\ICN_SpriteKit.ico</ApplicationIcon>
+    <ApplicationIcon>Assets\ICN_SpriteKit.ico</ApplicationIcon>
     <Platforms>AnyCPU;x64;x86</Platforms>
   </PropertyGroup>
 
   <ItemGroup>
     <None Remove="Assets\A_Icon.ico" />
     <None Remove="Assets\favicon.ico" />
+    <None Remove="Assets\F_Icon.ico" />
+    <None Remove="Assets\ICN_SpriteKit.ico" />
     <None Remove="Assets\T_Icon.ico" />
+    <None Remove="Assets\W_Icon.ico" />
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Include="Assets\T_Icon.ico" />
+    <Resource Include="Assets\F_Icon.ico" />
+    <Resource Include="Assets\ICN_SpriteKit.ico" />
+    <Resource Include="Assets\T_Icon.ico" />
+    <Resource Include="Assets\A_Icon.ico" />
+    <Resource Include="Assets\favicon.ico" />
+    <Resource Include="Assets\W_Icon.ico" />
   </ItemGroup>
 
   <ItemGroup>
@@ -32,11 +40,6 @@
   <ItemGroup>
     <ProjectReference Include="..\..\..\..\CI-Reimagined-Invention\Src\CI-RI\CI.Standard.Lib\CI.Standard.Lib.csproj" />
     <ProjectReference Include="..\WinTiler.Lib\WinTiler.Lib.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Resource Include="Assets\A_Icon.ico" />
-    <Resource Include="Assets\favicon.ico" />
   </ItemGroup>
 
 </Project>

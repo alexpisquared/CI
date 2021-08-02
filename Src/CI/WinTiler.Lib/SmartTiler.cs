@@ -71,10 +71,12 @@ namespace WinTiler.Lib
       var y = screen.WorkingArea.Top;
       var x = screen.WorkingArea.Left;
       int c = 0, i = 0;
+      const int marg = 10;
+      const int extn = marg + marg;
       foreach (var w in _allWindows.OrderBy(r => r.Sorter))
       {
         Externs.SetWindowPlacement(w.Handle, Externs.ShowWindowCommands.Restore);
-        Externs.SetWindowPos(w.Handle, x, y, window_width, window_height);
+        Externs.SetWindowPos(w.Handle, x - marg, y - marg, window_width + extn, window_height + extn);
         i++;
         x += window_width;
         if (++c >= cols) // ..to next row

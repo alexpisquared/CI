@@ -3,8 +3,7 @@
                 xmlns:system="clr-namespace:System;assembly=mscorlib"
                 xmlns:Views="clr-namespace:WinTiler.Views" x:Name="wnd" x:Class="WinTiler.Views.TilerMainWindow" mc:Ignorable="d"
                 Title="Window Tiler - Loading ..." Height="380" Width="750" MinWidth="750" MaxWidth="750"
-                Style="{DynamicResource WindowStyle_Aav0}" Loaded="onLoaded" 
-                Icon="/WinTiler;component/Assets/favicon.ico">
+                Style="{DynamicResource WindowStyle_Aav0}" Loaded="onLoaded" >
   <lnk:WindowBase.Resources>
     <ResourceDictionary>
       <ResourceDictionary.MergedDictionaries>
@@ -229,13 +228,13 @@
         <ListBox Grid.Row="1" Margin="97,0,97,0" BorderThickness="0" Width="443"
                  ItemsSource="{Binding St.AllWindows}" ItemTemplate="{StaticResource myTaskTemplate}" Grid.ColumnSpan="3" />
       </Grid>
-      <StackPanel Orientation="Horizontal" VerticalAlignment="Bottom" HorizontalAlignment="Right" Grid.ColumnSpan="2">
-        <Image Source="/WinTiler;component/Assets/A_Icon.ico" Height="40"/>
-        <Image Source="/WinTiler;component/Assets/F_Icon.ico" Height="40"/>
-        <Image Source="/WinTiler;component/Assets/favicon.ico" Height="40"/>
-        <Image Source="/WinTiler;component/Assets/ICN_SpriteKit.ico" Height="40"/>
-        <Image Source="/WinTiler;component/Assets/T_Icon.ico" Height="40"/>
-        <Image Source="/WinTiler;component/Assets/W_Icon.ico" Height="40"/>
+      <StackPanel VerticalAlignment="Bottom" HorizontalAlignment="Right" Grid.ColumnSpan="2">
+        <Image Margin="5" Source="/WinTiler;component/Assets/A_Icon.ico"        Height="30" ToolTip="      for app icon"/>  
+        <Image Margin="5" Source="/WinTiler;component/Assets/F_Icon.ico"        Height="30" ToolTip="      for app icon"/>  
+        <Image Margin="5" Source="/WinTiler;component/Assets/favicon.ico"       Height="30" ToolTip="      for app icon"/>  
+        <Image Margin="5" Source="/WinTiler;component/Assets/ICN_SpriteKit.ico" Height="30" ToolTip="WORKs for app icon"/>  
+        <Image Margin="5" Source="/WinTiler;component/Assets/T_Icon.ico"        Height="30" ToolTip="fails for app icon"/>  
+        <Image Margin="5" Source="/WinTiler;component/Assets/W_Icon.ico"        Height="30" ToolTip="      for app icon"/>  
       </StackPanel>
     </Grid>
   </Border>
