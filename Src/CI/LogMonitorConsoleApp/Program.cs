@@ -1,0 +1,2 @@
+﻿
+LogMonitorConsoleApp.LogMonitor.Start();

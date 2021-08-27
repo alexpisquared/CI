@@ -97,9 +97,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Reimagined", "Reimagined", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IsRdpAlive", "..\..\..\CI-Reimagined-Invention\Src\CI-RI\IsRdpAlive\IsRdpAlive.csproj", "{9F63C494-E23D-4597-87E1-8735669CE287}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NavigationDrawerControl", "NavigationDrawerControl\NavigationDrawerControl.csproj", "{29A14F71-4B71-40AB-9B5F-E99EBED4A53B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NavigationDrawerControl", "NavigationDrawerControl\NavigationDrawerControl.csproj", "{29A14F71-4B71-40AB-9B5F-E99EBED4A53B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NavigationDrawerApp", "NavigationDrawerApp\NavigationDrawerApp.csproj", "{D83CD375-70F2-49AD-991C-3E0CA6303CA7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NavigationDrawerApp", "NavigationDrawerApp\NavigationDrawerApp.csproj", "{D83CD375-70F2-49AD-991C-3E0CA6303CA7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LogMonitorConsoleApp", "LogMonitorConsoleApp\LogMonitorConsoleApp.csproj", "{AB6A70EB-BC24-42D0-8A5A-F07D7187D7D7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -918,6 +920,26 @@ Global
 		{D83CD375-70F2-49AD-991C-3E0CA6303CA7}.Release|x64.Build.0 = Release|Any CPU
 		{D83CD375-70F2-49AD-991C-3E0CA6303CA7}.Release|x86.ActiveCfg = Release|Any CPU
 		{D83CD375-70F2-49AD-991C-3E0CA6303CA7}.Release|x86.Build.0 = Release|Any CPU
+		{AB6A70EB-BC24-42D0-8A5A-F07D7187D7D7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AB6A70EB-BC24-42D0-8A5A-F07D7187D7D7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AB6A70EB-BC24-42D0-8A5A-F07D7187D7D7}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{AB6A70EB-BC24-42D0-8A5A-F07D7187D7D7}.Debug|ARM.Build.0 = Debug|Any CPU
+		{AB6A70EB-BC24-42D0-8A5A-F07D7187D7D7}.Debug|ARM64.ActiveCfg = Debug|Any CPU
+		{AB6A70EB-BC24-42D0-8A5A-F07D7187D7D7}.Debug|ARM64.Build.0 = Debug|Any CPU
+		{AB6A70EB-BC24-42D0-8A5A-F07D7187D7D7}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{AB6A70EB-BC24-42D0-8A5A-F07D7187D7D7}.Debug|x64.Build.0 = Debug|Any CPU
+		{AB6A70EB-BC24-42D0-8A5A-F07D7187D7D7}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{AB6A70EB-BC24-42D0-8A5A-F07D7187D7D7}.Debug|x86.Build.0 = Debug|Any CPU
+		{AB6A70EB-BC24-42D0-8A5A-F07D7187D7D7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AB6A70EB-BC24-42D0-8A5A-F07D7187D7D7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AB6A70EB-BC24-42D0-8A5A-F07D7187D7D7}.Release|ARM.ActiveCfg = Release|Any CPU
+		{AB6A70EB-BC24-42D0-8A5A-F07D7187D7D7}.Release|ARM.Build.0 = Release|Any CPU
+		{AB6A70EB-BC24-42D0-8A5A-F07D7187D7D7}.Release|ARM64.ActiveCfg = Release|Any CPU
+		{AB6A70EB-BC24-42D0-8A5A-F07D7187D7D7}.Release|ARM64.Build.0 = Release|Any CPU
+		{AB6A70EB-BC24-42D0-8A5A-F07D7187D7D7}.Release|x64.ActiveCfg = Release|Any CPU
+		{AB6A70EB-BC24-42D0-8A5A-F07D7187D7D7}.Release|x64.Build.0 = Release|Any CPU
+		{AB6A70EB-BC24-42D0-8A5A-F07D7187D7D7}.Release|x86.ActiveCfg = Release|Any CPU
+		{AB6A70EB-BC24-42D0-8A5A-F07D7187D7D7}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -964,6 +986,7 @@ Global
 		{9F63C494-E23D-4597-87E1-8735669CE287} = {6F0F77A6-B692-4959-940B-D2D06478FA18}
 		{29A14F71-4B71-40AB-9B5F-E99EBED4A53B} = {3B6570B3-94D9-4D8F-A415-C8F3F0B680B5}
 		{D83CD375-70F2-49AD-991C-3E0CA6303CA7} = {3B6570B3-94D9-4D8F-A415-C8F3F0B680B5}
+		{AB6A70EB-BC24-42D0-8A5A-F07D7187D7D7} = {3B6570B3-94D9-4D8F-A415-C8F3F0B680B5}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {4865768B-0AD7-4582-AA59-912DEDF64F5A}

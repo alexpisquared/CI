@@ -20,7 +20,7 @@ namespace RdpFacility
     readonly Insomniac _insomniac = new();
     readonly string _crlf = $" ";
 #if DEBUG
-    const int _from = 8, _till = 19, _dbgDelayMs = 500;
+    const int _from = 8, _till = 20, _dbgDelayMs = 500;
     int _dx = 1, _dy = 1;
 #else
         const int _from = 8, _till = 18, _dbgDelayMs = 0;
