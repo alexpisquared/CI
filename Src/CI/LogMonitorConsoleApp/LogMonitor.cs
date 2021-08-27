@@ -10,27 +10,28 @@ namespace LogMonitorConsoleApp
     readonly StyleSheet _styleSheet = new(Color.DarkGray);
     public LogMonitor()
     {
-      _styleSheet.AddStyle("Created", Color.Lime);
+      _styleSheet.AddStyle(".maz.", Color.Lime);
+      _styleSheet.AddStyle(".sth.", Color.Lime);
+      _styleSheet.AddStyle(".aau.", Color.Lime);
+      _styleSheet.AddStyle(".cgi.", Color.Lime);
+      _styleSheet.AddStyle(".mpa.", Color.Lime);
+      _styleSheet.AddStyle(".hba.", Color.Lime);
+      _styleSheet.AddStyle(".hsc.", Color.Lime);
+
+      _styleSheet.AddStyle("Created", Color.Green);
       _styleSheet.AddStyle("Deleted", Color.Red);
       _styleSheet.AddStyle("Renamed", Color.LightBlue);
       _styleSheet.AddStyle("Changed", Color.Yellow);
       _styleSheet.AddStyle("Error", Color.Orange);
       _styleSheet.AddStyle("[D,d]isabled", Color.Red);
       _styleSheet.AddStyle("(?i)CORPORATE", Color.LightBlue);
-      _styleSheet.AddStyle("Press enter to exit.", Color.Cyan);
+      _styleSheet.AddStyle("To exit - press any key.", Color.Cyan);
       _styleSheet.AddStyle("contains the following", Color.DarkCyan);
     }
 
     public void Start(string path = @"Z:\Dev\alexPi\Misc\Logs")
     {
-      Colorful.Console.WriteLineStyled($"WWWWWWWWWWW contains the following:", _styleSheet);
-      CC.WriteLineStyled($"Created", _styleSheet);
-      CC.WriteLineStyled($"Deleted", _styleSheet);
-      CC.WriteLineStyled($"Renamed", _styleSheet);
-      CC.WriteLineStyled($"Changed", _styleSheet);
-      CC.WriteLineStyled($"Error", _styleSheet);
-      
-      CC.WriteLineStyled($"\n  {path}  contains the following:", _styleSheet);
+      CC.WriteLineStyled($"Neutral .maz. .sth. .hsc. Created Deleted Renamed Changed Error contains the following \n\n  {path}  contains the following:", _styleSheet);
       foreach (var file in Directory.GetFiles(path))
       {
         CC.WriteLineStyled($"\t {Path.GetFileName(file)}", _styleSheet);
@@ -57,9 +58,9 @@ namespace LogMonitorConsoleApp
       watcher.IncludeSubdirectories = true;
       watcher.EnableRaisingEvents = true;
 
-      Report($"··  Monitoring commnenced.  Path: {path}.    Press enter to exit.", path);
+      Report($"··  Monitoring commnenced.  Path: {path}.    To exit - press any key.", path);
 
-      CC.ReadLine();
+      CC.ReadKey();
     }
 
     void OnChanged(object sender, FileSystemEventArgs e)
@@ -88,7 +89,8 @@ namespace LogMonitorConsoleApp
     }
     void Report(string msg, string file1, string file2 = "")
     {
-      CC.WriteLineStyled($"\a{DateTimeOffset.Now:ddd HH:mm}  {msg}           {Path.GetFileNameWithoutExtension(file1)}   {file2}", _styleSheet);
+      CC.Write($"{DateTimeOffset.Now:ddd HH:mm}   ", Color.DarkCyan);
+      CC.WriteStyled($"{msg}           {Path.GetFileNameWithoutExtension(file1)}   {file2} \n", _styleSheet);
       UseSayExe(msg);
     }
     void UseSayExe(string msg) => new Process { StartInfo = new ProcessStartInfo(@"Assets\say.exe", $"\"{msg}\"") { RedirectStandardError = true, UseShellExecute = false } }.Start();
