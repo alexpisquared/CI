@@ -5,9 +5,18 @@ using CC = Colorful.Console;
 
 namespace LogMonitorConsoleApp
 {
+  public record FileData 
+  {
+    public FileInfo? FileInfo { get; set; }
+    public string Status { get; set; } = "New";
+    public DateTime Time { get; set; }
+  }
+
   public class LogMonitor
   {
     readonly StyleSheet _styleSheet = new(Color.DarkGray);
+    List<FileData> logEntries = new();
+
     public LogMonitor()
     {
       _styleSheet.AddStyle(".maz.", Color.Lime);
@@ -32,9 +41,15 @@ namespace LogMonitorConsoleApp
     public void Start(string path = @"Z:\Dev\alexPi\Misc\Logs")
     {
       CC.WriteLineStyled($"Neutral .maz. .sth. .hsc. Created Deleted Renamed Changed Error contains the following \n\n  {path}  contains the following:", _styleSheet);
-      foreach (var file in Directory.GetFiles(path))
+      
+      List<FileInfo> files = new List<FileInfo>();
+      foreach (var fi in new DirectoryInfo(path).GetFiles().OrderByDescending(r => r.LastWriteTime))
       {
-        CC.WriteLineStyled($"\t {Path.GetFileName(file)}", _styleSheet);
+        CC.WriteLineStyled($"\t {Path.GetFileName(fi.FullName),-40} {fi.LastWriteTime:MM-dd HH:mm:ss}", _styleSheet);
+        if (files.Any(r => r.FullName == fi.FullName))
+        {
+
+        }
       }
 
       using var watcher = new FileSystemWatcher(path);

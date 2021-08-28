@@ -1,2 +1,2 @@
 ﻿
-new LogMonitorConsoleApp.LogMonitor().Start();
+new LogMonitorConsoleApp.LogMonitor().Start(args[0]);

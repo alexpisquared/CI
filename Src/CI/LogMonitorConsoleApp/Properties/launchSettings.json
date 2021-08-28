@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "LogMonitorConsoleApp": {
+      "commandName": "Project",
+      "commandLineArgs": "C:\\temp\\Logs"
+    }
+  }
+}
