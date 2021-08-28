@@ -1,24 +1,43 @@
-﻿using Colorful;
+﻿using CI.Standard.Lib.Helpers;
+using Colorful;
 using System.Diagnostics;
 using System.Drawing;
 using CC = Colorful.Console;
 
 namespace LogMonitorConsoleApp
 {
-  public record FileData 
+  public class UserSettingsStore
   {
-    public FileInfo? FileInfo { get; set; }
+    public static string _store => Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), @$"AppSettings\{AppDomain.CurrentDomain.FriendlyName}\UserSettings.json");
+
+    public static void Save<T>(T ths) => JsonFileSerializer.Save(ths, _store);                  //JsonIsoFileSerializer.Save(ths, iss: IsoConst.URoaA);
+    public static T Load<T>() where T : new() => JsonFileSerializer.Load<T>(_store) ?? new T(); //JsonIsoFileSerializer.Load<T>(iss: IsoConst.URoaA) ?? new T();
+  }
+
+  public class FileData
+  {
+    //public FileInfo? FileInfo { get; set; }
+    public string FullName { get; set; } = "???";
+    public DateTime LastWriteTime { get; set; } = DateTime.Now;
+    public DateTime LastSeen { get; set; } = DateTime.Now;
     public string Status { get; set; } = "New";
-    public DateTime Time { get; set; }
+    public bool IsDeleted { get; set; } = false;
+  }
+  public class UserSettings : UserSettingsStore
+  {
+    public List<FileData> FileDataList { get; set; } = new();
   }
 
   public class LogMonitor
   {
     readonly StyleSheet _styleSheet = new(Color.DarkGray);
-    List<FileData> logEntries = new();
+    readonly UserSettings _us;
 
     public LogMonitor()
     {
+      _us = UserSettingsStore.Load<UserSettings>();
+
+      _styleSheet.AddStyle(".ale.", Color.LimeGreen);
       _styleSheet.AddStyle(".maz.", Color.Lime);
       _styleSheet.AddStyle(".sth.", Color.Lime);
       _styleSheet.AddStyle(".aau.", Color.Lime);
@@ -26,6 +45,9 @@ namespace LogMonitorConsoleApp
       _styleSheet.AddStyle(".mpa.", Color.Lime);
       _styleSheet.AddStyle(".hba.", Color.Lime);
       _styleSheet.AddStyle(".hsc.", Color.Lime);
+
+      _styleSheet.AddStyle("True", Color.Green);
+      _styleSheet.AddStyle("False", Color.Blue);
 
       _styleSheet.AddStyle("Created", Color.Green);
       _styleSheet.AddStyle("Deleted", Color.Red);
@@ -36,23 +58,79 @@ namespace LogMonitorConsoleApp
       _styleSheet.AddStyle("(?i)CORPORATE", Color.LightBlue);
       _styleSheet.AddStyle("To exit - press any key.", Color.Cyan);
       _styleSheet.AddStyle("contains the following", Color.DarkCyan);
+
+      _styleSheet.AddStyle("Still there + No changes", Color.DarkViolet);
+      _styleSheet.AddStyle("Has been changed", Color.DarkCyan);
+
     }
 
-    public void Start(string path = @"Z:\Dev\alexPi\Misc\Logs")
+    public void Start(string path)
     {
       CC.WriteLineStyled($"Neutral .maz. .sth. .hsc. Created Deleted Renamed Changed Error contains the following \n\n  {path}  contains the following:", _styleSheet);
-      
-      List<FileInfo> files = new List<FileInfo>();
+
+      ReScanFolder(path);
+
+      var watcher = StartWatch(path);
+
+      while (true)
+      {
+        CC.Write(@$"
+··  R-escan
+··  To exit - press any key.
+--  Json by VS Code
+--  Json by Notepa 
+--  Json by VS 2022
+");
+
+        switch (CC.ReadKey().Key)
+        {
+          case ConsoleKey.R: ReScanFolder(path); break;
+          case ConsoleKey.J: _ = new Process { StartInfo = new ProcessStartInfo(@"C:\Users\alexp\AppData\Local\Programs\Microsoft VS Code\Code.exe", $"\"{UserSettingsStore._store}\"") { RedirectStandardError = true, UseShellExecute = false } }.Start(); break;
+          case ConsoleKey.N: _ = new Process { StartInfo = new ProcessStartInfo(@"Notepad.exe", $"\"{UserSettingsStore._store}\"") { RedirectStandardError = true, UseShellExecute = false } }.Start(); break;
+          case ConsoleKey.V: _ = new Process { StartInfo = new ProcessStartInfo(@"C:\Program Files\Microsoft Visual Studio\2022\Preview\Common7\IDE\devenv.exe", $"\"{UserSettingsStore._store}\"") { RedirectStandardError = true, UseShellExecute = false } }.Start(); break;
+          default: return;
+        }
+      }
+    }
+
+    private void ReScanFolder(string path)
+    {
+      var now = DateTime.Now;
+
       foreach (var fi in new DirectoryInfo(path).GetFiles().OrderByDescending(r => r.LastWriteTime))
       {
-        CC.WriteLineStyled($"\t {Path.GetFileName(fi.FullName),-40} {fi.LastWriteTime:MM-dd HH:mm:ss}", _styleSheet);
-        if (files.Any(r => r.FullName == fi.FullName))
-        {
+        //CC.WriteLineStyled($"\t{Path.GetFileName(fi.FullName),-40} {fi.LastWriteTime:MM-dd HH:mm:ss}", _styleSheet);
 
+        var fd = _us.FileDataList.FirstOrDefault(r => r.FullName == fi.FullName);
+        if (fd == null)
+          _us.FileDataList.Add(new FileData { FullName = fi.FullName, LastWriteTime = fi.LastWriteTime });
+        else
+        {
+          fd.LastSeen = now;
+          if (Math.Abs((fd.LastWriteTime - fi.LastWriteTime).TotalSeconds) < 5)
+            fd.Status = "Still there + No changes";
+          else
+          {
+            fd.LastWriteTime = fi.LastWriteTime;
+            fd.Status = $"Has been changed   at {fi.LastWriteTime}.";
+          }
         }
       }
 
-      using var watcher = new FileSystemWatcher(path);
+      _us.FileDataList.Where(r => r.LastSeen != now).ToList().ForEach(fd => { fd.IsDeleted = true; fd.Status = "Deleted"; });
+      _us.FileDataList.Where(r => r.LastSeen == now).ToList().ForEach(fd => { fd.IsDeleted = false; });
+
+      UserSettingsStore.Save(_us);
+
+      CC.WriteLine($"\t{"FullName",-40} {"LastWriteTime",-14}  {"Gone",-5}  {"Status"}", Color.DeepPink);
+
+      foreach (var fi in _us.FileDataList.OrderByDescending(r => r.LastWriteTime))
+        CC.WriteLineStyled($"\t{Path.GetFileName(fi.FullName),-40} {fi.LastWriteTime:MM-dd HH:mm:ss}  {fi.IsDeleted,-5}  {fi.Status}", _styleSheet);
+    }
+
+    private FileSystemWatcher StartWatch(string path)
+    {
+      var watcher = new FileSystemWatcher(path);
 
       watcher.NotifyFilter = NotifyFilters.Attributes
                            | NotifyFilters.CreationTime
@@ -73,9 +151,9 @@ namespace LogMonitorConsoleApp
       watcher.IncludeSubdirectories = true;
       watcher.EnableRaisingEvents = true;
 
-      Report($"··  Monitoring commnenced.  Path: {path}.    To exit - press any key.", path);
+      Report($"··  Monitoring commnenced.  Path: {path}.   ", path);
 
-      CC.ReadKey();
+      return watcher;
     }
 
     void OnChanged(object sender, FileSystemEventArgs e)
