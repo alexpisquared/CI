@@ -1,37 +1,16 @@
-﻿using CI.Standard.Lib.Helpers;
-using Colorful;
+﻿using Colorful;
 using System.Diagnostics;
 using System.Drawing;
 using CC = Colorful.Console;
 
 namespace LogMonitorConsoleApp
 {
-  public class UserSettingsStore
-  {
-    public static string _store => Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), @$"AppSettings\{AppDomain.CurrentDomain.FriendlyName}\UserSettings.json");
-
-    public static void Save<T>(T ths) => JsonFileSerializer.Save(ths, _store);                  //JsonIsoFileSerializer.Save(ths, iss: IsoConst.URoaA);
-    public static T Load<T>() where T : new() => JsonFileSerializer.Load<T>(_store) ?? new T(); //JsonIsoFileSerializer.Load<T>(iss: IsoConst.URoaA) ?? new T();
-  }
-
-  public class FileData
-  {
-    //public FileInfo? FileInfo { get; set; }
-    public string FullName { get; set; } = "???";
-    public DateTime LastWriteTime { get; set; } = DateTime.Now;
-    public DateTime LastSeen { get; set; } = DateTime.Now;
-    public string Status { get; set; } = "New";
-    public bool IsDeleted { get; set; } = false;
-  }
-  public class UserSettings : UserSettingsStore
-  {
-    public List<FileData> FileDataList { get; set; } = new();
-  }
 
   public class LogMonitor
   {
     readonly StyleSheet _styleSheet = new(Color.DarkGray);
     readonly UserSettings _us;
+    FileSystemWatcher _watcher;
 
     public LogMonitor()
     {
@@ -70,7 +49,7 @@ namespace LogMonitorConsoleApp
 
       ReScanFolder(path);
 
-      var watcher = StartWatch(path);
+      _watcher = StartWatch(path);
 
       while (true)
       {
@@ -93,7 +72,7 @@ namespace LogMonitorConsoleApp
       }
     }
 
-    private void ReScanFolder(string path)
+    void ReScanFolder(string path)
     {
       var now = DateTime.Now;
 
@@ -128,18 +107,19 @@ namespace LogMonitorConsoleApp
         CC.WriteLineStyled($"\t{Path.GetFileName(fi.FullName),-40} {fi.LastWriteTime:MM-dd HH:mm:ss}  {fi.IsDeleted,-5}  {fi.Status}", _styleSheet);
     }
 
-    private FileSystemWatcher StartWatch(string path)
+    FileSystemWatcher StartWatch(string path)
     {
-      var watcher = new FileSystemWatcher(path);
-
-      watcher.NotifyFilter = NotifyFilters.Attributes
+      var watcher = new FileSystemWatcher(path)
+      {
+        NotifyFilter = NotifyFilters.Attributes
                            | NotifyFilters.CreationTime
                            | NotifyFilters.DirectoryName
                            | NotifyFilters.FileName
                            | NotifyFilters.LastAccess
                            | NotifyFilters.LastWrite
                            | NotifyFilters.Security
-                           | NotifyFilters.Size;
+                           | NotifyFilters.Size
+      };
 
       watcher.Changed += OnChanged;
       watcher.Created += OnCreated;

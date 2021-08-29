@@ -1,7 +1,6 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <OutputType>Exe</OutputType>
     <TargetFramework>net6.0</TargetFramework>
     <Nullable>enable</Nullable>
   </PropertyGroup>
@@ -12,13 +11,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\..\CI-Reimagined-Invention\Src\CI-RI\CI.Standard.Lib\CI.Standard.Lib.csproj" />
-    <ProjectReference Include="..\LogMonitorLib\LogMonitorLib.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Update="Assets\Say.exe">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
   </ItemGroup>
 
 </Project>
