@@ -18,7 +18,7 @@ namespace LogMonitorWpfApp
     {
       InitializeComponent();
       Topmost = Debugger.IsAttached;
-     
+
       _us = UserSettingsStore.Load<UserSettings>();
       _us.TrgPath = tbxPath.Text = Environment.GetCommandLineArgs().Length > 0 ? Environment.GetCommandLineArgs()[1] : @"Z:\Dev\alexPi\Misc\Logs";
 
@@ -30,13 +30,13 @@ namespace LogMonitorWpfApp
     void OnLoaded(object s, RoutedEventArgs e)
     {
       dg1.ItemsSource = _us.FileDataList;
-}
-    void OnScan(object s, RoutedEventArgs e) => Report(ReScanFolder(tbxPath.Text), "",""); 
+    }
+    void OnScan(object s, RoutedEventArgs e) => Report(ReScanFolder(tbxPath.Text), "", "");
     void OnWatch(object s, RoutedEventArgs e) { StopWatch(); StartWatch(tbxPath.Text); }
     void OnClose(object s, RoutedEventArgs e) => Close();
     void OnClearHist(object sender, RoutedEventArgs e) => lb1.Items.Clear();
 
-    string  ReScanFolder(string path)
+    string ReScanFolder(string path)
     {
       var now = DateTime.Now;
 
@@ -55,14 +55,14 @@ namespace LogMonitorWpfApp
           else
           {
             fd.LastWriteTime = fi.LastWriteTime;
-            fd.Status = $"Has been changed   at {fi.LastWriteTime}.";
+            fd.Status += $"+";// Changed   at {fi.LastWriteTime}.";
           }
         }
       }
 
       var del = _us.FileDataList.Where(r => Math.Abs((r.LastSeen - now).TotalSeconds) > 3);
       del.ToList().ForEach(fd => { fd.IsDeleted = true; fd.Status = "Deleted"; });
-      
+
       var exi = _us.FileDataList.Where(r => Math.Abs((r.LastSeen - now).TotalSeconds) <= 3);
       exi.ToList().ForEach(fd => { fd.IsDeleted = false; });
 
@@ -139,6 +139,10 @@ namespace LogMonitorWpfApp
     }
     void ReportAndRescan(string msg, string file1, string file2)
     {
+      var fd = _us.FileDataList.FirstOrDefault(r => r.FullName == file1);
+      if (fd != null)
+        fd.Status = msg;
+
       Report(msg + ReScanFolder(tbxPath.Text), file1, file2);
     }
 
