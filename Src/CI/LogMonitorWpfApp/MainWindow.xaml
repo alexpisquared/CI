@@ -20,10 +20,11 @@
     </DataGrid>
     <ListBox  Grid.Row="1" x:Name="lb1" Grid.Column="2" Margin="5" />
 
-    <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Left" Grid.ColumnSpan="3" Margin="5" >
+    <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center" Grid.ColumnSpan="3" Margin="5" >
       <TextBox x:Name="tbxPath" Text="" MinWidth="200"/>
       <Button Content="   _Re-Scan   " IsDefault="True" Click="OnScan"/>
       <Button Content="   Re-_Watch   " Click="OnWatch" />
+      <Button Content="   _Clear   " Click="OnClearHist" />
       <Button Content="   _Exit   " IsCancel="True" Click="OnClose" />
     </StackPanel>
 

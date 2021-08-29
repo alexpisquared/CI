@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Windows;
+using System.Windows.Interop;
 using System.Windows.Threading;
 
 namespace LogMonitorWpfApp
@@ -17,29 +18,25 @@ namespace LogMonitorWpfApp
     {
       InitializeComponent();
       Topmost = Debugger.IsAttached;
-    }
-
-    void OnLoaded(object s, RoutedEventArgs e)
-    {
+     
       _us = UserSettingsStore.Load<UserSettings>();
-
-      tbxPath.Text = Environment.GetCommandLineArgs().Length > 0 ? Environment.GetCommandLineArgs()[1] : @"Z:\Dev\alexPi\Misc\Logs";
+      _us.TrgPath = tbxPath.Text = Environment.GetCommandLineArgs().Length > 0 ? Environment.GetCommandLineArgs()[1] : @"Z:\Dev\alexPi\Misc\Logs";
 
       ReScanFolder(tbxPath.Text);
 
       _watcher = StartWatch(tbxPath.Text);
-
-      dg1.ItemsSource = _us.FileDataList;
     }
-    void OnScan(object s, RoutedEventArgs e) => ReScanFolder(tbxPath.Text);
-    void OnWatch(object s, RoutedEventArgs e)
+
+    void OnLoaded(object s, RoutedEventArgs e)
     {
-      StopWatch();
-      StartWatch(tbxPath.Text);
-    }
+      dg1.ItemsSource = _us.FileDataList;
+}
+    void OnScan(object s, RoutedEventArgs e) => Report(ReScanFolder(tbxPath.Text), "",""); 
+    void OnWatch(object s, RoutedEventArgs e) { StopWatch(); StartWatch(tbxPath.Text); }
     void OnClose(object s, RoutedEventArgs e) => Close();
+    void OnClearHist(object sender, RoutedEventArgs e) => lb1.Items.Clear();
 
-    void ReScanFolder(string path)
+    string  ReScanFolder(string path)
     {
       var now = DateTime.Now;
 
@@ -65,14 +62,15 @@ namespace LogMonitorWpfApp
 
       var del = _us.FileDataList.Where(r => Math.Abs((r.LastSeen - now).TotalSeconds) > 3);
       del.ToList().ForEach(fd => { fd.IsDeleted = true; fd.Status = "Deleted"; });
+      
       var exi = _us.FileDataList.Where(r => Math.Abs((r.LastSeen - now).TotalSeconds) <= 3);
       exi.ToList().ForEach(fd => { fd.IsDeleted = false; });
 
       UserSettingsStore.Save(_us);
 
       dg1.Items.Refresh();
-      
-      Report($"Re-Scanned  {_us.FileDataList.Count}  files. {exi.Count()} + {del.Count()}.", "", "");      //foreach (var fi in _us.FileDataList.OrderByDescending(r => r.LastWriteTime))        lb1.Items.Add($"\t{System.IO.Path.GetFileName(fi.FullName),-40} {fi.LastWriteTime:MM-dd HH:mm:ss}  {fi.IsDeleted,-5}  {fi.Status}");
+
+      return $"Re-Scanned  {_us.FileDataList.Count}  files. {exi.Count()} + {del.Count()}.";      //foreach (var fi in _us.FileDataList.OrderByDescending(r => r.LastWriteTime))        lb1.Items.Add($"\t{System.IO.Path.GetFileName(fi.FullName),-40} {fi.LastWriteTime:MM-dd HH:mm:ss}  {fi.IsDeleted,-5}  {fi.Status}");
     }
     FileSystemWatcher StartWatch(string path)
     {
@@ -141,8 +139,7 @@ namespace LogMonitorWpfApp
     }
     void ReportAndRescan(string msg, string file1, string file2)
     {
-      Report(msg, file1, file2);
-      ReScanFolder(tbxPath.Text);
+      Report(msg + ReScanFolder(tbxPath.Text), file1, file2);
     }
 
     void Report(string msg, string file1, string file2)
@@ -154,5 +151,6 @@ namespace LogMonitorWpfApp
     }
 
     void UseSayExe(string msg) => new Process { StartInfo = new ProcessStartInfo(@"Assets\say.exe", $"\"{msg}\"") { RedirectStandardError = true, UseShellExecute = false } }.Start();
+
   }
 }
