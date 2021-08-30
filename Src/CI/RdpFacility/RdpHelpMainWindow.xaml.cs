@@ -23,8 +23,8 @@ namespace RdpFacility
     const int _from = 8, _till = 20, _dbgDelayMs = 500;
     int _dx = 1, _dy = 1;
 #else
-        const int _from = 8, _till = 18, _dbgDelayMs = 0;
-        int _dx = 10, _dy = 10;
+    const int _from = 8, _till = 18, _dbgDelayMs = 0;
+    int _dx = 10, _dy = 10;
 #endif
     bool _isLoaded = false;
 
@@ -47,8 +47,8 @@ namespace RdpFacility
         WindowStartupLocation = WindowStartupLocation.CenterScreen;
       }
 
-#if DEBUG
-      if (Environment.MachineName == "RAZER1") { Top = 1700; Left = 1100; }
+#if DEBUG //  if (Environment.MachineName == "RAZER1") { Top = 1700; Left = 1100; }
+              if (Environment.MachineName == "RAZER1") { Top = 1700; Left = 1100; }
 #endif
     }
     async void onLoaded(object s, RoutedEventArgs e)
