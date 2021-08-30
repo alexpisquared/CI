@@ -62,8 +62,6 @@ namespace LogMonitorWpfApp
 
         foreach (var fi in new DirectoryInfo(path).GetFiles().OrderByDescending(r => r.LastWriteTime))
         {
-          //lb1.Items.Add($"\t{Path.GetFileName(fi.FullName),-40} {fi.LastWriteTime:MM-dd HH:mm:ss}");
-
           var fd = _us.FileDataList.FirstOrDefault(r => r.FullName.Equals(fi.FullName, StringComparison.OrdinalIgnoreCase));
           if (fd == null)
             _us.FileDataList.Add(new FileData { FullName = fi.FullName, LastWriteTime = fi.LastWriteTime });
@@ -71,7 +69,7 @@ namespace LogMonitorWpfApp
           {
             fd.LastSeen = now;
             if (Math.Abs((fd.LastWriteTime - fi.LastWriteTime).TotalSeconds) < 5)
-              fd.Status = "Still there + No changes";
+              fd.Status = "No changes";
             else
             {
               fd.LastWriteTime = fi.LastWriteTime;
@@ -90,7 +88,7 @@ namespace LogMonitorWpfApp
 
         dg1.Items.Refresh();
 
-        return $"Re-Scanned  {_us.FileDataList.Count}  files. {exi.Count()} + {del.Count()}.";      //foreach (var fi in _us.FileDataList.OrderByDescending(r => r.LastWriteTime))        lb1.Items.Add($"\t{System.IO.Path.GetFileName(fi.FullName),-40} {fi.LastWriteTime:MM-dd HH:mm:ss}  {fi.IsDeleted,-5}  {fi.Status}");
+        return $"Re-Scanned {_us.FileDataList.Count} files.  {del.Count()} deleted.";      //foreach (var fi in _us.FileDataList.OrderByDescending(r => r.LastWriteTime))        lb1.Items.Add($"\t{System.IO.Path.GetFileName(fi.FullName),-40} {fi.LastWriteTime:MM-dd HH:mm:ss}  {fi.IsDeleted,-5}  {fi.Status}");
       }
       catch (Exception ex) { MessageBox.Show(ex.ToString()); return ex.Message; }
     }
@@ -118,7 +116,7 @@ namespace LogMonitorWpfApp
       watcher.IncludeSubdirectories = true;
       watcher.EnableRaisingEvents = true;
 
-      Report($"··  Monitoring commenced.  Path: {path}.   ", path, "");
+      Report($"Monitoring commenced.", path, "");
 
       return watcher;
     }
@@ -131,10 +129,10 @@ namespace LogMonitorWpfApp
       _watcher.Error -= OnError;
     }
 
-    void OnChanged(object s, FileSystemEventArgs e) { if (e.ChangeType == WatcherChangeTypes.Changed) ReportAndRescanSafe($"■■  Changed:  ", e.FullPath); }
-    void OnCreated(object s, FileSystemEventArgs e) => ReportAndRescanSafe($"██  Created:  ", e.FullPath);
-    void OnDeleted(object s, FileSystemEventArgs e) => ReportAndRescanSafe($"══  Deleted:  ", e.FullPath);
-    void OnRenamed(object sner, RenamedEventArgs e) => ReportAndRescanSafe($"▄▀  Renamed:  ", e.OldFullPath, e.FullPath);
+    void OnChanged(object s, FileSystemEventArgs e) { if (e.ChangeType == WatcherChangeTypes.Changed) ReportAndRescanSafe($"▼▲  Changed", e.FullPath); }
+    void OnCreated(object s, FileSystemEventArgs e) => ReportAndRescanSafe($"▲▲  Created", e.FullPath);
+    void OnDeleted(object s, FileSystemEventArgs e) => ReportAndRescanSafe($"▼▼  Deleted", e.FullPath);
+    void OnRenamed(object sner, RenamedEventArgs e) => ReportAndRescanSafe($"►◄  Renamed", e.OldFullPath, e.FullPath);
     void OnError(object senderrr, ErrorEventArgs e) => ReportAnd_Exception(e.GetException());
 
     void ReportAnd_Exception(Exception? ex)
@@ -165,8 +163,8 @@ namespace LogMonitorWpfApp
     }
     void Report(string msg, string file1, string file2)
     {
-      tbkTitle.Text = $"{DateTimeOffset.Now:HH:mm}   {msg}           {Path.GetFileNameWithoutExtension(file1)}   {file2} \n";
-      lbxHist.Items.Add($"{DateTimeOffset.Now:HH:mm}   {msg}           {Path.GetFileNameWithoutExtension(file1)}   {file2}");
+      tbkTitle.Text = $"{DateTimeOffset.Now:HH:mm}  {msg}  {Path.GetFileNameWithoutExtension(file1)}  {file2}";
+      lbxHist.Items.Add(tbkTitle.Text);
 
       Bpr.TickFAF();
       _timer.Start();
