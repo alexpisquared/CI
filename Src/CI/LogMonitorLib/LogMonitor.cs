@@ -1,4 +1,5 @@
-﻿using Colorful;
+﻿using CI.Standard.Lib.Helpers;
+using Colorful;
 using System.Diagnostics;
 using System.Drawing;
 using CC = Colorful.Console;
@@ -14,7 +15,7 @@ namespace LogMonitorConsoleApp
 
     public LogMonitor()
     {
-      _us = UserSettingsStore.Load<UserSettings>();
+      _us = UserSettings.Load;
 
       _styleSheet.AddStyle(".ale.", Color.LimeGreen);
       _styleSheet.AddStyle(".maz.", Color.Lime);
@@ -64,9 +65,9 @@ namespace LogMonitorConsoleApp
         switch (CC.ReadKey().Key)
         {
           case ConsoleKey.R: ReScanFolder(path); break;
-          case ConsoleKey.J: _ = new Process { StartInfo = new ProcessStartInfo(@"C:\Users\alexp\AppData\Local\Programs\Microsoft VS Code\Code.exe", $"\"{UserSettingsStore._store}\"") { RedirectStandardError = true, UseShellExecute = false } }.Start(); break;
-          case ConsoleKey.N: _ = new Process { StartInfo = new ProcessStartInfo(@"Notepad.exe", $"\"{UserSettingsStore._store}\"") { RedirectStandardError = true, UseShellExecute = false } }.Start(); break;
-          case ConsoleKey.V: _ = new Process { StartInfo = new ProcessStartInfo(@"C:\Program Files\Microsoft Visual Studio\2022\Preview\Common7\IDE\devenv.exe", $"\"{UserSettingsStore._store}\"") { RedirectStandardError = true, UseShellExecute = false } }.Start(); break;
+          //case ConsoleKey.J: _ = new Process { StartInfo = new ProcessStartInfo(@"C:\Users\alexp\AppData\Local\Programs\Microsoft VS Code\Code.exe", $"\"{UserSettingsStore._store}\"") { RedirectStandardError = true, UseShellExecute = false } }.Start(); break;
+          //case ConsoleKey.N: _ = new Process { StartInfo = new ProcessStartInfo(@"Notepad.exe", $"\"{UserSettingsStore._store}\"") { RedirectStandardError = true, UseShellExecute = false } }.Start(); break;
+          //case ConsoleKey.V: _ = new Process { StartInfo = new ProcessStartInfo(@"C:\Program Files\Microsoft Visual Studio\2022\Preview\Common7\IDE\devenv.exe", $"\"{UserSettingsStore._store}\"") { RedirectStandardError = true, UseShellExecute = false } }.Start(); break;
           default: return;
         }
       }
@@ -99,7 +100,7 @@ namespace LogMonitorConsoleApp
       _us.FileDataList.Where(r => r.LastSeen != now).ToList().ForEach(fd => { fd.IsDeleted = true; fd.Status = "Deleted"; });
       _us.FileDataList.Where(r => r.LastSeen == now).ToList().ForEach(fd => { fd.IsDeleted = false; });
 
-      UserSettingsStore.Save(_us);
+      UserSettings.Save(_us);
 
       CC.WriteLine($"\t{"FullName",-40} {"LastWriteTime",-14}  {"Gone",-5}  {"Status"}", Color.DeepPink);
 

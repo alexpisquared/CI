@@ -2,7 +2,7 @@
 
 namespace LogMonitorConsoleApp
 {
-  public class UserSettingsStore
+  public class UserSettingsStore_
   {
     public static string _store => Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), @$"AppSettings\{AppDomain.CurrentDomain.FriendlyName}\UserSettings.json");
 

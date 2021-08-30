@@ -5,6 +5,7 @@
     <TargetFramework>net6.0-windows</TargetFramework>
     <Nullable>enable</Nullable>
     <UseWPF>true</UseWPF>
+    <ApplicationIcon>tracelog.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>
@@ -12,9 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="Assets\Say.exe">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+    <Folder Include="Assets\" />
   </ItemGroup>
 
 </Project>

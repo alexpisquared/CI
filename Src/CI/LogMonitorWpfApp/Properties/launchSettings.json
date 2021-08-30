@@ -2,7 +2,7 @@
   "profiles": {
     "LogMonitorWpfApp": {
       "commandName": "Project",
-      "commandLineArgs": "C:\\temp\\Logs"
+      "commandLineArgs": "Z:\\Dev\\AlexPi\\Misc\\Logs"
     }
   }
 }

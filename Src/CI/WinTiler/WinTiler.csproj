@@ -7,7 +7,7 @@
     <Nullable>enable</Nullable>
     <LangVersion>latest</LangVersion>
     <UserSecretsId>ce68def6-d556-473d-af22-994586c1b4eb</UserSecretsId>
-    <ApplicationIcon>Assets\ICN_SpriteKit.ico</ApplicationIcon>
+    <ApplicationIcon>D:\g\CI\Src\CI\WinTiler\Assets\lvwmgr1.ico</ApplicationIcon>
     <Platforms>AnyCPU;x64;x86</Platforms>
   </PropertyGroup>
 
