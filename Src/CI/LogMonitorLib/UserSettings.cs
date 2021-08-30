@@ -9,6 +9,7 @@ namespace LogMonitorConsoleApp
     public static void Save(UserSettings o) => Save<UserSettings>(o);
 
     public ObservableCollection<FileData> FileDataList { get; set; } = new();
-    public string? TrgPath { get; set; }
+    
+    public string TrgPath { get; set; } = @"Z:\Dev\alexPi\Misc\Logs";
   }
 }

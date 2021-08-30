@@ -4,6 +4,7 @@ using System;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Threading;
@@ -12,33 +13,46 @@ namespace LogMonitorWpfApp
 {
   public partial class MainWindow : Window
   {
-    readonly UserSettings _us;
     readonly FileSystemWatcher _watcher;
+    readonly DispatcherTimer _timer;
+    readonly UserSettings _us;
+    const int _ms = 500;
 
     public MainWindow()
     {
       InitializeComponent();
       Topmost = Debugger.IsAttached;
       MouseLeftButtonDown += (s, e) => { if (e.LeftButton == MouseButtonState.Pressed) DragMove(); };
+      _timer = new DispatcherTimer(TimeSpan.FromMilliseconds(_ms + _ms), DispatcherPriority.Normal, new EventHandler(async (s, e) => await OnTick()), Dispatcher.CurrentDispatcher); //tu:
 
-      //return;
-      try
+      _us = UserSettings.Load;
+      if (Environment.GetCommandLineArgs().Length > 1)
       {
-        _us = UserSettings.Load;
-        _us.TrgPath = tbxPath.Text = Environment.GetCommandLineArgs().Length > 1 ? Environment.GetCommandLineArgs()[1] : @"Z:\Dev\alexPi\Misc\Logs";
-
-        ReScanFolder(tbxPath.Text);
-
-        _watcher = StartWatch(tbxPath.Text);
+        _us.TrgPath = Environment.GetCommandLineArgs()[1];
       }
-      catch (Exception ex) { MessageBox.Show(ex.ToString()); throw; }
+
+      tbxPath.Text = _us.TrgPath;
+
+      tbkTitle.Text = ReScanFolder(tbxPath.Text);
+
+      _watcher = StartWatch(tbxPath.Text);
     }
 
+    async Task OnTick() { Title = "▄▀▄▀▄▀▄▀ Log Monitor"; Bpr.Beep(250, _ms); await Task.Delay(_ms); Title = "▀▄▀▄▀▄▀▄ Log Monitor"; Bpr.Beep(200, _ms); await Task.Delay(_ms); }
     void OnLoaded(object s, RoutedEventArgs e) => dg1.ItemsSource = _us.FileDataList;
     void OnScan(object s, RoutedEventArgs e) => Report(ReScanFolder(tbxPath.Text), "", "");
     void OnWatch(object s, RoutedEventArgs e) { StopWatch(); StartWatch(tbxPath.Text); }
+    async void OnClearHist(object s, RoutedEventArgs e) { lbxHist.Items.Clear(); _timer.Stop(); await Task.Delay(_ms * 3); Title = $"Log Monitor - No events since  {DateTime.Now:HH:mm}"; }
+    void OnEditSettingsJson(object s, RoutedEventArgs e)
+    {
+      try
+      {
+        _ = new Process { StartInfo = new ProcessStartInfo(@"C:\Users\alexp\AppData\Local\Programs\Microsoft VS Code\Code.exe", $"\"{UserSettingsStore.Store}\"") { RedirectStandardError = true, UseShellExecute = false } }.Start();//_ = new Process { StartInfo = new ProcessStartInfo(@"Notepad.exe", $"\"{UserSettingsStore._store}\"") { RedirectStandardError = true, UseShellExecute = false } }.Start(); //_ = new Process { StartInfo = new ProcessStartInfo(@"C:\Program Files\Microsoft Visual Studio\2022\Preview\Common7\IDE\devenv.exe", $"\"{UserSettingsStore._store}\"") { RedirectStandardError = true, UseShellExecute = false } }.Start(); }
+      }
+      catch (Exception ex) { MessageBox.Show(ex.ToString()); }
+    }
+
     void OnClose(object s, RoutedEventArgs e) => Close();
-    void OnClearHist(object sender, RoutedEventArgs e) => lb1.Items.Clear();
 
     string ReScanFolder(string path)
     {
@@ -50,7 +64,7 @@ namespace LogMonitorWpfApp
         {
           //lb1.Items.Add($"\t{Path.GetFileName(fi.FullName),-40} {fi.LastWriteTime:MM-dd HH:mm:ss}");
 
-          var fd = _us.FileDataList.FirstOrDefault(r => r.FullName == fi.FullName);
+          var fd = _us.FileDataList.FirstOrDefault(r => r.FullName.Equals(fi.FullName, StringComparison.OrdinalIgnoreCase));
           if (fd == null)
             _us.FileDataList.Add(new FileData { FullName = fi.FullName, LastWriteTime = fi.LastWriteTime });
           else
@@ -78,7 +92,7 @@ namespace LogMonitorWpfApp
 
         return $"Re-Scanned  {_us.FileDataList.Count}  files. {exi.Count()} + {del.Count()}.";      //foreach (var fi in _us.FileDataList.OrderByDescending(r => r.LastWriteTime))        lb1.Items.Add($"\t{System.IO.Path.GetFileName(fi.FullName),-40} {fi.LastWriteTime:MM-dd HH:mm:ss}  {fi.IsDeleted,-5}  {fi.Status}");
       }
-      catch (Exception ex) { MessageBox.Show(ex.ToString()); throw; }
+      catch (Exception ex) { MessageBox.Show(ex.ToString()); return ex.Message; }
     }
     FileSystemWatcher StartWatch(string path)
     {
@@ -117,13 +131,7 @@ namespace LogMonitorWpfApp
       _watcher.Error -= OnError;
     }
 
-    void OnChanged(object s, FileSystemEventArgs e)
-    {
-      if (e.ChangeType != WatcherChangeTypes.Changed)
-        return;
-
-      ReportAndRescanSafe($"■■  Changed:  ", e.FullPath);
-    }
+    void OnChanged(object s, FileSystemEventArgs e) { if (e.ChangeType == WatcherChangeTypes.Changed) ReportAndRescanSafe($"■■  Changed:  ", e.FullPath); }
     void OnCreated(object s, FileSystemEventArgs e) => ReportAndRescanSafe($"██  Created:  ", e.FullPath);
     void OnDeleted(object s, FileSystemEventArgs e) => ReportAndRescanSafe($"══  Deleted:  ", e.FullPath);
     void OnRenamed(object sner, RenamedEventArgs e) => ReportAndRescanSafe($"▄▀  Renamed:  ", e.OldFullPath, e.FullPath);
@@ -131,14 +139,15 @@ namespace LogMonitorWpfApp
 
     void ReportAnd_Exception(Exception? ex)
     {
-      Bpr.ErrorFaF();
-      if (ex != null)
+      while (ex is not null)
       {
-        ReportAndRescanSafe($"████ Error: {ex.Message}", "");
-        ReportAnd_Exception(ex.InnerException);
+        ReportAndRescanSafe($"████ Error: {ex.Message}");
+        ex = ex.InnerException;
       }
+
+      Bpr.ErrorFaF();
     }
-    void ReportAndRescanSafe(string msg, string file1, string file2 = "")
+    void ReportAndRescanSafe(string msg, string file1 = "", string file2 = "")
     {
       if (Application.Current.Dispatcher.CheckAccess()) // if on UI thread
         ReportAndRescan(msg, file1, file2);
@@ -154,13 +163,13 @@ namespace LogMonitorWpfApp
 
       Report(msg + ReScanFolder(tbxPath.Text), file1, file2);
     }
-
     void Report(string msg, string file1, string file2)
     {
-      tb1.Text = $"{DateTimeOffset.Now:HH:mm}   {msg}           {Path.GetFileNameWithoutExtension(file1)}   {file2} \n";
-      lb1.Items.Add($"{DateTimeOffset.Now:HH:mm}   {msg}           {Path.GetFileNameWithoutExtension(file1)}   {file2}");
+      tbkTitle.Text = $"{DateTimeOffset.Now:HH:mm}   {msg}           {Path.GetFileNameWithoutExtension(file1)}   {file2} \n";
+      lbxHist.Items.Add($"{DateTimeOffset.Now:HH:mm}   {msg}           {Path.GetFileNameWithoutExtension(file1)}   {file2}");
 
       Bpr.TickFAF();
+      _timer.Start();
 
 #if !DEBUG
       UseSayExe(msg);
@@ -168,6 +177,5 @@ namespace LogMonitorWpfApp
     }
 
     void UseSayExe(string msg) => new Process { StartInfo = new ProcessStartInfo(@"say.exe", $"\"{msg}\"") { RedirectStandardError = true, UseShellExecute = false } }.Start();
-
   }
 }

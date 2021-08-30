@@ -47,25 +47,26 @@
       <RowDefinition Height="Auto"/>
     </Grid.RowDefinitions>
 
-    <TextBlock x:Name="tb1" Grid.ColumnSpan="3" Margin="5" Grid.RowSpan="1"  />
+    <TextBlock x:Name="tbkTitle" Grid.ColumnSpan="3" Margin="5" Grid.RowSpan="1"  />
 
     <DataGrid Grid.Row="1" x:Name="dg1" Grid.Column="0" Margin="5 0 0 0" CanUserDeleteRows="True" CanUserAddRows="False" AutoGenerateColumns="False" VerticalGridLinesBrush="Transparent" HorizontalGridLinesBrush="Transparent" RowHeaderStyle="{x:Null}">
       <DataGrid.Columns>
-        <DataGridTextColumn Header="Full Name"    Binding="{Binding FullName    }"		  />
-        <DataGridTextColumn Header="Last Write"   Binding="{Binding LastWriteTime, StringFormat=\{0:d HH\\:mm\}}" />
-        <DataGridTextColumn Header="Seen"  	      Binding="{Binding LastSeen  	  , StringFormat=\{0:HH\\:mm\}}" />
-        <DataGridTextColumn Header="Status"       Binding="{Binding Status      }"			Width="*"		              />
-        <DataGridCheckBoxColumn Header="Deleted"  Binding="{Binding IsDeleted   }"			              />
+        <DataGridTextColumn     Header=" Filename"      Binding="{Binding PartName    }"		                            />
+        <DataGridTextColumn     Header=" Last Write  "  Binding="{Binding LastWriteTime, StringFormat=\{0:d HH\\:mm\}}" />
+        <DataGridTextColumn     Header=" Seen  "	      Binding="{Binding LastSeen  	 , StringFormat=\{0:HH\\:mm\}}"   />
+        <DataGridTextColumn     Header=" Status"        Binding="{Binding Status      }"			Width="*"		              />
+        <DataGridCheckBoxColumn Header=" Deleted"       Binding="{Binding IsDeleted   }"			                          />
       </DataGrid.Columns>
     </DataGrid>
     
-    <ListBox  Grid.Row="1" x:Name="lb1" Grid.Column="2" Margin="0 0 5 0" />
+    <ListBox  Grid.Row="1" x:Name="lbxHist" Grid.Column="2" Margin="0 0 5 0" />
 
     <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center" Grid.ColumnSpan="3" Margin="5" >
       <TextBox x:Name="tbxPath" Text="" MinWidth="200"/>
       <Button Content="   _Re-Scan   " IsDefault="True" Click="OnScan"/>
       <Button Content="   Re-_Watch   " Click="OnWatch" />
-      <Button Content="   _Clear   " Click="OnClearHist" />
+      <Button Content="   _Clear Hist   " Click="OnClearHist" />
+      <Button Content="   _Settings   " Click="OnEditSettingsJson" />
       <Button Content="   _Exit   " IsCancel="True" Click="OnClose" />
     </StackPanel>
 
