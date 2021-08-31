@@ -30,4 +30,8 @@
     <DebugSymbols>false</DebugSymbols>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\CI-Reimagined-Invention\Src\CI-RI\CI.Standard.Lib\CI.Standard.Lib.csproj" />
+  </ItemGroup>
+
 </Project>

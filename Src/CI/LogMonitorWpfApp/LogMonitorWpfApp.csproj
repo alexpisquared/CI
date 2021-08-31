@@ -6,6 +6,9 @@
     <Nullable>enable</Nullable>
     <UseWPF>true</UseWPF>
     <ApplicationIcon>tracelog.ico</ApplicationIcon>
+    <!--AutoBuildVer: <AssemblyVersion>0.8.25.1320</AssemblyVersion> add 2 lines below as well as to AsseblyInfo.cs:  '[assembly: AssemblyVersion("0.8.25.*")] // <== ' -->
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <Deterministic>false</Deterministic>
   </PropertyGroup>
 
   <ItemGroup>

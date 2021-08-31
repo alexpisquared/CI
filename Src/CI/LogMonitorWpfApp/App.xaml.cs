@@ -1,19 +1,4 @@
-﻿using CI.Standard.Lib.Helpers;
-using CI.Standard.Lib.Services;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Markup;
-
-
-using Ambience.Lib;
+﻿using Ambience.Lib;
 using CI.Standard.Lib.Helpers;
 using CI.Standard.Lib.Services;
 using CI.Visual.Lib.Helpers;
@@ -21,6 +6,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System;
+using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Markup;
@@ -30,7 +16,7 @@ namespace LogMonitorWpfApp
   public partial class App : System.Windows.Application
   {
     const string _sqlFormat = "SqlConStrSansSnD", _sfx = "Context";
-    string _audit = "■ [not set] ■";
+    readonly string _audit = "■ [not set] ■";
     readonly IServiceProvider _serviceProvider;
     readonly DateTime _appStarted;
 
@@ -42,7 +28,7 @@ namespace LogMonitorWpfApp
 
       _ = services.AddSingleton<IConfigurationRoot>(ConfigHelper.AutoInitConfig());
 
-      var logFile = $"LogMon.{Environment.UserName.Substring(0, 3)}";
+      var logFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.{Environment.UserName.Substring(0, 3)}";
       _ = services.AddSingleton<ILogger>(sp => SeriLogHelper.InitLoggerFactory(
         /*UserSettingsIPM.UserLogFolderFile ??= */FSHelper.GetCreateSafeLogFolderAndFile(new[]
         {

@@ -42,14 +42,14 @@ namespace LogMonitorWpfApp
       _watcher = StartWatch(tbxPath.Text);
 
       if (Environment.MachineName == "D21-MJ0AWBEV") /**/ { Top = 1608; Left = 1928; }
-      if (Environment.MachineName == "RAZER1")       /**/ { Top = 1608; Left = 8; }
+      if (Environment.MachineName == "RAZER1")       /**/ { Top = 1700; Left = 1100; }
     }
 
-    async Task OnTick() { Title = "▄▀▄▀▄▀▄▀ Log Monitor"; await Bpr.BeepAsync(220, .001 * _ms); Title = "▀▄▀▄▀▄▀▄ Log Monitor"; await Bpr.BeepAsync(180, .001 * _ms); }
+    async Task OnTick() { Title = $"▄▀▄▀▄▀▄▀ Log Monitor  {VersionHelper.CurVerStr}"; await Bpr.BeepAsync(220, .001 * _ms); Title = $"▀▄▀▄▀▄▀▄ Log Monitor  {VersionHelper.CurVerStr}"; await Bpr.BeepAsync(180, .001 * _ms); }
     void OnLoaded(object s, RoutedEventArgs e) => dg1.ItemsSource = _us.FileDataList;
     void OnScan(object s, RoutedEventArgs e) => Report(ReScanFolder(tbxPath.Text), "", "");
     void OnWatch(object s, RoutedEventArgs e) { StopWatch(); StartWatch(tbxPath.Text); }
-    async void OnClearHist(object s, RoutedEventArgs e) { lbxHist.Items.Clear(); _timer.Stop(); await Task.Delay(_ms * 3); Title = $"Log Monitor - No events since  {DateTime.Now:HH:mm}"; }
+    async void OnClearHist(object s, RoutedEventArgs e) { lbxHist.Items.Clear(); _timer.Stop(); await Task.Delay(_ms * 3); Title = $"Log Monitor - No events since  {DateTime.Now:HH:mm}  {VersionHelper.CurVerStr}"; }
     void OnEditSettingsJson(object s, RoutedEventArgs e)
     {
       try

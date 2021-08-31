@@ -1,4 +1,5 @@
 ﻿using AsLink;
+using CI.Standard.Lib.Helpers;
 using System;
 using System.Diagnostics;
 using System.IO;
@@ -65,7 +66,7 @@ namespace RdpFacility
         togglePosition("onLoaded");
       }
       tbkMin.Content += $"ITA so far  {_idleTimeoutAnalizer.MinTimeoutMin:N1} min  {(_idleTimeoutAnalizer.RanByTaskScheduler ? "(byTS)" : "(!byTS)")}";
-      tbkBig.Content = Title = $"DiReq: {(_appset.IsInsmnia ? "ON" : "Off")} @ {DateTimeOffset.Now:HH:mm:ss} · {v:M.d.H.m}";
+      tbkBig.Content = Title = $"{(_appset.IsInsmnia ? "ON" : "Off")} @ {DateTimeOffset.Now:HH:mm} · {VersionHelper.CurVerStr}";
       await Task.Delay(_dbgDelayMs);
       _ = new DispatcherTimer(TimeSpan.FromSeconds(_appset.PeriodSec), DispatcherPriority.Normal, new EventHandler(async (s, e) => await onTick()), Dispatcher.CurrentDispatcher); //tu:
       if (_appset.IsAudible == true) SystemSounds.Exclamation.Play();
