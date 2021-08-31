@@ -1,3 +1,5 @@
+﻿using System.Reflection;
+using System.Runtime.Versioning;
 using System.Windows;
 
 [assembly: ThemeInfo(
@@ -8,3 +10,9 @@ using System.Windows;
                                               //(used if a resource is not found in the page,
                                               // app, or any theme specific resource dictionaries)
 )]
+
+[assembly: SupportedOSPlatform("windows7.0")]   //AutoBuildVer: ▼▼▼ causes error CA1416: This call site is reachable on all platforms. <== add this here to fix that
+[assembly: AssemblyVersion("0.27.*")] /*            //AutoBuildVer: <== add this here and these 2 lines to CsProj: 
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <Deterministic>false</Deterministic>
+  </PropertyGroup> */

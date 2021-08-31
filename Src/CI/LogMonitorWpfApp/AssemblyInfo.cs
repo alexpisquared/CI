@@ -1,4 +1,4 @@
-using System.Reflection;
+﻿using System.Reflection;
 using System.Runtime.Versioning;
 using System.Windows;
 
@@ -11,8 +11,8 @@ using System.Windows;
                                               // app, or any theme specific resource dictionaries)
 )]
 
-[assembly: AssemblyVersion("0.27.*")] //AutoBuildVer: : <== add this here and these 2 lines to CsProj:
-//    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-//    <Deterministic>false</Deterministic>
-//  </PropertyGroup>
-[assembly: SupportedOSPlatform("windows7.0")]   // ^^ causes error CA1416: This call site is reachable on all platforms. <== add this here to fix that
+[assembly: SupportedOSPlatform("windows7.0")]   //AutoBuildVer: ▼▼▼ causes error CA1416: This call site is reachable on all platforms. <== add this here to fix that
+[assembly: AssemblyVersion("0.27.*")] /*            //AutoBuildVer: <== add this here and these 2 lines to CsProj: 
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <Deterministic>false</Deterministic>
+  </PropertyGroup> */

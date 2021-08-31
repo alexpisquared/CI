@@ -8,6 +8,9 @@
       <Nullable>enable</Nullable>
       <LangVersion>latest</LangVersion>
       <Platforms>AnyCPU;x64</Platforms>
+    <!--AutoBuildVer: add 2 lines below as well as to AsseblyInfo.cs:  '[assembly: AssemblyVersion("0.8.25.*")] // <== ' -->
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <Deterministic>false</Deterministic>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
