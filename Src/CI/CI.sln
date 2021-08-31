@@ -123,6 +123,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EF.DbHelper.Lib", "..\..\..
 EndProject
 Project("{C7167F0D-BC9F-4E6E-AFE1-012C56B48DB5}") = "CI.PermissionManager2", "CI.PermissionManager2\CI.PermissionManager2.wapproj", "{3DF7229E-F345-4FF8-9279-764DBF8B73E8}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ambience.Lib", "..\..\..\CI-Reimagined-Invention\Src\CI-RI\Ambience.Lib\Ambience.Lib.csproj", "{6E93D8C4-A49D-44BE-B7A4-C2B46AC582C2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -1070,6 +1072,26 @@ Global
 		{3DF7229E-F345-4FF8-9279-764DBF8B73E8}.Release|x86.ActiveCfg = Release|x86
 		{3DF7229E-F345-4FF8-9279-764DBF8B73E8}.Release|x86.Build.0 = Release|x86
 		{3DF7229E-F345-4FF8-9279-764DBF8B73E8}.Release|x86.Deploy.0 = Release|x86
+		{6E93D8C4-A49D-44BE-B7A4-C2B46AC582C2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6E93D8C4-A49D-44BE-B7A4-C2B46AC582C2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6E93D8C4-A49D-44BE-B7A4-C2B46AC582C2}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{6E93D8C4-A49D-44BE-B7A4-C2B46AC582C2}.Debug|ARM.Build.0 = Debug|Any CPU
+		{6E93D8C4-A49D-44BE-B7A4-C2B46AC582C2}.Debug|ARM64.ActiveCfg = Debug|Any CPU
+		{6E93D8C4-A49D-44BE-B7A4-C2B46AC582C2}.Debug|ARM64.Build.0 = Debug|Any CPU
+		{6E93D8C4-A49D-44BE-B7A4-C2B46AC582C2}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{6E93D8C4-A49D-44BE-B7A4-C2B46AC582C2}.Debug|x64.Build.0 = Debug|Any CPU
+		{6E93D8C4-A49D-44BE-B7A4-C2B46AC582C2}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{6E93D8C4-A49D-44BE-B7A4-C2B46AC582C2}.Debug|x86.Build.0 = Debug|Any CPU
+		{6E93D8C4-A49D-44BE-B7A4-C2B46AC582C2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6E93D8C4-A49D-44BE-B7A4-C2B46AC582C2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6E93D8C4-A49D-44BE-B7A4-C2B46AC582C2}.Release|ARM.ActiveCfg = Release|Any CPU
+		{6E93D8C4-A49D-44BE-B7A4-C2B46AC582C2}.Release|ARM.Build.0 = Release|Any CPU
+		{6E93D8C4-A49D-44BE-B7A4-C2B46AC582C2}.Release|ARM64.ActiveCfg = Release|Any CPU
+		{6E93D8C4-A49D-44BE-B7A4-C2B46AC582C2}.Release|ARM64.Build.0 = Release|Any CPU
+		{6E93D8C4-A49D-44BE-B7A4-C2B46AC582C2}.Release|x64.ActiveCfg = Release|Any CPU
+		{6E93D8C4-A49D-44BE-B7A4-C2B46AC582C2}.Release|x64.Build.0 = Release|Any CPU
+		{6E93D8C4-A49D-44BE-B7A4-C2B46AC582C2}.Release|x86.ActiveCfg = Release|Any CPU
+		{6E93D8C4-A49D-44BE-B7A4-C2B46AC582C2}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

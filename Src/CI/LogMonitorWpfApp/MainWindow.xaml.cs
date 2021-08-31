@@ -1,4 +1,5 @@
-﻿using CI.Standard.Lib.Helpers;
+﻿using Ambience.Lib;
+using CI.Standard.Lib.Helpers;
 using LogMonitorConsoleApp;
 using System;
 using System.Diagnostics;
@@ -16,11 +17,14 @@ namespace LogMonitorWpfApp
     readonly FileSystemWatcher _watcher;
     readonly DispatcherTimer _timer;
     readonly UserSettings _us;
-    const int _ms = 500;
+    const int _ms = 1500;
 
-    public MainWindow()
+    public IBpr Bpr { get; }
+
+    public MainWindow(IBpr bpr)
     {
       InitializeComponent();
+      Bpr = bpr;
       Topmost = Debugger.IsAttached;
       MouseLeftButtonDown += (s, e) => { if (e.LeftButton == MouseButtonState.Pressed) DragMove(); };
       _timer = new DispatcherTimer(TimeSpan.FromMilliseconds(_ms + _ms), DispatcherPriority.Normal, new EventHandler(async (s, e) => await OnTick()), Dispatcher.CurrentDispatcher); //tu:
@@ -36,9 +40,12 @@ namespace LogMonitorWpfApp
       tbkTitle.Text = ReScanFolder(tbxPath.Text);
 
       _watcher = StartWatch(tbxPath.Text);
+
+      if (Environment.MachineName == "D21-MJ0AWBEV") /**/ { Top = 1608; Left = 1928; }
+      if (Environment.MachineName == "RAZER1")       /**/ { Top = 1608; Left = 8; }
     }
 
-    async Task OnTick() { Title = "▄▀▄▀▄▀▄▀ Log Monitor"; Bpr.Beep(250, _ms); await Task.Delay(_ms); Title = "▀▄▀▄▀▄▀▄ Log Monitor"; Bpr.Beep(200, _ms); await Task.Delay(_ms); }
+    async Task OnTick() { Title = "▄▀▄▀▄▀▄▀ Log Monitor"; await Bpr.BeepAsync(220, .001 * _ms); Title = "▀▄▀▄▀▄▀▄ Log Monitor"; await Bpr.BeepAsync(180, .001 * _ms); }
     void OnLoaded(object s, RoutedEventArgs e) => dg1.ItemsSource = _us.FileDataList;
     void OnScan(object s, RoutedEventArgs e) => Report(ReScanFolder(tbxPath.Text), "", "");
     void OnWatch(object s, RoutedEventArgs e) { StopWatch(); StartWatch(tbxPath.Text); }
@@ -143,7 +150,7 @@ namespace LogMonitorWpfApp
         ex = ex.InnerException;
       }
 
-      Bpr.ErrorFaF();
+      Bpr.Error();
     }
     void ReportAndRescanSafe(string msg, string file1 = "", string file2 = "")
     {
@@ -166,7 +173,7 @@ namespace LogMonitorWpfApp
       tbkTitle.Text = $"{DateTimeOffset.Now:HH:mm}  {msg}  {Path.GetFileNameWithoutExtension(file1)}  {file2}";
       lbxHist.Items.Add(tbkTitle.Text);
 
-      Bpr.TickFAF();
+      Bpr.Tick();
       _timer.Start();
 
 #if !DEBUG
