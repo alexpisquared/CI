@@ -20,11 +20,10 @@ namespace RdpFacility
     readonly AppSettings _appset = AppSettings.Create();
     readonly Insomniac _insomniac = new();
     readonly string _crlf = $" ";
-#if DEBUG
     const int _from = 8, _till = 20, _dbgDelayMs = 500;
+#if DEBUG
     int _dx = 1, _dy = 1;
 #else
-    const int _from = 8, _till = 18, _dbgDelayMs = 0;
     int _dx = 10, _dy = 10;
 #endif
     bool _isLoaded = false;
@@ -68,7 +67,9 @@ namespace RdpFacility
       tbkMin.Content += $"ITA so far  {_idleTimeoutAnalizer.MinTimeoutMin:N1} min  {(_idleTimeoutAnalizer.RanByTaskScheduler ? "(byTS)" : "(!byTS)")}";
       tbkBig.Content = Title = $"{(_appset.IsInsmnia ? "ON" : "Off")} @ {DateTimeOffset.Now:HH:mm} · {VersionHelper.CurVerStr}";
       await Task.Delay(_dbgDelayMs);
+      
       _ = new DispatcherTimer(TimeSpan.FromSeconds(_appset.PeriodSec), DispatcherPriority.Normal, new EventHandler(async (s, e) => await onTick()), Dispatcher.CurrentDispatcher); //tu:
+      
       if (_appset.IsAudible == true) SystemSounds.Exclamation.Play();
 
       if (_idleTimeoutAnalizer.RanByTaskScheduler)

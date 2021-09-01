@@ -25,10 +25,10 @@
       <Label Content="Hrs" x:Name="tbkHrs" HorizontalAlignment="Center" Foreground="#0f8" FontSize="9" MaxWidth="500" />
       <Label Content="Log" x:Name="tbkLog" HorizontalAlignment="Center" Foreground="#0a0" FontSize="3" MaxWidth="500" />
       <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="Visible">
-        <CheckBox Content="_A" Checked="onAudible" Unchecked="onAudible" x:Name="chkAdbl" ToolTip="Audible"/>
-        <CheckBox Content="_I" Checked="onInsmnia" Unchecked="onInsmnia" x:Name="chkPosn" ToolTip="Insmnia"/>
-        <CheckBox Content="_P" Checked="onPosning" Unchecked="onPosning" x:Name="chkInso" ToolTip="Posning"/>
-        <CheckBox Content="_M" Checked="onMindBiz" Unchecked="onMindBiz" x:Name="chkMind" ToolTip="MindBiz"/>
+        <CheckBox Content="_A" Checked="onAudible" Unchecked="onAudible" x:Name="chkAdbl" ToolTip="Audible on every tick (230 sec)"/>
+        <CheckBox Content="_I" Checked="onInsmnia" Unchecked="onInsmnia" x:Name="chkPosn" ToolTip="Insmnia or system request to disturb"/>
+        <CheckBox Content="_P" Checked="onPosning" Unchecked="onPosning" x:Name="chkInso" ToolTip="Posning crsr"/>
+        <CheckBox Content="_M" Checked="onMindBiz" Unchecked="onMindBiz" x:Name="chkMind" ToolTip="Mind Biz Hrs"/>
         <Button   Content="_Rset" Click="onRset"  />
         <Button   Content="Mar_k" Click="onMark" IsDefault="True" />
         <Button   Content="  x  " Click="onExit"  IsCancel="True" />
