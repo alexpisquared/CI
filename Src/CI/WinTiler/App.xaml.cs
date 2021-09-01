@@ -22,7 +22,8 @@ namespace WinTiler
       Started = DateTime.Now;
       _config = ConfigHelper.AutoInitConfig(@"{{
   ""WhereAmI"": "" ??\\PermMgrClient\\appsettings.CI.PM.json  DFLT"",
-  ""LogFolder"": ""\\\\bbsfile01\\Public\\Dev\\AlexPi\\Misc\\Logs\\WinTiler.DFLT..txt"",
+  ""LogFolder"": ""C:\\temp\\Logs\\WinTiler.DFLT..txt"",
+  ""LogFolde_"": ""\\\\bbsfile01\\Public\\Dev\\AlexPi\\Misc\\Logs\\WinTiler.DFLT..txt"",
   ""ServerList"": "".\\sqlexpress mtDEVsqldb mtUATsqldb mtPRDsqldb"",
   ""SqlConStr"": ""Server={{0}};Database=Inventory;Trusted_Connection=True;"",
   ""AppSettings"": {{
