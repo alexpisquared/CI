@@ -37,9 +37,9 @@
   </Window.Resources>
   <Grid>
     <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="3*"/>
+      <ColumnDefinition Width="05"/>
       <ColumnDefinition Width="2*"/>
-      <ColumnDefinition Width="10"/>
-      <ColumnDefinition Width="1*"/>
     </Grid.ColumnDefinitions>
     <Grid.RowDefinitions>
       <RowDefinition Height="Auto"/>
@@ -53,9 +53,9 @@
       <DataGrid.Columns>
         <DataGridTextColumn     Header=" Filename"      Binding="{Binding PartName    }"		                            />
         <DataGridTextColumn     Header=" Last Write  "  Binding="{Binding LastWriteTime, StringFormat=\{0:d HH\\:mm\}}" />
-        <!--<DataGridTextColumn     Header=" Seen  "	      Binding="{Binding LastSeen  	 , StringFormat=\{0:HH\\:mm\}}"   />-->
         <DataGridTextColumn     Header=" Status"        Binding="{Binding Status      }"			Width="*"		              />
-        <DataGridCheckBoxColumn Header=" Gone "          Binding="{Binding IsDeleted   }"			                          />
+        <DataGridCheckBoxColumn Header=" Gone "         Binding="{Binding IsDeleted   }"			                          />
+        <!--<DataGridTextColumn Header=" Seen  "	      Binding="{Binding LastSeen  	 , StringFormat=\{0:HH\\:mm\}}"   />-->
       </DataGrid.Columns>
     </DataGrid>
     
@@ -63,13 +63,13 @@
 
     <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center" Grid.ColumnSpan="3" Margin="5" >
       <TextBox x:Name="tbxPath" Text="" MinWidth="200"/>
-      <Button Content="   _Re-Scan   " IsDefault="True" Click="OnScan"/>
-      <Button Content="   Re-_Watch   " Click="OnWatch" />
-      <Button Content="   _Clear Hist   " Click="OnClearHist" />
-      <Button Content="   _Settings   " Click="OnEditSettingsJson" />
-      <Button Content="   _Exit   " IsCancel="True" Click="OnClose" />
+      <Button Content="   _Re-Scan   "    Click="OnScan"/>
+      <Button Content="   Re-_Watch   "   Click="OnWatch" />
+      <Button Content="   _Clear Hist   " Click="OnClearHist" IsDefault="True" />
+      <Button Content="   _Settings   "   Click="OnEditSettingsJson" />
+      <Button Content="   _Exit   "       Click="OnClose"     IsCancel="True" />
     </StackPanel>
 
-    <GridSplitter Grid.Column="1" Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="Transparent"/>
+    <GridSplitter Grid.Column="1" Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="Transparent" Margin="-5 0"/>
   </Grid>
 </Window>
