@@ -4,13 +4,13 @@ using System.Runtime.InteropServices;
 
 namespace RdpFacility
 {
-  internal class Insomniac
+  internal class Insomniac // ~ does not let to sleep.
   {
-    bool _isOn = false;
+    bool _isOn;
 
-        internal void SetInso(bool isOn) { if (isOn) RequestActive(); else RequestRelease(); }
+    internal void SetInso(bool isOn) { if (isOn) RequestActive(); else RequestRelease(); }
 
-        internal void RequestActive(string crlf = " ")
+    internal void RequestActive(string crlf = " ")
     {
       _isOn = true;
       SetThreadExecutionState(EXECUTION_STATE.ES_DISPLAY_REQUIRED | EXECUTION_STATE.ES_CONTINUOUS);
@@ -27,7 +27,7 @@ namespace RdpFacility
     }
 
 
-    [FlagsAttribute]
+    [Flags]
     public enum EXECUTION_STATE : uint
     {
       ES_AWAYMODE_REQUIRED = 0x00000040,

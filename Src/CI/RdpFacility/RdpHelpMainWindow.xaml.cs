@@ -49,13 +49,13 @@ namespace RdpFacility
       }
 
 #if DEBUG //  if (Environment.MachineName == "RAZER1") { Top = 1700; Left = 1100; }
-              if (Environment.MachineName == "RAZER1") { Top = 1700; Left = 1100; }
+      if (Environment.MachineName == "RAZER1") { Top = 1700; Left = 1100; }
 #endif
     }
     async void onLoaded(object s, RoutedEventArgs e)
     {
-      var v = new FileInfo(Environment.GetCommandLineArgs()[0]).LastWriteTime;
-      await File.AppendAllTextAsync(App.TextLog, $"{App.Started:yyyy-MM-dd}{_crlf}{prefix}{(_idleTimeoutAnalizer.RanByTaskScheduler ? "+byTS" : "!byTS")} · {v:M.d.H.m} · args:{string.Join(' ', Environment.GetCommandLineArgs().Skip(1)),-12}  {_crlf}");
+      //var v = new FileInfo(Environment.GetCommandLineArgs()[0]).LastWriteTime;
+      await File.AppendAllTextAsync(App.TextLog, $"{App.Started:yyyy-MM-dd}{_crlf}{prefix}{(_idleTimeoutAnalizer.RanByTaskScheduler ? "+byTS" : "!byTS")} · {VersionHelper.CurVerStr} · args:{string.Join(' ', Environment.GetCommandLineArgs().Skip(1)),-12}  {_crlf}");
       if (_appset.IsInsmnia)
         _insomniac.RequestActive(_crlf);
 
@@ -91,6 +91,8 @@ namespace RdpFacility
         chkInso.IsChecked = ibh;
         _insomniac.SetInso(ibh);
         Background = new SolidColorBrush(ibh ? Colors.DarkCyan : Colors.DarkRed);
+
+        tbkHrs.Content = $"{_from} - {_till} : currently {(ibh ? "On" : "Off")}";
       }
 
       if (_appset.IsPosning)
@@ -99,9 +101,7 @@ namespace RdpFacility
         await File.AppendAllTextAsync(App.TextLog, $"■"); // {prefix}onTick  {_crlf}");
     }
 
-    static bool IsBizHours => _from <= DateTimeOffset.Now.Hour
-  //&& DateTimeOffset.Now.Hour != 12 
-  && DateTimeOffset.Now.Hour <= _till;
+    static bool IsBizHours => _from <= DateTimeOffset.Now.Hour && DateTimeOffset.Now.Hour <= _till; // && DateTimeOffset.Now.Hour != 12 
 
     void togglePosition(string msg)
     {
@@ -131,8 +131,8 @@ namespace RdpFacility
     }
 
     async void onAudible(object s, RoutedEventArgs e) { _appset.IsAudible = ((CheckBox)s).IsChecked == true; if (_isLoaded) { await _appset.StoreAsync(); } }
-    async void onInsmnia(object s, RoutedEventArgs e) { _appset.IsPosning = ((CheckBox)s).IsChecked == true; if (_isLoaded) { await _appset.StoreAsync(); _insomniac.SetInso(((CheckBox)s).IsChecked == true); } }
-    async void onPosning(object s, RoutedEventArgs e) { _appset.IsInsmnia = ((CheckBox)s).IsChecked == true; if (_isLoaded) { await _appset.StoreAsync(); } }
+    async void onInsmnia(object s, RoutedEventArgs e) { _appset.IsInsmnia = ((CheckBox)s).IsChecked == true; if (_isLoaded) { await _appset.StoreAsync(); _insomniac.SetInso(((CheckBox)s).IsChecked == true); } }
+    async void onPosning(object s, RoutedEventArgs e) { _appset.IsPosning = ((CheckBox)s).IsChecked == true; if (_isLoaded) { await _appset.StoreAsync(); } }
     async void onMindBiz(object s, RoutedEventArgs e) { _appset.IsMindBiz = ((CheckBox)s).IsChecked == true; if (_isLoaded) { await _appset.StoreAsync(); } }
     void onRset(object s, RoutedEventArgs e) { _idleTimeoutAnalizer.MinTimeoutMin = 100; tbkMin.Content = $"ITA so far  {_idleTimeoutAnalizer.MinTimeoutMin:N1} min  {(_idleTimeoutAnalizer.RanByTaskScheduler ? "(ro)" : "(RW)")}"; _idleTimeoutAnalizer.SaveLastCloseAndAnalyzeIfMarkable(); }
     async void onMark(object z, RoutedEventArgs e) { var s = $"{prefix}Mark     \t"; tbkLog.Content += s; await File.AppendAllTextAsync(App.TextLog, $"{s}{_crlf}"); }

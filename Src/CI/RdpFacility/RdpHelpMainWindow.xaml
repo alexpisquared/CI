@@ -20,13 +20,14 @@
 
   <Viewbox Margin="5">
     <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
-      <Label Content="Big" x:Name="tbkBig"      HorizontalAlignment="Center" Foreground="#0dd" />
-      <Label Content="Min" x:Name="tbkMin"      HorizontalAlignment="Center" Foreground="#d00" />
-      <Label Content="Log" x:Name="tbkLog"      HorizontalAlignment="Center" Foreground="#0a0" FontSize="3" MaxWidth="500" />
-      <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center" Visibility="Visible">
+      <Label Content="Big" x:Name="tbkBig" HorizontalAlignment="Center" Foreground="#0dd" />
+      <Label Content="Min" x:Name="tbkMin" HorizontalAlignment="Center" Foreground="#d00" />
+      <Label Content="Hrs" x:Name="tbkHrs" HorizontalAlignment="Center" Foreground="#0f8" FontSize="9" MaxWidth="500" />
+      <Label Content="Log" x:Name="tbkLog" HorizontalAlignment="Center" Foreground="#0a0" FontSize="3" MaxWidth="500" />
+      <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="Visible">
         <CheckBox Content="_A" Checked="onAudible" Unchecked="onAudible" x:Name="chkAdbl" ToolTip="Audible"/>
-        <CheckBox Content="_P" Checked="onInsmnia" Unchecked="onInsmnia" x:Name="chkPosn" ToolTip="Insmnia"/>
-        <CheckBox Content="_I" Checked="onPosning" Unchecked="onPosning" x:Name="chkInso" ToolTip="Posning"/>
+        <CheckBox Content="_I" Checked="onInsmnia" Unchecked="onInsmnia" x:Name="chkPosn" ToolTip="Insmnia"/>
+        <CheckBox Content="_P" Checked="onPosning" Unchecked="onPosning" x:Name="chkInso" ToolTip="Posning"/>
         <CheckBox Content="_M" Checked="onMindBiz" Unchecked="onMindBiz" x:Name="chkMind" ToolTip="MindBiz"/>
         <Button   Content="_Rset" Click="onRset"  />
         <Button   Content="Mar_k" Click="onMark" IsDefault="True" />
