@@ -63,6 +63,8 @@
 
     <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center" Grid.ColumnSpan="3" Margin="5" >
       <TextBox x:Name="tbxPath" Text="" MinWidth="200"/>
+      <Button Content="   E_xplore   "    Click="OnExpl"/>
+      <Button Content="   _VS Code   "    Click="OnVScd"/>
       <Button Content="   _Re-Scan   "    Click="OnScan"/>
       <Button Content="   Re-_Watch   "   Click="OnWatch" />
       <Button Content="   _Clear Hist   " Click="OnClearHist" IsDefault="True" />
