@@ -17,7 +17,7 @@ namespace LogMonitorWpfApp
     readonly FileSystemWatcher _watcher;
     readonly DispatcherTimer _timer;
     readonly UserSettings _us;
-    const int _ms = 500;
+    const int _ms = 200;
 
     public IBpr Bpr { get; }
 
@@ -42,10 +42,13 @@ namespace LogMonitorWpfApp
       _watcher = StartWatch(tbxPath.Text);
 
       if (Environment.MachineName == "D21-MJ0AWBEV") /**/ { Top = 1608; Left = 1928; }
-      if (Environment.MachineName == "RAZER1")       /**/ { Top = 1700; Left = 1100; }
+      if (Environment.MachineName == "RAZER1")       /**/ { Top = 1600; Left = 10; }
     }
 
-    async Task OnTick() { Title = $"▄▀▄▀▄▀▄▀ Log Monitor  -  {VersionHelper.CurVerStr}"; await Bpr.WaveAsync(200, 100); Title = $"▀▄▀▄▀▄▀▄ Log Monitor  -  {VersionHelper.CurVerStr}"; await Bpr.WaveAsync(200, 50, 1); }
+    async Task OnTick() { 
+      Title = $"▄▀▄▀▄▀▄▀ Log Monitor  -  {VersionHelper.CurVerStr}"; await new Bpr().WaveAsync(141, 100, 7); 
+      Title = $"▀▄▀▄▀▄▀▄ Log Monitor  -  {VersionHelper.CurVerStr}"; await new Bpr().WaveAsync(60, 101, 7);
+    }
     void OnLoaded(object s, RoutedEventArgs e) => dg1.ItemsSource = _us.FileDataList;
     void OnScan(object s, RoutedEventArgs e) => Report(ReScanFolder(tbxPath.Text), "", "");
     void OnWatch(object s, RoutedEventArgs e) { StopWatch(); StartWatch(tbxPath.Text); }

@@ -61,6 +61,8 @@ namespace LogMonitorWpfApp
 
     protected override void OnStartup(StartupEventArgs e)
     {
+      //await new Bpr().DevDbg();
+
       try
       {
         UnhandledExceptionHndlr.Logger = _serviceProvider.GetRequiredService<ILogger>();
