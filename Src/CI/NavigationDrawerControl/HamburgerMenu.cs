@@ -11,10 +11,7 @@ namespace NavigationDrawerControl
     public static readonly DependencyProperty OpenCloseDurationProperty = DependencyProperty.Register("OpenCloseDuration", typeof(Duration), typeof(HamburgerMenu), new PropertyMetadata(Duration.Automatic)); public Duration OpenCloseDuration { get => (Duration)GetValue(OpenCloseDurationProperty); set => SetValue(OpenCloseDurationProperty, value); }
 
     static HamburgerMenu() => DefaultStyleKeyProperty.OverrideMetadata(typeof(HamburgerMenu), new FrameworkPropertyMetadata(typeof(HamburgerMenu)));
-    public HamburgerMenu()
-    {
-      Width = 0;
-    }
+    public HamburgerMenu() => Width = 44;
 
     static void OnIsOpenPrepertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
@@ -38,10 +35,12 @@ namespace NavigationDrawerControl
 
     void OpenMenuAnimated()
     {
-      Content.Measure(new Size(MaxWidth, MaxHeight)); 
+      if (Content is null) return;
+
+      Content.Measure(new Size(MaxWidth, MaxHeight));
       BeginAnimation(WidthProperty, new DoubleAnimation(toValue: Content.DesiredSize.Width, OpenCloseDuration));
     }
 
-    void CloseMenuAnimated() => BeginAnimation(WidthProperty, new DoubleAnimation(toValue: 0, OpenCloseDuration));
+    void CloseMenuAnimated() => BeginAnimation(WidthProperty, new DoubleAnimation(toValue: 40, OpenCloseDuration));
   }
 }

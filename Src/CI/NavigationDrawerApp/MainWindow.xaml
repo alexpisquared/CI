@@ -15,7 +15,7 @@
 
       <Rectangle Grid.ColumnSpan="2" Fill="#00d" />
 
-      <CheckBox x:Name="cbToggleMenu" Margin="10">
+      <CheckBox x:Name="cbToggleMenu" Margin="10" d:IsChecked="True">
         <CheckBox.Template>
           <ControlTemplate TargetType="CheckBox">
             <Grid Background="Transparent">
@@ -43,6 +43,7 @@
             <Setter Property="FontSize" Value="16" />
             <Setter Property="Background" Value="Transparent" />
             <Setter Property="Foreground" Value="#444" />
+            <Setter Property="BorderThickness"  Value="44 0 0 0" />
             <Style.Triggers>
               <EventTrigger RoutedEvent="MouseEnter">
                 <BeginStoryboard>
@@ -59,27 +60,22 @@
                 </BeginStoryboard>
               </EventTrigger>
               <Trigger Property="IsMouseOver" Value="True">
-                <Setter Property="Foreground" Value="#1669bb" />
+                <Setter Property="Foreground"       Value="#1669bb" />
               </Trigger>
               <Trigger Property="IsChecked" Value="True">
-                <Setter Property="Foreground" Value="#1669bb" />
+                <Setter Property="Foreground"       Value="#1669bb" />
+                <Setter Property="BorderBrush"      Value="#1669bb" />
               </Trigger>
             </Style.Triggers>
           </Style>
         </custom:HamburgerMenu.Resources>
           <custom:HamburgerMenu.Content>
             <StackPanel Margin="0 10" >
-            <custom:HamburgerMenuItem >
+            <custom:HamburgerMenuItem IsChecked="True">
               <TextBlock Text="Hellooooo" />
             </custom:HamburgerMenuItem>
             <custom:HamburgerMenuItem >
               <TextBlock Text="Hellooooo" />
-            </custom:HamburgerMenuItem>
-            <custom:HamburgerMenuItem >
-              <Button Content="Hellooooo" />
-            </custom:HamburgerMenuItem>
-            <custom:HamburgerMenuItem >
-              <Hyperlink NavigateUri="www.gov.ca" />
             </custom:HamburgerMenuItem>
             <custom:HamburgerMenuItem >
               <TextBlock Text="Hellooooo" />

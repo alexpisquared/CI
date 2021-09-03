@@ -87,6 +87,7 @@ namespace LogMonitorWpfApp
         var exi = _us.FileDataList.Where(r => Math.Abs((r.LastSeen - now).TotalSeconds) <= 3);
         exi.ToList().ForEach(fd => { fd.IsDeleted = false; });
 
+        _us.TrgPath = path;
         UserSettings.Save(_us);
 
         dg1.Items.Refresh();
