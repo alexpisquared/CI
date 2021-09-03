@@ -1,7 +1,7 @@
 ﻿<Window xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" x:Class="NavigationDrawerApp.MainWindow" mc:Ignorable="d"
-        xmlns:custom="clr-namespace:NavigationDrawerControl;assembly=NavigationDrawerControl" 
+        xmlns:nav="clr-namespace:NavigationDrawerControl;assembly=NavigationDrawerControl" 
         xmlns:local="clr-namespace:NavigationDrawerApp"
-        Title="MainWindow" Height="450" Width="400" Topmost="True">
+        Title="MainWindow" Height="250" Width="400" Topmost="True" Background="#bbb">
   <Grid>
     <Grid.RowDefinitions>
       <RowDefinition Height="Auto"/>
@@ -36,9 +36,9 @@
         <ColumnDefinition />
       </Grid.ColumnDefinitions>
 
-      <custom:NavDrawer OpenCloseDuration="0:0:0.25" Background="#f2f2f2" BorderBrush="#dbdbdb" BorderThickness="0 0 1 0" IsOpen="{Binding IsChecked, ElementName=cbToggleMenu}">
-        <custom:NavDrawer.Resources>
-          <Style TargetType="custom:NavDrawerItem">
+      <nav:NavDrawer OpenCloseDuration="0:0:0.25" Background="#f2f2f2" BorderBrush="#dbdbdb" BorderThickness="0 0 1 0" IsOpen="{Binding IsChecked, ElementName=cbToggleMenu}">
+        <nav:NavDrawer.Resources>
+          <Style TargetType="nav:NavDrawerItem">
             <Setter Property="Padding" Value="10 10" />
             <Setter Property="FontSize" Value="16" />
             <Setter Property="Background" Value="Transparent" />
@@ -68,27 +68,27 @@
               </Trigger>
             </Style.Triggers>
           </Style>
-        </custom:NavDrawer.Resources>
-        <custom:NavDrawer.Content>
+        </nav:NavDrawer.Resources>
+        <nav:NavDrawer.Content>
           <StackPanel Margin="0 10" >
-            <custom:NavDrawerItem IsChecked="True">
+            <nav:NavDrawerItem IsChecked="True">
               <StackPanel Orientation="Horizontal">
                 <Image Source="/Assets/Minus_16x16.png" />
                 <TextBlock Text="F1 - Details" />
               </StackPanel>
-            </custom:NavDrawerItem>
-            <custom:NavDrawerItem >
+            </nav:NavDrawerItem>
+            <nav:NavDrawerItem >
               <StackPanel Orientation="Horizontal">
                 <Image Source="/Assets/Plus_16x16.png" />
                 <TextBlock Text="F2 - Details" />
               </StackPanel>
-            </custom:NavDrawerItem>
-            <custom:NavDrawerItem >
+            </nav:NavDrawerItem>
+            <nav:NavDrawerItem >
               <TextBlock Text="Hellooooo" />
-            </custom:NavDrawerItem>
+            </nav:NavDrawerItem>
           </StackPanel>
-        </custom:NavDrawer.Content>
-      </custom:NavDrawer>
+        </nav:NavDrawer.Content>
+      </nav:NavDrawer>
 
       <StackPanel Grid.Column="1" Margin="20 10">
         <TextBlock Text="The Page" FontSize="36" />

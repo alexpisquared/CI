@@ -15,14 +15,14 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\..\CI-Reimagined-Invention\Src\CI-RI\NavigationDrawerControl\NavigationDrawerControl.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Resource Include="Assets\Minus_16x16.png" />
     <Resource Include="Assets\Plus_16x16.png" />
     <Resource Include="Assets\StoreLogo.scale-400.png" />
     <Resource Include="Assets\theme-icon.png" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\NavigationDrawerControl\NavigationDrawerControl.csproj" />
   </ItemGroup>
 
 </Project>
