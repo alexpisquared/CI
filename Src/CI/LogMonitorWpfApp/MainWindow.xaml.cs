@@ -45,17 +45,43 @@ namespace LogMonitorWpfApp
       if (Environment.MachineName == "RAZER1")       /**/ { Top = 1600; Left = 10; }
     }
 
-    async Task OnTick() { 
-      Title = $"▄▀▄▀▄▀▄▀ Log Monitor  -  {VersionHelper.CurVerStr}"; await new Bpr().WaveAsync(141, 100, 7); 
-      Title = $"▀▄▀▄▀▄▀▄ Log Monitor  -  {VersionHelper.CurVerStr}"; await new Bpr().WaveAsync(60, 101, 7);
+    async Task OnTick()
+    {
+      Title = $"▄▀▄▀▄▀▄▀ Log Monitor  -  {VersionHelper.CurVerStr}";
+      await Task.Delay(_ms);
+      Title = $"▀▄▀▄▀▄▀▄ Log Monitor  -  {VersionHelper.CurVerStr}";
+    }
+    async Task OnAlarmIsOn()
+    {
+      while (_timer.IsEnabled)
+      {
+        await Bpr.WaveAsync(141, 100, 7);
+        await Bpr.WaveAsync(60, 101, 7);
+      }
     }
     void OnLoaded(object s, RoutedEventArgs e) => dg1.ItemsSource = _us.FileDataList;
     void OnScan(object s, RoutedEventArgs e) => Report(ReScanFolder(tbxPath.Text), "", "");
     void OnWatch(object s, RoutedEventArgs e) { StopWatch(); StartWatch(tbxPath.Text); }
-    async void OnClearHist(object s, RoutedEventArgs e) { lbxHist.Items.Clear(); _timer.Stop(); await Task.Delay(_ms * 3); Title = $"Log Monitor - No events since  {DateTime.Now:HH:mm}  -  {VersionHelper.CurVerStr}"; }
+    void OnClearHist(object s, RoutedEventArgs e) { lbxHist.Items.Clear(); _timer.Stop(); Title = $"Log Monitor - No events since  {DateTime.Now:HH:mm}  -  {VersionHelper.CurVerStr}"; }
     void OnEditSettingsJson(object s, RoutedEventArgs e) => _ = new Process { StartInfo = new ProcessStartInfo(@$"{Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)}\Programs\Microsoft VS Code\Code.exe", $"\"{UserSettingsStore.Store}\"") { RedirectStandardError = true, UseShellExecute = false } }.Start();//_ = new Process { StartInfo = new ProcessStartInfo(@"Notepad.exe", $"\"{UserSettingsStore._store}\"") { RedirectStandardError = true, UseShellExecute = false } }.Start(); //_ = new Process { StartInfo = new ProcessStartInfo(@"C:\Program Files\Microsoft Visual Studio\2022\Preview\Common7\IDE\devenv.exe", $"\"{UserSettingsStore._store}\"") { RedirectStandardError = true, UseShellExecute = false } }.Start(); }
     void OnExpl(object s, RoutedEventArgs e) => _ = new Process { StartInfo = new ProcessStartInfo(@"Explorer.exe", $"\"{tbxPath.Text}\"") { RedirectStandardError = true, UseShellExecute = false } }.Start();
-    void OnVScd(object s, RoutedEventArgs e) { try { _ = new Process { StartInfo = new ProcessStartInfo(@$"{Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)}\Programs\Microsoft VS Code\Code.exe", $"\"{tbxPath.Text}\"") { RedirectStandardError = true, UseShellExecute = false } }.Start(); } catch (Exception ex) { Trace.WriteLine(ex.Message); throw; } } //todo: replace apigida with 
+    void OnVScd(object s, RoutedEventArgs e) { try { _ = new Process { StartInfo = new ProcessStartInfo(@$"{Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)}\Programs\Microsoft VS Code\Code.exe", $"\"{tbxPath.Text}\"") { RedirectStandardError = true, UseShellExecute = false } }.Start(); } catch (Exception ex) { Trace.WriteLine(ex.Message); throw; } }
+    void On0(object s, RoutedEventArgs e) { try { } catch (Exception ex) { Trace.WriteLine(ex.Message); throw; } }
+    void On1(object s, RoutedEventArgs e)
+    {
+      try
+      {
+        do
+        {
+          foreach (var deletedFile in _us.FileDataList.Where(r => r.IsDeleted))
+          {
+            _us.FileDataList.Remove(deletedFile);
+            break;
+          }
+        } while (_us.FileDataList.Any(r => r.IsDeleted));
+      }
+      catch (Exception ex) { Trace.WriteLine(ex.Message); throw; }
+    }
     void OnClose(object s, RoutedEventArgs e) => Close();
     string ReScanFolder(string path)
     {
@@ -172,6 +198,9 @@ namespace LogMonitorWpfApp
 
       Bpr.Tick();
       _timer.Start();
+      _timer.IsEnabled = true;
+
+      Task.Run(async () => await OnAlarmIsOn());
 
 #if !DEBUG
       UseSayExe(msg);

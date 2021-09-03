@@ -47,6 +47,20 @@
       <RowDefinition Height="Auto"/>
     </Grid.RowDefinitions>
 
+    <Menu HorizontalAlignment="Left" Margin="5 0 0 0" Background="Transparent" >
+      <MenuItem Header="***" FontSize="20" Background="Transparent">
+        <MenuItem Header="123" />
+        <MenuItem Header="E_xplore"    Click="OnExpl"/>
+        <MenuItem Header="_VS Code"    Click="OnVScd"/>
+        <MenuItem Header="_Re-Scan"    Click="OnScan"/>
+        <MenuItem Header="Re-_Move"    Click="On1"  ToolTip="Remove deleted files" />
+        <MenuItem Header="Re-_Watch"   Click="OnWatch" />
+        <MenuItem Header="_Clear Hist" Click="OnClearHist" />
+        <MenuItem Header="_Settings"   Click="OnEditSettingsJson" />
+        <MenuItem Header="_Exit"       Click="OnClose"     />
+      </MenuItem>
+    </Menu>
+    
     <TextBlock x:Name="tbkTitle" Grid.ColumnSpan="3" Margin="5" Grid.RowSpan="1" HorizontalAlignment="Right" />
 
     <DataGrid Grid.Row="1" x:Name="dg1" Grid.Column="0" Margin="5 0 0 0" CanUserDeleteRows="True" CanUserAddRows="False" AutoGenerateColumns="False" VerticalGridLinesBrush="Transparent" HorizontalGridLinesBrush="Transparent" RowHeaderStyle="{x:Null}">
@@ -66,6 +80,7 @@
       <Button Content="   E_xplore   "    Click="OnExpl"/>
       <Button Content="   _VS Code   "    Click="OnVScd"/>
       <Button Content="   _Re-Scan   "    Click="OnScan"/>
+      <Button Content="   Re-_Move   "    Click="On1"  ToolTip="Remove deleted files" />
       <Button Content="   Re-_Watch   "   Click="OnWatch" />
       <Button Content="   _Clear Hist   " Click="OnClearHist" IsDefault="True" />
       <Button Content="   _Settings   "   Click="OnEditSettingsJson" />

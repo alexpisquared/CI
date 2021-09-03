@@ -8,6 +8,20 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Assets\Minus_16x16.png" />
+    <None Remove="Assets\Plus_16x16.png" />
+    <None Remove="Assets\StoreLogo.scale-400.png" />
+    <None Remove="Assets\theme-icon.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Assets\Minus_16x16.png" />
+    <Resource Include="Assets\Plus_16x16.png" />
+    <Resource Include="Assets\StoreLogo.scale-400.png" />
+    <Resource Include="Assets\theme-icon.png" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\NavigationDrawerControl\NavigationDrawerControl.csproj" />
   </ItemGroup>
 

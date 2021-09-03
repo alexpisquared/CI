@@ -41,6 +41,6 @@ namespace NavigationDrawerControl
       BeginAnimation(WidthProperty, new DoubleAnimation(toValue: Content.DesiredSize.Width, OpenCloseDuration));
     }
 
-    void CloseMenuAnimated() => BeginAnimation(WidthProperty, new DoubleAnimation(toValue: 40, OpenCloseDuration));
+    void CloseMenuAnimated() => BeginAnimation(WidthProperty, new DoubleAnimation(toValue: 44, OpenCloseDuration));
   }
 }
