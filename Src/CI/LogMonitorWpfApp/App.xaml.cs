@@ -5,6 +5,7 @@ using CI.Visual.Lib.Helpers;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using StandardContracts.Lib;
 using System;
 using System.Reflection;
 using System.Windows;

@@ -1,6 +1,7 @@
 ﻿using Ambience.Lib;
 using CI.Standard.Lib.Helpers;
 using LogMonitorConsoleApp;
+using StandardContracts.Lib;
 using System;
 using System.Diagnostics;
 using System.IO;
@@ -15,7 +16,7 @@ namespace LogMonitorWpfApp
   public partial class MainWindow : Window
   {
     readonly FileSystemWatcher _watcher;
-    readonly DispatcherTimer _timer;
+    readonly DispatcherTimer _timerNotifier;
     readonly UserSettings _us;
     const int _ms = 200;
 
@@ -27,7 +28,7 @@ namespace LogMonitorWpfApp
       Bpr = bpr;
       Topmost = Debugger.IsAttached;
       MouseLeftButtonDown += (s, e) => { if (e.LeftButton == MouseButtonState.Pressed) DragMove(); };
-      _timer = new DispatcherTimer(TimeSpan.FromMilliseconds(_ms + _ms), DispatcherPriority.Normal, new EventHandler(async (s, e) => await OnTick()), Dispatcher.CurrentDispatcher); //tu:
+      _timerNotifier = new DispatcherTimer(TimeSpan.FromMilliseconds(_ms + _ms), DispatcherPriority.Normal, new EventHandler(async (s, e) => await OnTick()), Dispatcher.CurrentDispatcher); //tu:
 
       _us = UserSettings.Load;
       if (Environment.GetCommandLineArgs().Length > 1)
@@ -53,22 +54,22 @@ namespace LogMonitorWpfApp
     }
     async Task OnAlarmIsOn()
     {
-      while (_timer.IsEnabled)
+      while (_timerNotifier.IsEnabled)
       {
         await Bpr.WaveAsync(141, 100, 7);
         await Bpr.WaveAsync(60, 101, 7);
       }
     }
-    void OnLoaded(object s, RoutedEventArgs e) => dg1.ItemsSource = _us.FileDataList;
+    void OnLoaded(object s, RoutedEventArgs e) { dg1.ItemsSource = _us.FileDataList; OnStop(s, e); }
     void OnScan(object s, RoutedEventArgs e) => Report(ReScanFolder(tbxPath.Text), "", "");
-    void OnWatch(object s, RoutedEventArgs e) { StopWatch(); StartWatch(tbxPath.Text); }
-    void OnClearHist(object s, RoutedEventArgs e) { lbxHist.Items.Clear(); _timer.Stop(); Title = $"Log Monitor - No events since  {DateTime.Now:HH:mm}  -  {VersionHelper.CurVerStr}"; }
-    void OnEditSettingsJson(object s, RoutedEventArgs e) => _ = new Process { StartInfo = new ProcessStartInfo(@$"{Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)}\Programs\Microsoft VS Code\Code.exe", $"\"{UserSettingsStore.Store}\"") { RedirectStandardError = true, UseShellExecute = false } }.Start();//_ = new Process { StartInfo = new ProcessStartInfo(@"Notepad.exe", $"\"{UserSettingsStore._store}\"") { RedirectStandardError = true, UseShellExecute = false } }.Start(); //_ = new Process { StartInfo = new ProcessStartInfo(@"C:\Program Files\Microsoft Visual Studio\2022\Preview\Common7\IDE\devenv.exe", $"\"{UserSettingsStore._store}\"") { RedirectStandardError = true, UseShellExecute = false } }.Start(); }
-    void OnExpl(object s, RoutedEventArgs e) => _ = new Process { StartInfo = new ProcessStartInfo(@"Explorer.exe", $"\"{tbxPath.Text}\"") { RedirectStandardError = true, UseShellExecute = false } }.Start();
-    void OnVScd(object s, RoutedEventArgs e) { try { _ = new Process { StartInfo = new ProcessStartInfo(@$"{Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)}\Programs\Microsoft VS Code\Code.exe", $"\"{tbxPath.Text}\"") { RedirectStandardError = true, UseShellExecute = false } }.Start(); } catch (Exception ex) { Trace.WriteLine(ex.Message); throw; } }
-    void On0(object s, RoutedEventArgs e) { try { } catch (Exception ex) { Trace.WriteLine(ex.Message); throw; } }
-    void On1(object s, RoutedEventArgs e)
+    void OnWatch(object s, RoutedEventArgs e) { Bpr.Tick(); StopWatch(); StartWatch(tbxPath.Text); }
+    void OnStop(object s, RoutedEventArgs e) { Bpr.Tick(); /*lbxHist.Items.Clear();*/ _timerNotifier.Stop(); Title = $"Log Monitor - No events since  {DateTime.Now:HH:mm}  -  {VersionHelper.CurVerStr}"; }
+    void OnExpl(object s, RoutedEventArgs e) { Bpr.Tick(); try { _ = new Process { StartInfo = new ProcessStartInfo(@"Explorer.exe", $"\"{tbxPath.Text}\"") { RedirectStandardError = true, UseShellExecute = false } }.Start(); } catch (Exception ex) { Trace.WriteLine(ex.Message); throw; } }
+    void OnVScd(object s, RoutedEventArgs e) { Bpr.Tick(); try { _ = new Process { StartInfo = new ProcessStartInfo(@$"{Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)}\Programs\Microsoft VS Code\Code.exe", $"\"{tbxPath.Text}\"") { RedirectStandardError = true, UseShellExecute = false } }.Start(); } catch (Exception ex) { Trace.WriteLine(ex.Message); throw; } }
+    void OnEdit(object s, RoutedEventArgs e) { Bpr.Tick(); try { _ = new Process { StartInfo = new ProcessStartInfo(@$"{Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)}\Programs\Microsoft VS Code\Code.exe", $"\"{UserSettingsStore.Store}\"") { RedirectStandardError = true, UseShellExecute = false } }.Start(); } catch (Exception ex) { Trace.WriteLine(ex.Message); throw; } }//_ = new Process { StartInfo = new ProcessStartInfo(@"Notepad.exe", $"\"{UserSettingsStore._store}\"") { RedirectStandardError = true, UseShellExecute = false } }.Start(); //_ = new Process { StartInfo = new ProcessStartInfo(@"C:\Program Files\Microsoft Visual Studio\2022\Preview\Common7\IDE\devenv.exe", $"\"{UserSettingsStore._store}\"") { RedirectStandardError = true, UseShellExecute = false } }.Start(); }
+    void OnRDel(object s, RoutedEventArgs e)
     {
+      Bpr.Tick();
       try
       {
         do
@@ -83,6 +84,8 @@ namespace LogMonitorWpfApp
       catch (Exception ex) { Trace.WriteLine(ex.Message); throw; }
     }
     void OnClose(object s, RoutedEventArgs e) => Close();
+    void On0(object s, RoutedEventArgs e) { Bpr.Tick(); try { } catch (Exception ex) { Trace.WriteLine(ex.Message); throw; } }
+
     string ReScanFolder(string path)
     {
       try
@@ -197,8 +200,8 @@ namespace LogMonitorWpfApp
       lbxHist.Items.Add(tbkTitle.Text);
 
       Bpr.Tick();
-      _timer.Start();
-      _timer.IsEnabled = true;
+      _timerNotifier.Start();
+      _timerNotifier.IsEnabled = true;
 
       Task.Run(async () => await OnAlarmIsOn());
 
