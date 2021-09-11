@@ -53,10 +53,10 @@
         <MenuItem Header="E_xplore"    Click="OnExpl"/>
         <MenuItem Header="_VS Code"    Click="OnVScd"/>
         <MenuItem Header="_Re-Scan"    Click="OnScan"/>
-        <MenuItem Header="Re-_Move"    Click="On1"  ToolTip="Remove deleted files" />
+        <MenuItem Header="Re-_Move"    Click="OnRDel"  ToolTip="Remove deleted files" />
         <MenuItem Header="Re-_Watch"   Click="OnWatch" />
-        <MenuItem Header="_Clear Hist" Click="OnClearHist" />
-        <MenuItem Header="_Settings"   Click="OnEditSettingsJson" />
+        <MenuItem Header="_Clear Hist" Click="OnStop" />
+        <MenuItem Header="_Settings"   Click="OnEdit" />
         <MenuItem Header="_Exit"       Click="OnClose"     />
       </MenuItem>
     </Menu>
@@ -66,7 +66,7 @@
     <DataGrid Grid.Row="1" x:Name="dg1" Grid.Column="0" Margin="5 0 0 0" CanUserDeleteRows="True" CanUserAddRows="False" AutoGenerateColumns="False" VerticalGridLinesBrush="Transparent" HorizontalGridLinesBrush="Transparent" RowHeaderStyle="{x:Null}">
       <DataGrid.Columns>
         <DataGridTextColumn     Header=" Filename"      Binding="{Binding PartName    }"		                            />
-        <DataGridTextColumn     Header=" Last Write  "  Binding="{Binding LastWriteTime, StringFormat=\{0:d HH\\:mm\}}" />
+        <DataGridTextColumn     Header=" Last Write  "  Binding="{Binding LastWriteTime, StringFormat=\{0:d·HH\\:mm\}}" />
         <DataGridTextColumn     Header=" Status"        Binding="{Binding Status      }"			Width="*"		              />
         <DataGridCheckBoxColumn Header=" Gone "         Binding="{Binding IsDeleted   }"			                          />
         <!--<DataGridTextColumn Header=" Seen  "	      Binding="{Binding LastSeen  	 , StringFormat=\{0:HH\\:mm\}}"   />-->
@@ -80,11 +80,10 @@
       <Button Content="   E_xplore   "    Click="OnExpl"/>
       <Button Content="   _VS Code   "    Click="OnVScd"/>
       <Button Content="   _Re-Scan   "    Click="OnScan"/>
-      <Button Content="   Re-_Move   "    Click="On1"  ToolTip="Remove deleted files" />
+      <Button Content="   Re-_Move   "    Click="OnRDel"  ToolTip="Remove deleted files" />
       <Button Content="   Re-_Watch   "   Click="OnWatch" />
-      <Button Content="   _Clear Hist   " Click="OnClearHist" IsDefault="True" />
-      <Button Content="   _Settings   "   Click="OnEditSettingsJson" />
-      <Button Content="   _Exit   "       Click="OnClose"     IsCancel="True" />
+      <Button Content="   _Settings   "   Click="OnEdit" ToolTip="Edit Settings.JSON with VS Code" />
+      <Button Content="   _Clear   "      Click="OnStop" IsDefault="True" IsCancel="True" ToolTip="Clear/Stop Notifier" />
     </StackPanel>
 
     <GridSplitter Grid.Column="1" Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="Transparent" Margin="-5 0"/>

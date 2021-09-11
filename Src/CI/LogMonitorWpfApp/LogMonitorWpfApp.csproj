@@ -15,6 +15,7 @@
     <ProjectReference Include="..\..\..\..\CI-Reimagined-Invention\Src\CI-RI\Ambience.Lib\Ambience.Lib.csproj" />
     <ProjectReference Include="..\..\..\..\CI-Reimagined-Invention\Src\CI-RI\CI.Standard.Lib\CI.Standard.Lib.csproj" />
     <ProjectReference Include="..\..\..\..\CI-Reimagined-Invention\Src\CI-RI\CI.Visual.Lib\CI.Visual.Lib.csproj" />
+    <ProjectReference Include="..\..\..\..\CI-Reimagined-Invention\Src\CI-RI\StandardContracts.Lib\StandardContracts.Lib.csproj" />
     <ProjectReference Include="..\LogMonitorLib\LogMonitorLib.csproj" />
   </ItemGroup>
 
