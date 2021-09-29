@@ -1,6 +1,4 @@
-﻿using AsLink;
-using CI.Standard.Lib.Helpers;
-using System;
+﻿using System;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -11,6 +9,8 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Threading;
+using AsLink;
+using CI.Standard.Lib.Helpers;
 
 namespace RdpFacility
 {
@@ -22,9 +22,9 @@ namespace RdpFacility
     readonly string _crlf = $" ";
     const int _from = 8, _till = 20, _dbgDelayMs = 500;
 #if DEBUG
-    int _dx = 1, _dy = 1;
+    int _dx = 1, _dy = 1, _hrsAdded = 0;
 #else
-    int _dx = 10, _dy = 10;
+    int _dx = 10, _dy = 10, _hrsAdded = 0;
 #endif
     bool _isLoaded = false;
 
@@ -67,9 +67,9 @@ namespace RdpFacility
       tbkMin.Content += $"ITA so far  {_idleTimeoutAnalizer.MinTimeoutMin:N1} min  {(_idleTimeoutAnalizer.RanByTaskScheduler ? "(byTS)" : "(!byTS)")}";
       tbkBig.Content = Title = $"{(_appset.IsInsmnia ? "ON" : "Off")} @ {DateTimeOffset.Now:HH:mm} · {VersionHelper.CurVerStr}";
       await Task.Delay(_dbgDelayMs);
-      
+
       _ = new DispatcherTimer(TimeSpan.FromSeconds(_appset.PeriodSec), DispatcherPriority.Normal, new EventHandler(async (s, e) => await onTick()), Dispatcher.CurrentDispatcher); //tu:
-      
+
       if (_appset.IsAudible == true) SystemSounds.Exclamation.Play();
 
       if (_idleTimeoutAnalizer.RanByTaskScheduler)
@@ -93,7 +93,9 @@ namespace RdpFacility
         _insomniac.SetInso(ibh);
         Background = new SolidColorBrush(ibh ? Colors.DarkCyan : Colors.DarkRed);
 
-        tbkHrs.Content = $"{_from} - {_till} : currently {(ibh ? "On" : "Off")}";
+        tbkHrs.Content = $"{_from} - {_till + _hrsAdded} : currently {(ibh ? "On" : "Off")}";
+
+        if (!ibh) _hrsAdded = 0; // reset to 0 for the next day.
       }
 
       if (_appset.IsPosning)
@@ -102,7 +104,7 @@ namespace RdpFacility
         await File.AppendAllTextAsync(App.TextLog, $"■"); // {prefix}onTick  {_crlf}");
     }
 
-    static bool IsBizHours => _from <= DateTimeOffset.Now.Hour && DateTimeOffset.Now.Hour <= _till; // && DateTimeOffset.Now.Hour != 12 
+    bool IsBizHours => _from <= DateTimeOffset.Now.Hour && DateTimeOffset.Now.Hour <= (_till + _hrsAdded); // && DateTimeOffset.Now.Hour != 12 
 
     void togglePosition(string msg)
     {
@@ -135,9 +137,11 @@ namespace RdpFacility
     async void onInsmnia(object s, RoutedEventArgs e) { _appset.IsInsmnia = ((CheckBox)s).IsChecked == true; if (_isLoaded) { await _appset.StoreAsync(); _insomniac.SetInso(((CheckBox)s).IsChecked == true); } }
     async void onPosning(object s, RoutedEventArgs e) { _appset.IsPosning = ((CheckBox)s).IsChecked == true; if (_isLoaded) { await _appset.StoreAsync(); } }
     async void onMindBiz(object s, RoutedEventArgs e) { _appset.IsMindBiz = ((CheckBox)s).IsChecked == true; if (_isLoaded) { await _appset.StoreAsync(); } }
-    void onRset(object s, RoutedEventArgs e) { _idleTimeoutAnalizer.MinTimeoutMin = 100; tbkMin.Content = $"ITA so far  {_idleTimeoutAnalizer.MinTimeoutMin:N1} min  {(_idleTimeoutAnalizer.RanByTaskScheduler ? "(ro)" : "(RW)")}"; _idleTimeoutAnalizer.SaveLastCloseAndAnalyzeIfMarkable(); }
+    async void onAddhr(object s, RoutedEventArgs e) { _hrsAdded++; await onTick(); }
     async void onMark(object z, RoutedEventArgs e) { var s = $"{prefix}Mark     \t"; tbkLog.Content += s; await File.AppendAllTextAsync(App.TextLog, $"{s}{_crlf}"); }
     async void onExit(object s, RoutedEventArgs e) { await File.AppendAllTextAsync(App.TextLog, $"{prefix}onExit() by Escape.  {_crlf}"); Close(); }
+    void onRset(object s, RoutedEventArgs e) { _idleTimeoutAnalizer.MinTimeoutMin = 100; tbkMin.Content = $"ITA so far  {_idleTimeoutAnalizer.MinTimeoutMin:N1} min  {(_idleTimeoutAnalizer.RanByTaskScheduler ? "(ro)" : "(RW)")}"; _idleTimeoutAnalizer.SaveLastCloseAndAnalyzeIfMarkable(); }
+
     protected override async void OnClosed(EventArgs e)
     {
       if (_idleTimeoutAnalizer.RanByTaskScheduler && !_idleTimeoutAnalizer.SkipLoggingOnSelf)
@@ -149,6 +153,5 @@ namespace RdpFacility
       if (_appset.IsAudible == true) SystemSounds.Hand.Play();
       _idleTimeoutAnalizer.SaveLastCloseAndAnalyzeIfMarkable();
     }
-
   }
 }

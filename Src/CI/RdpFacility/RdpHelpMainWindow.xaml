@@ -29,9 +29,14 @@
         <CheckBox Content="_I" Checked="onInsmnia" Unchecked="onInsmnia" x:Name="chkPosn" ToolTip="Insmnia or system request to disturb"/>
         <CheckBox Content="_P" Checked="onPosning" Unchecked="onPosning" x:Name="chkInso" ToolTip="Posning crsr"/>
         <CheckBox Content="_M" Checked="onMindBiz" Unchecked="onMindBiz" x:Name="chkMind" ToolTip="Mind Biz Hrs"/>
-        <Button   Content="_Rset" Click="onRset"  />
-        <Button   Content="Mar_k" Click="onMark" IsDefault="True" />
-        <Button   Content="  x  " Click="onExit"  IsCancel="True" />
+        <Menu>
+          <MenuItem Header="Add _1 hr" Click="onAddhr" VerticalAlignment="Stretch" Height="38" />
+          <MenuItem   Header="° ° °">
+            <MenuItem Header="_Reset" Click="onRset"  />
+            <MenuItem Header="Add Mar_k to log file" Click="onMark" />
+          </MenuItem>
+        </Menu>
+        <Button   Click="onExit"  IsCancel="True" />
       </StackPanel>
     </StackPanel>
   </Viewbox>
