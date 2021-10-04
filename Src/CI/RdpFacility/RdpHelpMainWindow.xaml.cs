@@ -84,7 +84,7 @@ namespace RdpFacility
 
       _isLoaded = true;
     }
-    async Task onTick()
+    async Task onTick(bool isManual = false)
     {
       if (chkMind.IsChecked == true)
       {
@@ -95,7 +95,7 @@ namespace RdpFacility
 
         tbkHrs.Content = $"{_from} - {_till + _hrsAdded} : currently {(ibh ? "On" : "Off")}";
 
-        if (!ibh) _hrsAdded = 0; // reset to 0 for the next day.
+        if (!isManual && !ibh) _hrsAdded = 0; // reset to 0 for the next day.
       }
 
       if (_appset.IsPosning)
@@ -137,7 +137,7 @@ namespace RdpFacility
     async void onInsmnia(object s, RoutedEventArgs e) { _appset.IsInsmnia = ((CheckBox)s).IsChecked == true; if (_isLoaded) { await _appset.StoreAsync(); _insomniac.SetInso(((CheckBox)s).IsChecked == true); } }
     async void onPosning(object s, RoutedEventArgs e) { _appset.IsPosning = ((CheckBox)s).IsChecked == true; if (_isLoaded) { await _appset.StoreAsync(); } }
     async void onMindBiz(object s, RoutedEventArgs e) { _appset.IsMindBiz = ((CheckBox)s).IsChecked == true; if (_isLoaded) { await _appset.StoreAsync(); } }
-    async void onAddhr(object s, RoutedEventArgs e) { _hrsAdded++; await onTick(); }
+    async void onAddhr(object s, RoutedEventArgs e) { _hrsAdded++; await onTick(true); SystemSounds.Exclamation.Play(); }
     async void onMark(object z, RoutedEventArgs e) { var s = $"{prefix}Mark     \t"; tbkLog.Content += s; await File.AppendAllTextAsync(App.TextLog, $"{s}{_crlf}"); }
     async void onExit(object s, RoutedEventArgs e) { await File.AppendAllTextAsync(App.TextLog, $"{prefix}onExit() by Escape.  {_crlf}"); Close(); }
     void onRset(object s, RoutedEventArgs e) { _idleTimeoutAnalizer.MinTimeoutMin = 100; tbkMin.Content = $"ITA so far  {_idleTimeoutAnalizer.MinTimeoutMin:N1} min  {(_idleTimeoutAnalizer.RanByTaskScheduler ? "(ro)" : "(RW)")}"; _idleTimeoutAnalizer.SaveLastCloseAndAnalyzeIfMarkable(); }

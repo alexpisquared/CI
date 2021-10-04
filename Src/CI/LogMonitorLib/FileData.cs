@@ -1,4 +1,7 @@
-﻿namespace LogMonitorConsoleApp
+﻿using System;
+using System.IO;
+
+namespace LogMonitorConsoleApp
 {
   public class FileData
   {

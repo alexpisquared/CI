@@ -1,7 +1,10 @@
 ﻿using CI.Standard.Lib.Helpers;
 using Colorful;
+using System;
 using System.Diagnostics;
 using System.Drawing;
+using System.IO;
+using System.Linq;
 using CC = Colorful.Console;
 
 namespace LogMonitorConsoleApp

@@ -1,4 +1,6 @@
-﻿using CI.Standard.Lib.Helpers;
+﻿using System;
+using System.IO;
+using CI.Standard.Lib.Helpers;
 
 namespace LogMonitorConsoleApp
 {
