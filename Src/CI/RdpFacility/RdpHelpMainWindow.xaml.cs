@@ -10,7 +10,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Threading;
 using AsLink;
-using CI.Standard.Lib.Helpers;
+//using CI.Standard.Lib.Helpers;
 
 namespace RdpFacility
 {
@@ -54,7 +54,7 @@ namespace RdpFacility
     async void onLoaded(object s, RoutedEventArgs e)
     {
       //var v = new FileInfo(Environment.GetCommandLineArgs()[0]).LastWriteTime;
-      await File.AppendAllTextAsync(App.TextLog, $"{App.Started:yyyy-MM-dd}{_crlf}{prefix}{(_idleTimeoutAnalizer.RanByTaskScheduler ? "+byTS" : "!byTS")} · {VersionHelper.CurVerStr} · args:{string.Join(' ', Environment.GetCommandLineArgs().Skip(1)),-12}  {_crlf}");
+      await File.AppendAllTextAsync(App.TextLog, $"{App.Started:yyyy-MM-dd}{_crlf}{prefix}{(_idleTimeoutAnalizer.RanByTaskScheduler ? "+byTS" : "!byTS")} · args:{string.Join(' ', Environment.GetCommandLineArgs().Skip(1)),-12}  {_crlf}");
       if (_appset.IsInsmnia)
         _insomniac.RequestActive(_crlf);
 
@@ -65,7 +65,7 @@ namespace RdpFacility
         togglePosition("onLoaded");
       }
       tbkMin.Content += $"ITA so far  {_idleTimeoutAnalizer.MinTimeoutMin:N1} min  {(_idleTimeoutAnalizer.RanByTaskScheduler ? "(byTS)" : "(!byTS)")}";
-      tbkBig.Content = Title = $"{(_appset.IsInsmnia ? "ON" : "Off")} @ {DateTimeOffset.Now:HH:mm} · {VersionHelper.CurVerStr}";
+      tbkBig.Content = Title = $"{(_appset.IsInsmnia ? "ON" : "Off")} @ {DateTimeOffset.Now:HH:mm}";
       await Task.Delay(_dbgDelayMs);
 
       _ = new DispatcherTimer(TimeSpan.FromSeconds(_appset.PeriodSec), DispatcherPriority.Normal, new EventHandler(async (s, e) => await onTick()), Dispatcher.CurrentDispatcher); //tu:
