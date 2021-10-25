@@ -11,5 +11,7 @@
   </Window.DataContext>
   <StackPanel>
     <TextBox Text="{Binding StringMayNotBeEmpty, UpdateSourceTrigger=PropertyChanged}" />
+    <TextBox Text="{Binding StringMayNotBeEmpty, UpdateSourceTrigger=PropertyChanged}" />
+    <TextBox Text="{Binding StringMayNotBeEmpty, UpdateSourceTrigger=PropertyChanged}" />
   </StackPanel>
 </Window>

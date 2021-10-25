@@ -22,16 +22,26 @@
     <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
       <Label Content="Big" x:Name="tbkBig" HorizontalAlignment="Center" Foreground="#0dd" />
       <Label Content="Min" x:Name="tbkMin" HorizontalAlignment="Center" Foreground="#d00" />
-      <Label Content="Hrs" x:Name="tbkHrs" HorizontalAlignment="Center" Foreground="#0f8" FontSize="9" MaxWidth="500" />
-      <Label Content="Log" x:Name="tbkLog" HorizontalAlignment="Center" Foreground="#0a0" FontSize="3" MaxWidth="500" />
+      <Label Content="Hrs" x:Name="tbkHrs" HorizontalAlignment="Center" Foreground="#0f8" MaxWidth="500" />
+      <Label Content="Log" x:Name="tbkLog" HorizontalAlignment="Center" Foreground="#0a0" FontSize="5" MaxWidth="1500" />
       <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="Visible">
-        <CheckBox Content="_A" Checked="onAudible" Unchecked="onAudible" x:Name="chkAdbl" ToolTip="Audible on every tick (230 sec)"/>
-        <CheckBox Content="_I" Checked="onInsmnia" Unchecked="onInsmnia" x:Name="chkPosn" ToolTip="Insmnia or system request to disturb"/>
-        <CheckBox Content="_P" Checked="onPosning" Unchecked="onPosning" x:Name="chkInso" ToolTip="Posning crsr"/>
-        <CheckBox Content="_M" Checked="onMindBiz" Unchecked="onMindBiz" x:Name="chkMind" ToolTip="Mind Biz Hrs"/>
-        <Menu>
-          <MenuItem Header="Add _1 hr" Click="onAddhr" VerticalAlignment="Stretch" Height="38" />
+        <Menu Background="Transparent" Foreground="#fff">
+          <!--<CheckBox Content="_A" Checked="onAudible" Unchecked="onAudible" x:Name="chkAdbl" ToolTip="Audible on every tick (230 sec)"/>
+          <CheckBox Content="_I" Checked="onInsmnia" Unchecked="onInsmnia" x:Name="chkPosn" ToolTip="Insmnia or system request to disturb"/>
+          <CheckBox Content="_P" Checked="onPosning" Unchecked="onPosning" x:Name="chkInso" ToolTip="Posning crsr"/>
+          <CheckBox Content="_M" Checked="onMindBiz" Unchecked="onMindBiz" x:Name="chkMind" ToolTip="Mind Biz Hrs"/>-->
+          <MenuItem Header="_Aud    " IsCheckable="True" Checked="onAudible" Unchecked="onAudible" x:Name="chkAdbl1" ToolTip="Audible on every tick (230 sec)"/>
+          <MenuItem Header="_Ins    " IsCheckable="True" Checked="onInsmnia" Unchecked="onInsmnia" x:Name="chkPosn1" ToolTip="Insmnia or system request to disturb"/>
+          <MenuItem Header="_Pos    " IsCheckable="True" Checked="onPosning" Unchecked="onPosning" x:Name="chkInso1" ToolTip="Positioning of the curson"/>
+          <MenuItem Header="_MBH    " IsCheckable="True" Checked="onMindBiz" Unchecked="onMindBiz" x:Name="chkMind1" ToolTip="Mind Biz Hrs"/>
+          <MenuItem Header="+ _1 hr    " Click="onPlus1hr" Height="38" />
+          <MenuItem Header="_- 1 hr    " Click="onMinusHr" Height="38" />
           <MenuItem   Header="° ° °">
+            <MenuItem IsCheckable="True" Checked="onAudible" Unchecked="onAudible" x:Name="chkAdbl2" Header="Audible on every tick (230 sec)"/>
+            <MenuItem IsCheckable="True" Checked="onInsmnia" Unchecked="onInsmnia" x:Name="chkPosn2" Header="Insmnia or system request to disturb"/>
+            <MenuItem IsCheckable="True" Checked="onPosning" Unchecked="onPosning" x:Name="chkInso2" Header="Positioning of the curson"/>
+            <MenuItem IsCheckable="True" Checked="onMindBiz" Unchecked="onMindBiz" x:Name="chkMind2" Header="Mind Biz Hrs"/>
+            <Separator/>
             <MenuItem Header="_Reset" Click="onRset"  />
             <MenuItem Header="Add Mar_k to log file" Click="onMark" />
           </MenuItem>

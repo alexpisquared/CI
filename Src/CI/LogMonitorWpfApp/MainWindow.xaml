@@ -54,7 +54,7 @@
         <MenuItem Header="_VS Code"    Click="OnVScd"/>
         <MenuItem Header="_Re-Scan"    Click="OnScan"/>
         <MenuItem Header="Re-_Move"    Click="OnRDel"  ToolTip="Remove deleted files" />
-        <MenuItem Header="Re-_Watch"   Click="OnWatch" />
+        <MenuItem Header="Re-_Watch"   Click="OnWtch" />
         <MenuItem Header="_Clear Hist" Click="OnStop" />
         <MenuItem Header="_Settings"   Click="OnEdit" />
         <MenuItem Header="_Exit"       Click="OnClose"     />
@@ -76,12 +76,13 @@
     <ListBox  Grid.Row="1" x:Name="lbxHist" Grid.Column="2" Margin="0 0 5 0" />
 
     <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center" Grid.ColumnSpan="3" Margin="5" >
-      <TextBox x:Name="tbxPath" Text="" MinWidth="200"/>
-      <Button Content="   E_xplore   "    Click="OnExpl"/>
-      <Button Content="   _VS Code   "    Click="OnVScd"/>
-      <Button Content="   _Re-Scan   "    Click="OnScan"/>
-      <Button Content="   Re-_Move   "    Click="OnRDel"  ToolTip="Remove deleted files" />
-      <Button Content="   Re-_Watch   "   Click="OnWatch" />
+      <TextBox x:Name="tbxPath" Text=""   MinWidth="200" />
+      <Button Content="   E_xplore   "    Click="OnExpl" />
+      <Button Content="   _VS Code   "    Click="OnVScd" />
+      <Button Content="   _Re-Scan   "    Click="OnScan" />
+      <Button Content="   Re-_Move   "    Click="OnRDel" ToolTip="Remove deleted from the list" />
+      <Button Content="   Move _Old   "   Click="OnMvOl" ToolTip="Move old files to the ..\Logs.Old folder" />
+      <Button Content="   Re-_Watch   "   Click="OnWtch" />
       <Button Content="   _Settings   "   Click="OnEdit" ToolTip="Edit Settings.JSON with VS Code" />
       <Button Content="   _Clear   "      Click="OnStop" IsDefault="True" IsCancel="True" ToolTip="Clear/Stop Notifier" />
     </StackPanel>

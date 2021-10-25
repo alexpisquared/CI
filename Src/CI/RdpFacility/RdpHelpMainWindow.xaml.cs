@@ -34,13 +34,15 @@ namespace RdpFacility
     public RdpHelpMainWindow()
     {
       InitializeComponent();
+      Topmost = Debugger.IsAttached;
+      MouseLeftButtonDown += (s, e) => { if (e.LeftButton == MouseButtonState.Pressed) DragMove(); };
       var (ita, report) = IdleTimeoutAnalizer.Create(App.Started);
       _idleTimeoutAnalizer = ita;
       tbkMin.Content = report;
-      chkAdbl.IsChecked = _appset.IsAudible;
-      chkInso.IsChecked = _appset.IsInsmnia;
-      chkPosn.IsChecked = _appset.IsPosning;
-      chkMind.IsChecked = _appset.IsMindBiz;
+      chkAdbl2.IsChecked = chkAdbl1.IsChecked = /*chkAdbl.IsChecked = */_appset.IsAudible;/*).Value;*/
+      chkInso2.IsChecked = chkInso1.IsChecked = /*chkInso.IsChecked = */_appset.IsInsmnia;/*).Value;*/
+      chkPosn2.IsChecked = chkPosn1.IsChecked = /*chkPosn.IsChecked = */_appset.IsPosning;/*).Value;*/
+      chkMind2.IsChecked = chkMind1.IsChecked = /*chkMind.IsChecked = */_appset.IsMindBiz;/*).Value;*/
 
       if (_idleTimeoutAnalizer.RanByTaskScheduler)
       {
@@ -86,10 +88,10 @@ namespace RdpFacility
     }
     async Task onTick(bool isManual = false)
     {
-      if (chkMind.IsChecked == true)
+      if (chkMind1.IsChecked == true)
       {
         var ibh = IsBizHours;
-        chkInso.IsChecked = ibh;
+        chkInso1.IsChecked = ibh;
         _insomniac.SetInso(ibh);
         Background = new SolidColorBrush(ibh ? Colors.DarkCyan : Colors.DarkRed);
 
@@ -133,11 +135,12 @@ namespace RdpFacility
       }
     }
 
-    async void onAudible(object s, RoutedEventArgs e) { _appset.IsAudible = ((CheckBox)s).IsChecked == true; if (_isLoaded) { await _appset.StoreAsync(); } }
-    async void onInsmnia(object s, RoutedEventArgs e) { _appset.IsInsmnia = ((CheckBox)s).IsChecked == true; if (_isLoaded) { await _appset.StoreAsync(); _insomniac.SetInso(((CheckBox)s).IsChecked == true); } }
-    async void onPosning(object s, RoutedEventArgs e) { _appset.IsPosning = ((CheckBox)s).IsChecked == true; if (_isLoaded) { await _appset.StoreAsync(); } }
-    async void onMindBiz(object s, RoutedEventArgs e) { _appset.IsMindBiz = ((CheckBox)s).IsChecked == true; if (_isLoaded) { await _appset.StoreAsync(); } }
-    async void onAddhr(object s, RoutedEventArgs e) { _hrsAdded++; await onTick(true); SystemSounds.Exclamation.Play(); }
+    async void onAudible(object s, RoutedEventArgs e) { _appset.IsAudible = ((MenuItem)s).IsChecked == true; if (_isLoaded) { await _appset.StoreAsync(); } }
+    async void onInsmnia(object s, RoutedEventArgs e) { _appset.IsInsmnia = ((MenuItem)s).IsChecked == true; if (_isLoaded) { await _appset.StoreAsync(); _insomniac.SetInso(((MenuItem)s).IsChecked == true); } }
+    async void onPosning(object s, RoutedEventArgs e) { _appset.IsPosning = ((MenuItem)s).IsChecked == true; if (_isLoaded) { await _appset.StoreAsync(); } }
+    async void onMindBiz(object s, RoutedEventArgs e) { _appset.IsMindBiz = ((MenuItem)s).IsChecked == true; if (_isLoaded) { await _appset.StoreAsync(); } }
+    async void onPlus1hr(object s, RoutedEventArgs e) { _hrsAdded++; await onTick(true); SystemSounds.Exclamation.Play(); }
+    async void onMinusHr(object s, RoutedEventArgs e) { _hrsAdded--; await onTick(true); SystemSounds.Exclamation.Play(); }
     async void onMark(object z, RoutedEventArgs e) { var s = $"{prefix}Mark     \t"; tbkLog.Content += s; await File.AppendAllTextAsync(App.TextLog, $"{s}{_crlf}"); }
     async void onExit(object s, RoutedEventArgs e) { await File.AppendAllTextAsync(App.TextLog, $"{prefix}onExit() by Escape.  {_crlf}"); Close(); }
     void onRset(object s, RoutedEventArgs e) { _idleTimeoutAnalizer.MinTimeoutMin = 100; tbkMin.Content = $"ITA so far  {_idleTimeoutAnalizer.MinTimeoutMin:N1} min  {(_idleTimeoutAnalizer.RanByTaskScheduler ? "(ro)" : "(RW)")}"; _idleTimeoutAnalizer.SaveLastCloseAndAnalyzeIfMarkable(); }
