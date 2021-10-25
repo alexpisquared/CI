@@ -48,11 +48,31 @@ namespace LogMonitorWpfApp
 #endif
     }
 
+    /* void OnScan(object s, RoutedEventArgs e) { _timerNotifier.Stop(); Report(ReScanFolder(tbxPath.Text), "", ""); }
+    void OnWtch(object s, RoutedEventArgs e) { _timerNotifier.Stop(); Bpr.Tick(); StopWatch(); StartWatch(tbxPath.Text); }
+    void OnStop(object s, RoutedEventArgs e) { _timerNotifier.Stop(); Bpr.Tick(); /*lbxHist.Items.Clear();* /
+    Title = $"Log Monitor - No events since  {DateTime.Now:HH:mm}  -  {VersionHelper.CurVerStr}"; }
+  void OnExpl(object s, RoutedEventArgs e) { _timerNotifier.Stop(); Bpr.Tick(); try { _ = new Process { StartInfo = new ProcessStartInfo(@"Explorer.exe", $"\"{tbxPath.Text}\"") { RedirectStandardError = true, UseShellExecute = false } }.Start(); } catch (Exception ex) { Trace.WriteLine(ex.Message); throw; } }
+  void OnVScd(object s, RoutedEventArgs e) { _timerNotifier.Stop(); Bpr.Tick(); try { _ = new Process { StartInfo = new ProcessStartInfo(@$"{Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)}\Programs\Microsoft VS Code\Code.exe", $"\"{tbxPath.Text}\"") { RedirectStandardError = true, UseShellExecute = false } }.Start(); } catch (Exception ex) { Trace.WriteLine(ex.Message); throw; } }
+  void OnEdit(object s, RoutedEventArgs e) { _timerNotifier.Stop(); Bpr.Tick(); try { _ = new Process { StartInfo = new ProcessStartInfo(@$"{Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)}\Programs\Microsoft VS Code\Code.exe", $"\"{UserSettingsStore.Store}\"") { RedirectStandardError = true, UseShellExecute = false } }.Start(); } catch (Exception ex) { Trace.WriteLine(ex.Message); throw; } }//_ = new Process { StartInfo = new ProcessStartInfo(@"Notepad.exe", $"\"{UserSettingsStore._store}\"") { RedirectStandardError = true, UseShellExecute = false } }.Start(); //_ = new Process { StartInfo = new ProcessStartInfo(@"C:\Program Files\Microsoft Visual Studio\2022\Preview\Common7\IDE\devenv.exe", $"\"{UserSettingsStore._store}\"") { RedirectStandardError = true, UseShellExecute = false } }.Start(); }
+  void OnRDel(object s, RoutedEventArgs e) { _timerNotifier.Stop(); Bpr.Tick(); try { do { foreach (var deletedFile in _us.FileDataList.Where(r => r.IsDeleted)) { _us.FileDataList.Remove(deletedFile); break; } } while (_us.FileDataList.Any(r => r.IsDeleted)); } catch (Exception ex) { Trace.WriteLine(ex.Message); throw; } }
+  void OnMvOl(object s, RoutedEventArgs e)
+  {
+    _timerNotifier.Stop(); Bpr.Tick(); try
+    {
+      _ = new Process { StartInfo = new ProcessStartInfo(@"CMD", $@"CMD /C MOVE {tbxPath.Text}\*.log {tbxPath.Text.Replace("Logs", "Logs.Old")} ") { RedirectStandardError = true, UseShellExecute = false } }.Start();
+      OnScan(s, e);
+      OnRDel(s, e);
+
+
+
+
+      */
 
     void OnLoaded(object s, RoutedEventArgs e) { dg1.ItemsSource = _us.FileDataList; OnStop(s, e); }
-    void OnScan(object s, RoutedEventArgs e) => Report(ReScanFolder(tbxPath.Text), "", "");
-    void OnWatch(object s, RoutedEventArgs e) { Bpr.Tick(); StopWatch(); StartWatch(tbxPath.Text); }
-    void OnStop(object s, RoutedEventArgs e) { Bpr.Tick(); /*lbxHist.Items.Clear();*/ _timerNotifier.Stop(); Title = $"Log Monitor - No events since  {DateTime.Now:HH:mm}  -  {VersionHelper.CurVerStr}"; }
+    void OnScan(object s, RoutedEventArgs e) => ReportAndRescan(ReScanFolder(tbxPath.Text), "", "");
+    void OnWtch(object s, RoutedEventArgs e) { Bpr.Tick(); StopWatch(); StartWatch(tbxPath.Text); }
+    void OnStop(object s, RoutedEventArgs e) { Bpr.Tick(); /*lbxHist.Items.Clear();*/ if (_timerVisualNotifier.IsEnabled) _timerVisualNotifier.Stop(); else WindowState = WindowState.Minimized; Title = $"Log Monitor - No events since  {DateTime.Now:HH:mm}  -  {VersionHelper.CurVerStr}"; }
     void OnExpl(object s, RoutedEventArgs e) { Bpr.Tick(); try { _ = new Process { StartInfo = new ProcessStartInfo(@"Explorer.exe", $"\"{tbxPath.Text}\"") { RedirectStandardError = true, UseShellExecute = false } }.Start(); } catch (Exception ex) { Trace.WriteLine(ex.Message); throw; } }
     void OnVScd(object s, RoutedEventArgs e) { Bpr.Tick(); try { _ = new Process { StartInfo = new ProcessStartInfo(@$"{Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)}\Programs\Microsoft VS Code\Code.exe", $"\"{tbxPath.Text}\"") { RedirectStandardError = true, UseShellExecute = false } }.Start(); } catch (Exception ex) { Trace.WriteLine(ex.Message); throw; } }
     void OnEdit(object s, RoutedEventArgs e) { Bpr.Tick(); try { _ = new Process { StartInfo = new ProcessStartInfo(@$"{Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)}\Programs\Microsoft VS Code\Code.exe", $"\"{UserSettingsStore.Store}\"") { RedirectStandardError = true, UseShellExecute = false } }.Start(); } catch (Exception ex) { Trace.WriteLine(ex.Message); throw; } }//_ = new Process { StartInfo = new ProcessStartInfo(@"Notepad.exe", $"\"{UserSettingsStore._store}\"") { RedirectStandardError = true, UseShellExecute = false } }.Start(); //_ = new Process { StartInfo = new ProcessStartInfo(@"C:\Program Files\Microsoft Visual Studio\2022\Preview\Common7\IDE\devenv.exe", $"\"{UserSettingsStore._store}\"") { RedirectStandardError = true, UseShellExecute = false } }.Start(); }
@@ -72,7 +92,18 @@ namespace LogMonitorWpfApp
       }
       catch (Exception ex) { Trace.WriteLine(ex.Message); throw; }
     }
-    void On0000(object s, RoutedEventArgs e) { _timerNotifier.Stop(); Bpr.Tick(); try { } catch (Exception ex) { Trace.WriteLine(ex.Message); throw; } }
+    void OnMvOl(object s, RoutedEventArgs e)
+    {
+      _timerVisualNotifier.Stop(); Bpr.Tick(); try
+      {
+        _ = new Process { StartInfo = new ProcessStartInfo(@"CMD", $@"CMD /C MOVE {tbxPath.Text}\*.log {tbxPath.Text.Replace("Logs", "Logs.Old")} ") { RedirectStandardError = true, UseShellExecute = false } }.Start();
+        OnScan(s, e);
+        OnRDel(s, e);
+      }
+      catch (Exception ex) { Trace.WriteLine(ex.Message); throw; }
+    }
+
+    void On0000(object s, RoutedEventArgs e) { _timerVisualNotifier.Stop(); Bpr.Tick(); try { } catch (Exception ex) { Trace.WriteLine(ex.Message); throw; } }
     void OnClose(object s, RoutedEventArgs e) => Close();
 
     string ReScanFolder(string path)
