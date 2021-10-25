@@ -60,8 +60,9 @@
         <MenuItem Header="_Exit"       Click="OnClose"     />
       </MenuItem>
     </Menu>
-    
-    <TextBlock x:Name="tbkTitle" Grid.ColumnSpan="3" Margin="5" Grid.RowSpan="1" HorizontalAlignment="Right" />
+
+    <TextBlock x:Name="tbkHeadr" Grid.ColumnSpan="1" Grid.RowSpan="1" HorizontalAlignment="Left"  Margin="88 5"/>
+    <TextBlock x:Name="tbkTitle" Grid.ColumnSpan="3" Grid.RowSpan="1" HorizontalAlignment="Right" Margin="5"/>
 
     <DataGrid Grid.Row="1" x:Name="dg1" Grid.Column="0" Margin="5 0 0 0" CanUserDeleteRows="True" CanUserAddRows="False" AutoGenerateColumns="False" VerticalGridLinesBrush="Transparent" HorizontalGridLinesBrush="Transparent" RowHeaderStyle="{x:Null}">
       <DataGrid.Columns>

@@ -23,7 +23,7 @@
       <Label Content="Big" x:Name="tbkBig" HorizontalAlignment="Center" Foreground="#0dd" />
       <Label Content="Min" x:Name="tbkMin" HorizontalAlignment="Center" Foreground="#d00" />
       <Label Content="Hrs" x:Name="tbkHrs" HorizontalAlignment="Center" Foreground="#0f8" MaxWidth="500" />
-      <Label Content="Log" x:Name="tbkLog" HorizontalAlignment="Center" Foreground="#0a0" FontSize="5" MaxWidth="1500" />
+      <Label Content="Log" x:Name="tbkLog" HorizontalAlignment="Center" Foreground="#0a0" FontSize="5" MaxWidth="500" />
       <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="Visible">
         <Menu Background="Transparent" Foreground="#fff">
           <!--<CheckBox Content="_A" Checked="onAudible" Unchecked="onAudible" x:Name="chkAdbl" ToolTip="Audible on every tick (230 sec)"/>

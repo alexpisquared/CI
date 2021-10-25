@@ -9,6 +9,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Interop;
 using System.Windows.Threading;
 
 namespace LogMonitorWpfApp
@@ -243,9 +244,11 @@ namespace LogMonitorWpfApp
           await Bpr.WaveAsync(060, 101, 7);
         }
 
-        await Task.Delay(100);
+        await Task.Delay(++_i);
+        Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => tbkHeadr.Text = $"{_i}"));
       }
     }
+    int _i = 0;
 
     static void UseSayExe(string msg) => new Process { StartInfo = new ProcessStartInfo(@"say.exe", $"\"{msg}\"") { RedirectStandardError = true, UseShellExecute = false } }.Start();
   }
