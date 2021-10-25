@@ -52,12 +52,21 @@ namespace LogMonitorWpfApp
       await Task.Delay(_ms);
       Title = $"▀▄▀▄▀▄▀▄ Log Monitor  -  {VersionHelper.CurVerStr}";
     }
-    async Task OnAlarmIsOn()
+    async Task OnAlarmIsOn(bool isError)
     {
       while (_timerNotifier.IsEnabled)
       {
-        await Bpr.WaveAsync(141, 100, 7);
-        await Bpr.WaveAsync(60, 101, 7);
+        if (isError)
+        {
+          await Bpr.WaveAsync(2000, 5000, 3);
+        }
+        else
+        {
+          //await Bpr.WaveAsync(141, 100, 7);
+          await Bpr.WaveAsync(060, 101, 7);
+        }
+        
+        await Task.Delay(100);
       }
     }
     void OnLoaded(object s, RoutedEventArgs e) { dg1.ItemsSource = _us.FileDataList; OnStop(s, e); }
@@ -203,7 +212,7 @@ namespace LogMonitorWpfApp
       _timerNotifier.Start();
       _timerNotifier.IsEnabled = true;
 
-      Task.Run(async () => await OnAlarmIsOn());
+      Task.Run(async () => await OnAlarmIsOn(file1.Contains(".Errs.")));
 
 #if !DEBUG
       UseSayExe(msg);

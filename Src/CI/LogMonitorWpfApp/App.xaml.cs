@@ -1,4 +1,9 @@
-﻿using Ambience.Lib;
+﻿using System;
+using System.Reflection;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Markup;
+using Ambience.Lib;
 using CI.Standard.Lib.Helpers;
 using CI.Standard.Lib.Services;
 using CI.Visual.Lib.Helpers;
@@ -6,11 +11,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using StandardContracts.Lib;
-using System;
-using System.Reflection;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Markup;
 
 namespace LogMonitorWpfApp
 {
@@ -34,13 +34,13 @@ namespace LogMonitorWpfApp
         /*UserSettingsIPM.UserLogFolderFile ??= */FSHelper.GetCreateSafeLogFolderAndFile(new[]
         {
           sp.GetRequiredService<IConfigurationRoot>()["LogFolder"].Replace("..", $"{logFile}.."),
+          $@"C:\g\CI-Reimagined-Invention\Src\CI-RI\BE.IncomePayment\bin\Logs\{logFile}",
           @$"D:\Logs\CI.IPM\{logFile}",
           @$"\Temp\Logs\{logFile}",
           @$"\Logs\{logFile}",
           @$"..\Logs\{logFile}"
         }))
       .CreateLogger<MainWindow>());
-
 
       _ = VersionHelper.IsDevEnv ? services.AddTransient<IBpr, Ambience.Lib.Bpr>() : services.AddTransient<IBpr, BprSilentMock>();
 
