@@ -16,7 +16,7 @@ namespace LogMonitorWpfApp
   public partial class MainWindow : Window
   {
     readonly FileSystemWatcher _watcher;
-    readonly DispatcherTimer _timerNotifier;
+    readonly DispatcherTimer _timerVisualNotifier;
     readonly UserSettings _us;
     const int _ms = 200;
 
@@ -28,7 +28,7 @@ namespace LogMonitorWpfApp
       Bpr = bpr;
       Topmost = Debugger.IsAttached;
       MouseLeftButtonDown += (s, e) => { if (e.LeftButton == MouseButtonState.Pressed) DragMove(); };
-      _timerNotifier = new DispatcherTimer(TimeSpan.FromMilliseconds(_ms + _ms), DispatcherPriority.Normal, new EventHandler(async (s, e) => await OnTick()), Dispatcher.CurrentDispatcher); //tu:
+      _timerVisualNotifier = new DispatcherTimer(TimeSpan.FromMilliseconds(_ms + _ms), DispatcherPriority.Background, new EventHandler(async (s, e) => { Title = $"▄▀▄▀▄▀▄▀ Log Monitor  -  {VersionHelper.CurVerStr}"; await Task.Delay(_ms); Title = $"▀▄▀▄▀▄▀▄ Log Monitor  -  {VersionHelper.CurVerStr}"; }), Dispatcher.CurrentDispatcher); //tu:
 
       _us = UserSettings.Load;
       if (Environment.GetCommandLineArgs().Length > 1)
@@ -48,35 +48,27 @@ namespace LogMonitorWpfApp
 #endif
     }
 
-    async Task OnTick()
-    {
-      Title = $"▄▀▄▀▄▀▄▀ Log Monitor  -  {VersionHelper.CurVerStr}";
-      await Task.Delay(_ms);
-      Title = $"▀▄▀▄▀▄▀▄ Log Monitor  -  {VersionHelper.CurVerStr}";
-    }
-    async Task OnAlarmIsOn()
-    {
-      while (_timerNotifier.IsEnabled)
-      {
-        await Bpr.WaveAsync(141, 100, 7);
-        await Bpr.WaveAsync(60, 101, 7);
-      }
-    }
+
     void OnLoaded(object s, RoutedEventArgs e) { dg1.ItemsSource = _us.FileDataList; OnStop(s, e); }
-    void OnScan(object s, RoutedEventArgs e) { _timerNotifier.Stop(); Report(ReScanFolder(tbxPath.Text), "", ""); }
-    void OnWtch(object s, RoutedEventArgs e) { _timerNotifier.Stop(); Bpr.Tick(); StopWatch(); StartWatch(tbxPath.Text); }
-    void OnStop(object s, RoutedEventArgs e) { _timerNotifier.Stop(); Bpr.Tick(); /*lbxHist.Items.Clear();*/ Title = $"Log Monitor - No events since  {DateTime.Now:HH:mm}  -  {VersionHelper.CurVerStr}"; }
-    void OnExpl(object s, RoutedEventArgs e) { _timerNotifier.Stop(); Bpr.Tick(); try { _ = new Process { StartInfo = new ProcessStartInfo(@"Explorer.exe", $"\"{tbxPath.Text}\"") { RedirectStandardError = true, UseShellExecute = false } }.Start(); } catch (Exception ex) { Trace.WriteLine(ex.Message); throw; } }
-    void OnVScd(object s, RoutedEventArgs e) { _timerNotifier.Stop(); Bpr.Tick(); try { _ = new Process { StartInfo = new ProcessStartInfo(@$"{Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)}\Programs\Microsoft VS Code\Code.exe", $"\"{tbxPath.Text}\"") { RedirectStandardError = true, UseShellExecute = false } }.Start(); } catch (Exception ex) { Trace.WriteLine(ex.Message); throw; } }
-    void OnEdit(object s, RoutedEventArgs e) { _timerNotifier.Stop(); Bpr.Tick(); try { _ = new Process { StartInfo = new ProcessStartInfo(@$"{Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)}\Programs\Microsoft VS Code\Code.exe", $"\"{UserSettingsStore.Store}\"") { RedirectStandardError = true, UseShellExecute = false } }.Start(); } catch (Exception ex) { Trace.WriteLine(ex.Message); throw; } }//_ = new Process { StartInfo = new ProcessStartInfo(@"Notepad.exe", $"\"{UserSettingsStore._store}\"") { RedirectStandardError = true, UseShellExecute = false } }.Start(); //_ = new Process { StartInfo = new ProcessStartInfo(@"C:\Program Files\Microsoft Visual Studio\2022\Preview\Common7\IDE\devenv.exe", $"\"{UserSettingsStore._store}\"") { RedirectStandardError = true, UseShellExecute = false } }.Start(); }
-    void OnRDel(object s, RoutedEventArgs e) { _timerNotifier.Stop(); Bpr.Tick(); try { do { foreach (var deletedFile in _us.FileDataList.Where(r => r.IsDeleted)) { _us.FileDataList.Remove(deletedFile); break; } } while (_us.FileDataList.Any(r => r.IsDeleted)); } catch (Exception ex) { Trace.WriteLine(ex.Message); throw; } }
-    void OnMvOl(object s, RoutedEventArgs e)
+    void OnScan(object s, RoutedEventArgs e) => Report(ReScanFolder(tbxPath.Text), "", "");
+    void OnWatch(object s, RoutedEventArgs e) { Bpr.Tick(); StopWatch(); StartWatch(tbxPath.Text); }
+    void OnStop(object s, RoutedEventArgs e) { Bpr.Tick(); /*lbxHist.Items.Clear();*/ _timerNotifier.Stop(); Title = $"Log Monitor - No events since  {DateTime.Now:HH:mm}  -  {VersionHelper.CurVerStr}"; }
+    void OnExpl(object s, RoutedEventArgs e) { Bpr.Tick(); try { _ = new Process { StartInfo = new ProcessStartInfo(@"Explorer.exe", $"\"{tbxPath.Text}\"") { RedirectStandardError = true, UseShellExecute = false } }.Start(); } catch (Exception ex) { Trace.WriteLine(ex.Message); throw; } }
+    void OnVScd(object s, RoutedEventArgs e) { Bpr.Tick(); try { _ = new Process { StartInfo = new ProcessStartInfo(@$"{Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)}\Programs\Microsoft VS Code\Code.exe", $"\"{tbxPath.Text}\"") { RedirectStandardError = true, UseShellExecute = false } }.Start(); } catch (Exception ex) { Trace.WriteLine(ex.Message); throw; } }
+    void OnEdit(object s, RoutedEventArgs e) { Bpr.Tick(); try { _ = new Process { StartInfo = new ProcessStartInfo(@$"{Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)}\Programs\Microsoft VS Code\Code.exe", $"\"{UserSettingsStore.Store}\"") { RedirectStandardError = true, UseShellExecute = false } }.Start(); } catch (Exception ex) { Trace.WriteLine(ex.Message); throw; } }//_ = new Process { StartInfo = new ProcessStartInfo(@"Notepad.exe", $"\"{UserSettingsStore._store}\"") { RedirectStandardError = true, UseShellExecute = false } }.Start(); //_ = new Process { StartInfo = new ProcessStartInfo(@"C:\Program Files\Microsoft Visual Studio\2022\Preview\Common7\IDE\devenv.exe", $"\"{UserSettingsStore._store}\"") { RedirectStandardError = true, UseShellExecute = false } }.Start(); }
+    void OnRDel(object s, RoutedEventArgs e)
     {
-      _timerNotifier.Stop(); Bpr.Tick(); try
+      Bpr.Tick();
+      try
       {
-        _ = new Process { StartInfo = new ProcessStartInfo(@"CMD", $@"CMD /C MOVE {tbxPath.Text}\*.log {tbxPath.Text.Replace("Logs", "Logs.Old")} ") { RedirectStandardError = true, UseShellExecute = false } }.Start();
-        OnScan(s, e);
-        OnRDel(s, e);
+        do
+        {
+          foreach (var deletedFile in _us.FileDataList.Where(r => r.IsDeleted))
+          {
+            _us.FileDataList.Remove(deletedFile);
+            break;
+          }
+        } while (_us.FileDataList.Any(r => r.IsDeleted));
       }
       catch (Exception ex) { Trace.WriteLine(ex.Message); throw; }
     }
@@ -146,7 +138,7 @@ namespace LogMonitorWpfApp
       watcher.IncludeSubdirectories = true;
       watcher.EnableRaisingEvents = true;
 
-      Report($"Monitoring commenced.", path, "");
+      ReportAndStartAlarms($"Monitoring commenced.", path, "");
 
       return watcher;
     }
@@ -189,22 +181,39 @@ namespace LogMonitorWpfApp
       if (fd != null)
         fd.Status = msg;
 
-      Report(msg + ReScanFolder(tbxPath.Text), file1, file2);
+      ReportAndStartAlarms(msg + ReScanFolder(tbxPath.Text), file1, file2);
     }
-    void Report(string msg, string file1, string file2)
+    void ReportAndStartAlarms(string msg, string file1, string file2)
     {
       tbkTitle.Text = $"{DateTimeOffset.Now:HH:mm}  {msg}  {Path.GetFileNameWithoutExtension(file1)}  {file2}";
       lbxHist.Items.Add(tbkTitle.Text);
 
       Bpr.Tick();
-      _timerNotifier.Start();
-      _timerNotifier.IsEnabled = true;
+      _timerVisualNotifier.Start();
+      _timerVisualNotifier.IsEnabled = true;
 
-      Task.Run(async () => await OnAlarmIsOn());
+      Task.Run(async () => await StartAnotherAlarm(file1.Contains(".Errs.")));
 
 #if !DEBUG
       UseSayExe(msg);
 #endif
+    }
+    async Task StartAnotherAlarm(bool isError)
+    {
+      while (_timerVisualNotifier.IsEnabled)
+      {
+        if (isError)
+        {
+          await Bpr.WaveAsync(2000, 5000, 3);
+        }
+        else
+        {
+          //await Bpr.WaveAsync(141, 100, 7);
+          await Bpr.WaveAsync(060, 101, 7);
+        }
+
+        await Task.Delay(100);
+      }
     }
 
     static void UseSayExe(string msg) => new Process { StartInfo = new ProcessStartInfo(@"say.exe", $"\"{msg}\"") { RedirectStandardError = true, UseShellExecute = false } }.Start();
