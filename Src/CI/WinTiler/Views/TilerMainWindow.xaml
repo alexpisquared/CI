@@ -2,7 +2,7 @@
                 xmlns:stb="clr-namespace:CI.Visual.Lib.Helpers;assembly=CI.Visual.Lib" 
                 xmlns:system="clr-namespace:System;assembly=mscorlib"
                 xmlns:Views="clr-namespace:WinTiler.Views" x:Name="wnd" x:Class="WinTiler.Views.TilerMainWindow" mc:Ignorable="d"
-                Title="Window Tiler - Loading ..." Height="380" Width="750" MinWidth="750" MaxWidth="750"
+                Title="Window Tiler - Loading ..." Height="380" Width="450" MinWidth="450" MaxWidth="750"
                 Style="{DynamicResource WindowStyle_Aav0}" Loaded="onLoaded" >
   <lnk:WindowBase.Resources>
     <ResourceDictionary>
@@ -225,8 +225,8 @@
           <Button   Click="onExit" IsCancel="True" />-->
         </StackPanel>
 
-        <ListBox Grid.Row="1" Margin="97,0,97,0" BorderThickness="0" Width="443"
-                 ItemsSource="{Binding St.AllWindows}" ItemTemplate="{StaticResource myTaskTemplate}" Grid.ColumnSpan="3" />
+        <ListBox Grid.Row="1" BorderThickness="0" Width="443" ItemsSource="{Binding St.AllWindows}" ItemTemplate="{StaticResource myTaskTemplate}" Grid.ColumnSpan="3" />
+        
       </Grid>
       <StackPanel VerticalAlignment="Bottom" HorizontalAlignment="Right" Grid.ColumnSpan="2">
         <Image Margin="5" Source="/WinTiler;component/Assets/A_Icon.ico"        Height="30" ToolTip="      for app icon"/>  
