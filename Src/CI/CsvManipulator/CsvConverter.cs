@@ -17,7 +17,7 @@ namespace CsvManipulator
     readonly List<CsvLine> _linesIn = new List<CsvLine>();
     readonly bool _ignoreHeaderColumnName = false; // for rare case scenario could be false.
     const int _topN = 3;
-    CsvConfiguration _config;
+    CsvConfiguration? _config;
     List<dynamic> _allCsvRecords;
 
     public CsvConverter(string filename)
@@ -56,8 +56,8 @@ namespace CsvManipulator
       var report = "";
       try
       {
-        var allCsvHeaders = ((IDictionary<string, object>)_allCsvRecords.FirstOrDefault()).Values;
-        var columnCount = allCsvHeaders.Count;
+        var allCsvHeaders = ((IDictionary<string, object>?)_allCsvRecords.FirstOrDefault())?.Values;
+        var columnCount = allCsvHeaders?.Count ?? 0;
 
         var nonEmptyRows = _allCsvRecords.Skip(_ignoreHeaderColumnName ? 1 : 0).ToList().Where(kvp => ((ExpandoObject)kvp).Any(v => !string.IsNullOrEmpty(v.Value?.ToString())));
 
