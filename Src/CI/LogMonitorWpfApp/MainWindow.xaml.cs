@@ -97,7 +97,7 @@ namespace LogMonitorWpfApp
     {
       _timerVisualNotifier.Stop(); Bpr.Tick(); try
       {
-        _ = new Process { StartInfo = new ProcessStartInfo(@"CMD", $@"CMD /C MOVE {tbxPath.Text}\*.log {tbxPath.Text.Replace("Logs", "Logs.Old")} ") { RedirectStandardError = true, UseShellExecute = false } }.Start();
+        _ = new Process { StartInfo = new ProcessStartInfo(@"CMD", $@"CMD /C MOVE {tbxPath.Text}\*.* {tbxPath.Text.Replace("Logs", "Logs.Old")} ") { RedirectStandardError = true, UseShellExecute = false } }.Start();
         OnScan(s, e);
         OnRDel(s, e);
       }

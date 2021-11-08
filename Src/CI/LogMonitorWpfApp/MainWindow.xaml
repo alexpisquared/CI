@@ -1,6 +1,6 @@
 ﻿<Window x:Class="LogMonitorWpfApp.MainWindow" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d"
         xmlns:local="clr-namespace:LogMonitorWpfApp"
-        Title="Log Monitor" Height="350" Width="960" Loaded="OnLoaded" Background="#999">
+        Title="Log Monitor" Height="350" Width="880" Loaded="OnLoaded" Background="#999">
   <Window.Resources>
     <Style TargetType="FrameworkElement">
     </Style>
@@ -81,7 +81,7 @@
       <Button Content="   E_xplore   "    Click="OnExpl" />
       <Button Content="   _VS Code   "    Click="OnVScd" />
       <Button Content="   _Re-Scan   "    Click="OnScan" />
-      <Button Content="   Re-_Move   "    Click="OnRDel" ToolTip="Remove deleted from the list" />
+      <Button Content="   CleanLst   "    Click="OnRDel" ToolTip="Remove deleted from the list" />
       <Button Content="   Move _Old   "   Click="OnMvOl" ToolTip="Move old files to the ..\Logs.Old folder" />
       <Button Content="   Re-_Watch   "   Click="OnWtch" />
       <Button Content="   _Settings   "   Click="OnEdit" ToolTip="Edit Settings.JSON with VS Code" />
