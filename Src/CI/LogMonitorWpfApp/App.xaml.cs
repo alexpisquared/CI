@@ -29,16 +29,13 @@ namespace LogMonitorWpfApp
 
       _ = services.AddSingleton<IConfigurationRoot>(ConfigHelper.AutoInitConfig());
 
-      var logFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.{Environment.UserName.Substring(0, 3)}";
       _ = services.AddSingleton<ILogger>(sp => SeriLogHelper.InitLoggerFactory(
-        /*UserSettingsIPM.UserLogFolderFile ??= */FSHelper.GetCreateSafeLogFolderAndFile(new[]
+        //todo: this allows to override by UserSettings entry: UserSettingsIPM.UserLogFolderFile ??= // if new - store in usersettings for next uses.
+        FSHelper.GetCreateSafeLogFolderAndFile(new[]
         {
-          sp.GetRequiredService<IConfigurationRoot>()["LogFolder"].Replace("..", $"{logFile}.."),
-          $@"C:\g\CI-Reimagined-Invention\Src\CI-RI\BE.IncomePayment\bin\Logs\{logFile}",
-          @$"D:\Logs\CI.IPM\{logFile}",
-          @$"\Temp\Logs\{logFile}",
-          @$"\Logs\{logFile}",
-          @$"..\Logs\{logFile}"
+          //for publick apps only: sp.GetRequiredService<IConfigurationRoot>()["LogFolder"].Replace("..", $"{(Assembly.GetExecutingAssembly().GetName().Name??"Unk")[..3]}.{Environment.UserName[..3]}.."), // First, get from AppSettings.
+          @$"..\Logs\",
+          @$"\Temp\Logs\",
         }))
       .CreateLogger<MainWindow>());
 
