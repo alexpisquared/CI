@@ -50,17 +50,16 @@ namespace WinTiler.Lib
       var screen = WindowsFormsLib.WinFormHelper.PrimaryScreen;      //foreach (var screen in WindowsFormsLib.WinFormHelper.GetAllScreens()) Console.WriteLine($"{screen}");
       int cols = 3, rows = 3, rp1 = 1;
 
-      if (_allWindows.Count < 3) { cols = 2; rows = 1; }
-      else if (_allWindows.Count < 4) { cols = 3; rows = 1; }
-      else if (_allWindows.Count < 07) { cols = 3; rows = 2; }
-      else if (_allWindows.Count < 10) { cols = 3; rows = 3; }
-      else if (_allWindows.Count < 13) { cols = 3; rows = 4; }
-      else if (_allWindows.Count < 17) { cols = 4; rows = 4; }
-      else if (_allWindows.Count < 21) { cols = 4; rows = 5; }
-      else if (_allWindows.Count < 26) { cols = 5; rows = 5; }
-      else if (_allWindows.Count < 31) { cols = 5; rows = 6; }
-      else if (_allWindows.Count < 36) { cols = 6; rows = 6; }
-      else if (_allWindows.Count < 64) { cols = 8; rows = 8; }
+      if (_allWindows.Count <= 2) { cols = 2; rows = 1; }
+      else if (_allWindows.Count <= 05) { cols = _allWindows.Count; rows = 1; }
+      else if (_allWindows.Count <= 08) { cols = 4; rows = 2; }
+      else if (_allWindows.Count <= 12) { cols = 4; rows = 3; }
+      else if (_allWindows.Count <= 16) { cols = 4; rows = 4; }
+      else if (_allWindows.Count <= 20) { cols = 5; rows = 4; }
+      else if (_allWindows.Count <= 25) { cols = 5; rows = 5; }
+      else if (_allWindows.Count <= 30) { cols = 5; rows = 6; }
+      else if (_allWindows.Count <= 36) { cols = 6; rows = 6; }
+      else if (_allWindows.Count <= 64) { cols = 8; rows = 8; }
       else { rp1 = 1 + (int)Math.Sqrt(_allWindows.Count); rows = cols = rp1; }
 
       var window_width = screen.WorkingArea.Width / cols;
