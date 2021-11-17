@@ -2,8 +2,8 @@
                 xmlns:stb="clr-namespace:CI.Visual.Lib.Helpers;assembly=CI.Visual.Lib" 
                 xmlns:system="clr-namespace:System;assembly=mscorlib"
                 xmlns:Views="clr-namespace:WinTiler.Views" x:Name="wnd" x:Class="WinTiler.Views.TilerMainWindow" mc:Ignorable="d"
-                Title="Window Tiler - Loading ..." Height="380" Width="450" MinWidth="450" MaxWidth="750"
-                Style="{DynamicResource WindowStyle_Aav0}" Loaded="onLoaded" Topmost="True" Opacity=".75">
+                Title="Window Tiler - Loading ..." Height="380" Width="538" MinWidth="538" MaxWidth="538"
+                Style="{DynamicResource WindowStyle_Aav0}" Loaded="onLoaded" Topmost="True">
   <lnk:WindowBase.Resources>
     <ResourceDictionary>
       <ResourceDictionary.MergedDictionaries>
@@ -178,12 +178,8 @@
   <WindowChrome.WindowChrome>
     <WindowChrome CaptionHeight="0" ResizeBorderThickness="10" />
   </WindowChrome.WindowChrome>
-  <Border Style="{StaticResource BorderStyle_Aav0}">
+  <Border Style="{StaticResource BorderStyle_Aav0}" Background="#4888">
     <Grid>
-      <Grid.ColumnDefinitions>
-        <ColumnDefinition Width="243*"/>
-        <ColumnDefinition Width="125*"/>
-      </Grid.ColumnDefinitions>
       <Grid x:Name="ZommablePanel" Grid.ColumnSpan="2" >
         <Grid.Resources>
           <Style TargetType="{x:Type Border}">
@@ -208,8 +204,7 @@
           <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <Rectangle Grid.ColumnSpan="4"          Fill="#1000" Margin="-3,-3,-3,312" Grid.RowSpan="2" />
-        <Rectangle Grid.Column="3" Grid.Row="1" Fill="#1fff" Margin="-0 0 -3 -3" Grid.RowSpan="2" />
+        <Rectangle Grid.Column="3" Grid.Row="1" Fill="#8444" Margin="-0 0 -3 -3" Grid.RowSpan="2" />
 
         <TextBlock Grid.ColumnSpan="4" Text="{Binding Title, ElementName=wnd}" FontSize="18" FontWeight="SemiBold" x:Name="tbkTitle" d:Text="(alex.pigida) - mtUATsqldb - Total 0 matches found in   2.76 sec." Margin="10,0,0,0"/>
         <Label Grid.Column="3" FontSize="18" FontWeight="SemiBold" x:Name="tbkTitl2" d:Content="_321" HorizontalAlignment="Center"/>
@@ -225,12 +220,11 @@
           <Button   Click="onExit" IsCancel="True" />-->
         </StackPanel>
 
-        <ListBox Grid.Row="1" BorderThickness="0" Width="443" ItemsSource="{Binding St.AllWindows}" ItemTemplate="{StaticResource myTaskTemplate}" Grid.ColumnSpan="3" />
+        <ListBox Grid.Row="1" BorderThickness="0" Width="443" ItemsSource="{Binding St.AllWindows}" ItemTemplate="{StaticResource myTaskTemplate}" Grid.ColumnSpan="3" Background="#8444"/>
         
       </Grid>
       <StackPanel VerticalAlignment="Bottom" HorizontalAlignment="Right" Grid.ColumnSpan="2">
         <Image Margin="5" Source="/WinTiler;component/Assets/A_Icon.ico"        Height="30" ToolTip="      for app icon"/>  
-        <Image Margin="5" Source="/WinTiler;component/Assets/F_Icon.ico"        Height="30" ToolTip="      for app icon"/>  
         <Image Margin="5" Source="/WinTiler;component/Assets/favicon.ico"       Height="30" ToolTip="      for app icon"/>  
         <Image Margin="5" Source="/WinTiler;component/Assets/ICN_SpriteKit.ico" Height="30" ToolTip="WORKs for app icon"/>  
         <Image Margin="5" Source="/WinTiler;component/Assets/T_Icon.ico"        Height="30" ToolTip="fails for app icon"/>  

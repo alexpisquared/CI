@@ -12,8 +12,8 @@ namespace WinTiler.Views
   public partial class TilerMainWindow : CI.Visual.Lib.Base.WindowBase
   {
     readonly SmartTiler _st = new();
-    private readonly ILogger<TilerMainWindow> _logger;
-    private readonly IConfigurationRoot? _config;
+    readonly ILogger<TilerMainWindow> _logger;
+    readonly IConfigurationRoot? _config;
     DispatcherTimer _timer;
     DateTime _lastTime;
 
@@ -29,10 +29,7 @@ namespace WinTiler.Views
     }
 
 #if true
-    async void onLoaded(object s, RoutedEventArgs e)
-    {
-      await findWindows(); ;
-    }
+    void onLoaded(object s, RoutedEventArgs e) { onBoth(s, e); }
     async void tick(object? s, EventArgs e)
     {
       var dt = (DateTime.Now - _lastTime);
@@ -60,7 +57,7 @@ namespace WinTiler.Views
       }
     }
 #else
-    void onLoaded(object sender, RoutedEventArgs e)
+    void onLoaded(object s, RoutedEventArgs e)
     {
       Bpr.Beep(9000, 100);
       var token = Task.Factory.CancellationToken;
@@ -100,18 +97,18 @@ namespace WinTiler.Views
     }
 #endif
 
-    async void onFind(object sender, RoutedEventArgs e) => await findWindows();
-    async void onTile(object sender, RoutedEventArgs e) { Title = "Tile-ing ..."; await Task.Delay(33); _st.Tile(); ; }
-    async void onBoth(object sender, RoutedEventArgs e) { await findWindows(); onTile(sender, e); }
-    void onNotM(object sender, RoutedEventArgs e) { _st.Tile(); ; }
-    void onRstr(object sender, RoutedEventArgs e) { }
+    async void onFind(object s, RoutedEventArgs e) => await findWindows();
+    async void onTile(object s, RoutedEventArgs e) { Title = "Tile-ing ..."; await Task.Delay(33); _st.Tile(); ; }
+    async void onBoth(object s, RoutedEventArgs e) { await findWindows(); onTile(s, e); }
+    void onNotM(object s, RoutedEventArgs e) { _st.Tile(); ; }
+    void onRstr(object s, RoutedEventArgs e) { }
 
     internal async Task FindWindows()
     {
-      if ((DateTime.Now - _lastTime).TotalMinutes < 1)
-        Title = $"Too early .. until {_lastTime.AddMinutes(1):HH:mm:ss}";
-      else
+      if ((DateTime.Now - _lastTime).TotalMinutes >= 1)
         await findWindows();
+      //else
+      //  Title = $"Too early .. until {_lastTime.AddMinutes(1):HH:mm:ss}";
     }
   }
 }
