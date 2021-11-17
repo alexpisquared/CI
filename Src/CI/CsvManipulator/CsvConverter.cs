@@ -14,7 +14,7 @@ namespace CsvManipulator
   public class CsvConverter : ICsvConverter
   {
     readonly string _filename0, _filename2;
-    readonly List<CsvLine> _linesIn = new List<CsvLine>();
+    readonly List<CsvLine> _linesIn = new();
     readonly bool _ignoreHeaderColumnName = false; // for rare case scenario could be false.
     const int _topN = 3;
     CsvConfiguration? _config;
@@ -90,7 +90,7 @@ namespace CsvManipulator
         report += $"\n";
       });
 
-      return report + $"  ... + {allCsvRecords.Count() - topCount} more rows.\n\n";
+      return report + $"  ... + {allCsvRecords.Count - topCount} more rows.\n\n";
     }
 
     static List<dynamic> removeEmptyColumns(IEnumerable<dynamic> nonEmptyRows, bool[] emptyColumns)
