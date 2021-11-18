@@ -2,7 +2,7 @@
                 xmlns:stb="clr-namespace:CI.Visual.Lib.Helpers;assembly=CI.Visual.Lib" 
                 xmlns:system="clr-namespace:System;assembly=mscorlib"
                 xmlns:Views="clr-namespace:WinTiler.Views" x:Name="wnd" x:Class="WinTiler.Views.TilerMainWindow" mc:Ignorable="d"
-                Title="Window Tiler - Loading ..." Height="380" Width="538" MinWidth="538" MaxWidth="538"
+                Title="Window Tiler - Loading ..." Height="380" Width="538" MinWidth="538" MaxWidth="638"
                 Style="{DynamicResource WindowStyle_Aav0}" Loaded="onLoaded" Topmost="True">
   <lnk:WindowBase.Resources>
     <ResourceDictionary>
