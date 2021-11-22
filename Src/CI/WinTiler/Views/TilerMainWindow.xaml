@@ -214,6 +214,7 @@
           <Button   Content="_Find"    Click="onFind" Margin="2" />
           <Button   Content="_Tile"    Click="onTile" Margin="2" />
           <Button   Content="_Both"    Click="onBoth" Margin="2" IsDefault="True" FontWeight="Bold" />
+          <CheckBox Content="_PrimScr" x:Name="chkPS" Margin="5 10 5 5" IsThreeState="True" IsChecked="{x:Null}" />
           <!--
           <Button   Content="_NotM"    Click="onNotM" />
           <Button   Content="_Restore" Click="onRstr" />
@@ -223,7 +224,7 @@
         <ListBox Grid.Row="1" BorderThickness="0" Width="443" ItemsSource="{Binding St.AllWindows}" ItemTemplate="{StaticResource myTaskTemplate}" Grid.ColumnSpan="3" Background="#8444"/>
         
       </Grid>
-      <StackPanel VerticalAlignment="Bottom" HorizontalAlignment="Right" Grid.ColumnSpan="2">
+      <StackPanel VerticalAlignment="Bottom" HorizontalAlignment="Right" Grid.ColumnSpan="2" Visibility="Collapsed">
         <Image Margin="5" Source="/WinTiler;component/Assets/A_Icon.ico"        Height="30" ToolTip="      for app icon"/>  
         <Image Margin="5" Source="/WinTiler;component/Assets/favicon.ico"       Height="30" ToolTip="      for app icon"/>  
         <Image Margin="5" Source="/WinTiler;component/Assets/ICN_SpriteKit.ico" Height="30" ToolTip="WORKs for app icon"/>  

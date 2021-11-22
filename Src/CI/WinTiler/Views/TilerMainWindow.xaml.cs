@@ -98,9 +98,9 @@ namespace WinTiler.Views
 #endif
 
     async void onFind(object s, RoutedEventArgs e) => await findWindows();
-    async void onTile(object s, RoutedEventArgs e) { Title = "Tile-ing ..."; await Task.Delay(33); _st.Tile(); ; }
+    async void onTile(object s, RoutedEventArgs e) { Title = "Tile-ing ..."; await Task.Delay(33); _st.Tile(chkPS.IsChecked ); ; }
     async void onBoth(object s, RoutedEventArgs e) { await findWindows(); onTile(s, e); }
-    void onNotM(object s, RoutedEventArgs e) { _st.Tile(); ; }
+    void onNotM(object s, RoutedEventArgs e) { _st.Tile(chkPS.IsChecked ); ; }
     void onRstr(object s, RoutedEventArgs e) { }
 
     internal async Task FindWindows()

@@ -5,6 +5,7 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
+using WindowsFormsLib;
 
 /// http://csharphelper.com/blog/2016/12/tile-desktop-windows-in-rows-and-columns-in-c/
 /// also for Virt Desktop see:
@@ -45,9 +46,9 @@ namespace WinTiler.Lib
 
       return (_report = $" ... Found {titles?.Count} windows of interest in {sw.Elapsed.TotalSeconds:N1} s: ");
     }
-    public void Tile()
+    public void Tile(bool? isPrimaryScreen)
     {
-      var screen = WindowsFormsLib.WinFormHelper.PrimaryScreen;      //foreach (var screen in WindowsFormsLib.WinFormHelper.GetAllScreens()) Console.WriteLine($"{screen}");
+      var screen = isPrimaryScreen == true ? WinFormHelper.PrimaryScreen : isPrimaryScreen == false ? WinFormHelper.SecondaryScreen : WinFormHelper.LargestScreen;      //foreach (var screen in WindowsFormsLib.WinFormHelper.GetAllScreens()) Console.WriteLine($"{screen}");
       int cols = 3, rows = 3, rp1 = 1;
 
       if (_allWindows.Count <= 2) { cols = 2; rows = 1; }
