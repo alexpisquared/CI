@@ -1,4 +1,5 @@
-﻿using CI.Standard.Lib.Extensions;
+﻿using Ambience.Lib;
+using CI.Standard.Lib.Extensions;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using System;
@@ -16,6 +17,7 @@ namespace WinTiler.Views
     readonly IConfigurationRoot? _config;
     DispatcherTimer _timer;
     DateTime _lastTime;
+    Bpr _bpr = new Bpr();
 
     public SmartTiler St => _st; // binding
 
@@ -39,6 +41,7 @@ namespace WinTiler.Views
     }
     async Task findWindows()
     {
+      _bpr.Beep(2222, .250);
       ctrlPanel.Visibility = Visibility.Hidden; // ctrlPanel.IsEnabled = false; :too flashy
       Title = "Finding ...";
       _timer.Stop();
@@ -54,6 +57,7 @@ namespace WinTiler.Views
       {
         ctrlPanel.Visibility = Visibility.Visible; // ctrlPanel.IsEnabled = true;
         _timer.Start();
+        await _bpr.BeepAsync(3333, .300);
       }
     }
 #else
@@ -98,9 +102,9 @@ namespace WinTiler.Views
 #endif
 
     async void onFind(object s, RoutedEventArgs e) => await findWindows();
-    async void onTile(object s, RoutedEventArgs e) { Title = "Tile-ing ..."; await Task.Delay(33); _st.Tile(chkPS.IsChecked ); ; }
+    async void onTile(object s, RoutedEventArgs e) { Title += " Tiling"; await _bpr.BeepAsync(4444, .400); _st.Tile(chkPS.IsChecked); _bpr.Beep(5555, .450); }
     async void onBoth(object s, RoutedEventArgs e) { await findWindows(); onTile(s, e); }
-    void onNotM(object s, RoutedEventArgs e) { _st.Tile(chkPS.IsChecked ); ; }
+    void onNotM(object s, RoutedEventArgs e) { _st.Tile(chkPS.IsChecked); ; }
     void onRstr(object s, RoutedEventArgs e) { }
 
     internal async Task FindWindows()

@@ -38,6 +38,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\..\CI-Reimagined-Invention\Src\CI-RI\Ambience.Lib\Ambience.Lib.csproj" />
     <ProjectReference Include="..\..\..\..\CI-Reimagined-Invention\Src\CI-RI\CI.Standard.Lib\CI.Standard.Lib.csproj" />
     <ProjectReference Include="..\WinTiler.Lib\WinTiler.Lib.csproj" />
   </ItemGroup>

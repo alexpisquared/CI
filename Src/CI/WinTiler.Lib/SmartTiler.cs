@@ -1,10 +1,10 @@
-﻿using CI.Standard.Lib.Helpers;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
+using CI.Standard.Lib.Helpers;
 using WindowsFormsLib;
 
 /// http://csharphelper.com/blog/2016/12/tile-desktop-windows-in-rows-and-columns-in-c/
@@ -29,7 +29,7 @@ namespace WinTiler.Lib
     public ObservableCollection<WindowInfo> AllWindows => _allWindows;
 
     public bool SkipMinimized { get => _userPrefs.SkipMinimized; set => _userPrefs.SkipMinimized = value; }
-    public string Report { get => _report; }
+    public string Report => _report;
 
     public string CollectDesktopWindows(bool? sm = null)
     {
@@ -44,7 +44,7 @@ namespace WinTiler.Lib
 
       lst.OrderBy(r => r.Sorter).ToList().ForEach(r => _allWindows.Add(new WindowInfo(r.WTitle, r.AppNme, r.Handle)));
 
-      return (_report = $" ... Found {titles?.Count} windows of interest in {sw.Elapsed.TotalSeconds:N1} s: ");
+      return _report = $"Found {titles?.Count} WinOI in {sw.Elapsed.TotalSeconds:N1}s ";
     }
     public void Tile(bool? isPrimaryScreen)
     {

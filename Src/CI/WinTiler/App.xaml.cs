@@ -59,7 +59,7 @@ namespace WinTiler
       base.OnStartup(e);
     }
     protected override void OnExit(ExitEventArgs e) { _logger.LogInformation($" +{(DateTime.Now - Started):mm\\:ss\\.ff} App.OnExit()          \n"); base.OnExit(e); }
-    protected override void OnDeactivated(EventArgs e) /**/{ Debug.WriteLine($"{DateTime.Now:yy.MM.dd HH:mm:ss.f} +{(DateTime.Now - Started):mm\\:ss\\.ff} ▄▀▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▀▀▄▀App.OnDeactivated()  "); base.OnDeactivated(e); ((TilerMainWindow)MainWindow).Title = "Deactivated"; }
+    protected override void OnDeactivated(EventArgs e) /**/{ Debug.WriteLine($"{DateTime.Now:yy.MM.dd HH:mm:ss.f} +{(DateTime.Now - Started):mm\\:ss\\.ff} ▄▀▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▀▀▄▀App.OnDeactivated()  "); base.OnDeactivated(e); ((TilerMainWindow)MainWindow).Title += " Deact-d"; }
     async protected override void OnActivated(EventArgs e) { Debug.WriteLine($"{DateTime.Now:yy.MM.dd HH:mm:ss.f} +{(DateTime.Now - Started):mm\\:ss\\.ff} ▄▀▄▄▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▄▀App.OnActivated()    "); base.OnActivated(e); await ((TilerMainWindow)MainWindow).FindWindows(); }
   }
 }
