@@ -173,12 +173,14 @@
         </Style.Triggers>
       </Style>
 
+      <Style TargetType="{x:Type Button}"       BasedOn="{StaticResource BtnRoundd}" />
+
     </ResourceDictionary>
   </lnk:WindowBase.Resources>
   <WindowChrome.WindowChrome>
     <WindowChrome CaptionHeight="0" ResizeBorderThickness="10" />
   </WindowChrome.WindowChrome>
-  <Border Style="{StaticResource BorderStyle_Aav0}" Background="#4888">
+  <Border Style="{StaticResource BorderStyle_Aav0}" Background="#4888" CornerRadius="20">
     <Grid>
       <Grid x:Name="ZommablePanel" Grid.ColumnSpan="2" >
         <Grid.Resources>
@@ -204,24 +206,22 @@
           <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <Rectangle Grid.Column="3" Grid.Row="1" Fill="#8444" Margin="-0 0 -3 -3" Grid.RowSpan="2" />
-
         <TextBlock Grid.ColumnSpan="4" Text="{Binding Title, ElementName=wnd}" FontSize="18" FontWeight="SemiBold" x:Name="tbkTitle" d:Text="(alex.pigida) - mtUATsqldb - Total 0 matches found in   2.76 sec." Margin="10,0,0,0"/>
-        <Label Grid.Column="3" FontSize="18" FontWeight="SemiBold" x:Name="tbkTitl2" d:Content="_321" HorizontalAlignment="Center"/>
+        <Label Grid.Column="3" FontSize="18" FontWeight="SemiBold" x:Name="tbkTitl2" d:Content="_321" HorizontalAlignment="Left"/>
 
         <StackPanel Grid.Column="3" Grid.Row="1" Orientation="Vertical" x:Name="ctrlPanel" Margin="5,5,5,5">
-          <CheckBox Content="_SkipMin" x:Name="chkSM" Margin="5 10 5 5" IsChecked="True" />
-          <Button   Content="_Find"    Click="onFind" Margin="2" />
-          <Button   Content="_Tile"    Click="onTile" Margin="2" />
-          <Button   Content="_Both"    Click="onBoth" Margin="2" IsDefault="True" FontWeight="Bold" />
+          <CheckBox Content="_SkipMin" x:Name="chkSM" Margin="5 20 5 5" IsChecked="True" />
+          <Button   Content="_Find"    Click="onFind" Margin="6" Height="60" />
+          <Button   Content="_Tile"    Click="onTile" Margin="6" Height="60" />
+          <Button   Content="_Both"    Click="onBoth" Margin="6" Height="60" IsDefault="True" FontWeight="Bold" />
           <CheckBox Content="_PrimScr" x:Name="chkPS" Margin="5 10 5 5" IsThreeState="True" IsChecked="{x:Null}" />
           <!--
           <Button   Content="_NotM"    Click="onNotM" />
           <Button   Content="_Restore" Click="onRstr" />
-          <Button   Click="onExit" IsCancel="True" />-->
+          -->          
         </StackPanel>
 
-        <ListBox Grid.Row="1" BorderThickness="0" Width="443" ItemsSource="{Binding St.AllWindows}" ItemTemplate="{StaticResource myTaskTemplate}" Grid.ColumnSpan="3" Background="#8444"/>
+        <ListBox Grid.Row="1" BorderThickness="0" Width="443" ItemsSource="{Binding St.AllWindows}" ItemTemplate="{StaticResource myTaskTemplate}" Grid.ColumnSpan="3" Background="Transparent"/>
         
       </Grid>
       <StackPanel VerticalAlignment="Bottom" HorizontalAlignment="Right" Grid.ColumnSpan="2" Visibility="Collapsed">
@@ -231,6 +231,8 @@
         <Image Margin="5" Source="/WinTiler;component/Assets/T_Icon.ico"        Height="30" ToolTip="fails for app icon"/>  
         <Image Margin="5" Source="/WinTiler;component/Assets/W_Icon.ico"        Height="30" ToolTip="      for app icon"/>  
       </StackPanel>
+
+      <Button Content="X" Height="32" Width="32" Click="onExit" IsCancel="True" VerticalAlignment="Top" HorizontalAlignment="Right" />
     </Grid>
   </Border>
 
