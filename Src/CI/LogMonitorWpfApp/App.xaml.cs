@@ -27,7 +27,7 @@ namespace LogMonitorWpfApp
 
       IServiceCollection services = new ServiceCollection();
 
-      _ = services.AddSingleton<IConfigurationRoot>(ConfigHelper.AutoInitConfig());
+      _ = services.AddSingleton<IConfigurationRoot>(ConfigHelper.AutoInitConfigFromFile());
 
       _ = services.AddSingleton<ILogger>(sp => SeriLogHelper.InitLoggerFactory(
         //todo: this allows to override by UserSettings entry: UserSettingsIPM.UserLogFolderFile ??= // if new - store in usersettings for next uses.

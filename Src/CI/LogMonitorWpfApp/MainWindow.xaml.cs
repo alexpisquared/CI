@@ -44,8 +44,8 @@ namespace LogMonitorWpfApp
       _watcher = StartWatch(tbxPath.Text);
 
 #if DEBUG
-      if (Environment.MachineName == "D21-MJ0AWBEV") /**/ { Top = 1595; Left = 1920; }
-      if (Environment.MachineName == "RAZER1")       /**/ { Top = 1595; Left = 10; }
+      if (Environment.MachineName == "D21-MJ0AWBEV") /**/ { Top = 32; Left = 920; }
+      if (Environment.MachineName == "RAZER1")       /**/ { Top = 32; Left = 0; }
 #endif
     }
 
