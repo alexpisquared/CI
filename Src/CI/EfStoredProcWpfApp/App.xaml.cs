@@ -18,7 +18,7 @@ namespace EfStoredProcWpfApp
         static App()
         {
             Started = DateTime.Now;
-            _config = ConfigHelper.AutoInitConfig();
+            _config = ConfigHelper.AutoInitConfigFromFile();
         }
 
         protected override void OnStartup(StartupEventArgs e)

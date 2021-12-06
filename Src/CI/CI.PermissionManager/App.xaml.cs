@@ -21,7 +21,7 @@ namespace CI.PermissionManager
     static App() // the one to base
     {
       Started = DateTime.Now;
-      _config = ConfigHelper.AutoInitConfig(@"{{
+      _config = ConfigHelper.AutoInitConfigFromFile(@"{{
   ""WhereAmI"": "" ??\\PermMgrClient\\appsettings.CI.PM.json  DFLT"",
   ""LogFolder"": ""\\\\bbsfile01\\Public\\Dev\\AlexPi\\Misc\\Logs\\PermMgr.DFLT..txt"",
   ""ServerList"": "".\\sqlexpress mtDEVsqldb mtUATsqldb mtPRDsqldb"",

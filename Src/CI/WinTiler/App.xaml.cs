@@ -20,7 +20,7 @@ namespace WinTiler
     static App()
     {
       Started = DateTime.Now;
-      _config = ConfigHelper.AutoInitConfig(@"{{
+      _config = ConfigHelper.AutoInitConfigFromFile(@"{{
   ""WhereAmI"": "" ??\\PermMgrClient\\appsettings.CI.PM.json  DFLT"",
   ""LogFolder"": ""C:\\temp\\Logs\\WinTiler.DFLT..txt"",
   ""LogFolde_"": ""\\\\bbsfile01\\Public\\Dev\\AlexPi\\Misc\\Logs\\WinTiler.DFLT..txt"",
