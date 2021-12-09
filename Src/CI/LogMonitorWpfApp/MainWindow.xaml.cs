@@ -1,8 +1,4 @@
-﻿using Ambience.Lib;
-using CI.Standard.Lib.Helpers;
-using LogMonitorConsoleApp;
-using StandardContracts.Lib;
-using System;
+﻿using System;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -10,15 +6,17 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
-using System.Windows.Interop;
 using System.Windows.Threading;
+using CI.Standard.Lib.Helpers;
+using LogMonitorConsoleApp;
+using StandardContracts.Lib;
 
 namespace LogMonitorWpfApp
 {
   public partial class MainWindow : Window
   {
     readonly FileSystemWatcher _watcher;
-    readonly DispatcherTimer _timerVisualNotifier;
+    //readonly DispatcherTimer _timerVisualNotifier;
     readonly UserSettings _us;
     const int _ms = 200;
 
@@ -30,7 +28,7 @@ namespace LogMonitorWpfApp
       Bpr = bpr;
       Topmost = Debugger.IsAttached;
       MouseLeftButtonDown += (s, e) => { if (e.LeftButton == MouseButtonState.Pressed) DragMove(); };
-      _timerVisualNotifier = new DispatcherTimer(TimeSpan.FromMilliseconds(_ms + _ms), DispatcherPriority.Background, new EventHandler(async (s, e) => { Title = $"▄▀▄▀▄▀▄▀ Log Monitor  -  {VersionHelper.CurVerStr}"; await Task.Delay(_ms); Title = $"▀▄▀▄▀▄▀▄ Log Monitor  -  {VersionHelper.CurVerStr}"; }), Dispatcher.CurrentDispatcher); //tu:
+      //_timerVisualNotifier = new DispatcherTimer(TimeSpan.FromMilliseconds(_ms + _ms), DispatcherPriority.Background, new EventHandler(async (s, e) => { Title = $"▄▀▄▀▄▀▄▀ Log Monitor  -  {VersionHelper.CurVerStr}"; await Task.Delay(_ms); Title = $"▀▄▀▄▀▄▀▄ Log Monitor  -  {VersionHelper.CurVerStr}"; }), Dispatcher.CurrentDispatcher); //tu:
 
       _us = UserSettings.Load;
       if (Environment.GetCommandLineArgs().Length > 1)
@@ -71,34 +69,21 @@ namespace LogMonitorWpfApp
 
       */
 
-    async void OnLoaded(object s, RoutedEventArgs e)
+    void OnLoaded(object s, RoutedEventArgs e)
     {
-      dg1.ItemsSource = _us.FileDataList; 
+      dg1.ItemsSource = _us.FileDataList;
       OnStop(s, e);
-
-      using var cts = new CancellationTokenSource();
-      Console.CancelKeyPress += (sender, e) =>
-      {
-        e.Cancel = true;
-        cts.Cancel();
-      };
-
-      using PeriodicTimer timer = new(TimeSpan.FromMilliseconds(_ms + _ms));
-      try
-      {
-        while (await timer.WaitForNextTickAsync(cts.Token))
-        {
-          Trace.WriteLine($"Déclencheur d'événements({DateTime.Now:HH:mm:ss})");
-        }
-      }
-      catch (OperationCanceledException ex)
-      {
-        Trace.WriteLine("Une exception s'est produite,Arrêt de fonctionnement" + ex.Message);
-      }
     }
     void OnScan(object s, RoutedEventArgs e) => ReportAndRescan(ReScanFolder(tbxPath.Text), "", "");
     void OnWtch(object s, RoutedEventArgs e) { Bpr.Tick(); StopWatch(); StartWatch(tbxPath.Text); }
-    void OnStop(object s, RoutedEventArgs e) { Bpr.Tick(); /*lbxHist.Items.Clear();*/ if (_timerVisualNotifier.IsEnabled) _timerVisualNotifier.Stop(); else WindowState = WindowState.Minimized; Title = $"Log Monitor - No events since  {DateTime.Now:HH:mm}  -  {VersionHelper.CurVerStr}"; }
+    void OnStop(object s, RoutedEventArgs e)
+    {
+      Bpr.Tick();
+      //if (_timerVisualNotifier.IsEnabled) _timerVisualNotifier.Stop(); else WindowState = WindowState.Minimized;
+      if (_cts is not null) _cts.Cancel(); else WindowState = WindowState.Minimized;
+
+      Title = $"Log Monitor - No events since  {DateTime.Now:HH:mm}  -  {VersionHelper.CurVerStr}";
+    }
     void OnExpl(object s, RoutedEventArgs e) { Bpr.Tick(); try { _ = new Process { StartInfo = new ProcessStartInfo(@"Explorer.exe", $"\"{tbxPath.Text}\"") { RedirectStandardError = true, UseShellExecute = false } }.Start(); } catch (Exception ex) { Trace.WriteLine(ex.Message); throw; } }
     void OnVScd(object s, RoutedEventArgs e) { Bpr.Tick(); try { _ = new Process { StartInfo = new ProcessStartInfo(@$"{Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)}\Programs\Microsoft VS Code\Code.exe", $"\"{tbxPath.Text}\"") { RedirectStandardError = true, UseShellExecute = false } }.Start(); } catch (Exception ex) { Trace.WriteLine(ex.Message); throw; } }
     void OnEdit(object s, RoutedEventArgs e) { Bpr.Tick(); try { _ = new Process { StartInfo = new ProcessStartInfo(@$"{Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)}\Programs\Microsoft VS Code\Code.exe", $"\"{UserSettingsStore.Store}\"") { RedirectStandardError = true, UseShellExecute = false } }.Start(); } catch (Exception ex) { Trace.WriteLine(ex.Message); throw; } }//_ = new Process { StartInfo = new ProcessStartInfo(@"Notepad.exe", $"\"{UserSettingsStore._store}\"") { RedirectStandardError = true, UseShellExecute = false } }.Start(); //_ = new Process { StartInfo = new ProcessStartInfo(@"C:\Program Files\Microsoft Visual Studio\2022\Preview\Common7\IDE\devenv.exe", $"\"{UserSettingsStore._store}\"") { RedirectStandardError = true, UseShellExecute = false } }.Start(); }
@@ -120,7 +105,8 @@ namespace LogMonitorWpfApp
     }
     void OnMvOl(object s, RoutedEventArgs e)
     {
-      _timerVisualNotifier.Stop(); Bpr.Tick();
+      Bpr.Tick();
+      _cts?.Cancel(); //_timerVisualNotifier.Stop();
       try
       {
         var process = new Process { StartInfo = new ProcessStartInfo(@"CMD", $@"CMD /C MOVE {tbxPath.Text}\*.* {tbxPath.Text.Replace("Logs", "Logs.Old")} ") { RedirectStandardError = true, UseShellExecute = false } };
@@ -133,7 +119,7 @@ namespace LogMonitorWpfApp
       catch (Exception ex) { Trace.WriteLine(ex.Message); throw; }
     }
 
-    void On0000(object s, RoutedEventArgs e) { _timerVisualNotifier.Stop(); Bpr.Tick(); try { } catch (Exception ex) { Trace.WriteLine(ex.Message); throw; } }
+    void On0000(object s, RoutedEventArgs e) { Bpr.Tick(); try { } catch (Exception ex) { Trace.WriteLine(ex.Message); throw; } }
     void OnClose(object s, RoutedEventArgs e) => Close();
 
     string ReScanFolder(string path)
@@ -244,16 +230,17 @@ namespace LogMonitorWpfApp
 
       ReportAndStartAlarms(msg + ReScanFolder(tbxPath.Text), file1, file2);
     }
-    void ReportAndStartAlarms(string msg, string file1, string file2)
+    async void ReportAndStartAlarms(string msg, string file1, string file2)
     {
       tbkTitle.Text = $"{DateTimeOffset.Now:HH:mm}  {msg}  {Path.GetFileNameWithoutExtension(file1)}  {file2}";
       lbxHist.Items.Add(tbkTitle.Text);
 
       Bpr.Tick();
-      _timerVisualNotifier.Start();
-      _timerVisualNotifier.IsEnabled = true;
+      _ = await StaqrtVisualNotifier(); // _timerVisualNotifier.Start(); _timerVisualNotifier.IsEnabled = true;
 
-      Task.Run(async () => await StartAnotherAlarm(file1.Contains(".Er▄▀.")));
+      //Task.Run(async () => await StartAnotherAlarm(file1.Contains(".Er▄▀.")));
+      //await Task.Run(async () => await StartAnotherAlarm(file1.Contains(".Er▄▀.")));
+      await StartAnotherAlarm(file1.Contains(".Er▄▀."));
 
 #if !DEBUG
       UseSayExe(msg);
@@ -261,7 +248,7 @@ namespace LogMonitorWpfApp
     }
     async Task StartAnotherAlarm(bool isError)
     {
-      while (_timerVisualNotifier.IsEnabled)
+      while (_cts is not null) //  _timerVisualNotifier.IsEnabled)
       {
         if (isError)
           await Bpr.WaveAsync(2000, 5000, 3);
@@ -275,5 +262,42 @@ namespace LogMonitorWpfApp
     int _i = 0;
 
     static void UseSayExe(string msg) => new Process { StartInfo = new ProcessStartInfo(@"say.exe", $"\"{msg}\"") { RedirectStandardError = true, UseShellExecute = false } }.Start();
+
+    CancellationTokenSource? _cts;
+    async void OnStart6(object sender, RoutedEventArgs e)
+    {
+      _ = await StaqrtVisualNotifier();
+    }
+
+    async Task<PeriodicTimer> StaqrtVisualNotifier()
+    {
+      Trace.WriteLine($"\nStarting    ({DateTime.Now:HH:mm:ss})");
+      _cts = new();
+      PeriodicTimer timer = new(TimeSpan.FromMilliseconds(_ms + _ms));
+      try
+      {
+        while (await timer.WaitForNextTickAsync(_cts.Token))
+        {
+          Trace.WriteLine($"***({DateTime.Now:HH:mm:ss})");
+          { Title = $"▄▀▄▀▄▀▄▀ Log Monitor  -  {VersionHelper.CurVerStr}"; await Task.Delay(_ms); Title = $"▀▄▀▄▀▄▀▄ Log Monitor  -  {VersionHelper.CurVerStr}"; }
+        }
+      }
+      catch (OperationCanceledException ex) { Trace.WriteLine("Cancelled:  " + ex.Message); }
+      catch (Exception ex) { Trace.WriteLine("@@@@@@@@@:  " + ex.Message); }
+      finally { if (_cts is not null) { _cts.Dispose(); _cts = null; } }
+
+      return timer;
+    }
+
+    void OnStop_6(object sender, RoutedEventArgs e)
+    {
+      Trace.WriteLine($"\nCancelling  ({DateTime.Now:HH:mm:ss})");
+      try
+      {
+        _cts?.Cancel();
+        Trace.WriteLine($"Cancelled   ({DateTime.Now:HH:mm:ss})");
+      }
+      catch (Exception ex) { Trace.WriteLine("--------:  " + ex.Message); }
+    }
   }
 }
