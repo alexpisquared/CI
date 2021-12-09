@@ -73,17 +73,6 @@ namespace LogMonitorWpfApp
     void OnLoaded(object s, RoutedEventArgs e) { dg1.ItemsSource = _us.FileDataList; Title = $"Log Monitor - No events since  {DateTime.Now:HH:mm}  -  {VersionHelper.CurVerStr}"; }
     void OnScan(object s, RoutedEventArgs e) => ReportAndRescan(ReScanFolder(tbxPath.Text), "", "");
     void OnWtch(object s, RoutedEventArgs e) { Bpr.Tick(); StopWatch(); StartWatch(tbxPath.Text); }
-    void OnClr0(object s, RoutedEventArgs e)
-    {
-      Bpr.Tick();
-      if (_ctsVisual is not null)
-      {
-        _ctsVisual.Cancel();
-        _ctsAudio?.Cancel();
-      }
-      else
-        WindowState = WindowState.Minimized;
-    }
     void OnExpl(object s, RoutedEventArgs e) { Bpr.Tick(); try { _ = new Process { StartInfo = new ProcessStartInfo(@"Explorer.exe", $"\"{tbxPath.Text}\"") { RedirectStandardError = true, UseShellExecute = false } }.Start(); } catch (Exception ex) { Trace.WriteLine(ex.Message); throw; } }
     void OnVScd(object s, RoutedEventArgs e) { Bpr.Tick(); try { _ = new Process { StartInfo = new ProcessStartInfo(@$"{Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)}\Programs\Microsoft VS Code\Code.exe", $"\"{tbxPath.Text}\"") { RedirectStandardError = true, UseShellExecute = false } }.Start(); } catch (Exception ex) { Trace.WriteLine(ex.Message); throw; } }
     void OnEdit(object s, RoutedEventArgs e) { Bpr.Tick(); try { _ = new Process { StartInfo = new ProcessStartInfo(@$"{Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)}\Programs\Microsoft VS Code\Code.exe", $"\"{UserSettingsStore.Store}\"") { RedirectStandardError = true, UseShellExecute = false } }.Start(); } catch (Exception ex) { Trace.WriteLine(ex.Message); throw; } }//_ = new Process { StartInfo = new ProcessStartInfo(@"Notepad.exe", $"\"{UserSettingsStore._store}\"") { RedirectStandardError = true, UseShellExecute = false } }.Start(); //_ = new Process { StartInfo = new ProcessStartInfo(@"C:\Program Files\Microsoft Visual Studio\2022\Preview\Common7\IDE\devenv.exe", $"\"{UserSettingsStore._store}\"") { RedirectStandardError = true, UseShellExecute = false } }.Start(); }
@@ -119,6 +108,17 @@ namespace LogMonitorWpfApp
         OnRDel(s, e);
       }
       catch (Exception ex) { Trace.WriteLine(ex.Message); throw; }
+    }
+    void OnClr0(object s, RoutedEventArgs e)
+    {
+      Bpr.Tick();
+      if (_ctsVisual is not null || _ctsAudio is not null)
+      {
+        _ctsVisual?.Cancel();
+        _ctsAudio?.Cancel();
+      }
+      else
+        WindowState = WindowState.Minimized;
     }
 
     void On0000(object s, RoutedEventArgs e) { Bpr.Tick(); try { } catch (Exception ex) { Trace.WriteLine(ex.Message); throw; } }
@@ -200,7 +200,7 @@ namespace LogMonitorWpfApp
       _watcher.Error -= OnError;
     }
 
-    void OnChanged(object s, FileSystemEventArgs e) { if (e.ChangeType == WatcherChangeTypes.Changed) ReportAndRescanSafe($"▼▲  Changed. ", e.FullPath); }
+    void OnChanged(object s, FileSystemEventArgs e) { if (e.ChangeType == WatcherChangeTypes.Changed) ReportAndRescanSafe($"▼▲  Changed {File.GetLastWriteTime(e.FullPath).Second}. ", e.FullPath); }
     void OnCreated(object s, FileSystemEventArgs e) => ReportAndRescanSafe($"▲▲  Created. ", e.FullPath);
     void OnDeleted(object s, FileSystemEventArgs e) => ReportAndRescanSafe($"▼▼  Deleted. ", e.FullPath);
     void OnRenamed(object sner, RenamedEventArgs e) => ReportAndRescanSafe($"►◄  Renamed. ", e.OldFullPath, e.FullPath);
