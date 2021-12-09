@@ -6,6 +6,7 @@ using System;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
@@ -70,7 +71,31 @@ namespace LogMonitorWpfApp
 
       */
 
-    void OnLoaded(object s, RoutedEventArgs e) { dg1.ItemsSource = _us.FileDataList; OnStop(s, e); }
+    async void OnLoaded(object s, RoutedEventArgs e)
+    {
+      dg1.ItemsSource = _us.FileDataList; 
+      OnStop(s, e);
+
+      using var cts = new CancellationTokenSource();
+      Console.CancelKeyPress += (sender, e) =>
+      {
+        e.Cancel = true;
+        cts.Cancel();
+      };
+
+      using PeriodicTimer timer = new(TimeSpan.FromMilliseconds(_ms + _ms));
+      try
+      {
+        while (await timer.WaitForNextTickAsync(cts.Token))
+        {
+          Trace.WriteLine($"Déclencheur d'événements({DateTime.Now:HH:mm:ss})");
+        }
+      }
+      catch (OperationCanceledException ex)
+      {
+        Trace.WriteLine("Une exception s'est produite,Arrêt de fonctionnement" + ex.Message);
+      }
+    }
     void OnScan(object s, RoutedEventArgs e) => ReportAndRescan(ReScanFolder(tbxPath.Text), "", "");
     void OnWtch(object s, RoutedEventArgs e) { Bpr.Tick(); StopWatch(); StartWatch(tbxPath.Text); }
     void OnStop(object s, RoutedEventArgs e) { Bpr.Tick(); /*lbxHist.Items.Clear();*/ if (_timerVisualNotifier.IsEnabled) _timerVisualNotifier.Stop(); else WindowState = WindowState.Minimized; Title = $"Log Monitor - No events since  {DateTime.Now:HH:mm}  -  {VersionHelper.CurVerStr}"; }
@@ -95,10 +120,13 @@ namespace LogMonitorWpfApp
     }
     void OnMvOl(object s, RoutedEventArgs e)
     {
-      _timerVisualNotifier.Stop(); Bpr.Tick(); 
+      _timerVisualNotifier.Stop(); Bpr.Tick();
       try
       {
-        _ = new Process { StartInfo = new ProcessStartInfo(@"CMD", $@"CMD /C MOVE {tbxPath.Text}\*.* {tbxPath.Text.Replace("Logs", "Logs.Old")} ") { RedirectStandardError = true, UseShellExecute = false } }.Start();
+        var process = new Process { StartInfo = new ProcessStartInfo(@"CMD", $@"CMD /C MOVE {tbxPath.Text}\*.* {tbxPath.Text.Replace("Logs", "Logs.Old")} ") { RedirectStandardError = true, UseShellExecute = false } };
+        if (process.Start())
+          process.WaitForExit();
+
         OnScan(s, e);
         OnRDel(s, e);
       }
@@ -237,8 +265,9 @@ namespace LogMonitorWpfApp
       {
         if (isError)
           await Bpr.WaveAsync(2000, 5000, 3);
-        //else          await Bpr.WaveAsync(060, 101, 7);          //await Bpr.WaveAsync(141, 100, 7);
-        
+        else if (chkAll.IsChecked == true)
+          await Bpr.WaveAsync(060, 101, 7);          //await Bpr.WaveAsync(141, 100, 7);
+
         await Task.Delay(++_i);
         _ = Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => tbkHeadr.Text = $"{_i}"));
       }
