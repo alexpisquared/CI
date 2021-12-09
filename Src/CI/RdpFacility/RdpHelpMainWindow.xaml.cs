@@ -10,7 +10,6 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Threading;
 using AsLink;
-//using CI.Standard.Lib.Helpers;
 
 namespace RdpFacility
 {
@@ -21,11 +20,7 @@ namespace RdpFacility
     readonly Insomniac _insomniac = new();
     readonly string _crlf = $" ";
     const int _from = 8, _till = 20, _dbgDelayMs = 500;
-#if DEBUG
-    int _dx = 1, _dy = 1, _hrsAdded = 0;
-#else
     int _dx = 10, _dy = 10, _hrsAdded = 0;
-#endif
     bool _isLoaded = false;
 
     string prefix => $"{DateTimeOffset.Now:HH:mm:ss}+{DateTimeOffset.Now - App.Started:hh\\:mm\\:ss}  {(_appset.IsAudible ? "A" : "a")}{(_appset.IsPosning ? "P" : "p")}{(_appset.IsInsmnia ? "I" : "i")}  ";
@@ -121,7 +116,7 @@ namespace RdpFacility
         Win32.ClientToScreen(Process.GetCurrentProcess().MainWindowHandle, ref newPointToWin);
         Win32.SetCursorPos(newPointToWin.x, newPointToWin.y);
 
-        tbkLog.Content += $"{pointToScreen}  ";
+        tbkLog.Text += $"{pointToScreen}  ";
         Debug.WriteLine($"** XY: {pointToWindow,12}  \t {pointToScreen,12} \t {newPointToWin.x,6:N0}-{newPointToWin.y,-6:N0}\t");
         if (_appset.IsAudible == true) SystemSounds.Asterisk.Play();
       }
@@ -141,7 +136,10 @@ namespace RdpFacility
     async void onMindBiz(object s, RoutedEventArgs e) { _appset.IsMindBiz = ((MenuItem)s).IsChecked == true; if (_isLoaded) { await _appset.StoreAsync(); } }
     async void onPlus1hr(object s, RoutedEventArgs e) { _hrsAdded++; await onTick(true); SystemSounds.Exclamation.Play(); }
     async void onMinusHr(object s, RoutedEventArgs e) { _hrsAdded--; await onTick(true); SystemSounds.Exclamation.Play(); }
-    async void onMark(object z, RoutedEventArgs e) { var s = $"{prefix}Mark     \t"; tbkLog.Content += s; await File.AppendAllTextAsync(App.TextLog, $"{s}{_crlf}"); }
+
+    void OnPosition(object s, RoutedEventArgs e) => togglePosition("Manual Menu Call");
+
+    async void onMark(object z, RoutedEventArgs e) { var s = $"{prefix}Mark     \t"; tbkLog.Text += s; await File.AppendAllTextAsync(App.TextLog, $"{s}{_crlf}"); }
     async void onExit(object s, RoutedEventArgs e) { await File.AppendAllTextAsync(App.TextLog, $"{prefix}onExit() by Escape.  {_crlf}"); Close(); }
     void onRset(object s, RoutedEventArgs e) { _idleTimeoutAnalizer.MinTimeoutMin = 100; tbkMin.Content = $"ITA so far  {_idleTimeoutAnalizer.MinTimeoutMin:N1} min  {(_idleTimeoutAnalizer.RanByTaskScheduler ? "(ro)" : "(RW)")}"; _idleTimeoutAnalizer.SaveLastCloseAndAnalyzeIfMarkable(); }
 
