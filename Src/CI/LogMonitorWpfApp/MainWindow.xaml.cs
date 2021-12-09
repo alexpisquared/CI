@@ -16,7 +16,6 @@ namespace LogMonitorWpfApp
   public partial class MainWindow : Window
   {
     readonly FileSystemWatcher _watcher;
-    //readonly DispatcherTimer _timerVisualNotifier;
     readonly UserSettings _us;
     CancellationTokenSource? _ctsVisual, _ctsAudio;
     const int _ms = 200;
@@ -71,14 +70,10 @@ namespace LogMonitorWpfApp
 
       */
 
-    void OnLoaded(object s, RoutedEventArgs e)
-    {
-      dg1.ItemsSource = _us.FileDataList;
-      OnStop(s, e);
-    }
+    void OnLoaded(object s, RoutedEventArgs e) { dg1.ItemsSource = _us.FileDataList; Title = $"Log Monitor - No events since  {DateTime.Now:HH:mm}  -  {VersionHelper.CurVerStr}"; }
     void OnScan(object s, RoutedEventArgs e) => ReportAndRescan(ReScanFolder(tbxPath.Text), "", "");
     void OnWtch(object s, RoutedEventArgs e) { Bpr.Tick(); StopWatch(); StartWatch(tbxPath.Text); }
-    void OnStop(object s, RoutedEventArgs e)
+    void OnClr0(object s, RoutedEventArgs e)
     {
       Bpr.Tick();
       if (_ctsVisual is not null)
@@ -88,8 +83,6 @@ namespace LogMonitorWpfApp
       }
       else
         WindowState = WindowState.Minimized;
-
-      Title = $"Log Monitor - No events since  {DateTime.Now:HH:mm}  -  {VersionHelper.CurVerStr}";
     }
     void OnExpl(object s, RoutedEventArgs e) { Bpr.Tick(); try { _ = new Process { StartInfo = new ProcessStartInfo(@"Explorer.exe", $"\"{tbxPath.Text}\"") { RedirectStandardError = true, UseShellExecute = false } }.Start(); } catch (Exception ex) { Trace.WriteLine(ex.Message); throw; } }
     void OnVScd(object s, RoutedEventArgs e) { Bpr.Tick(); try { _ = new Process { StartInfo = new ProcessStartInfo(@$"{Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)}\Programs\Microsoft VS Code\Code.exe", $"\"{tbxPath.Text}\"") { RedirectStandardError = true, UseShellExecute = false } }.Start(); } catch (Exception ex) { Trace.WriteLine(ex.Message); throw; } }
@@ -207,10 +200,10 @@ namespace LogMonitorWpfApp
       _watcher.Error -= OnError;
     }
 
-    void OnChanged(object s, FileSystemEventArgs e) { if (e.ChangeType == WatcherChangeTypes.Changed) ReportAndRescanSafe($"▼▲  Changed", e.FullPath); }
-    void OnCreated(object s, FileSystemEventArgs e) => ReportAndRescanSafe($"▲▲  Created", e.FullPath);
-    void OnDeleted(object s, FileSystemEventArgs e) => ReportAndRescanSafe($"▼▼  Deleted", e.FullPath);
-    void OnRenamed(object sner, RenamedEventArgs e) => ReportAndRescanSafe($"►◄  Renamed", e.OldFullPath, e.FullPath);
+    void OnChanged(object s, FileSystemEventArgs e) { if (e.ChangeType == WatcherChangeTypes.Changed) ReportAndRescanSafe($"▼▲  Changed. ", e.FullPath); }
+    void OnCreated(object s, FileSystemEventArgs e) => ReportAndRescanSafe($"▲▲  Created. ", e.FullPath);
+    void OnDeleted(object s, FileSystemEventArgs e) => ReportAndRescanSafe($"▼▼  Deleted. ", e.FullPath);
+    void OnRenamed(object sner, RenamedEventArgs e) => ReportAndRescanSafe($"►◄  Renamed. ", e.OldFullPath, e.FullPath);
     void OnError(object senderrr, ErrorEventArgs e) => ReportAnd_Exception(e.GetException());
 
     void ReportAnd_Exception(Exception? ex)
@@ -246,7 +239,7 @@ namespace LogMonitorWpfApp
 
       if (file1.Contains(".Er▄▀."))
         await Task.Run(async () => await StartAudioNotifier(PlayErrorFAF));
-     else if (chkAll.IsChecked == true && _ctsAudio is null) // do not "hide" error sound!!!
+      else if (chkAll.IsChecked == true && _ctsAudio is null) // do not "hide" error sound!!!
         await Task.Run(async () => await StartAudioNotifier(PlayQuietFAF));
 
       await Task.Run(async () => await StartVisualNotifier());
@@ -269,7 +262,7 @@ namespace LogMonitorWpfApp
       {
         while (await timer.WaitForNextTickAsync(_ctsAudio.Token))
         {
-          audio();                                  
+          audio();
           _ = Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => tbkHeadr.Text = $" {_i++}++ "));          //await Task.Delay(_i);
         }
       }

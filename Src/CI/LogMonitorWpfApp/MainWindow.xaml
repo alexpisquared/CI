@@ -37,7 +37,7 @@
   </Window.Resources>
   <Grid>
     <Grid.ColumnDefinitions>
-      <ColumnDefinition Width="Auto"/>
+      <ColumnDefinition Width="444"/>
       <ColumnDefinition Width="05"/>
       <ColumnDefinition Width="2*"/>
     </Grid.ColumnDefinitions>
@@ -56,7 +56,7 @@
           <MenuItem Header="_Re-Scan"    Click="OnScan"/>
           <MenuItem Header="Re-_Move"    Click="OnRDel"  ToolTip="Remove deleted files" />
           <MenuItem Header="Re-_Watch"   Click="OnWtch" />
-          <MenuItem Header="_Clear Hist" Click="OnStop" />
+          <MenuItem Header="_Clear Hist" Click="OnClr0" />
           <MenuItem Header="_Settings"   Click="OnEdit" />
           <MenuItem Header="_Exit"       Click="OnClose"     />
         </MenuItem>
@@ -72,11 +72,11 @@
 
     <DataGrid Grid.Row="1" x:Name="dg1" Grid.Column="0" Margin="5 0 0 0" CanUserDeleteRows="True" CanUserAddRows="False" AutoGenerateColumns="False" VerticalGridLinesBrush="Transparent" HorizontalGridLinesBrush="Transparent" RowHeaderStyle="{x:Null}">
       <DataGrid.Columns>
-        <DataGridTextColumn     Header=" Filename"      Binding="{Binding PartName    }"		                            />
-        <DataGridTextColumn     Header=" Last Write  "  Binding="{Binding LastWriteTime, StringFormat=\{0:d·HH\\:mm\}}" />
-        <DataGridTextColumn     Header=" Status"        Binding="{Binding Status      }"			Width="*"		              />
-        <DataGridCheckBoxColumn Header=" Gone "         Binding="{Binding IsDeleted   }"			                          />
-        <!--<DataGridTextColumn Header=" Seen  "	      Binding="{Binding LastSeen  	 , StringFormat=\{0:HH\\:mm\}}"   />-->
+        <DataGridTextColumn     Header=" Filename" Binding="{Binding PartName    }"		                      Width="165"/>
+        <DataGridTextColumn     Header="FileTime"  Binding="{Binding LastWriteTime, StringFormat=\{0:d-HH\\:mm\}}" Width="69" Foreground="#ff0"/>
+        <DataGridTextColumn     Header="Status"    Binding="{Binding Status      }"			Width="*"		              />
+        <DataGridCheckBoxColumn Header=" Gone "    Binding="{Binding IsDeleted   }"			                          />
+        <!--<DataGridTextColumn Header=" Seen  "	 Binding="{Binding LastSeen  	 , StringFormat=\{0:HH\\:mm\}}"   />-->
       </DataGrid.Columns>
     </DataGrid>
 
@@ -91,7 +91,7 @@
       <Button Content="   Move _Old   "   Click="OnMvOl" ToolTip="Move old files to the ..\Logs.Old folder" />
       <Button Content="   Re-_Watch   "   Click="OnWtch" />
       <Button Content="   _Settings   "   Click="OnEdit" ToolTip="Edit Settings.JSON with VS Code" />
-      <Button Content="   _Clear   "      Click="OnStop" IsDefault="True" IsCancel="True" ToolTip="Clear/Stop Notifier" />
+      <Button Content="   _Clear   "      Click="OnClr0" IsDefault="True" IsCancel="True" ToolTip="Clear/Stop Notifier" />
     </StackPanel>
 
     <GridSplitter Grid.Column="1" Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="Transparent" Margin="-5 0"/>
