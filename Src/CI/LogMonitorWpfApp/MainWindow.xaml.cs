@@ -95,7 +95,8 @@ namespace LogMonitorWpfApp
     }
     void OnMvOl(object s, RoutedEventArgs e)
     {
-      _timerVisualNotifier.Stop(); Bpr.Tick(); try
+      _timerVisualNotifier.Stop(); Bpr.Tick(); 
+      try
       {
         _ = new Process { StartInfo = new ProcessStartInfo(@"CMD", $@"CMD /C MOVE {tbxPath.Text}\*.* {tbxPath.Text.Replace("Logs", "Logs.Old")} ") { RedirectStandardError = true, UseShellExecute = false } }.Start();
         OnScan(s, e);
@@ -224,7 +225,7 @@ namespace LogMonitorWpfApp
       _timerVisualNotifier.Start();
       _timerVisualNotifier.IsEnabled = true;
 
-      Task.Run(async () => await StartAnotherAlarm(file1.Contains(".Errs.")));
+      Task.Run(async () => await StartAnotherAlarm(file1.Contains(".Er▄▀.")));
 
 #if !DEBUG
       UseSayExe(msg);
@@ -235,17 +236,11 @@ namespace LogMonitorWpfApp
       while (_timerVisualNotifier.IsEnabled)
       {
         if (isError)
-        {
           await Bpr.WaveAsync(2000, 5000, 3);
-        }
-        else
-        {
-          //await Bpr.WaveAsync(141, 100, 7);
-          await Bpr.WaveAsync(060, 101, 7);
-        }
-
+        //else          await Bpr.WaveAsync(060, 101, 7);          //await Bpr.WaveAsync(141, 100, 7);
+        
         await Task.Delay(++_i);
-        Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => tbkHeadr.Text = $"{_i}"));
+        _ = Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => tbkHeadr.Text = $"{_i}"));
       }
     }
     int _i = 0;
