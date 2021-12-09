@@ -37,7 +37,7 @@
   </Window.Resources>
   <Grid>
     <Grid.ColumnDefinitions>
-      <ColumnDefinition Width="3*"/>
+      <ColumnDefinition Width="Auto"/>
       <ColumnDefinition Width="05"/>
       <ColumnDefinition Width="2*"/>
     </Grid.ColumnDefinitions>
@@ -47,26 +47,27 @@
       <RowDefinition Height="Auto"/>
     </Grid.RowDefinitions>
 
-    <Menu HorizontalAlignment="Left" Margin="5 0 0 0" Background="Transparent" >
-      <MenuItem Header="***" FontSize="20" Background="Transparent">
-        <MenuItem Header="123" />
-        <MenuItem Header="E_xplore"    Click="OnExpl"/>
-        <MenuItem Header="_VS Code"    Click="OnVScd"/>
-        <MenuItem Header="_Re-Scan"    Click="OnScan"/>
-        <MenuItem Header="Re-_Move"    Click="OnRDel"  ToolTip="Remove deleted files" />
-        <MenuItem Header="Re-_Watch"   Click="OnWtch" />
-        <MenuItem Header="_Clear Hist" Click="OnStop" />
-        <MenuItem Header="_Settings"   Click="OnEdit" />
-        <MenuItem Header="_Exit"       Click="OnClose"     />
-      </MenuItem>
-    </Menu>
+    <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Grid.ColumnSpan="3" Margin="5" >
+      <Menu HorizontalAlignment="Left" Margin="5 5 5 0" Background="Transparent" >
+        <MenuItem Header="° ° °" FontSize="20" Background="Transparent">
+          <MenuItem Header="123" />
+          <MenuItem Header="E_xplore"    Click="OnExpl"/>
+          <MenuItem Header="_VS Code"    Click="OnVScd"/>
+          <MenuItem Header="_Re-Scan"    Click="OnScan"/>
+          <MenuItem Header="Re-_Move"    Click="OnRDel"  ToolTip="Remove deleted files" />
+          <MenuItem Header="Re-_Watch"   Click="OnWtch" />
+          <MenuItem Header="_Clear Hist" Click="OnStop" />
+          <MenuItem Header="_Settings"   Click="OnEdit" />
+          <MenuItem Header="_Exit"       Click="OnClose"     />
+        </MenuItem>
+      </Menu>
 
-    <TextBlock x:Name="tbkHeadr" Grid.ColumnSpan="1" Grid.RowSpan="1" HorizontalAlignment="Left"  Margin="88 5"/>
-    <TextBlock x:Name="tbkTitle" Grid.ColumnSpan="3" Grid.RowSpan="1" HorizontalAlignment="Right" Margin="5"/>
-    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Grid.ColumnSpan="3" Margin="5" >
-      <CheckBox Content="_All Changes" x:Name="chkAll" ToolTip="Monitor all changes (or errors only)" HorizontalAlignment="Center" Grid.ColumnSpan="3" VerticalAlignment="Center" Foreground="#066"/>
-      <Button Content="_1" Click="OnStart6" />
-      <Button Content="_0" Click="OnStop_6" />
+      <CheckBox Content="_All Changes  " x:Name="chkAll" ToolTip="Monitor all changes (or errors only)" HorizontalAlignment="Center" Grid.ColumnSpan="3" VerticalAlignment="Center" Foreground="#066"/>
+      <Button Content="  _1  " Click="OnStart6" />
+      <Button Content="  _0  " Click="OnStop_6" />
+      
+      <TextBlock x:Name="tbkHeadr" Margin="5"/>
+      <TextBlock x:Name="tbkTitle" Margin="5"/>
     </StackPanel>
 
     <DataGrid Grid.Row="1" x:Name="dg1" Grid.Column="0" Margin="5 0 0 0" CanUserDeleteRows="True" CanUserAddRows="False" AutoGenerateColumns="False" VerticalGridLinesBrush="Transparent" HorizontalGridLinesBrush="Transparent" RowHeaderStyle="{x:Null}">
@@ -78,7 +79,7 @@
         <!--<DataGridTextColumn Header=" Seen  "	      Binding="{Binding LastSeen  	 , StringFormat=\{0:HH\\:mm\}}"   />-->
       </DataGrid.Columns>
     </DataGrid>
-    
+
     <ListBox  Grid.Row="1" x:Name="lbxHist" Grid.Column="2" Margin="0 0 5 0" />
 
     <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center" Grid.ColumnSpan="3" Margin="5" >

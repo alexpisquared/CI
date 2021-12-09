@@ -18,7 +18,9 @@ namespace LogMonitorWpfApp
     readonly FileSystemWatcher _watcher;
     //readonly DispatcherTimer _timerVisualNotifier;
     readonly UserSettings _us;
+    CancellationTokenSource? _ctsVisual, _ctsAudio;
     const int _ms = 200;
+    int _i = 0;
 
     public IBpr Bpr { get; }
 
@@ -79,8 +81,13 @@ namespace LogMonitorWpfApp
     void OnStop(object s, RoutedEventArgs e)
     {
       Bpr.Tick();
-      //if (_timerVisualNotifier.IsEnabled) _timerVisualNotifier.Stop(); else WindowState = WindowState.Minimized;
-      if (_cts is not null) _cts.Cancel(); else WindowState = WindowState.Minimized;
+      if (_ctsVisual is not null)
+      {
+        _ctsVisual.Cancel();
+        _ctsAudio?.Cancel();
+      }
+      else
+        WindowState = WindowState.Minimized;
 
       Title = $"Log Monitor - No events since  {DateTime.Now:HH:mm}  -  {VersionHelper.CurVerStr}";
     }
@@ -106,7 +113,9 @@ namespace LogMonitorWpfApp
     void OnMvOl(object s, RoutedEventArgs e)
     {
       Bpr.Tick();
-      _cts?.Cancel(); //_timerVisualNotifier.Stop();
+      _ctsVisual?.Cancel();
+      _ctsAudio?.Cancel();
+
       try
       {
         var process = new Process { StartInfo = new ProcessStartInfo(@"CMD", $@"CMD /C MOVE {tbxPath.Text}\*.* {tbxPath.Text.Replace("Logs", "Logs.Old")} ") { RedirectStandardError = true, UseShellExecute = false } };
@@ -185,7 +194,7 @@ namespace LogMonitorWpfApp
       watcher.IncludeSubdirectories = true;
       watcher.EnableRaisingEvents = true;
 
-      ReportAndStartAlarms($"Monitoring commenced.", path, "");
+      //ReportAndStartAlarms($"Monitoring commenced.", path, "");
 
       return watcher;
     }
@@ -235,69 +244,79 @@ namespace LogMonitorWpfApp
       tbkTitle.Text = $"{DateTimeOffset.Now:HH:mm}  {msg}  {Path.GetFileNameWithoutExtension(file1)}  {file2}";
       lbxHist.Items.Add(tbkTitle.Text);
 
-      Bpr.Tick();
-      _ = await StaqrtVisualNotifier(); // _timerVisualNotifier.Start(); _timerVisualNotifier.IsEnabled = true;
+      if (file1.Contains(".Er▄▀."))
+        await Task.Run(async () => await StartAudioNotifier(PlayErrorFAF));
+     else if (chkAll.IsChecked == true && _ctsAudio is null) // do not "hide" error sound!!!
+        await Task.Run(async () => await StartAudioNotifier(PlayQuietFAF));
 
-      //Task.Run(async () => await StartAnotherAlarm(file1.Contains(".Er▄▀.")));
-      //await Task.Run(async () => await StartAnotherAlarm(file1.Contains(".Er▄▀.")));
-      await StartAnotherAlarm(file1.Contains(".Er▄▀."));
+      await Task.Run(async () => await StartVisualNotifier());
 
 #if !DEBUG
       UseSayExe(msg);
 #endif
     }
-    async Task StartAnotherAlarm(bool isError)
+
+    void PlayErrorFAF() => Task.Run(async () => await Bpr.WaveAsync(2000, 5000, 3));
+    void PlayQuietFAF() => Task.Run(async () => await Bpr.WaveAsync(60, 401, 7)); //too quiet - worked on the old monitor speakers only: 060, 101, 7));
+
+    async Task StartAudioNotifier(Action audio)
     {
-      while (_cts is not null) //  _timerVisualNotifier.IsEnabled)
-      {
-        if (isError)
-          await Bpr.WaveAsync(2000, 5000, 3);
-        else if (chkAll.IsChecked == true)
-          await Bpr.WaveAsync(060, 101, 7);          //await Bpr.WaveAsync(141, 100, 7);
-
-        await Task.Delay(++_i);
-        _ = Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => tbkHeadr.Text = $"{_i}"));
-      }
-    }
-    int _i = 0;
-
-    static void UseSayExe(string msg) => new Process { StartInfo = new ProcessStartInfo(@"say.exe", $"\"{msg}\"") { RedirectStandardError = true, UseShellExecute = false } }.Start();
-
-    CancellationTokenSource? _cts;
-    async void OnStart6(object sender, RoutedEventArgs e)
-    {
-      _ = await StaqrtVisualNotifier();
-    }
-
-    async Task<PeriodicTimer> StaqrtVisualNotifier()
-    {
-      Trace.WriteLine($"\nStarting    ({DateTime.Now:HH:mm:ss})");
-      _cts = new();
-      PeriodicTimer timer = new(TimeSpan.FromMilliseconds(_ms + _ms));
+      Trace.WriteLine($"\n{DateTime.Now:HH:mm:ss}   Starting Audio   ");
+      _ctsAudio?.Cancel();
+      _ctsAudio = new();
+      PeriodicTimer timer = new(TimeSpan.FromMilliseconds(1000));
       try
       {
-        while (await timer.WaitForNextTickAsync(_cts.Token))
+        while (await timer.WaitForNextTickAsync(_ctsAudio.Token))
         {
-          Trace.WriteLine($"***({DateTime.Now:HH:mm:ss})");
-          { Title = $"▄▀▄▀▄▀▄▀ Log Monitor  -  {VersionHelper.CurVerStr}"; await Task.Delay(_ms); Title = $"▀▄▀▄▀▄▀▄ Log Monitor  -  {VersionHelper.CurVerStr}"; }
+          audio();                                  
+          _ = Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => tbkHeadr.Text = $" {_i++}++ "));          //await Task.Delay(_i);
         }
       }
       catch (OperationCanceledException ex) { Trace.WriteLine("Cancelled:  " + ex.Message); }
       catch (Exception ex) { Trace.WriteLine("@@@@@@@@@:  " + ex.Message); }
-      finally { if (_cts is not null) { _cts.Dispose(); _cts = null; } }
+      finally { if (_ctsAudio is not null) { _ctsAudio.Dispose(); _ctsAudio = null; } }
+    }
+    async Task StartVisualNotifier()
+    {
+      Trace.WriteLine($"\n{DateTime.Now:HH:mm:ss}   Starting Visual   ");
+      _ctsVisual?.Cancel();
+      _ctsVisual = new();
+      PeriodicTimer timer = new(TimeSpan.FromMilliseconds(_ms + _ms));
+      try
+      {
+        while (await timer.WaitForNextTickAsync(_ctsVisual.Token))
+        {
+          Trace.Write($"v");
 
-      return timer;
+          _ = Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(async () =>
+          {
+            Title = $"▄▀▄▀▄▀▄▀   Log Monitor  -  {VersionHelper.CurVerStr}"; await Task.Delay(_ms);
+            Title = $" ▄▀▄▀▄▀▄▀  Log Monitor  -  {VersionHelper.CurVerStr}"; await Task.Delay(_ms);
+            Title = $"  ▄▀▄▀▄▀▄▀ Log Monitor  -  {VersionHelper.CurVerStr}"; await Task.Delay(_ms);
+            Title = $"▀▄▀▄▀▄▀▄   Log Monitor  -  {VersionHelper.CurVerStr}"; await Task.Delay(_ms);
+            Title = $" ▀▄▀▄▀▄▀▄  Log Monitor  -  {VersionHelper.CurVerStr}"; await Task.Delay(_ms);
+            Title = $"  ▀▄▀▄▀▄▀▄ Log Monitor  -  {VersionHelper.CurVerStr}";
+          }));
+        }
+      }
+      catch (OperationCanceledException ex) { Trace.WriteLine("Cancelled:  " + ex.Message); }
+      catch (Exception ex) { Trace.WriteLine("@@@@@@@@@:  " + ex.Message); }
+      finally { if (_ctsVisual is not null) { _ctsVisual.Dispose(); _ctsVisual = null; } }
     }
 
+    async void OnStart6(object sender, RoutedEventArgs e) => await StartVisualNotifier();
     void OnStop_6(object sender, RoutedEventArgs e)
     {
       Trace.WriteLine($"\nCancelling  ({DateTime.Now:HH:mm:ss})");
       try
       {
-        _cts?.Cancel();
-        Trace.WriteLine($"Cancelled   ({DateTime.Now:HH:mm:ss})");
+        _ctsVisual?.Cancel();
+        _ctsAudio?.Cancel();
+        Trace.WriteLine($"Cancelled   both !!!!! ({DateTime.Now:HH:mm:ss})");
       }
       catch (Exception ex) { Trace.WriteLine("--------:  " + ex.Message); }
     }
+    static void UseSayExe(string msg) => new Process { StartInfo = new ProcessStartInfo(@"say.exe", $"\"{msg}\"") { RedirectStandardError = true, UseShellExecute = false } }.Start();
   }
 }
