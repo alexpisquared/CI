@@ -41,7 +41,7 @@ namespace LogMonitorWpfApp
 
       _watcher = StartWatch(tbxPath.Text);
 
-#if DEBUG
+#if !_DEBUG
       if (Environment.MachineName == "D21-MJ0AWBEV") /**/ { Top = 32; Left = 920; }
       if (Environment.MachineName == "RAZER1")       /**/ { Top = 32; Left = 0; }
 #endif
@@ -113,7 +113,7 @@ namespace LogMonitorWpfApp
         {
           _ctsVisual?.Cancel();
           _ctsAudio?.Cancel();
-          await Bpr.TickAsync();
+          await Bpr.BeepAsync(400, 400);
         }
       else
         WindowState = WindowState.Minimized;
