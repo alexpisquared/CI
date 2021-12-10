@@ -20,9 +20,7 @@ namespace LogMonitorWpfApp
     CancellationTokenSource? _ctsVisual, _ctsAudio;
     const int _ms = 200;
     int _i = 0;
-
     public IBpr Bpr { get; }
-
     public MainWindow(IBpr bpr)
     {
       InitializeComponent();
@@ -48,7 +46,6 @@ namespace LogMonitorWpfApp
       if (Environment.MachineName == "RAZER1")       /**/ { Top = 32; Left = 0; }
 #endif
     }
-
     /* void OnScan(object s, RoutedEventArgs e) { _timerNotifier.Stop(); Report(ReScanFolder(tbxPath.Text), "", ""); }
     void OnWtch(object s, RoutedEventArgs e) { _timerNotifier.Stop(); Bpr.Tick(); StopWatch(); StartWatch(tbxPath.Text); }
     void OnStop(object s, RoutedEventArgs e) { _timerNotifier.Stop(); Bpr.Tick(); /*lbxHist.Items.Clear();* /
@@ -69,12 +66,11 @@ namespace LogMonitorWpfApp
 
 
       */
-
     void OnLoaded(object s, RoutedEventArgs e) { dg1.ItemsSource = _us.FileDataList; Title = $"Log Monitor - No events since  {DateTime.Now:HH:mm}  -  {VersionHelper.CurVerStr}"; }
     void OnScan(object s, RoutedEventArgs e) => ReportAndRescan(ReScanFolder(tbxPath.Text), "", "");
     void OnWtch(object s, RoutedEventArgs e) { Bpr.Tick(); StopWatch(); StartWatch(tbxPath.Text); }
     void OnExpl(object s, RoutedEventArgs e) { Bpr.Tick(); try { _ = new Process { StartInfo = new ProcessStartInfo(@"Explorer.exe", $"\"{tbxPath.Text}\"") { RedirectStandardError = true, UseShellExecute = false } }.Start(); } catch (Exception ex) { Trace.WriteLine(ex.Message); throw; } }
-    void OnVScd(object s, RoutedEventArgs e) { Bpr.Tick(); try { _ = new Process { StartInfo = new ProcessStartInfo(@$"{Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)}\Programs\Microsoft VS Code\Code.exe", $"\"{tbxPath.Text}\"") { RedirectStandardError = true, UseShellExecute = false } }.Start(); } catch (Exception ex) { Trace.WriteLine(ex.Message); throw; } }
+    void OnVScd(object s, RoutedEventArgs e) { Bpr.Tick(); try { _ = new Process { StartInfo = new ProcessStartInfo(@$"{Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)}\Programs\Microsoft VS Code\Code.exe", $"\"{tbxPath.Text}\"") { RedirectStandardError = true, UseShellExecute = false } }.Start(); } catch (Exception ex) { Trace.WriteLine(ex.Message); throw; } while (_ctsVisual is not null || _ctsAudio is not null) { _ctsVisual?.Cancel(); _ctsAudio?.Cancel(); } }
     void OnEdit(object s, RoutedEventArgs e) { Bpr.Tick(); try { _ = new Process { StartInfo = new ProcessStartInfo(@$"{Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)}\Programs\Microsoft VS Code\Code.exe", $"\"{UserSettingsStore.Store}\"") { RedirectStandardError = true, UseShellExecute = false } }.Start(); } catch (Exception ex) { Trace.WriteLine(ex.Message); throw; } }//_ = new Process { StartInfo = new ProcessStartInfo(@"Notepad.exe", $"\"{UserSettingsStore._store}\"") { RedirectStandardError = true, UseShellExecute = false } }.Start(); //_ = new Process { StartInfo = new ProcessStartInfo(@"C:\Program Files\Microsoft Visual Studio\2022\Preview\Common7\IDE\devenv.exe", $"\"{UserSettingsStore._store}\"") { RedirectStandardError = true, UseShellExecute = false } }.Start(); }
     void OnRDel(object s, RoutedEventArgs e)
     {
@@ -109,14 +105,16 @@ namespace LogMonitorWpfApp
       }
       catch (Exception ex) { Trace.WriteLine(ex.Message); throw; }
     }
-    void OnClr0(object s, RoutedEventArgs e)
+    async void OnClr0(object s, RoutedEventArgs e)
     {
       Bpr.Tick();
       if (_ctsVisual is not null || _ctsAudio is not null)
-      {
-        _ctsVisual?.Cancel();
-        _ctsAudio?.Cancel();
-      }
+        while (_ctsVisual is not null || _ctsAudio is not null)
+        {
+          _ctsVisual?.Cancel();
+          _ctsAudio?.Cancel();
+          await Bpr.TickAsync();
+        }
       else
         WindowState = WindowState.Minimized;
     }
