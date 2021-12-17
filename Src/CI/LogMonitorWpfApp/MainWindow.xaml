@@ -83,15 +83,17 @@
     <ListBox  Grid.Row="1" x:Name="lbxHist" Grid.Column="2" Margin="0 0 5 0" />
 
     <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center" Grid.ColumnSpan="3" Margin="5" >
-      <TextBox x:Name="tbxPath" Text=""   MinWidth="200" />
-      <Button Content="   E_xplore   "    Click="OnExpl" />
-      <Button Content="   _VS Code   "    Click="OnVScd" />
+      <TextBox x:Name="tbxPath" Text="" MinWidth="200" />
+      <Button Content="   E_xplore   "   Click="OnExpl" />
+      <Button Content="   _VS Code   "   Click="OnVScd" />
+      <Button Content="    _Refresh    " Click="OnRDel" IsDefault="True" ToolTip="Remove deleted from the list" />
+      <Button Content="   Move _Old   "  Click="OnMvOl" ToolTip="Move old files to the ..\Logs.Old folder" />
+      <Button Content="   _Settings   "  Click="OnEdit" ToolTip="Edit Settings.JSON with VS Code" />
+      <Button Content="   _Ack   "       Click="OnClr0" IsCancel="True" ToolTip="Stop Notifier + Minimize Window" />
+      <!--
       <Button Content="   _Re-Scan   "    Click="OnScan" />
-      <Button Content="   CleanLst   "    Click="OnRDel" ToolTip="Remove deleted from the list" />
-      <Button Content="   Move _Old   "   Click="OnMvOl" ToolTip="Move old files to the ..\Logs.Old folder" />
       <Button Content="   Re-_Watch   "   Click="OnWtch" />
-      <Button Content="   _Settings   "   Click="OnEdit" ToolTip="Edit Settings.JSON with VS Code" />
-      <Button Content="   _Clear   "      Click="OnClr0" IsDefault="True" IsCancel="True" ToolTip="Clear/Stop Notifier" />
+      -->
     </StackPanel>
 
     <GridSplitter Grid.Column="1" Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="Transparent" Margin="-5 0"/>

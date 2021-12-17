@@ -85,6 +85,9 @@ namespace LogMonitorWpfApp
             break;
           }
         } while (_us.FileDataList.Any(r => r.IsDeleted));
+        
+        StopWatch(); 
+        StartWatch(tbxPath.Text);
       }
       catch (Exception ex) { Trace.WriteLine(ex.Message); throw; }
     }
