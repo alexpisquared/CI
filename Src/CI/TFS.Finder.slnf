@@ -1,0 +1,10 @@
+{
+  "solution": {
+    "path": "CI.sln",
+    "projects": [
+      "..\\..\\..\\CI-Reimagined-Invention\\Src\\CI-RI\\AAV.TfsManager\\AAV.TfsManager.csproj",
+      "TFS.NET.Framework\\TFS.NET.Framework.csproj",
+      "TFS\\TFS.csproj"
+    ]
+  }
+}

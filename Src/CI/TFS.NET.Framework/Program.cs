@@ -1,11 +1,11 @@
-﻿using Microsoft.TeamFoundation.Client;
-using Microsoft.TeamFoundation.VersionControl.Client;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
+using Microsoft.TeamFoundation.Client;
+using Microsoft.TeamFoundation.VersionControl.Client;
 
 namespace TFS
 {
@@ -23,11 +23,9 @@ namespace TFS
 
       var now = DateTime.Now;
       var fnm = (args.Length < 2 ? "fnm" : args[1]).Replace(":", "-").Replace("|", " ").Replace("?", "-");
-      var outputF = $@"C:\temp\TFS.Search\{fnm} - {now:HHmm} - Filenames Only.txt";
-      var details = $@"C:\temp\TFS.Search\{fnm} - {now:HHmm} - Files & Lines.txt";
+      var filenamesOnlyFile = $@"C:\temp\TFS.Search\{fnm} - {now:HHmm} - Filenames Only.txt";
+      var filesAndLinesFile = $@"C:\temp\TFS.Search\{fnm} - {now:HHmm} - Files & Lines.txt";
       var headerL = $"Times  Checked-in  Filename       Searching for  '{(args.Length < 2 ? "" : args[1])}'  in  '{args[0]}'    {Environment.NewLine}";
-
-      //Process.Start("Explorer.exe", @"D:\temp\TFS.Search\");
 
       try
       {
@@ -36,8 +34,8 @@ namespace TFS
 
         var versionControl = tfs.GetService<VersionControlServer>();
 
-        File.AppendAllText(outputF, headerL);
-        File.AppendAllText(details, headerL);
+        File.AppendAllText(filenamesOnlyFile, headerL);
+        File.AppendAllText(filesAndLinesFile, headerL);
 
         var allProjs = versionControl.GetAllTeamProjects(true);
         Console.ForegroundColor = ConsoleColor.Magenta;
@@ -65,7 +63,7 @@ namespace TFS
                 Console.ForegroundColor = ConsoleColor.DarkYellow;
                 var header = $"{"",5}  {file.CheckinDate:yyyy-MM-dd}  {file.ServerItem}   {Environment.NewLine}";
                 Console.Write(header);
-                File.AppendAllText(outputF, header);
+                File.AppendAllText(filenamesOnlyFile, header);
               }
               else
               {
@@ -75,14 +73,14 @@ namespace TFS
                   Console.ForegroundColor = ConsoleColor.DarkYellow;
                   var header = $"{lines.Count,5}  {file.CheckinDate:yyyy-MM-dd}  {file.ServerItem}   {Environment.NewLine}";
                   Console.Write(header);
-                  File.AppendAllText(outputF, header);
-                  File.AppendAllText(details, header);
+                  File.AppendAllText(filenamesOnlyFile, header);
+                  File.AppendAllText(filesAndLinesFile, header);
 
                   foreach (var line in lines)
                   {
                     Console.ForegroundColor = ConsoleColor.Green;
                     Console.WriteLine($"  {line}");
-                    File.AppendAllText(details, $"  {line}{Environment.NewLine}");
+                    File.AppendAllText(filesAndLinesFile, $"  {line}{Environment.NewLine}");
                   }
 
                   Console.ForegroundColor = ConsoleColor.Gray;
@@ -99,7 +97,9 @@ namespace TFS
       {
         var report = $"\n from - to = took:  {now:HH:mm} - {DateTime.Now:HH:mm} = {(DateTime.Now - now).TotalMinutes:N1} min";
         Console.WriteLine(report);
-        File.AppendAllText(details, report );
+        File.AppendAllText(filesAndLinesFile, report);
+
+        _ = Process.Start("Explorer.exe", $"/select, \"{filesAndLinesFile}\"");
       }
 
       //Console.ForegroundColor = ConsoleColor.DarkGreen;      Console.WriteLine("======== Press any key ");      Console.ResetColor();      Console.ReadKey();
