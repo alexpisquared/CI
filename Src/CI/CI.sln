@@ -5,7 +5,7 @@ VisualStudioVersion = 17.0.31423.177
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AnimatedUML", "AnimatedUML\AnimatedUML.csproj", "{A4918C1E-BEA4-4830-AA15-6C1E2DC09301}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RdpFacility", "RdpFacility\RdpFacility.csproj", "{EC1232AB-0108-46B9-B3AE-5248E5DDB056}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RdpSessionKeeper", "RdpFacility\RdpSessionKeeper.csproj", "{EC1232AB-0108-46B9-B3AE-5248E5DDB056}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EventLogger", "EventLogger\EventLogger.csproj", "{6D50F279-4CD8-4502-BE87-4EF037C2510E}"
 EndProject
