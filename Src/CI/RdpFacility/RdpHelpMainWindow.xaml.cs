@@ -21,7 +21,7 @@ public partial class RdpHelpMainWindow : Window
     _idleTimeoutAnalizer = ita;
     tbkMin.Content = report;
     chkAdbl2.IsChecked = chkAdbl1.IsChecked = /*chkAdbl.IsChecked = */_appset.IsAudible;/*).Value;*/
-    chkInso2.IsChecked = chkInso1.IsChecked = /*chkInso.IsChecked = */_appset.IsInsmnia;/*).Value;*/
+    //chkInso2.IsChecked = chkInso1.IsChecked = /*chkInso.IsChecked = */_appset.IsInsmnia;/*).Value;*/
     chkPosn2.IsChecked = chkPosn1.IsChecked = /*chkPosn.IsChecked = */_appset.IsPosning;/*).Value;*/
     chkMind2.IsChecked = chkMind1.IsChecked = /*chkMind.IsChecked = */_appset.IsMindBiz;/*).Value;*/
 
@@ -44,8 +44,6 @@ public partial class RdpHelpMainWindow : Window
     if (_idleTimeoutAnalizer.RanByTaskScheduler)
     {
       WindowStartupLocation = WindowStartupLocation.CenterScreen;
-      //if (_appset.IsPosning)
-      TogglePosition("onLoaded");
     }
     tbkMin.Content += $"ITA so far  {_idleTimeoutAnalizer.MinTimeoutMin:N1} min  {(_idleTimeoutAnalizer.RanByTaskScheduler ? "(byTS)" : "(!byTS)")}";
     tbkBig.Content = Title = $"{(_appset.IsInsmnia ? "ON" : "Off")} @ {DateTimeOffset.Now:HH:mm}";
@@ -72,7 +70,7 @@ public partial class RdpHelpMainWindow : Window
     if (chkMind1.IsChecked == true)
     {
       var ibh = IsBizHours;
-      chkInso1.IsChecked = ibh;
+      //chkInso1.IsChecked = ibh;
       _insomniac.SetInso(ibh);
       Background = new SolidColorBrush(ibh ? Colors.DarkCyan : Colors.DarkRed);
 
@@ -81,10 +79,10 @@ public partial class RdpHelpMainWindow : Window
       if (!isManual && !ibh) _hrsAdded = 0; // reset to 0 for the next day.
     }
 
-    if (_appset.IsPosning)
-      TogglePosition("onTick");
-    else
-      await File.AppendAllTextAsync(App.TextLog, $"■"); // {prefix}onTick  {_crlf}");
+    //if (_appset.IsPosning)
+    //  TogglePosition("onTick");
+    //else
+    //  await File.AppendAllTextAsync(App.TextLog, $"■"); // {prefix}onTick  {_crlf}");
   }
 
   bool IsBizHours => _from <= DateTimeOffset.Now.Hour && DateTimeOffset.Now.Hour <= (_till + _hrsAdded); // && DateTimeOffset.Now.Hour != 12 
@@ -101,7 +99,7 @@ public partial class RdpHelpMainWindow : Window
 
       Win32.ClientToScreen(Process.GetCurrentProcess().MainWindowHandle, ref newPointToWin);
 
-      //Jan 2022: nothing reliably works :(
+      //Jan 2022: nothing reliably works :(  must be the interferance of non-RDP screens
       //newPointToWin.x = 1400;  
       //newPointToWin.y = 1400;
 
