@@ -1,4 +1,5 @@
-﻿using CI.Standard.Lib.Helpers;
+﻿using CI.Standard.Lib.Base;
+using CI.Standard.Lib.Helpers;
 using System.Collections.ObjectModel;
 
 namespace LogMonitorConsoleApp

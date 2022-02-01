@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Threading;
+using CI.Standard.Lib.Base;
 using CI.Standard.Lib.Helpers;
 using LogMonitorConsoleApp;
 using StandardContracts.Lib;
@@ -237,6 +238,9 @@ namespace LogMonitorWpfApp
     {
       tbkTitle.Text = $"{DateTimeOffset.Now:HH:mm}  {msg}  {Path.GetFileNameWithoutExtension(file1)}  {file2}";
       lbxHist.Items.Add(tbkTitle.Text);
+
+      WindowState = WindowState.Normal;
+      Topmost = true;
 
       if (file1.Contains(".Er▄▀."))
         await Task.Run(async () => await StartAudioNotifier(PlayErrorFAF));
