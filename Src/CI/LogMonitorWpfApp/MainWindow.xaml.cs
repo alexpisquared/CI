@@ -86,8 +86,8 @@ namespace LogMonitorWpfApp
             break;
           }
         } while (_us.FileDataList.Any(r => r.IsDeleted));
-        
-        StopWatch(); 
+
+        StopWatch();
         StartWatch(tbxPath.Text);
       }
       catch (Exception ex) { Trace.WriteLine(ex.Message); throw; }
@@ -120,9 +120,12 @@ namespace LogMonitorWpfApp
           await Bpr.BeepAsync(400, 400);
         }
       else
+      {
         WindowState = WindowState.Minimized;
+        Topmost = false;
+        Background = System.Windows.Media.Brushes.DarkCyan;
+      }
     }
-
     void On0000(object s, RoutedEventArgs e) { Bpr.Tick(); try { } catch (Exception ex) { Trace.WriteLine(ex.Message); throw; } }
     void OnClose(object s, RoutedEventArgs e) => Close();
 
@@ -241,6 +244,7 @@ namespace LogMonitorWpfApp
 
       WindowState = WindowState.Normal;
       Topmost = true;
+      Background = System.Windows.Media.Brushes.Fuchsia;
 
       if (file1.Contains(".Er▄▀."))
         await Task.Run(async () => await StartAudioNotifier(PlayErrorFAF));
