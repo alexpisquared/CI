@@ -86,7 +86,9 @@ namespace LogMonitorWpfApp
             break;
           }
         } while (_us.FileDataList.Any(r => r.IsDeleted));
-        
+
+        Title = $"Log Monitor - Refreshed on {DateTime.Now:HH:mm}  -  {VersionHelper.CurVerStr}";
+
         StopWatch(); 
         StartWatch(tbxPath.Text);
       }
