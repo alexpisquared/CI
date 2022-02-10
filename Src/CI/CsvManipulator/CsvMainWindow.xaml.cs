@@ -29,7 +29,7 @@ namespace CsvManipulator
                 Top = 1700; Left = 1100;
             }
 
-            await prepare(Environment.MachineName == "RAZER1" ? @"C:\temp\CI.csv" : @"C:\Users\alex.pigida\Downloads\BBSSecurities202102121_test_withcomma.csv");
+            await prepare(Environment.MachineName == "RAZER1" ? @"C:\temp\CI.csv" : @"C:\Users\apigida\Downloads\BBSSecurities202102121_test_withcomma.csv");
             await convert();
 #endif
             await Task.Yield();
