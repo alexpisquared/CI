@@ -89,7 +89,7 @@ namespace LogMonitorWpfApp
 
         Title = $"Log Monitor - Refreshed on {DateTime.Now:HH:mm}  -  {VersionHelper.CurVerStr}";
 
-        StopWatch(); 
+        StopWatch();
         StartWatch(tbxPath.Text);
       }
       catch (Exception ex) { Trace.WriteLine(ex.Message); throw; }
@@ -117,12 +117,14 @@ namespace LogMonitorWpfApp
       if (_ctsVisual is not null || _ctsAudio is not null)
         while (_ctsVisual is not null || _ctsAudio is not null)
         {
+
           _ctsVisual?.Cancel();
           _ctsAudio?.Cancel();
           await Bpr.BeepAsync(400, 400);
         }
       else
       {
+        Title = $"Log Monitor - Minimized on {DateTime.Now:HH:mm}  -  {VersionHelper.CurVerStr}";
         WindowState = WindowState.Minimized;
         Topmost = false;
         Background = System.Windows.Media.Brushes.DarkCyan;
