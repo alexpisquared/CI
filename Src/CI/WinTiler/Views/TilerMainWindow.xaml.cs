@@ -52,7 +52,7 @@ namespace WinTiler.Views
         //await Task.Delay(33);
         _lastTime = DateTime.Now;
       }
-      catch (Exception ex) { _logger.LogError(ex, $""); ex.Pop(this); }
+      catch (Exception ex) { _logger.LogError(ex, $""); /*ex.Pop(this);*/ }
       finally
       {
         ctrlPanel.Visibility = Visibility.Visible; // ctrlPanel.IsEnabled = true;
