@@ -8,58 +8,58 @@ using System.Windows;
 using System.Windows.Threading;
 using WinTiler.Lib;
 
-namespace WinTiler.Views
+namespace WinTiler.Views;
+
+public partial class TilerMainWindow : CI.Visual.Lib.Base.WindowBase
 {
-  public partial class TilerMainWindow : CI.Visual.Lib.Base.WindowBase
+  readonly SmartTiler _st = new();
+  readonly ILogger<TilerMainWindow> _logger;
+  readonly IConfigurationRoot? _config;
+  DispatcherTimer _timer;
+  DateTime _lastTime;
+  Bpr _bpr = new Bpr();
+
+  public SmartTiler St => _st; // binding
+
+  public TilerMainWindow(ILogger<TilerMainWindow> logger, IConfigurationRoot? config)
   {
-    readonly SmartTiler _st = new();
-    readonly ILogger<TilerMainWindow> _logger;
-    readonly IConfigurationRoot? _config;
-    DispatcherTimer _timer;
-    DateTime _lastTime;
-    Bpr _bpr = new Bpr();
-
-    public SmartTiler St => _st; // binding
-
-    public TilerMainWindow(ILogger<TilerMainWindow> logger, IConfigurationRoot? config)
-    {
-      InitializeComponent();
-      DataContext = this;
-      _logger = logger;
-      _config = config;
-      _timer = new(TimeSpan.FromSeconds(1), DispatcherPriority.Background, new EventHandler((s, e) => tick(s, e)), Dispatcher.CurrentDispatcher);//tu: one-line timer
-    }
+    InitializeComponent();
+    DataContext = this;
+    _logger = logger;
+    _config = config;
+    _timer = new(TimeSpan.FromSeconds(1), DispatcherPriority.Background, new EventHandler((s, e) => tick(s, e)), Dispatcher.CurrentDispatcher);//tu: one-line timer
+  }
 
 #if true
-    void onLoaded(object s, RoutedEventArgs e) { onBoth(s, e); }
-    async void tick(object? s, EventArgs e)
+  void onLoaded(object s, RoutedEventArgs e) { onBoth(s, e); }
+  async void tick(object? s, EventArgs e)
+  {
+    var dt = (DateTime.Now - _lastTime);
+    tbkTitl2.Content = $"_{(60 - dt.TotalSeconds):##}";
+    if (dt.TotalSeconds > 60)
+      await findWindows();
+  }
+  async Task findWindows()
+  {
+    _bpr.Beep(2222, .150);
+    ctrlPanel.Visibility = Visibility.Hidden; // ctrlPanel.IsEnabled = false; :too flashy
+    Title = "Finding ...";
+    _timer.Stop();
+    try
     {
-      var dt = (DateTime.Now - _lastTime);
-      tbkTitl2.Content = $"_{(60 - dt.TotalSeconds):##}";
-      if (dt.TotalSeconds > 60)
-        await findWindows();
+      //await Task.Delay(33);
+      Title = _st.CollectDesktopWindows(chkSM.IsChecked == true); //         Task.Run(() => { var rv = _st.CollectDesktopWindows(); return rv; }).ContinueWith(_ => Title = _.Result, TaskScheduler.FromCurrentSynchronizationContext());
+                                                                  //await Task.Delay(33);
+      _lastTime = DateTime.Now;
     }
-    async Task findWindows()
+    catch (Exception ex) { _logger.LogError(ex, $""); /*ex.Pop(this);*/ }
+    finally
     {
-      _bpr.Beep(2222, .150);
-      ctrlPanel.Visibility = Visibility.Hidden; // ctrlPanel.IsEnabled = false; :too flashy
-      Title = "Finding ...";
-      _timer.Stop();
-      try
-      {
-        //await Task.Delay(33);
-        Title = _st.CollectDesktopWindows(chkSM.IsChecked == true); //         Task.Run(() => { var rv = _st.CollectDesktopWindows(); return rv; }).ContinueWith(_ => Title = _.Result, TaskScheduler.FromCurrentSynchronizationContext());
-        //await Task.Delay(33);
-        _lastTime = DateTime.Now;
-      }
-      catch (Exception ex) { _logger.LogError(ex, $""); /*ex.Pop(this);*/ }
-      finally
-      {
-        ctrlPanel.Visibility = Visibility.Visible; // ctrlPanel.IsEnabled = true;
-        _timer.Start();
-        await _bpr.BeepAsync(3333, .150);
-      }
+      ctrlPanel.Visibility = Visibility.Visible; // ctrlPanel.IsEnabled = true;
+      _timer.Start();
+      await _bpr.BeepAsync(3333, .150);
     }
+  }
 #else
     void onLoaded(object s, RoutedEventArgs e)
     {
@@ -101,19 +101,18 @@ namespace WinTiler.Views
     }
 #endif
 
-    async void onFind(object s, RoutedEventArgs e) => await findWindows();
-    async void onTile(object s, RoutedEventArgs e) { Title += " Tiling"; _st.Tile(chkPS.IsChecked); await _bpr.TickAsync(); }
-    async void onBoth(object s, RoutedEventArgs e) { await findWindows(); onTile(s, e); }
-    void onNotM(object s, RoutedEventArgs e) { _st.Tile(chkPS.IsChecked); ; }
-    void onRstr(object s, RoutedEventArgs e) { }
-    void onExit(object s, RoutedEventArgs e) { Close(); }
+  async void onFind(object s, RoutedEventArgs e) => await findWindows();
+  async void onTile(object s, RoutedEventArgs e) { Title += " Tiling"; _st.Tile(chkPS.IsChecked); await _bpr.TickAsync(); }
+  async void onBoth(object s, RoutedEventArgs e) { await findWindows(); onTile(s, e); }
+  void onNotM(object s, RoutedEventArgs e) { _st.Tile(chkPS.IsChecked); ; }
+  void onRstr(object s, RoutedEventArgs e) { }
+  void onExit(object s, RoutedEventArgs e) { Close(); }
 
-    internal async Task FindWindows()
-    {
-      if ((DateTime.Now - _lastTime).TotalMinutes >= 1)
-        await findWindows();
-      //else
-      //  Title = $"Too early .. until {_lastTime.AddMinutes(1):HH:mm:ss}";
-    }
+  internal async Task FindWindows()
+  {
+    if ((DateTime.Now - _lastTime).TotalMinutes >= 1)
+      await findWindows();
+    //else
+    //  Title = $"Too early .. until {_lastTime.AddMinutes(1):HH:mm:ss}";
   }
 }

@@ -180,7 +180,7 @@
   <WindowChrome.WindowChrome>
     <WindowChrome CaptionHeight="0" ResizeBorderThickness="10" />
   </WindowChrome.WindowChrome>
-  <Border Style="{StaticResource BorderStyle_Aav0}" Background="#4888" CornerRadius="20">
+  <Border Style="{StaticResource BorderStyle_Aav0}" Background="#4888" CornerRadius="26">
     <Grid>
       <Grid x:Name="ZommablePanel" Grid.ColumnSpan="2" >
         <Grid.Resources>
@@ -232,7 +232,7 @@
         <Image Margin="5" Source="/WinTiler;component/Assets/W_Icon.ico"        Height="30" ToolTip="      for app icon"/>  
       </StackPanel>
 
-      <Button Content="X" Height="32" Width="32" Click="onExit" IsCancel="True" VerticalAlignment="Top" HorizontalAlignment="Right" />
+      <Button Content="X" Height="44" Width="44" Click="onExit" IsCancel="True" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="4"/>
     </Grid>
   </Border>
 

@@ -71,12 +71,13 @@ namespace WinTiler.Lib
       var y = screen.WorkingArea.Top;
       var x = screen.WorkingArea.Left;
       int c = 0, i = 0;
-      const int marg = 10;
-      const int extn = marg + marg;
+      const int marg = 2;
+      const int extn = 2 * marg;
+      const int eeee = 2 * extn;
       foreach (var w in _allWindows.OrderBy(r => r.Sorter))
       {
         Externs.SetWindowPlacement(w.Handle, Externs.ShowWindowCommands.Restore);
-        Externs.SetWindowPos(w.Handle, x - marg, y - marg, window_width + extn, window_height + extn);
+        Externs.SetWindowPos(w.Handle, x + marg, y + extn, window_width - extn, window_height - eeee);
         i++;
         x += window_width;
         if (++c >= cols) // ..to next row
@@ -92,7 +93,7 @@ namespace WinTiler.Lib
           if (windowsLeft < cols && windowsLeft != 0)
           {
             window_width = screen.WorkingArea.Width / windowsLeft;
-            window_height = screen.WorkingArea.Height - y;
+            window_height = screen.WorkingArea.Height + y;
           }
         }
       }
