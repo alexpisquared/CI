@@ -41,7 +41,7 @@ public partial class TilerMainWindow : CI.Visual.Lib.Base.WindowBase
   }
   async Task findWindows()
   {
-    _bpr.Beep(2222, .150);
+    _bpr.Beep(222, .150);
     ctrlPanel.Visibility = Visibility.Hidden; // ctrlPanel.IsEnabled = false; :too flashy
     Title = "Finding ...";
     _timer.Stop();
@@ -57,7 +57,7 @@ public partial class TilerMainWindow : CI.Visual.Lib.Base.WindowBase
     {
       ctrlPanel.Visibility = Visibility.Visible; // ctrlPanel.IsEnabled = true;
       _timer.Start();
-      await _bpr.BeepAsync(3333, .150);
+      await _bpr.BeepAsync(333, .150);
     }
   }
 #else
