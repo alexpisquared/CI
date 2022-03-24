@@ -29,7 +29,7 @@ namespace TFS
 
       try
       {
-        var tfs = TfsTeamProjectCollectionFactory.GetTeamProjectCollection(new Uri("http://dev-tfs1.pariotech.com:8080/tfs/defaultcollection"));
+        var tfs = TfsTeamProjectCollectionFactory.GetTeamProjectCollection(new Uri("https://ciis-sourcecode.corporate.ciglobe.net/tfs/DefaultCollection")); // :new|old: http://dev-tfs1.pariotech.com:8080/tfs/defaultcollection"));
         tfs.EnsureAuthenticated();
 
         var versionControl = tfs.GetService<VersionControlServer>();
