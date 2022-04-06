@@ -124,7 +124,7 @@ namespace LogMonitorWpfApp
         }
       else
       {
-        Title = $"Log Monitor - Minimized on {DateTime.Now:HH:mm}  -  {VersionHelper.CurVerStr}";
+        Title = $"Log Monitor  -  {VersionHelper.CurVerStr}  -  {DateTime.Now:HH:mm} minimized  ";
         WindowState = WindowState.Minimized;
         Topmost = false;
         Background = System.Windows.Media.Brushes.DarkCyan;
