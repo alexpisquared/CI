@@ -248,12 +248,17 @@ namespace LogMonitorWpfApp
 
       WindowState = WindowState.Normal;
       Topmost = true;
-      Background = System.Windows.Media.Brushes.Fuchsia;
 
       if (file1.Contains(".Er▄▀."))
+      {
         await Task.Run(async () => await StartAudioNotifier(PlayErrorFAF));
+        Background = System.Windows.Media.Brushes.Fuchsia;
+      }
       else if (chkAll.IsChecked == true && _ctsAudio is null) // do not "hide" error sound!!!
+      {
         await Task.Run(async () => await StartAudioNotifier(PlayQuietFAF));
+        Background = System.Windows.Media.Brushes.Beige;
+      }
 
       await Task.Run(async () => await StartVisualNotifier());
 
