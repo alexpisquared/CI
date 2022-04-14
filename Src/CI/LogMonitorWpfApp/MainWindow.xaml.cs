@@ -83,6 +83,7 @@ public partial class MainWindow : Window
   async void OnVSCode(object s, RoutedEventArgs e)
   {
     StopWatch();
+      WindowState = WindowState.Minimized;
     await Bpr.TickAsync();
     try
     {
@@ -91,7 +92,12 @@ public partial class MainWindow : Window
         process.WaitForExit();
     }
     catch (Exception ex) { Trace.WriteLine(ex.Message); throw; }
-    finally { StartWatch(); }
+    finally
+    {
+      StartWatch();
+      WindowState = WindowState.Normal;
+    }
+
     while (_ctsVisual is not null || _ctsAudio is not null) { _ctsVisual?.Cancel(); _ctsAudio?.Cancel(); }
   }
   void OnSetngs(object s, RoutedEventArgs e) { Bpr.Tick(); try { _ = new Process { StartInfo = new ProcessStartInfo(@$"{Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)}\Programs\Microsoft VS Code\Code.exe", $"\"{UserSettingsStore.Store}\"") { RedirectStandardError = true, UseShellExecute = false } }.Start(); } catch (Exception ex) { Trace.WriteLine(ex.Message); throw; } }//_ = new Process { StartInfo = new ProcessStartInfo(@"Notepad.exe", $"\"{UserSettingsStore._store}\"") { RedirectStandardError = true, UseShellExecute = false } }.Start(); //_ = new Process { StartInfo = new ProcessStartInfo(@"C:\Program Files\Microsoft Visual Studio\2022\Preview\Common7\IDE\devenv.exe", $"\"{UserSettingsStore._store}\"") { RedirectStandardError = true, UseShellExecute = false } }.Start(); }
@@ -117,7 +123,7 @@ public partial class MainWindow : Window
       {
         _us.FileDataList.Remove(deletedFile);
         break;
-      } 
+      }
     } while (_us.FileDataList.Any(r => r.IsDeleted));
   }
 
@@ -131,7 +137,7 @@ public partial class MainWindow : Window
       foreach (var file in new DirectoryInfo(tbxPath.Text).GetFiles()) // var process = new Process { StartInfo = new ProcessStartInfo(@"CMD", $@"CMD /C MOVE {tbxPath.Text}\*.* {tbxPath.Text.Replace("Logs", "Logs.Old")} ") { RedirectStandardError = true, UseShellExecute = false } };      if (process.Start())        process.WaitForExit();
         if (file.LastWriteTime < DateTime.Today)
           File.Move(file.FullName, file.FullName.Replace("Logs", "Logs.Old"));
-      
+
       OnChckFS(s, e);
       OnResetW(s, e);
 
@@ -151,9 +157,9 @@ public partial class MainWindow : Window
       {
         _ctsVisual?.Cancel();
         _ctsAudio?.Cancel();
-        await Bpr.BeepAsync(400, 400);
+        await Bpr.BeepAsync(400, .4);
       }
-    else
+    //else
     {
       Background = System.Windows.Media.Brushes.DarkCyan;
       Title = $"Log Monitor  -  {VersionHelper.CurVerStr}  -  {DateTime.Now:HH:mm:ss} minimized  ";

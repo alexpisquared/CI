@@ -74,7 +74,7 @@
 
     <DataGrid Grid.Row="1" x:Name="dg1" Grid.Column="0" Margin="5 0 0 0" CanUserDeleteRows="True" CanUserAddRows="False" AutoGenerateColumns="False" VerticalGridLinesBrush="Transparent" HorizontalGridLinesBrush="Transparent" RowHeaderStyle="{x:Null}">
       <DataGrid.Columns>
-        <DataGridTextColumn     Header=" Filename" Binding="{Binding PartName    }"		                      Width="196"/>
+        <DataGridTextColumn     Header=" Filename" Binding="{Binding PartName, Mode=OneWay}"		                   Width="196" />
         <DataGridTextColumn     Header="FileTime"  Binding="{Binding LastWriteTime, StringFormat=\{0:d-HH\\:mm\}}" Width="69" Foreground="#ff0"/>
         <DataGridTextColumn     Header="Status"    Binding="{Binding Status      }"			Width="*"		              />
         <DataGridCheckBoxColumn Header=" Gone "    Binding="{Binding IsDeleted   }"			                          />
