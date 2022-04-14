@@ -257,8 +257,10 @@ namespace LogMonitorWpfApp
       else if (chkAll.IsChecked == true && _ctsAudio is null) // do not "hide" error sound!!!
       {
         await Task.Run(async () => await StartAudioNotifier(PlayQuietFAF));
-        Background = System.Windows.Media.Brushes.Beige;
+        Background = System.Windows.Media.Brushes.Brown;
       }
+      else
+        Background = System.Windows.Media.Brushes.Yellow;
 
       await Task.Run(async () => await StartVisualNotifier());
 
