@@ -48,31 +48,33 @@
     </Grid.RowDefinitions>
 
     <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Grid.ColumnSpan="3" Margin="5" >
+
+      <TextBlock x:Name="tbkHeadr" Margin="5" Foreground="#f44" FontWeight="Bold" />
+
       <Menu HorizontalAlignment="Left" Margin="5 5 5 0" Background="Transparent" >
         <MenuItem Header="° ° °" FontSize="20" Background="Transparent">
-          <MenuItem Header="123" />
-          <MenuItem Header="E_xplore"    Click="OnExpl"/>
-          <MenuItem Header="_VS Code"    Click="OnVScd"/>
-          <MenuItem Header="_Re-Scan"    Click="OnScan"/>
-          <MenuItem Header="Re-_Move"    Click="OnRDel"  ToolTip="Remove deleted files" />
-          <MenuItem Header="Re-_Watch"   Click="OnWtch" />
-          <MenuItem Header="_Clear Hist" Click="OnClr0" />
-          <MenuItem Header="_Settings"   Click="OnEdit" />
-          <MenuItem Header="_Exit"       Click="OnClose"     />
+        </MenuItem>
+        <MenuItem Header="ChckFS" Click="OnChckFS" />
+        <MenuItem Header="WtchOn" Click="OnWtchOn" />
+        <MenuItem Header="WtchNo" Click="OnWtchNo" />
+        <MenuItem Header="ReWtch" Click="OnReWtch" />
+        <MenuItem Header="AckAck" Click="OnAckAck" />
+        <MenuItem Header="Setngs" Click="OnSetngs" />
+        <MenuItem Header="Close"  Click="OnClose"  />
+
+        <MenuItem Header="° ° °" FontSize="20" Background="Transparent">
+          <CheckBox Content="_All Changes  " x:Name="chkAll" ToolTip="Monitor all changes (or errors only)" HorizontalAlignment="Center" Grid.ColumnSpan="3" VerticalAlignment="Center" Foreground="#066"/>
+          <Button Content="  _1  " Click="OnStart6" />
+          <Button Content="  _0  " Click="OnStop_6" />
         </MenuItem>
       </Menu>
 
-      <CheckBox Content="_All Changes  " x:Name="chkAll" ToolTip="Monitor all changes (or errors only)" HorizontalAlignment="Center" Grid.ColumnSpan="3" VerticalAlignment="Center" Foreground="#066"/>
-      <Button Content="  _1  " Click="OnStart6" />
-      <Button Content="  _0  " Click="OnStop_6" />
-      
-      <TextBlock x:Name="tbkHeadr" Margin="5"/>
-      <TextBlock x:Name="tbkTitle" Margin="5"/>
+      <TextBlock x:Name="tbkTitle" Margin="5" Foreground="#00f" />
     </StackPanel>
 
     <DataGrid Grid.Row="1" x:Name="dg1" Grid.Column="0" Margin="5 0 0 0" CanUserDeleteRows="True" CanUserAddRows="False" AutoGenerateColumns="False" VerticalGridLinesBrush="Transparent" HorizontalGridLinesBrush="Transparent" RowHeaderStyle="{x:Null}">
       <DataGrid.Columns>
-        <DataGridTextColumn     Header=" Filename" Binding="{Binding PartName    }"		                      Width="165"/>
+        <DataGridTextColumn     Header=" Filename" Binding="{Binding PartName    }"		                      Width="196"/>
         <DataGridTextColumn     Header="FileTime"  Binding="{Binding LastWriteTime, StringFormat=\{0:d-HH\\:mm\}}" Width="69" Foreground="#ff0"/>
         <DataGridTextColumn     Header="Status"    Binding="{Binding Status      }"			Width="*"		              />
         <DataGridCheckBoxColumn Header=" Gone "    Binding="{Binding IsDeleted   }"			                          />
@@ -84,12 +86,12 @@
 
     <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center" Grid.ColumnSpan="3" Margin="5" >
       <TextBox x:Name="tbxPath" Text="" MinWidth="200" />
-      <Button Content="   E_xplore   "   Click="OnExpl" />
-      <Button Content="   _VS Code   "   Click="OnVScd" />
-      <Button Content="    _Refresh    " Click="OnRDel" IsDefault="True" ToolTip="Remove deleted from the list" />
-      <Button Content="   Move _Old   "  Click="OnMvOl" ToolTip="Move old files to the ..\Logs.Old folder" />
-      <Button Content="   _Settings   "  Click="OnEdit" ToolTip="Edit Settings.JSON with VS Code" />
-      <Button Content="   _Ack   "       Click="OnClr0" IsCancel="True" ToolTip="Stop Notifier + Minimize Window" />
+      <Button Content=" E_xplore "   Click="OnExplre" />
+      <Button Content=" _VS Code "   Click="OnVSCode" />
+      <Button Content="  _ReWatch "  Click="OnResetW" IsDefault="True" ToolTip="Remove deleted from the list" />
+      <Button Content=" Move _Old "  Click="OnMovOld" ToolTip="Move old files to the ..\Logs.Old folder" />
+      <Button Content=" _Settings "  Click="OnSetngs" ToolTip="Edit Settings.JSON with VS Code" />
+      <Button Content="   _Ack   "   Click="OnAckAck" IsCancel="True" ToolTip="Stop Notifier + Minimize Window" />
       <!--
       <Button Content="   _Re-Scan   "    Click="OnScan" />
       <Button Content="   Re-_Watch   "   Click="OnWtch" />
