@@ -1,5 +1,6 @@
 ﻿using CI.Standard.Lib.Extensions;
 using CI.Standard.Lib.Helpers;
+using CI.Visual.Lib.Extensions;
 using DB.Inventory.Dbo.Models;
 using EF.DbHelper.Lib;
 using Microsoft.EntityFrameworkCore;
