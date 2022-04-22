@@ -1,11 +1,4 @@
-﻿using CI.Standard.Lib.Extensions;
-using CI.Standard.Lib.Helpers;
-using CI.Visual.Lib.Extensions;
-using DB.Inventory.Dbo.Models;
-using EF.DbHelper.Lib;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
-using System;
+﻿using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -15,6 +8,12 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
+using CI.Standard.Lib.Helpers;
+using CI.Visual.Lib.Extensions;
+using DB.Inventory.Dbo.Models;
+using EF.DbHelper.Lib;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace CI.PermissionManager.Views
 {
@@ -50,7 +49,7 @@ namespace CI.PermissionManager.Views
 
       var svrs = _config["ServerList"].Split(" ").ToList();
       cbxSrvr.ItemsSource = svrs;
-      cbxSrvr.SelectedIndex = 0;
+      cbxSrvr.SelectedIndex = 1;
       _context = new(string.Format(_config["SqlConStr"], svrs.First()));
     }
     async void onLoaded(object s, RoutedEventArgs e)
@@ -161,7 +160,7 @@ namespace CI.PermissionManager.Views
     async Task<int> saveIfDirty(bool skipUdate = false)
     {
       var rowsSaved = -1;
-      
+
       if (!_isDirty)
         return rowsSaved;
 
@@ -219,6 +218,11 @@ namespace CI.PermissionManager.Views
       }
       catch (Exception ex) { _logger.LogError($"{ex}"); ex.Pop(this); }
     }
+
+    void OnA(object sender, RoutedEventArgs e) => new AppPermPAsWindow().Show();
+    void OnU(object sender, RoutedEventArgs e) => new UserPAsWindow().Show();
+    void OnM(object sender, RoutedEventArgs e) => new MainWindow().Show();
+
     async void onAddMe(object s, RoutedEventArgs e)
     {
       _context.Users.Local.Add(new User { UserId = $@"{Environment.UserDomainName}\{Environment.UserName}", AdminAccess = 0, Type = "U", Status = "A" });

@@ -331,6 +331,13 @@
         <Button	Margin="2" Content="£" FontFamily="Wingdings 2" FontSize="16" Height="26" Padding="0 -1" Width="26" Foreground="#111" BorderThickness="0" ToolTip="Maximize Window"   Click="onWindowMaximize" x:Name="wm"                         />
         <Button	Margin="2" Content="+" FontFamily="Wingdings 2" FontSize="16" Height="26" Padding="0 -1" Width="26" Foreground="#111" BorderThickness="0" ToolTip="Restore Window"    Click="onWindowRestoree" x:Name="wr" Visibility="Collapsed"  />
         <Button	Margin="2" Content="r" FontFamily="Webdings"    FontSize="18" Height="26" Padding="0 -1" Width="26" Foreground="#F00" BorderThickness="0" ToolTip="Close Application" Click="OnExit"           IsCancel="True"  />
+        <Menu>
+          <MenuItem Header="_123" >
+            <MenuItem Header="_App Perm" Click="OnA" />
+            <MenuItem Header="_Usr Perm" Click="OnU" />
+            <MenuItem Header="_Main Win" Click="OnM" />
+          </MenuItem>
+        </Menu>
       </StackPanel>
 
     </Grid>

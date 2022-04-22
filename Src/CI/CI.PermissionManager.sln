@@ -15,6 +15,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DB.Inventory.Dbo", "DB.Inve
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EF.DbHelper.Lib", "..\..\..\CI-Reimagined-Invention\Src\CI-RI\EF.DbHelper.Lib\EF.DbHelper.Lib.csproj", "{4A4101EF-A93C-4A87-8E20-232F797355FE}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ExternalRepo", "ExternalRepo", "{83939CB1-5FF1-4C64-B427-F4B5A1D4C97F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -100,6 +102,12 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{B7D2AF72-8B4F-4EFF-87E5-C136BC8105CD} = {83939CB1-5FF1-4C64-B427-F4B5A1D4C97F}
+		{A09293B0-5A56-4250-A2FA-61602626891F} = {83939CB1-5FF1-4C64-B427-F4B5A1D4C97F}
+		{D4D0EC23-47F2-46CA-A154-A8D8E58C6B36} = {83939CB1-5FF1-4C64-B427-F4B5A1D4C97F}
+		{4A4101EF-A93C-4A87-8E20-232F797355FE} = {83939CB1-5FF1-4C64-B427-F4B5A1D4C97F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {000ABACB-7137-4D8B-8D2A-A3AECFA01775}
