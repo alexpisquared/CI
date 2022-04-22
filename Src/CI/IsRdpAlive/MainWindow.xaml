@@ -1,0 +1,89 @@
+﻿<Window x:Class="IsRdpAlive.MainWindow" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d" xmlns:local="clr-namespace:IsRdpAlive"
+        Title="Quick and Slow Silver :)" Topmost="True" WindowStyle="None" AllowsTransparency="True" Background="Transparent"
+        Height="100" Width="100" ResizeMode="CanResizeWithGrip" WindowStartupLocation="CenterScreen"
+        ToolTip="Drag around with the mouse or press Escape to close">
+  <Window.Resources>
+    <SineEase     x:Key="sb"     EasingMode="EaseInOut" />
+    <ElasticEase  x:Key="eb"     EasingMode="EaseInOut" />
+    <Storyboard   x:Key="sb1"                Duration="0:0:12"  RepeatBehavior="Forever" >
+      <DoubleAnimation From="45"   To="405"  Duration="0:0:12"  Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[2].(RotateTransform.Angle)" />
+      <ColorAnimation  To="#00a" Duration="0:0:03"  Storyboard.TargetProperty="(Fill).(GradientBrush.GradientStops)[0].(Color)" EasingFunction="{StaticResource sb}" AutoReverse="False" />
+      <ColorAnimation  To="#a00" Duration="0:0:03"  Storyboard.TargetProperty="(Fill).(GradientBrush.GradientStops)[0].(Color)" EasingFunction="{StaticResource sb}" AutoReverse="False" BeginTime="0:0:03" />
+      <ColorAnimation  To="#070" Duration="0:0:03"  Storyboard.TargetProperty="(Fill).(GradientBrush.GradientStops)[0].(Color)" EasingFunction="{StaticResource sb}" AutoReverse="False" BeginTime="0:0:06" />
+      <ColorAnimation  To="#000" Duration="0:0:03"  Storyboard.TargetProperty="(Fill).(GradientBrush.GradientStops)[0].(Color)" EasingFunction="{StaticResource sb}" AutoReverse="False" BeginTime="0:0:09" />
+    </Storyboard>
+    <Storyboard x:Key="sb2">
+      <DoubleAnimation From="315" To="-45" Duration="0:0:7" RepeatBehavior="Forever" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[2].(RotateTransform.Angle)" EasingFunction="{StaticResource eb}" />
+    </Storyboard>
+    <Storyboard   x:Key="sb3"                Duration="0:0:08"  RepeatBehavior="Forever" AutoReverse="True"  >
+      <DoubleAnimation From="360"  To="0"    Duration="0:0:04"  Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[2].(RotateTransform.Angle)" AutoReverse="True"   EasingFunction="{StaticResource sb}" />
+      <ColorAnimation  To="#f0f" Duration="0:0:02"  Storyboard.TargetProperty="(Fill).(GradientBrush.GradientStops)[0].(Color)" EasingFunction="{StaticResource sb}" AutoReverse="False" />
+      <ColorAnimation  To="#ff0" Duration="0:0:02"  Storyboard.TargetProperty="(Fill).(GradientBrush.GradientStops)[0].(Color)" EasingFunction="{StaticResource sb}" AutoReverse="False" BeginTime="0:0:02" />
+      <ColorAnimation  To="#00f" Duration="0:0:02"  Storyboard.TargetProperty="(Fill).(GradientBrush.GradientStops)[0].(Color)" EasingFunction="{StaticResource sb}" AutoReverse="False" BeginTime="0:0:04" />
+      <ColorAnimation  To="#0a0" Duration="0:0:02"  Storyboard.TargetProperty="(Fill).(GradientBrush.GradientStops)[0].(Color)" EasingFunction="{StaticResource sb}" AutoReverse="False" BeginTime="0:0:06" />
+    </Storyboard>
+    <RadialGradientBrush x:Key="EllipseFill1">
+      <GradientStop Color="#000"   Offset="1"/>
+      <GradientStop Color="Silver" Offset="0"/>
+    </RadialGradientBrush>
+    <RadialGradientBrush x:Key="EllipseFill2">
+      <GradientStop Color="#444"   Offset="1"/>
+      <GradientStop Color="Silver" Offset="0"/>
+    </RadialGradientBrush>
+    <RadialGradientBrush x:Key="EllipseFill3">
+      <GradientStop Color="#0a0"   Offset="1"/>
+    </RadialGradientBrush>
+  </Window.Resources>
+  <Grid>
+    <Viewbox StretchDirection="Both" Stretch="Uniform">
+      <Grid>
+        <Ellipse Fill="{DynamicResource EllipseFill1}" Width="100" Height="66" RenderTransformOrigin="0.5,0.5">
+          <Ellipse.RenderTransform>
+            <TransformGroup>
+              <ScaleTransform/>
+              <SkewTransform/>
+              <RotateTransform Angle="45"/>
+              <TranslateTransform/>
+            </TransformGroup>
+          </Ellipse.RenderTransform>
+          <Ellipse.Triggers>
+            <EventTrigger RoutedEvent="Ellipse.Loaded">
+              <BeginStoryboard Storyboard="{StaticResource sb1}" />
+            </EventTrigger>
+          </Ellipse.Triggers>
+        </Ellipse>
+        <Ellipse Fill="{DynamicResource EllipseFill2}" Width="50" Height="40" RenderTransformOrigin="0.5,0.5">
+          <Ellipse.RenderTransform>
+            <TransformGroup>
+              <ScaleTransform/>
+              <SkewTransform/>
+              <RotateTransform Angle="-45"/>
+              <TranslateTransform/>
+            </TransformGroup>
+          </Ellipse.RenderTransform>
+          <Ellipse.Triggers>
+            <EventTrigger RoutedEvent="Ellipse.Loaded">
+              <BeginStoryboard Storyboard="{StaticResource sb2}" />
+            </EventTrigger>
+          </Ellipse.Triggers>
+        </Ellipse>
+        <Ellipse Fill="{DynamicResource EllipseFill3}" Width="30" Height="20" RenderTransformOrigin="0.5,0.5">
+          <Ellipse.RenderTransform>
+            <TransformGroup>
+              <ScaleTransform/>
+              <SkewTransform/>
+              <RotateTransform Angle="45"/>
+              <TranslateTransform/>
+            </TransformGroup>
+          </Ellipse.RenderTransform>
+          <Ellipse.Triggers>
+            <EventTrigger RoutedEvent="Ellipse.Loaded">
+              <BeginStoryboard Storyboard="{StaticResource sb3}" />
+            </EventTrigger>
+          </Ellipse.Triggers>
+        </Ellipse>
+      </Grid>
+    </Viewbox>
+    <Rectangle Fill="#3000" Width="15" Height="15" HorizontalAlignment="Right" VerticalAlignment="Bottom"/>
+  </Grid>
+</Window>

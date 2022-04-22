@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
@@ -18,7 +19,7 @@ public partial class MainWindow : Window
 {
   readonly FileSystemWatcher _watcher;
   readonly UserSettings _us;
-  CancellationTokenSource? _ctsVisual, _ctsAudio, _ctsCheckr;
+  CancellationTokenSource? _ctsVideo, _ctsAudio, _ctsCheckr;
   const int _ms = 200;
   int _i = 0, _w = 0;
 
@@ -91,21 +92,17 @@ public partial class MainWindow : Window
       if (process.Start())
         process.WaitForExit();
     }
-    catch (Exception ex) { MessageBox.Show(ex.ToString());  }
+    catch (Exception ex) { MessageBox.Show(ex.ToString()); }
     finally
     {
       StartWatch();
       WindowState = WindowState.Normal;
     }
 
-    while (_ctsVisual is not null || _ctsAudio is not null)
-    {
-      _ctsVisual?.Cancel();
-      _ctsAudio?.Cancel();
-      await Bpr.BeepAsync(200, .5);
-    }
+    while (_ctsVideo is not null || _ctsAudio is not null) { _ctsVideo?.Cancel(); _ctsAudio?.Cancel(); }
+
   }
-  void OnSetngs(object s, RoutedEventArgs e) { Bpr.Tick(); try { _ = new Process { StartInfo = new ProcessStartInfo(@$"{Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)}\Programs\Microsoft VS Code\Code.exe", $"\"{UserSettingsStore.Store}\"") { RedirectStandardError = true, UseShellExecute = false } }.Start(); } catch (Exception ex) { MessageBox.Show(ex.ToString());  } }//_ = new Process { StartInfo = new ProcessStartInfo(@"Notepad.exe", $"\"{UserSettingsStore._store}\"") { RedirectStandardError = true, UseShellExecute = false } }.Start(); //_ = new Process { StartInfo = new ProcessStartInfo(@"C:\Program Files\Microsoft Visual Studio\2022\Preview\Common7\IDE\devenv.exe", $"\"{UserSettingsStore._store}\"") { RedirectStandardError = true, UseShellExecute = false } }.Start(); }
+  void OnSetngs(object s, RoutedEventArgs e) { Bpr.Tick(); try { _ = new Process { StartInfo = new ProcessStartInfo(@$"{Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)}\Programs\Microsoft VS Code\Code.exe", $"\"{UserSettingsStore.Store}\"") { RedirectStandardError = true, UseShellExecute = false } }.Start(); } catch (Exception ex) { MessageBox.Show(ex.ToString()); } }//_ = new Process { StartInfo = new ProcessStartInfo(@"Notepad.exe", $"\"{UserSettingsStore._store}\"") { RedirectStandardError = true, UseShellExecute = false } }.Start(); //_ = new Process { StartInfo = new ProcessStartInfo(@"C:\Program Files\Microsoft Visual Studio\2022\Preview\Common7\IDE\devenv.exe", $"\"{UserSettingsStore._store}\"") { RedirectStandardError = true, UseShellExecute = false } }.Start(); }
   async void OnResetW(object s, RoutedEventArgs e)
   {
     await StopWatch();
@@ -116,7 +113,7 @@ public partial class MainWindow : Window
 
       Title = $"Log Monitor  -  OnResetW on {DateTime.Now:HH:mm:ss}  -  {VersionHelper.CurVerStr}";
     }
-    catch (Exception ex) { MessageBox.Show(ex.ToString());  }
+    catch (Exception ex) { MessageBox.Show(ex.ToString()); }
     finally { StartWatch(); }
   }
   async void OnMovOld(object s, RoutedEventArgs e)
@@ -133,34 +130,29 @@ public partial class MainWindow : Window
       OnChckFS(s, e);
       OnResetW(s, e);
 
-      _ctsVisual?.Cancel();
+      _ctsVideo?.Cancel();
       _ctsAudio?.Cancel();
       await Bpr.TickAsync();
       Background = System.Windows.Media.Brushes.Cyan;
       Title = $"Log Monitor  -  {VersionHelper.CurVerStr}  -  {DateTime.Now:HH:mm:ss} Moved Olds   ";
     }
-    catch (Exception ex) { MessageBox.Show(ex.ToString());  }
+    catch (Exception ex) { MessageBox.Show(ex.ToString()); }
     finally { StartWatch(); }
   }
   async void OnAckAck(object s, RoutedEventArgs e)
   {
     Bpr.Tick();
 
-    while (_ctsVisual is not null || _ctsAudio is not null)
-    {
-      _ctsVisual?.Cancel();
-      _ctsAudio?.Cancel();
-      await Bpr.BeepAsync(400, .4);
-    }
+    while (_ctsVideo is not null || _ctsAudio is not null) { _ctsVideo?.Cancel(); _ctsAudio?.Cancel();      /*await Bpr.BeepAsync(400, .4);*/    }
 
-    Background = System.Windows.Media.Brushes.DarkCyan;
-    Title = $"Log Monitor  -  {VersionHelper.CurVerStr}  -  {DateTime.Now:HH:mm:ss} minimized  * * * ";
-    await Task.Delay(333);
     WindowState = WindowState.Minimized;
+    Background = System.Windows.Media.Brushes.DarkCyan;
+    await Task.Delay(_ms * 10);
+    Title = $"Log Monitor  -  {VersionHelper.CurVerStr}  -  {DateTime.Now:HH:mm:ss} minimized  * * * ";
     Topmost = false;
     await Bpr.TickAsync();
   }
-  void On0000(object s, RoutedEventArgs e) { Bpr.Tick(); try { } catch (Exception ex) { MessageBox.Show(ex.ToString());  } }
+  void On0000(object s, RoutedEventArgs e) { Bpr.Tick(); try { } catch (Exception ex) { MessageBox.Show(ex.ToString()); } }
   void OnClose(object s, RoutedEventArgs e) => Close();
 
   string ReScanFolder(string path)
@@ -219,7 +211,7 @@ public partial class MainWindow : Window
 
     tbkHeadr.Text = $" {++_w} ";
   }
- async Task StopWatch()
+  async Task StopWatch()
   {
     _watcher.Changed -= OnChanged;
     _watcher.Created -= OnCreated;
@@ -295,9 +287,9 @@ public partial class MainWindow : Window
   void PlayErrorFAF() => Task.Run(async () => await Bpr.WaveAsync(2000, 5000, 3));
   void PlayQuietFAF() => Task.Run(async () => await Bpr.WaveAsync(60, 401, 7)); //too quiet - worked on the old monitor speakers only: 060, 101, 7));
 
-  async Task StartAudioNotifier(Action audio)
+  async Task StartAudioNotifier(Action audio, [CallerMemberName] string? cmn = "")
   {
-    Trace.WriteLine($"\n{DateTime.Now:HH:mm:ss}   Starting Audio   ");
+    Trace.WriteLine($"\n{DateTime.Now:HH:mm:ss}   Starting AUDIO by  {cmn} + + + + + + + + + + + + + + + ");
     _ctsAudio?.Cancel();
     _ctsAudio = new();
     PeriodicTimer timer = new(TimeSpan.FromMilliseconds(1000));
@@ -309,19 +301,19 @@ public partial class MainWindow : Window
         _ = Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => tbkHeadr.Text = $" {_i++}++ "));          //await Task.Delay(_i);
       }
     }
-    catch (OperationCanceledException ex) { Trace.WriteLine("Cancelled:  " + ex.Message); }
+    catch (OperationCanceledException ex) { Trace.WriteLine("Cancelled AUDIO:  - - - - - - - - - - - - - - - - - - " + ex.Message); }
     catch (Exception ex) { MessageBox.Show(ex.ToString()); }
     finally { if (_ctsAudio is not null) { _ctsAudio.Dispose(); _ctsAudio = null; } }
   }
-  async Task StartVisualNotifier()
+  async Task StartVisualNotifier([CallerMemberName] string? cmn = "")
   {
-    Trace.WriteLine($"\n{DateTime.Now:HH:mm:ss}   Starting Visual   ");
-    _ctsVisual?.Cancel();
-    _ctsVisual = new();
+    Trace.WriteLine($"\n{DateTime.Now:HH:mm:ss}   Starting Visual by  {cmn} + + + + + + + + + + + + + + + ");
+    _ctsVideo?.Cancel();
+    _ctsVideo = new();
     PeriodicTimer timer = new(TimeSpan.FromMilliseconds(_ms + _ms));
     try
     {
-      while (await timer.WaitForNextTickAsync(_ctsVisual.Token))
+      while (await timer.WaitForNextTickAsync(_ctsVideo.Token))
       {
         Trace.Write($"v");
 
@@ -336,9 +328,9 @@ public partial class MainWindow : Window
         }));
       }
     }
-    catch (OperationCanceledException ex) { Trace.WriteLine("Cancelled:  " + ex.Message); }
+    catch (OperationCanceledException ex) { Trace.WriteLine("Cancelled Visual:  - - - - - - - - - - - - - - - - - - " + ex.Message); }
     catch (Exception ex) { MessageBox.Show(ex.ToString()); }
-    finally { if (_ctsVisual is not null) { _ctsVisual.Dispose(); _ctsVisual = null; } }
+    finally { if (_ctsVideo is not null) { _ctsVideo.Dispose(); _ctsVideo = null; } }
   }
   async Task StartPeriodicChecker()
   {
@@ -360,14 +352,14 @@ public partial class MainWindow : Window
   }
 
   void OnWtchOn(object sender, RoutedEventArgs e) => StartWatch();
- async void OnWtchNo(object sender, RoutedEventArgs e) => await StopWatch();
+  async void OnWtchNo(object sender, RoutedEventArgs e) => await StopWatch();
   async void OnStart6(object sender, RoutedEventArgs e) => await StartVisualNotifier();
   void OnStop_6(object sender, RoutedEventArgs e)
   {
     Trace.WriteLine($"\nCancelling  ({DateTime.Now:HH:mm:ss})");
     try
     {
-      _ctsVisual?.Cancel();
+      _ctsVideo?.Cancel();
       _ctsAudio?.Cancel();
       Trace.WriteLine($"Cancelled   both !!!!! ({DateTime.Now:HH:mm:ss})");
     }
