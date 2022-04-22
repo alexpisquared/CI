@@ -86,11 +86,7 @@ namespace LogMonitorWpfApp
 
       base.OnStartup(e);
     }
-    protected override void OnDeactivated(EventArgs e)
-    {
-      _serviceProvider.GetRequiredService<ILogger>().LogInformation($"+{(DateTimeOffset.Now - _appStarted).TotalHours:N2}h  App.OnDeactivated()  {_audit}");
-      base.OnDeactivated(e);
-    }
+    //protected override void OnDeactivated(EventArgs e)    {      _serviceProvider.GetRequiredService<ILogger>().LogInformation($"+{(DateTimeOffset.Now - _appStarted).TotalHours:N2}h  App.OnDeactivated()  {_audit}");      base.OnDeactivated(e);    }
     protected override async void OnExit(ExitEventArgs e)
     {
       _serviceProvider.GetRequiredService<ILogger>().LogInformation($"+{(DateTimeOffset.Now - _appStarted).TotalHours:N2}h  App.OnExit()         {_audit}\n");

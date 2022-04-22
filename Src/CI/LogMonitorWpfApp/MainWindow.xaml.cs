@@ -21,7 +21,7 @@ public partial class MainWindow : Window
   readonly UserSettings _us;
   CancellationTokenSource? _ctsVideo, _ctsAudio, _ctsCheckr;
   const int _ms = 200;
-  int _i = 0, _w = 0;
+  int _i = 0, _w = 0, _v = 0, _a = 0;
 
   public IBpr Bpr { get; }
   public MainWindow(IBpr bpr)
@@ -39,7 +39,7 @@ public partial class MainWindow : Window
 
     tbxPath.Text = _us.TrgPath;
 
-    _ = ReScanFolder(tbxPath.Text);
+    _ = ReScanFolder(tbxPath.Text); // resets the mark.
 
     _watcher = new FileSystemWatcher(_us.TrgPath)
     {
@@ -90,11 +90,12 @@ public partial class MainWindow : Window
     {
       var process = new Process { StartInfo = new ProcessStartInfo(@$"{Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)}\Programs\Microsoft VS Code\Code.exe", $"\"{tbxPath.Text}\"") { RedirectStandardError = true, UseShellExecute = false } };
       if (process.Start())
-        process.WaitForExit();
+        process.WaitForExit(); // does not hold the execution ... but only when multiple instances running !?!?!?!?!
     }
     catch (Exception ex) { MessageBox.Show(ex.ToString()); }
     finally
     {
+      _ = ReScanFolder(tbxPath.Text); // resets the mark.
       StartWatch();
       WindowState = WindowState.Normal;
     }
@@ -143,7 +144,7 @@ public partial class MainWindow : Window
   {
     Bpr.Tick();
 
-    while (_ctsVideo is not null || _ctsAudio is not null) { _ctsVideo?.Cancel(); _ctsAudio?.Cancel();      /*await Bpr.BeepAsync(400, .4);*/    }
+    while (_ctsVideo is not null || _ctsAudio is not null) { _ctsVideo?.Cancel(); _ctsAudio?.Cancel(); } // await Bpr.BeepAsync(400, .4);  
 
     WindowState = WindowState.Minimized;
     Background = System.Windows.Media.Brushes.DarkCyan;
@@ -201,25 +202,27 @@ public partial class MainWindow : Window
     }
     catch (Exception ex) { MessageBox.Show(ex.ToString()); return ex.Message; }
   }
-  void StartWatch()
+  void StartWatch([CallerMemberName] string? cmn = "")
   {
+    Trace.WriteLine($"\n{DateTime.Now:HH:mm:ss}   Starting  FS WATCH  by  {cmn} {new string('+', 64)}");
     _watcher.Changed += OnChanged;
     _watcher.Created += OnCreated;
     _watcher.Deleted += OnDeleted;
     _watcher.Renamed += OnRenamed;
     _watcher.Error += OnError;
 
-    tbkHeadr.Text = $" {++_w} ";
+    tbkHeadr.Text = $" {++_w} {_v} {_a}";
   }
-  async Task StopWatch()
+  async Task StopWatch([CallerMemberName] string? cmn = "")
   {
+    Trace.WriteLine($"\n{DateTime.Now:HH:mm:ss}   Stoppping FS WATCH  by  {cmn} {new string('-', 64)}");
     _watcher.Changed -= OnChanged;
     _watcher.Created -= OnCreated;
     _watcher.Deleted -= OnDeleted;
     _watcher.Renamed -= OnRenamed;
     _watcher.Error -= OnError;
 
-    tbkHeadr.Text = $" {--_w} ";
+    tbkHeadr.Text = $" {--_w} {_v} {_a} ";
 
     await Task.Delay(333);
   }
@@ -292,6 +295,8 @@ public partial class MainWindow : Window
     Trace.WriteLine($"\n{DateTime.Now:HH:mm:ss}   Starting AUDIO by  {cmn} + + + + + + + + + + + + + + + ");
     _ctsAudio?.Cancel();
     _ctsAudio = new();
+    Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => tbkHeadr.Text = $" {_w} {_v} {++_a} "));
+
     PeriodicTimer timer = new(TimeSpan.FromMilliseconds(1000));
     try
     {
@@ -303,13 +308,18 @@ public partial class MainWindow : Window
     }
     catch (OperationCanceledException ex) { Trace.WriteLine("Cancelled AUDIO:  - - - - - - - - - - - - - - - - - - " + ex.Message); }
     catch (Exception ex) { MessageBox.Show(ex.ToString()); }
-    finally { if (_ctsAudio is not null) { _ctsAudio.Dispose(); _ctsAudio = null; } }
+    finally
+    {
+      if (_ctsAudio is not null) { _ctsAudio.Dispose(); _ctsAudio = null; Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => tbkHeadr.Text = $" {_w} {_v} {--_a} ")); }
+    }
   }
   async Task StartVisualNotifier([CallerMemberName] string? cmn = "")
   {
     Trace.WriteLine($"\n{DateTime.Now:HH:mm:ss}   Starting Visual by  {cmn} + + + + + + + + + + + + + + + ");
     _ctsVideo?.Cancel();
     _ctsVideo = new();
+    Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => tbkHeadr.Text = $" {_w} {++_v} {_a} "));
+
     PeriodicTimer timer = new(TimeSpan.FromMilliseconds(_ms + _ms));
     try
     {
@@ -330,7 +340,10 @@ public partial class MainWindow : Window
     }
     catch (OperationCanceledException ex) { Trace.WriteLine("Cancelled Visual:  - - - - - - - - - - - - - - - - - - " + ex.Message); }
     catch (Exception ex) { MessageBox.Show(ex.ToString()); }
-    finally { if (_ctsVideo is not null) { _ctsVideo.Dispose(); _ctsVideo = null; } }
+    finally
+    {
+      if (_ctsVideo is not null) { _ctsVideo.Dispose(); _ctsVideo = null; Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => tbkHeadr.Text = $" {_w} {--_v} {_a} "));  }
+    }
   }
   async Task StartPeriodicChecker()
   {
