@@ -85,7 +85,7 @@ public partial class MainWindow : Window
   {
     Bpr.Tick();
     await StopWatch();
-    //WindowState = WindowState.Minimized;
+    WindowState = WindowState.Minimized;
     try
     {
       var process = new Process { StartInfo = new ProcessStartInfo(@$"{Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)}\Programs\Microsoft VS Code\Code.exe", $"\"{tbxPath.Text}\"") { RedirectStandardError = true, UseShellExecute = false } };
