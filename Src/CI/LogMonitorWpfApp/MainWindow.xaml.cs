@@ -342,7 +342,7 @@ public partial class MainWindow : Window
     catch (Exception ex) { MessageBox.Show(ex.ToString()); }
     finally
     {
-      if (_ctsVideo is not null) { _ctsVideo.Dispose(); _ctsVideo = null; Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => tbkHeadr.Text = $" {_w} {--_v} {_a} "));  }
+      if (_ctsVideo is not null) { _ctsVideo.Dispose(); _ctsVideo = null; Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => tbkHeadr.Text = $" {_w} {--_v} {_a} ")); }
     }
   }
   async Task StartPeriodicChecker()
