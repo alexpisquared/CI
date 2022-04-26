@@ -53,8 +53,8 @@ public partial class PAsUsersSelectorWindow : Visual.Lib.Base.WindowBase
     SystemSounds.Asterisk.Play();
   }
   async void onSave(object s, RoutedEventArgs e) => await saveIfDirty();
-  void dgPermReset(object s, RoutedEventArgs e) { _context.Permissions.ToList().ForEach(r => r.Granted = null); dgPerm.Items.Refresh(); }
-  void dgUserReset(object s, RoutedEventArgs e) { _context.Users.ToList().ForEach(r => r.Granted = null); dgUser.Items.Refresh(); }
+  void dgPermReset(object s, RoutedEventArgs e) { _context.Permissions.Local.ToList().ForEach(r => r.Granted = null); dgPerm.Items.Refresh(); }
+  void dgUserReset(object s, RoutedEventArgs e) { _context.Users.Local.ToList().ForEach(r => r.Granted = null); dgUser.Items.Refresh(); }
   void onSettings(object s, RoutedEventArgs e) { }
   async void onAudio(object s, RoutedEventArgs e) { _isDbg = false; SystemSounds.Hand.Play(); await Task.Delay(300000); _isDbg = true; }
   void onWindowRestoree(object s, RoutedEventArgs e) { wr.Visibility = Visibility.Collapsed; wm.Visibility = Visibility.Visible; WindowState = WindowState.Normal; }
@@ -79,18 +79,18 @@ public partial class PAsUsersSelectorWindow : Visual.Lib.Base.WindowBase
     await saveIfDirty();
     colPG.Visibility = Visibility.Collapsed;
     colUG.Visibility = Visibility.Visible;
-    Debug.WriteLine($"■  {((FrameworkElement)s).Name} \t SelectedCellsChanged  {_context.Permissions.ToList().Count(r => r.Granted == true)} selects here");
+    Debug.WriteLine($"■  {((FrameworkElement)s).Name} \t SelectedCellsChanged  {_context.Permissions.Local.ToList().Count(r => r.Granted == true)} selects here");
 
     var prm = ((Permission)e.AddedCells[0].Item);
     _permid = prm.PermissionId;
     _userid = -1;
 
-    _context.Permissions.ToList().ForEach(r => { r.Granted = null; r.Selectd = false; });
+    _context.Permissions.Local.ToList().ForEach(r => { r.Granted = null; r.Selectd = false; });
     prm.Selectd = true;
 
-    _context.Users.ToList().ForEach(r => r.Granted = false);
+    _context.Users.Local.ToList().ForEach(r => r.Granted = false);
 
-    foreach (var pa in prm.PermissionAssignments) { var u = _context.Users.FirstOrDefault(r => r.UserIntId == pa.UserId); if (u != null) u.Granted = true; }
+    foreach (var pa in prm.PermissionAssignments) { var u = _context.Users.Local.FirstOrDefault(r => r.UserIntId == pa.UserId); if (u != null) u.Granted = true; }
 
     await resetPermUnselectUser(); // dgUser.Items.Refresh();
 
@@ -105,18 +105,18 @@ public partial class PAsUsersSelectorWindow : Visual.Lib.Base.WindowBase
     await saveIfDirty();
     colPG.Visibility = Visibility.Visible;
     colUG.Visibility = Visibility.Collapsed;
-    Debug.WriteLine($"■  {((FrameworkElement)s).Name} \t SelectedCellsChanged  {_context.Users.ToList().Count(r => r.Granted == true)} selects here");
+    Debug.WriteLine($"■  {((FrameworkElement)s).Name} \t SelectedCellsChanged  {_context.Users.Local.ToList().Count(r => r.Granted == true)} selects here");
 
     var usr = ((User)e.AddedCells[0].Item);
     _userid = usr.UserIntId;
     _permid = -1;
 
-    _context.Users.ToList().ForEach(r => { r.Granted = null; r.Selectd = false; });      //CollectionViewSource.GetDefaultView(dgUser.ItemsSource).Refresh(); //tu: refresh bound datagrid
+    _context.Users.Local.ToList().ForEach(r => { r.Granted = null; r.Selectd = false; });      //CollectionViewSource.GetDefaultView(dgUser.ItemsSource).Refresh(); //tu: refresh bound datagrid
     usr.Selectd = true;
 
-    _context.Permissions.ToList().ForEach(r => r.Granted = false);
+    _context.Permissions.Local.ToList().ForEach(r => r.Granted = false);
 
-    foreach (var pa in usr.PermissionAssignments) { var p = _context.Permissions.FirstOrDefault(r => r.PermissionId == pa.PermissionId); if (p != null) p.Granted = true; }
+    foreach (var pa in usr.PermissionAssignments) { var p = _context.Permissions.Local.FirstOrDefault(r => r.PermissionId == pa.PermissionId); if (p != null) p.Granted = true; }
 
     await resetUserUnselectPerm(); // dgPerm.Items.Refresh();      //dgUser.Items.Refresh();
 
@@ -126,15 +126,15 @@ public partial class PAsUsersSelectorWindow : Visual.Lib.Base.WindowBase
   async Task resetUserUnselectPerm()
   {
     await Task.Delay(100);
-    _context.Users.ToList().ForEach(r => r.Granted = null);
-    _context.Permissions.ToList().ForEach(r => r.Selectd = false);
+    _context.Users.Local.ToList().ForEach(r => r.Granted = null);
+    _context.Permissions.Local.ToList().ForEach(r => r.Selectd = false);
     dgUser.Items.Refresh(); dgPerm.Items.Refresh();
   }
   async Task resetPermUnselectUser()
   {
     await Task.Delay(100);
-    _context.Permissions.ToList().ForEach(r => r.Granted = null);
-    _context.Users.ToList().ForEach(r => r.Selectd = false);
+    _context.Permissions.Local.ToList().ForEach(r => r.Granted = null);
+    _context.Users.Local.ToList().ForEach(r => r.Selectd = false);
     dgPerm.Items.Refresh(); dgUser.Items.Refresh();
   }
   async Task<int> saveIfDirty(bool skipUdate = false)
