@@ -1,19 +1,4 @@
-﻿using System;
-using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Input;
-using System.Windows.Threading;
-using CI.Standard.Lib.Base;
-using CI.Standard.Lib.Helpers;
-using LogMonitorConsoleApp;
-using StandardContracts.Lib;
-
-namespace LogMonitorWpfApp;
+﻿namespace LogMonitorWpfApp;
 
 public partial class MainWindow : Window
 {
@@ -282,7 +267,7 @@ public partial class MainWindow : Window
 
     await Task.Run(async () => await StartVisualNotifier());
 
-#if !DEBUG
+#if Obnoxious
     UseSayExe(msg);
 #endif
   }
@@ -342,7 +327,7 @@ public partial class MainWindow : Window
     catch (Exception ex) { MessageBox.Show(ex.ToString()); }
     finally
     {
-      if (_ctsVideo is not null) { _ctsVideo.Dispose(); _ctsVideo = null; Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => tbkHeadr.Text = $" {_w} {--_v} {_a} "));  }
+      if (_ctsVideo is not null) { _ctsVideo.Dispose(); _ctsVideo = null; Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => tbkHeadr.Text = $" {_w} {--_v} {_a} ")); }
     }
   }
   async Task StartPeriodicChecker()
@@ -390,5 +375,4 @@ public partial class MainWindow : Window
       }
     } while (_us.FileDataList.Any(r => r.IsDeleted));
   }
-
 }
