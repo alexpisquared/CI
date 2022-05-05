@@ -21,7 +21,7 @@
         <DropShadowEffect ShadowDepth="0" BlurRadius="12" Color="#cde" Opacity=".4" />
       </Image.Effect>
     </Image>
-    <TextBlock Text="BMS Permission Editor" FontSize="32" FontWeight="SemiBold" Foreground="#a00" Margin="12 -2 0 0" Grid.Column="1" >
+    <TextBlock Text="BMS Permission Editor" FontSize="32" FontWeight="SemiBold" Foreground="#a00" Margin="12 -1 0 0" Grid.Column="1" >
       <TextBlock.Effect>
         <DropShadowEffect ShadowDepth="2" BlurRadius="12" Color="#faa" Opacity=".4" />
       </TextBlock.Effect>

@@ -1,7 +1,12 @@
-﻿namespace CI.PermissionManager.Views;
+﻿using System.Windows.Media;
+
+namespace CI.PermissionManager.Views;
 
 public partial class PAsUsersSelectorWindow : Visual.Lib.Base.WindowBase
 {
+  const double _periodSec = 5;
+  const int _maxFrames = 25 * 60; // prevent from running forever 
+  CancellationTokenSource? _cts;
   InventoryContext _context;
   bool _loaded, _isDbg, _isDirty;
   string? _last = null;
@@ -11,6 +16,8 @@ public partial class PAsUsersSelectorWindow : Visual.Lib.Base.WindowBase
   DataGridCellInfo? _lastSelectPermCell = null;
   Permission? _lastSelectPerm = null;
   User? _lastSelectUser = null;
+  public string UrlSuffix { get; set; } = "{name}PRECIPET/GIF/WKR";
+  public string StartPlaying { get; set; } = "0";
   public static readonly DependencyProperty BlurProperty = DependencyProperty.Register("Blur", typeof(double), typeof(PAsUsersSelectorWindow), new PropertyMetadata(.0)); public double Blur { get => (double)GetValue(BlurProperty); set => SetValue(BlurProperty, value); }
   public PAsUsersSelectorWindow(ILogger<PAsUsersSelectorWindow> logger, Microsoft.Extensions.Configuration.IConfigurationRoot config)
   {
@@ -40,9 +47,7 @@ public partial class PAsUsersSelectorWindow : Visual.Lib.Base.WindowBase
     await loadEF();
 
 #if DEBUG
-    //AppID = 22;    PermViewSource?.Refresh();
-
-    cbxApps.SelectedIndex = 14; // cbxApps.Items.Count - 9;
+    cbxApps.SelectedIndex = 14;
 #endif
 
     ufp.Text = pfu.Text = "";
@@ -50,6 +55,8 @@ public partial class PAsUsersSelectorWindow : Visual.Lib.Base.WindowBase
     _logger.LogInformation($" +{(DateTime.Now - App.Started):mm\\:ss\\.ff}  {Environment.UserDomainName}\\{Environment.UserName}");
 
     _loaded = true;
+
+    Beep.Play(); // Bpr.Tick();
   }
   async void onFlush(object s, RoutedEventArgs e)
   {
@@ -127,7 +134,9 @@ public partial class PAsUsersSelectorWindow : Visual.Lib.Base.WindowBase
 
     ufp.Text = $"---"; pfu.Text = $"{_lastSelectUser.UserId}  has  {_lastSelectUser.PermissionAssignments.Count}  permissions:";
   }
-  async void OnRefresh(object sender, RoutedEventArgs e)
+  async void OnRefresh(object sender, RoutedEventArgs e) => await REfresh();
+
+  async Task REfresh()
   {
     var a = cbxApps.SelectedIndex;
 
@@ -135,31 +144,74 @@ public partial class PAsUsersSelectorWindow : Visual.Lib.Base.WindowBase
 
     cbxApps.SelectedIndex = a;
 
-    for (int i = 0; i < dgUser.Items.Count; i++)
+    for (var i = 0; i < dgUser.Items.Count; i++)
     {
       if (dgUser.Items[i] is User usr && usr.UserIntId == _userid)
       {
         dgUser.CurrentCell = new DataGridCellInfo(dgUser.Items[i], dgUser.Columns[0]);
         dgUser.SelectedCells.Add(dgUser.CurrentCell);
+        break;
       }
     }
 
-    for (int i = 0; i < dgPerm.Items.Count; i++)
+    for (var i = 0; i < dgPerm.Items.Count; i++)
     {
       if (dgPerm.Items[i] is Permission usr && usr.PermissionId == _permid)
       {
         dgPerm.CurrentCell = new DataGridCellInfo(dgPerm.Items[i], dgPerm.Columns[0]);
         dgPerm.SelectedCells.Add(dgPerm.CurrentCell);
+        break;
       }
     }
   }
-  void btnAutoFrsh_Checked(object sender, RoutedEventArgs e)
-  {
 
+  async void chkIsPlaying_Checked(object sender, RoutedEventArgs e)
+  {
+    Beep.Play(); // Bpr.Tick();
+    WriteLine($"-- <<<<<<<<<    {UrlSuffix}   {(_loaded ? "Starting" : "Not yet")}.");
+    if (!_loaded) return;
+    StartPlaying = "1";
+    using var timer = new PeriodicTimer(TimeSpan.FromSeconds(_periodSec));
+    await RunTimer(timer);
   }
-  void btnAutoFrsh_Unchecked(object sender, RoutedEventArgs e)
+  void chkIsPlaying_Unchecked(object sender, RoutedEventArgs e)
   {
+    Hand.Play(); // Bpr.Tick();
+    WriteLine($"-- Cancelling   {UrlSuffix}."); _cts?.Cancel();
+  }
 
+  async Task RunTimer(PeriodicTimer timer)
+  {
+    try
+    {
+      var counter = 0;
+      _cts = new CancellationTokenSource();
+      while (await timer.WaitForNextTickAsync(_cts.Token))
+      {
+        if (counter > _maxFrames)
+        {
+          WriteLine($"-- Cancelling at counter {counter}   {UrlSuffix}.");
+          chkIsPlaying.IsChecked = false;
+          return;
+        }
+
+        chkIsPlaying.Background = ++counter % 2 == 0 ? Brushes.Yellow : Brushes.LightCyan;
+        await REfresh();
+
+        if (_cts.Token.IsCancellationRequested) // Poll on this property if you have to do other cleanup before throwing.
+        {
+          WriteLine($"-- CancellationRequested => Cancelling {UrlSuffix}.");
+          // Clean up here, then...
+          _cts.Token.ThrowIfCancellationRequested();
+
+          chkIsPlaying.Background = Brushes.White;
+        }
+      }
+    }
+    catch (TaskCanceledException ex) /**/ { WriteLine($"-- {ex.GetType().Name}: \t{ex.Message}.   "); Hand.Play(); }
+    catch (OperationCanceledException ex) { WriteLine($"-- {ex.GetType().Name}: \t{ex.Message}.   "); Hand.Play(); }
+    catch (Exception ex)             /**/ { WriteLine($"-- {ex.GetType().Name}: \t{ex.Message}.   "); Hand.Play(); }
+    finally { _cts?.Dispose(); WriteLine($"-- finally      {UrlSuffix}.\n"); }
   }
 
   async Task resetUserUnselectPerm()
@@ -217,13 +269,13 @@ public partial class PAsUsersSelectorWindow : Visual.Lib.Base.WindowBase
     {
       await Task.Delay(60);
       _context = new(string.Format(_config["SqlConStr"], cbxSrvr.SelectedValue));
-      Title = $"{VersionHelper.CurVerStr} - {_context.ServerDatabase()}";
 
       await _context.Applications.LoadAsync();
       await _context.Permissions.LoadAsync();
       await _context.Users.Where(r => !r.UserId.StartsWith("bbssecurities\\")).LoadAsync();
       await _context.PermissionAssignments.LoadAsync();
-      Title += _isDbg ? $"  A:{_context.Applications.Local.Count} ◄ P:{_context.Permissions.Local.Count} ◄ pa:{_context.PermissionAssignments.Local.Count} ◄ u:{_context.Users.Local.Count}" : "";
+
+      Title = $"{VersionHelper.CurVerStr} - {_context.ServerDatabase()}" + (_isDbg ? $"  A:{_context.Applications.Local.Count} ◄ P:{_context.Permissions.Local.Count} ◄ pa:{_context.PermissionAssignments.Local.Count} ◄ u:{_context.Users.Local.Count}" : "");
 
       dgPerm.SelectedIndex = -1;
       dgUser.SelectedIndex = -1;
