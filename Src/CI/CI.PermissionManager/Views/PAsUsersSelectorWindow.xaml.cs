@@ -4,7 +4,7 @@ namespace CI.PermissionManager.Views;
 
 public partial class PAsUsersSelectorWindow : Visual.Lib.Base.WindowBase
 {
-  const double _periodSec = 5;
+  const double _periodSec = 1;
   const int _maxFrames = 25 * 60; // prevent from running forever 
   CancellationTokenSource? _cts;
   InventoryContext _context;
@@ -134,13 +134,13 @@ public partial class PAsUsersSelectorWindow : Visual.Lib.Base.WindowBase
 
     ufp.Text = $"---"; pfu.Text = $"{_lastSelectUser.UserId}  has  {_lastSelectUser.PermissionAssignments.Count}  permissions:";
   }
-  async void OnRefresh(object sender, RoutedEventArgs e) => await REfresh();
+  async void OnRefresh(object sender, RoutedEventArgs e) => await RefreshEfAsync(true);
 
-  async Task REfresh()
+  async Task RefreshEfAsync(bool isasync)
   {
     var a = cbxApps.SelectedIndex;
 
-    await loadEF();
+    await loadEF(isasync);
 
     cbxApps.SelectedIndex = a;
 
@@ -161,6 +161,41 @@ public partial class PAsUsersSelectorWindow : Visual.Lib.Base.WindowBase
         dgPerm.CurrentCell = new DataGridCellInfo(dgPerm.Items[i], dgPerm.Columns[0]);
         dgPerm.SelectedCells.Add(dgPerm.CurrentCell);
         break;
+      }
+    }
+  }
+  void RefreshEF()
+  {
+    var a = cbxApps.SelectedIndex;
+
+    _context.Applications.Load();
+    _context.Permissions.Load();
+    _context.Users.Where(r => !r.UserId.StartsWith("bbssecurities\\")).Load();
+    _context.PermissionAssignments.Load();
+
+    cbxApps.SelectedIndex = a;
+
+    for (var i = 0; i < dgUser.Items.Count; i++)
+    {
+      if (dgUser.Items[i] is User usr && usr.UserIntId == _userid)
+      {
+        dgUser.CurrentCell = new DataGridCellInfo(dgUser.Items[i], dgUser.Columns[0]);
+        dgUser.SelectedCells.Add(dgUser.CurrentCell);
+        break;
+      }
+    }
+
+    for (var i = 0; i < dgPerm.Items.Count; i++)
+    {
+      if (dgPerm.Items[i] is Permission usr && usr.PermissionId == _permid)
+      {
+        var vv = new DataGridCellInfo(dgPerm.Items[i], dgPerm.Columns[0]);
+        if (((DB.Inventory.Dbo.Models.Permission)dgPerm.CurrentCell.Item).PermissionId != ((DB.Inventory.Dbo.Models.Permission)vv.Item).PermissionId) // moot point !?!?!?
+        {
+          dgPerm.CurrentCell = vv;
+          dgPerm.SelectedCells.Add(dgPerm.CurrentCell);
+          break;
+        }
       }
     }
   }
@@ -195,8 +230,37 @@ public partial class PAsUsersSelectorWindow : Visual.Lib.Base.WindowBase
           return;
         }
 
-        chkIsPlaying.Background = ++counter % 2 == 0 ? Brushes.Yellow : Brushes.LightCyan;
-        await REfresh();
+        chkIsPlaying.Background = ++counter % 2 == 0 ? Brushes.Yellow : Brushes.Green;
+
+        await RefreshEfAsync(false);
+
+        //var ar = _context.PermissionAssignments.ToArray();
+        //var al = _context.PermissionAssignments.Local.ToArray();
+
+        //for (int i = 0; i < _context.PermissionAssignments.Count()        ; i++)
+        //{
+        //  if(ar[i] != al[i])
+        //  {
+        //    await RefreshEfAsync(false);
+        //    break;
+        //  }
+        //}
+
+        //foreach (var lcl in _context.PermissionAssignments)
+        //{
+        //  var rmt = _context.PermissionAssignments.Local.First(r => r.TblId == lcl.TblId);
+
+        //  if (
+        //    rmt.UserId != lcl.UserId ||
+        //    rmt.PermissionId != lcl.PermissionId ||
+        //    rmt.Status != lcl.Status
+        //    )
+        //  {
+        //    await RefreshEfAsync(false);
+        //    break;
+        //  }
+        //}
+
 
         if (_cts.Token.IsCancellationRequested) // Poll on this property if you have to do other cleanup before throwing.
         {
@@ -263,22 +327,31 @@ public partial class PAsUsersSelectorWindow : Visual.Lib.Base.WindowBase
     return rowsSaved;
   }
 
-  async Task loadEF()
+  async Task loadEF(bool isAsync = true)
   {
     try
     {
-      await Task.Delay(60);
       _context = new(string.Format(_config["SqlConStr"], cbxSrvr.SelectedValue));
 
-      await _context.Applications.LoadAsync();
-      await _context.Permissions.LoadAsync();
-      await _context.Users.Where(r => !r.UserId.StartsWith("bbssecurities\\")).LoadAsync();
-      await _context.PermissionAssignments.LoadAsync();
+      if (isAsync)
+      {
+        await _context.Applications.LoadAsync();
+        await _context.Permissions.LoadAsync();
+        await _context.Users.Where(r => !r.UserId.StartsWith("bbssecurities\\")).LoadAsync();
+        await _context.PermissionAssignments.LoadAsync();
+      }
+      else
+      {
+        _context.Applications.Load();
+        _context.Permissions.Load();
+        _context.Users.Where(r => !r.UserId.StartsWith("bbssecurities\\")).Load();
+        _context.PermissionAssignments.Load();
+      }
 
       Title = $"{VersionHelper.CurVerStr} - {_context.ServerDatabase()}" + (_isDbg ? $"  A:{_context.Applications.Local.Count} ◄ P:{_context.Permissions.Local.Count} ◄ pa:{_context.PermissionAssignments.Local.Count} ◄ u:{_context.Users.Local.Count}" : "");
 
-      dgPerm.SelectedIndex = -1;
-      dgUser.SelectedIndex = -1;
+      //dgPerm.SelectedIndex = -1;
+      //dgUser.SelectedIndex = -1;
 
       UserViewSource = CollectionViewSource.GetDefaultView(_context.Users.Local.ToObservableCollection());
       UserViewSource.SortDescriptions.Add(new SortDescription(nameof(User.UserId), ListSortDirection.Ascending));
