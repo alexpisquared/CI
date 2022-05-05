@@ -1,6 +1,4 @@
-﻿using DB.Inventory.Dbo.Models;
-
-namespace CI.PermissionManager.Views;
+﻿namespace CI.PermissionManager.Views;
 
 public partial class PAsUsersSelectorWindow : Visual.Lib.Base.WindowBase
 {
@@ -10,6 +8,9 @@ public partial class PAsUsersSelectorWindow : Visual.Lib.Base.WindowBase
   int _userid, _permid;
   readonly ILogger<PAsUsersSelectorWindow> _logger;
   readonly Microsoft.Extensions.Configuration.IConfigurationRoot _config;
+  DataGridCellInfo? _lastSelectPermCell = null;
+  Permission? _lastSelectPerm = null;
+  User? _lastSelectUser = null;
   public static readonly DependencyProperty BlurProperty = DependencyProperty.Register("Blur", typeof(double), typeof(PAsUsersSelectorWindow), new PropertyMetadata(.0)); public double Blur { get => (double)GetValue(BlurProperty); set => SetValue(BlurProperty, value); }
   public PAsUsersSelectorWindow(ILogger<PAsUsersSelectorWindow> logger, Microsoft.Extensions.Configuration.IConfigurationRoot config)
   {
@@ -38,6 +39,12 @@ public partial class PAsUsersSelectorWindow : Visual.Lib.Base.WindowBase
   {
     await loadEF();
 
+#if DEBUG
+    //AppID = 22;    PermViewSource?.Refresh();
+
+    cbxApps.SelectedIndex = 14; // cbxApps.Items.Count - 9;
+#endif
+
     ufp.Text = pfu.Text = "";
 
     _logger.LogInformation($" +{(DateTime.Now - App.Started):mm\\:ss\\.ff}  {Environment.UserDomainName}\\{Environment.UserName}");
@@ -61,18 +68,15 @@ public partial class PAsUsersSelectorWindow : Visual.Lib.Base.WindowBase
   void onWindowMaximize(object s, RoutedEventArgs e) { wm.Visibility = Visibility.Collapsed; wr.Visibility = Visibility.Visible; WindowState = WindowState.Maximized; }
   async void cbxSrvr_SelectionChanged(object s, SelectionChangedEventArgs e) { if (_loaded) await loadEF(); }
   void dgPerm_SelectionChanged(object s, SelectionChangedEventArgs e)   /**/{; Debug.Write($"** {((FrameworkElement)s).Name} \t SelectionChanged"); }
-  void dgUser_SelectionChanged(object s, SelectionChangedEventArgs e)   /**/
-  {
-    Debug.Write($"** {((FrameworkElement)s).Name} \t SelectionChanged"); ;
-    //if (_loaded && e.RemovedItems.Count > 0 && (e.RemovedItems[0] as User) != null && (e.RemovedItems[0] as User)?.Selectd == true)        (e.RemovedItems[0] as User).Selectd = false;
-  }
+  void dgUser_SelectionChanged(object s, SelectionChangedEventArgs e)   /**/{; Debug.Write($"** {((FrameworkElement)s).Name} \t SelectionChanged"); }
+  //if (_loaded && e.RemovedItems.Count > 0 && (e.RemovedItems[0] as User) != null && (e.RemovedItems[0] as User)?.Selectd == true)        (e.RemovedItems[0] as User).Selectd = false;
   void dgUser_GotFocus(object s, RoutedEventArgs e)  /**/{ if (_last != "U") { Debug.Write(" p->U-▒▒▒▒ "); } }
   void dgPerm_GotFocus(object s, RoutedEventArgs e)  /**/{ if (_last != "P") { Debug.Write(" u->P-░░░░ "); } }
   void dgUser_LostFocus(object s, RoutedEventArgs e) /**/{; Debug.Write($"■▀▄ {((FrameworkElement)s).Name}  LostFocus  "); _last = "U"; }
   void dgPerm_LostFocus(object s, RoutedEventArgs e) /**/{; Debug.Write($"■▄▀ {((FrameworkElement)s).Name}  LostFocus  "); _last = "P"; }
   async void dgPerm_SelectedCellsChanged(object s, SelectedCellsChangedEventArgs e)
   {
-    if (!_loaded || e.AddedCells.Count < 1 || !(e.AddedCells[0].Column is DataGridTextColumn)) return;
+    if (!_loaded || e.AddedCells.Count < 1 || e.AddedCells[0].Column is not DataGridTextColumn) return;
 
     //if (e.RemovedCells.Count > 0 && ((Permission)e.RemovedCells[0].Item).Selectd == true) ((Permission)e.RemovedCells[0].Item).Selectd = false;
 
@@ -81,20 +85,21 @@ public partial class PAsUsersSelectorWindow : Visual.Lib.Base.WindowBase
     colUG.Visibility = Visibility.Visible;
     Debug.WriteLine($"■  {((FrameworkElement)s).Name} \t SelectedCellsChanged  {_context.Permissions.Local.ToList().Count(r => r.Granted == true)} selects here");
 
-    var prm = ((Permission)e.AddedCells[0].Item);
-    _permid = prm.PermissionId;
+    _lastSelectPermCell = e.AddedCells[0].Item as DataGridCellInfo?;
+    _lastSelectPerm = ((Permission)e.AddedCells[0].Item);
+    _permid = _lastSelectPerm.PermissionId;
     _userid = -1;
 
     _context.Permissions.Local.ToList().ForEach(r => { r.Granted = null; r.Selectd = false; });
-    prm.Selectd = true;
+    _lastSelectPerm.Selectd = true;
 
     _context.Users.Local.ToList().ForEach(r => r.Granted = false);
 
-    foreach (var pa in prm.PermissionAssignments) { var u = _context.Users.Local.FirstOrDefault(r => r.UserIntId == pa.UserId); if (u != null) u.Granted = true; }
+    foreach (var pa in _lastSelectPerm.PermissionAssignments) { var u = _context.Users.Local.FirstOrDefault(r => r.UserIntId == pa.UserId); if (u != null) u.Granted = true; }
 
     await resetPermUnselectUser(); // dgUser.Items.Refresh();
 
-    pfu.Text = $"---"; ufp.Text = $"{prm.Name}  assigned to  {prm.PermissionAssignments.Count}  users:";
+    pfu.Text = $"---"; ufp.Text = $"{_lastSelectPerm.Name}  assigned to  {_lastSelectPerm.PermissionAssignments.Count}  users:";
   }
   async void dgUser_SelectedCellsChanged(object s, SelectedCellsChangedEventArgs e)
   {
@@ -107,20 +112,54 @@ public partial class PAsUsersSelectorWindow : Visual.Lib.Base.WindowBase
     colUG.Visibility = Visibility.Collapsed;
     Debug.WriteLine($"■  {((FrameworkElement)s).Name} \t SelectedCellsChanged  {_context.Users.Local.ToList().Count(r => r.Granted == true)} selects here");
 
-    var usr = ((User)e.AddedCells[0].Item);
-    _userid = usr.UserIntId;
+    _lastSelectUser = ((User)e.AddedCells[0].Item);
+    _userid = _lastSelectUser.UserIntId;
     _permid = -1;
 
     _context.Users.Local.ToList().ForEach(r => { r.Granted = null; r.Selectd = false; });      //CollectionViewSource.GetDefaultView(dgUser.ItemsSource).Refresh(); //tu: refresh bound datagrid
-    usr.Selectd = true;
+    _lastSelectUser.Selectd = true;
 
     _context.Permissions.Local.ToList().ForEach(r => r.Granted = false);
 
-    foreach (var pa in usr.PermissionAssignments) { var p = _context.Permissions.Local.FirstOrDefault(r => r.PermissionId == pa.PermissionId); if (p != null) p.Granted = true; }
+    foreach (var pa in _lastSelectUser.PermissionAssignments) { var p = _context.Permissions.Local.FirstOrDefault(r => r.PermissionId == pa.PermissionId); if (p != null) p.Granted = true; }
 
     await resetUserUnselectPerm(); // dgPerm.Items.Refresh();      //dgUser.Items.Refresh();
 
-    ufp.Text = $"---"; pfu.Text = $"{usr.UserId}  has  {usr.PermissionAssignments.Count}  permissions:";
+    ufp.Text = $"---"; pfu.Text = $"{_lastSelectUser.UserId}  has  {_lastSelectUser.PermissionAssignments.Count}  permissions:";
+  }
+  async void OnRefresh(object sender, RoutedEventArgs e)
+  {
+    var a = cbxApps.SelectedIndex;
+
+    await loadEF();
+
+    cbxApps.SelectedIndex = a;
+
+    for (int i = 0; i < dgUser.Items.Count; i++)
+    {
+      if (dgUser.Items[i] is User usr && usr.UserIntId == _userid)
+      {
+        dgUser.CurrentCell = new DataGridCellInfo(dgUser.Items[i], dgUser.Columns[0]);
+        dgUser.SelectedCells.Add(dgUser.CurrentCell);
+      }
+    }
+
+    for (int i = 0; i < dgPerm.Items.Count; i++)
+    {
+      if (dgPerm.Items[i] is Permission usr && usr.PermissionId == _permid)
+      {
+        dgPerm.CurrentCell = new DataGridCellInfo(dgPerm.Items[i], dgPerm.Columns[0]);
+        dgPerm.SelectedCells.Add(dgPerm.CurrentCell);
+      }
+    }
+  }
+  void btnAutoFrsh_Checked(object sender, RoutedEventArgs e)
+  {
+
+  }
+  void btnAutoFrsh_Unchecked(object sender, RoutedEventArgs e)
+  {
+
   }
 
   async Task resetUserUnselectPerm()
@@ -209,9 +248,8 @@ public partial class PAsUsersSelectorWindow : Visual.Lib.Base.WindowBase
 
   void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
   {
-    if (e.AddedItems.Count < 1) return;
-
-    if (e.AddedItems[0] is not DB.Inventory.Dbo.Models.Application sel) return;
+    if (e.AddedItems.Count < 1 || e.AddedItems[0] is not DB.Inventory.Dbo.Models.Application sel)
+      return;
 
     AppID = sel.AppId;
 
@@ -342,11 +380,8 @@ public partial class PAsUsersSelectorWindow : Visual.Lib.Base.WindowBase
     base.OnClosing(e);
   }
 
-
-
-  public static readonly DependencyProperty AppIDProperty = DependencyProperty.Register("AppID", typeof(int), typeof(PAsUsersSelectorWindow), new PropertyMetadata(0)); public int AppID { get { return (int)GetValue(AppIDProperty); } set { SetValue(AppIDProperty, value); } }
-  public static readonly DependencyProperty AplnViewSourceProperty = DependencyProperty.Register("AplnViewSource", typeof(ICollectionView), typeof(PAsUsersSelectorWindow)); public ICollectionView? AplnViewSource { get { return (ICollectionView?)GetValue(AplnViewSourceProperty); } set { SetValue(AplnViewSourceProperty, value); } }
-  public static readonly DependencyProperty PermViewSourceProperty = DependencyProperty.Register("PermViewSource", typeof(ICollectionView), typeof(PAsUsersSelectorWindow)); public ICollectionView? PermViewSource { get { return (ICollectionView?)GetValue(PermViewSourceProperty); } set { SetValue(PermViewSourceProperty, value); } }
-  public static readonly DependencyProperty UserViewSourceProperty = DependencyProperty.Register("UserViewSource", typeof(ICollectionView), typeof(PAsUsersSelectorWindow)); public ICollectionView? UserViewSource { get { return (ICollectionView?)GetValue(UserViewSourceProperty); } set { SetValue(UserViewSourceProperty, value); } }
-
+  public static readonly DependencyProperty AppIDProperty = DependencyProperty.Register("AppID", typeof(int), typeof(PAsUsersSelectorWindow), new PropertyMetadata(0)); public int AppID { get => (int)GetValue(AppIDProperty); set => SetValue(AppIDProperty, value); }
+  public static readonly DependencyProperty AplnViewSourceProperty = DependencyProperty.Register("AplnViewSource", typeof(ICollectionView), typeof(PAsUsersSelectorWindow)); public ICollectionView? AplnViewSource { get => (ICollectionView?)GetValue(AplnViewSourceProperty); set => SetValue(AplnViewSourceProperty, value); }
+  public static readonly DependencyProperty PermViewSourceProperty = DependencyProperty.Register("PermViewSource", typeof(ICollectionView), typeof(PAsUsersSelectorWindow)); public ICollectionView? PermViewSource { get => (ICollectionView?)GetValue(PermViewSourceProperty); set => SetValue(PermViewSourceProperty, value); }
+  public static readonly DependencyProperty UserViewSourceProperty = DependencyProperty.Register("UserViewSource", typeof(ICollectionView), typeof(PAsUsersSelectorWindow)); public ICollectionView? UserViewSource { get => (ICollectionView?)GetValue(UserViewSourceProperty); set => SetValue(UserViewSourceProperty, value); }
 }

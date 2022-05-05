@@ -235,25 +235,35 @@
           </Border>
         </Grid>
 
-        <StackPanel Grid.Row="2" Margin="18 18 8 8" Orientation="Horizontal" x:Name="spc1" Visibility="Visible">
-          <StackPanel.Effect>
+        <Grid Grid.Row="2" Margin="18 18 8 8" x:Name="spc1" HorizontalAlignment="Stretch" Visibility="Visible">
+          <Grid.Effect>
             <BlurEffect Radius="{Binding ElementName=wnd, Path=Blur, FallbackValue=0}" />
-          </StackPanel.Effect>
+          </Grid.Effect>
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="Auto" />
+          </Grid.ColumnDefinitions>
 
           <Label Content="_Application" Target="{Binding ElementName=cbxApps}" FontSize="22"/>
-          <ComboBox ItemsSource="{Binding AplnViewSource}" 
+          
+          <ComboBox ItemsSource="{Binding AplnViewSource}" Grid.Column="1" HorizontalAlignment="Stretch" 
                     DisplayMemberPath="AppName"
                     SelectedValuePath="AppId"
-                    Margin="10 0" SelectionChanged="ComboBox_SelectionChanged" x:Name="cbxApps" MinWidth="400" Height="38" FontSize="22" />
-          
+                    Margin="10 0" SelectionChanged="ComboBox_SelectionChanged" x:Name="cbxApps" Height="38" FontSize="22" />
+
           <!--<Label Content="_Filter" />
           <ComboBox x:Name="cbxOAF" Width="116" Height="26" Template="{DynamicResource ComboBoxTemplate_forIsEditable_False}" >
             <ComboBoxItem Content="Outstanding" IsSelected="True" />
             <ComboBoxItem Content="All"     />
             <ComboBoxItem Content="Filled"  />
           </ComboBox>
-          <Button Content="Find" IsDefault="True" x:Name="btnFind" Margin="20 0" />-->
-        </StackPanel>
+          <Button Content="Find" IsDefault="True" x:Name="btnFind" Margin="20 0" />
+          -->
+          <Button       Grid.Column="2" Width="60" Margin="8 0" Content="_Refresh" IsDefault="True" x:Name="btnRefresh" Click="OnRefresh"/>
+          <ToggleButton Grid.Column="3" Width="60" Margin="8 0" Content="_Auto"    x:Name="btnAutoFrsh" Checked="btnAutoFrsh_Checked" Unchecked="btnAutoFrsh_Unchecked"/>
+        </Grid>
 
         <Rectangle Grid.Row="3" Margin="8 10 8 0" >
           <Rectangle.Fill>
