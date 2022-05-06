@@ -12,10 +12,10 @@ public partial class App : System.Windows.Application
     _config = ConfigHelper.AutoInitConfigFromFile(@"{{
   ""WhereAmI"": "" ??\\PermMgrClient\\appsettings.CI.PM.json  DFLT"",
   ""LogFolder"": ""\\\\bbsfile01\\Public\\Dev\\AlexPi\\Misc\\Logs\\PermMgr.DFLT..txt"",
-  ""ServerList"": "".\\sqlexpress mtDEVsqldb mtUATsqldb mtPRDsqldb"",
+  ""ServerList"": "".\\sqlexpress mtDEVsqldb mtUATsqldb"",
   ""SqlConStr"": ""Server={{0}};Database=Inventory;Trusted_Connection=True;"",
   ""AppSettings"": {{
-    ""ServerList"": "".\\sqlexpress mtDEVsqldb mtUATsqldb mtPRDsqldb"",
+    ""ServerList"": "".\\sqlexpress mtDEVsqldb mtUATsqldb"",
     ""RmsDbConStr"": ""Server={{0}};Database={{1}};Trusted_Connection=True;"",
     ""KeyVaultURL"": ""<moved to a safer place>""
   }}
