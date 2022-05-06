@@ -230,37 +230,22 @@ public partial class PAsUsersSelectorWindow : Visual.Lib.Base.WindowBase
           return;
         }
 
-        chkIsPlaying.Background = ++counter % 2 == 0 ? Brushes.Yellow : Brushes.Green;
+        chkIsPlaying.Background = ++counter % 2 == 0 ? Brushes.Yellow : Brushes.LightPink;
 
-        await RefreshEfAsync(false);
-
-        //var ar = _context.PermissionAssignments.ToArray();
-        //var al = _context.PermissionAssignments.Local.ToArray();
-
-        //for (int i = 0; i < _context.PermissionAssignments.Count()        ; i++)
-        //{
-        //  if(ar[i] != al[i])
-        //  {
-        //    await RefreshEfAsync(false);
-        //    break;
-        //  }
-        //}
-
-        //foreach (var lcl in _context.PermissionAssignments)
-        //{
-        //  var rmt = _context.PermissionAssignments.Local.First(r => r.TblId == lcl.TblId);
-
-        //  if (
-        //    rmt.UserId != lcl.UserId ||
-        //    rmt.PermissionId != lcl.PermissionId ||
-        //    rmt.Status != lcl.Status
-        //    )
-        //  {
-        //    await RefreshEfAsync(false);
-        //    break;
-        //  }
-        //}
-
+        if (_permid > 0)
+        {
+          var ar = await _context.PermissionAssignments.Where(r => r.PermissionId == _permid).CountAsync();
+          var al = _context.PermissionAssignments.Local.Where(r => r.PermissionId == _permid).Count();
+          if (ar != al)
+            await RefreshEfAsync(false);
+        }
+        else if (_userid > 0)
+        {
+          var ar = await _context.PermissionAssignments.Where(r => r.UserId == _userid).CountAsync();
+          var al = _context.PermissionAssignments.Local.Where(r => r.UserId == _userid).Count();
+          if (ar != al)
+            await RefreshEfAsync(false);
+        }
 
         if (_cts.Token.IsCancellationRequested) // Poll on this property if you have to do other cleanup before throwing.
         {
