@@ -249,16 +249,17 @@ public partial class MainWindow : Window
     tbkTitle.Text = $"{DateTimeOffset.Now:HH:mm:ss}  {msg}  {Path.GetFileNameWithoutExtension(changedFile)}  {file__Q}";
     lbxHist.Items.Add(tbkTitle.Text);
 
-    WindowState = WindowState.Normal;
     Topmost = true;
 
     if (changedFile.Contains(".Er▄▀."))
     {
+      WindowState = WindowState.Normal;
       await Task.Run(async () => await StartAudioNotifier(PlayErrorFAF));
       Background = System.Windows.Media.Brushes.Fuchsia;
     }
     else if (chkAll.IsChecked == true && _ctsAudio is null) // do not "hide" error sound!!!
     {
+      WindowState = WindowState.Normal;
       await Task.Run(async () => await StartAudioNotifier(PlayQuietFAF));
       Background = System.Windows.Media.Brushes.Brown;
     }
