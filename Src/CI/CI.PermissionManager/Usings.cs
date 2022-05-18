@@ -50,3 +50,6 @@ global using System.Windows.Controls;
 global using CI.Visual.Lib.Helpers;
 global using DB.Inventory.Dbo.Models;
 global using System.Threading;
+global using System.Windows.Media;
+global using AAV.Anime.Views;
+

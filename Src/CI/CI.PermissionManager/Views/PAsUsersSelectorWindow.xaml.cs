@@ -1,6 +1,4 @@
-﻿using System.Windows.Media;
-
-namespace CI.PermissionManager.Views;
+﻿namespace CI.PermissionManager.Views;
 
 public partial class PAsUsersSelectorWindow : Visual.Lib.Base.WindowBase
 {
@@ -47,7 +45,7 @@ public partial class PAsUsersSelectorWindow : Visual.Lib.Base.WindowBase
     await loadEF();
 
 #if DEBUG
-    cbxApps.SelectedIndex = 14;
+    cbxApps.SelectedIndex = 13;
 #endif
 
     ufp.Text = pfu.Text = "";
@@ -340,6 +338,9 @@ public partial class PAsUsersSelectorWindow : Visual.Lib.Base.WindowBase
 
       UserViewSource = CollectionViewSource.GetDefaultView(_context.Users.Local.ToObservableCollection());
       UserViewSource.SortDescriptions.Add(new SortDescription(nameof(User.UserId), ListSortDirection.Ascending));
+      UserViewSource.Filter = obj => obj is not User user || user is null || (
+      (!MemberFilter || user.Granted == MemberFilter) &&
+      (string.IsNullOrEmpty(SearchText) || user.UserId.Contains(SearchText, StringComparison.OrdinalIgnoreCase)));
 
       PermViewSource = CollectionViewSource.GetDefaultView(_context.Permissions.Local.ToObservableCollection());
       PermViewSource.SortDescriptions.Add(new SortDescription(nameof(Permission.Name), ListSortDirection.Ascending)); //tu: instead of  .OrderBy(r => r.UserId); lest forfeit CanUserAddRows.
@@ -494,4 +495,12 @@ public partial class PAsUsersSelectorWindow : Visual.Lib.Base.WindowBase
   public static readonly DependencyProperty AplnViewSourceProperty = DependencyProperty.Register("AplnViewSource", typeof(ICollectionView), typeof(PAsUsersSelectorWindow)); public ICollectionView? AplnViewSource { get => (ICollectionView?)GetValue(AplnViewSourceProperty); set => SetValue(AplnViewSourceProperty, value); }
   public static readonly DependencyProperty PermViewSourceProperty = DependencyProperty.Register("PermViewSource", typeof(ICollectionView), typeof(PAsUsersSelectorWindow)); public ICollectionView? PermViewSource { get => (ICollectionView?)GetValue(PermViewSourceProperty); set => SetValue(PermViewSourceProperty, value); }
   public static readonly DependencyProperty UserViewSourceProperty = DependencyProperty.Register("UserViewSource", typeof(ICollectionView), typeof(PAsUsersSelectorWindow)); public ICollectionView? UserViewSource { get => (ICollectionView?)GetValue(UserViewSourceProperty); set => SetValue(UserViewSourceProperty, value); }
+  public static readonly DependencyProperty SearchTextProperty = DependencyProperty.Register("SearchText", typeof(string), typeof(PAsUsersSelectorWindow), new PropertyMetadata("", new PropertyChangedCallback(StartStopCallback))); public string SearchText { get => (string)GetValue(SearchTextProperty); set => SetValue(SearchTextProperty, value); }
+  public static readonly DependencyProperty MemberFilterProperty = DependencyProperty.Register("MemberFilter", typeof(bool), typeof(PAsUsersSelectorWindow), new PropertyMetadata(false, new PropertyChangedCallback(StartStopCallback)));
+
+  async void onTogglePermission(object s, RoutedEventArgs e) => await Recalc((FrameworkElement)s);
+
+  public bool MemberFilter { get => (bool)GetValue(MemberFilterProperty); set => SetValue(MemberFilterProperty, value); }
+  static void StartStopCallback(DependencyObject d, DependencyPropertyChangedEventArgs e) => (d as PAsUsersSelectorWindow)?.RefreshUsers();
+  public void RefreshUsers() => UserViewSource?.Refresh();
 }
