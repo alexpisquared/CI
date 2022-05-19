@@ -36,7 +36,7 @@ public partial class PAsUsersSelectorWindow : Visual.Lib.Base.WindowBase
 
     var svrs = _config["ServerList"].Split(" ").ToList();
     cbxSrvr.ItemsSource = svrs;
-    cbxSrvr.SelectedIndex = 1;
+    cbxSrvr.SelectedIndex = Environment.MachineName == "RAZER1" ? 0 : 1;
     _context = new(string.Format(_config["SqlConStr"], svrs.First()));
     cbxApps.Focus();
   }
@@ -45,7 +45,7 @@ public partial class PAsUsersSelectorWindow : Visual.Lib.Base.WindowBase
     await loadEF();
 
 #if DEBUG
-    cbxApps.SelectedIndex = 13;
+    cbxApps.SelectedIndex = Environment.MachineName == "RAZER1" ? 3 : 13;
 #endif
 
     ufp.Text = pfu.Text = "";
