@@ -316,26 +316,27 @@
                     SelectionUnit="Cell" SelectedCellsChanged="dgUser_SelectedCellsChanged" 
                     CanUserAddRows="True" SelectionChanged="dgUser_SelectionChanged" GotFocus="dgUser_GotFocus" LostFocus="dgUser_LostFocus" >
             <DataGrid.Columns>
-              <!--<DataGridTextColumn     Header="User Name" Binding="{Binding UserId}"      Width="*"/>
+              <!--
+              <DataGridTextColumn     Header="***" Width="32"/>
+              <DataGridTextColumn     Header="User Name" Binding="{Binding UserId}"      Width="*"/>
               <DataGridTemplateColumn Header="Granted" CellTemplate="{StaticResource LookTemplate}" x:Name="colUG"/>              -->
-              <DataGridTemplateColumn                                           Width="*">
-                <DataGridTemplateColumn.HeaderTemplate>
+              <DataGridTextColumn     Header="User Name" Binding="{Binding UserId}"      Width="*">
+                <DataGridTextColumn.HeaderTemplate>
                   <DataTemplate>
-                    <StackPanel Orientation="Horizontal" Margin="4 0" HorizontalAlignment="Right">
+                    <StackPanel Orientation="Horizontal" Margin="4 0" >
                       <Label    Content="_Search " Target="{Binding ElementName=sch}"/>
                       <TextBox  Text="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}, Path=DataContext.SearchText, UpdateSourceTrigger=PropertyChanged}" Width="100" x:Name="sch"/>
                     </StackPanel>
                   </DataTemplate>
-                </DataGridTemplateColumn.HeaderTemplate>
-                <DataGridTemplateColumn.CellTemplate>
+                </DataGridTextColumn.HeaderTemplate>
+                <!--<DataGridTemplateColumn.CellTemplate>
                   <DataTemplate>
-                    <!--<TextBlock Text="{Binding UserId}" ToolTip="{Binding Notes}" />-->
                     <stb:HighlightableTextBlock Text="{Binding UserId}" SearchText="{Binding Text, ElementName=tbxUsrSearch}" ToolTip="{Binding Notes}" />
                   </DataTemplate>
-                </DataGridTemplateColumn.CellTemplate>
-              </DataGridTemplateColumn>
+                </DataGridTemplateColumn.CellTemplate>-->
+              </DataGridTextColumn>
 
-              <DataGridTemplateColumn                                       x:Name="colUG">
+              <DataGridTemplateColumn                                       x:Name="colUG" >
                 <DataGridTemplateColumn.HeaderTemplate>
                   <DataTemplate>
                     <StackPanel Orientation="Horizontal" Margin="4 0" HorizontalAlignment="Right">
@@ -348,7 +349,7 @@
                     <Grid >
                       <ToggleButton IsChecked="{Binding Granted, UpdateSourceTrigger=PropertyChanged}" Click="onTogglePermission" HorizontalAlignment="Center" VerticalAlignment="Center">
                         <TextBlock       Text="{Binding Granted, UpdateSourceTrigger=PropertyChanged, Converter={cnv:BoolToCharConverter}}" FontFamily="Wingdings" FontSize="26"
-                       Foreground="{Binding Granted, UpdateSourceTrigger=PropertyChanged, Converter={cnv:BoolToColorConverter}}" />
+                                   Foreground="{Binding Granted, UpdateSourceTrigger=PropertyChanged, Converter={cnv:BoolToColorConverter}}" />
                       </ToggleButton>
                     </Grid>
                   </DataTemplate>
