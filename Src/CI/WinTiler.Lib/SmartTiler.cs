@@ -71,13 +71,14 @@ public class SmartTiler
     var y = screen.WorkingArea.Top;
     var x = screen.WorkingArea.Left;
     int c = 0, i = 0;
-    const int marg = -4;
-    const int ext2 = 2 * marg;
+    const int margH = -2;
+    const int margV = -1;
+    const int ext2 = 2 * margH;
     const int ext4 = 2 * ext2;
     foreach (var w in _allWindows.OrderBy(r => r.Sorter))
     {
       Externs.SetWindowPlacement(w.Handle, Externs.ShowWindowCommands.Restore);
-      Externs.SetWindowPos(w.Handle, x + marg, y - 16, window_width - ext2, window_height + 28); // <== = = = = = = = = = = = = = = = = = 
+      Externs.SetWindowPos(w.Handle, x + margH, y + margV, window_width - ext2, window_height - 2* margV); // <== = = = = = = = = = = = = = = = = = 
       i++;
       x += window_width;
       if (++c >= cols) // ..to next row
