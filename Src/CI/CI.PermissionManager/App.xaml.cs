@@ -46,7 +46,7 @@ public partial class App : System.Windows.Application
 
     base.OnStartup(e);
   }
-  protected override void OnExit(ExitEventArgs e) { _logger.LogInformation($" +{(DateTime.Now - Started):mm\\:ss\\.ff} App.OnExit()          \n"); base.OnExit(e); }
+  protected override void OnExit(ExitEventArgs e) { _logger?.LogInformation($" +{(DateTime.Now - Started):mm\\:ss\\.ff} App.OnExit()          \n"); base.OnExit(e); }
 
   async void onTogglePermission(object s, RoutedEventArgs e) => await ((PAsUsersSelectorWindow)MainWindow).Recalc((FrameworkElement)s);
 }
