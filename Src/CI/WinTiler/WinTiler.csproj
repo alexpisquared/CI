@@ -7,8 +7,8 @@
     <Nullable>enable</Nullable>
     <LangVersion>latest</LangVersion>
     <UserSecretsId>ce68def6-d556-473d-af22-994586c1b4eb</UserSecretsId>
-    <ApplicationIcon>\g\CI\Src\CI\WinTiler\Assets\lvwmgr1.ico</ApplicationIcon>
     <Platforms>AnyCPU;x64;x86</Platforms>
+    <ApplicationIcon>Assets\lvwmgr1.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>
@@ -16,13 +16,19 @@
     <None Remove="Assets\favicon.ico" />
     <None Remove="Assets\F_Icon.ico" />
     <None Remove="Assets\ICN_SpriteKit.ico" />
+    <None Remove="Assets\lvwmgr1.ico" />
     <None Remove="Assets\T_Icon.ico" />
     <None Remove="Assets\W_Icon.ico" />
   </ItemGroup>
 
   <ItemGroup>
+    <Content Include="Assets\lvwmgr1.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Resource Include="Assets\F_Icon.ico" />
     <Resource Include="Assets\ICN_SpriteKit.ico" />
+    <Resource Include="Assets\lvwmgr1.ico" />
     <Resource Include="Assets\T_Icon.ico" />
     <Resource Include="Assets\A_Icon.ico" />
     <Resource Include="Assets\favicon.ico" />
