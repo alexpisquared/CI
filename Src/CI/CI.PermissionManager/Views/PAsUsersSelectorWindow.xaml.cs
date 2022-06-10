@@ -352,6 +352,7 @@ public partial class PAsUsersSelectorWindow : Visual.Lib.Base.WindowBase
       btnAddMe.Visibility = _context.Users.Local.Any(r => r.UserId == $@"{Environment.UserDomainName}\{Environment.UserName}") ? Visibility.Collapsed : Visibility.Visible;
     }
     catch (Exception ex) { _logger.LogError($"{ex}"); ex.Pop(this); }
+    finally { Bpr___.TickFAF(); }
   }
 
   void OnA(object sender, RoutedEventArgs e) => new AppPermPAsWindow().Show();
