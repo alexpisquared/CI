@@ -50,7 +50,7 @@
     <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Grid.ColumnSpan="3" Margin="2" >
 
       <Menu Margin="5 0" Background="Transparent" >
-        <CheckBox Content="_All" x:Name="chkAll" ToolTip="Monitor all changes (vs errors only)" />
+        <CheckBox Content="A_ll" x:Name="chkAll" ToolTip="Monitor all changes (vs errors only)" />
 
         <MenuItem Header="° ° °" FontSize="20" Background="Transparent">
           <MenuItem Header="ChckFS" Click="OnChckFS" />
