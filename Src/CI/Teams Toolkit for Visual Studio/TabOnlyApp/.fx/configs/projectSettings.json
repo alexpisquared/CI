@@ -1,6 +1,6 @@
 {
-    "appName": "HelloTeams",
-    "projectId": "71144725-8e85-4e7f-b109-b5e04a296cf8",
+    "appName": "TabOnlyApp",
+    "projectId": "85a5a5e6-1cb1-4b5c-a3c3-ac3a580ac23e",
     "version": "2.1.0",
     "isFromSample": false,
     "solutionSettings": {
@@ -9,13 +9,11 @@
         "hostType": "Azure",
         "azureResources": [],
         "capabilities": [
-            "Tab",
-            "Bot"
+            "Tab"
         ],
         "activeResourcePlugins": [
             "fx-resource-frontend-hosting",
             "fx-resource-identity",
-            "fx-resource-bot",
             "fx-resource-aad-app-for-teams",
             "fx-resource-local-debug",
             "fx-resource-appstudio",
@@ -24,7 +22,6 @@
     },
     "programmingLanguage": "csharp",
     "pluginSettings": {
-        "projectFilePath": "C:\\g\\CI\\Src\\CI\\Teams Toolkit for Visual Studio\\HelloTeams\\HelloTeams.csproj"
-    },
-    "isFirstTimeOpenProject": false
+        "projectFilePath": "C:\\g\\CI\\Src\\CI\\Teams Toolkit for Visual Studio\\TabOnlyApp\\TabOnlyApp.csproj"
+    }
 }
