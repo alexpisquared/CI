@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HelloTeams", "HelloTeams\He
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TabOnlyApp", "TabOnlyApp\TabOnlyApp.csproj", "{39CC23DF-B7A9-443E-BE75-A6B80E35B168}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BotOnlyApp", "BotOnlyApp\BotOnlyApp.csproj", "{2F6FD44E-A33A-434C-ADC5-10E12E91D964}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{39CC23DF-B7A9-443E-BE75-A6B80E35B168}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{39CC23DF-B7A9-443E-BE75-A6B80E35B168}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{39CC23DF-B7A9-443E-BE75-A6B80E35B168}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2F6FD44E-A33A-434C-ADC5-10E12E91D964}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2F6FD44E-A33A-434C-ADC5-10E12E91D964}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2F6FD44E-A33A-434C-ADC5-10E12E91D964}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2F6FD44E-A33A-434C-ADC5-10E12E91D964}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
