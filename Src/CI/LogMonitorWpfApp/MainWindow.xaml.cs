@@ -264,7 +264,10 @@ public partial class MainWindow : Window
       Background = System.Windows.Media.Brushes.Brown;
     }
     else
+    {
+      PlayQuietFAF();
       Background = System.Windows.Media.Brushes.Yellow;
+    }
 
     await Task.Run(async () => await StartVisualNotifier());
 
@@ -356,6 +359,7 @@ public partial class MainWindow : Window
   void OnStop_6(object sender, RoutedEventArgs e)
   {
     Trace.WriteLine($"\nCancelling  ({DateTime.Now:HH:mm:ss})");
+    PlayQuietFAF();
     try
     {
       _ctsVideo?.Cancel();

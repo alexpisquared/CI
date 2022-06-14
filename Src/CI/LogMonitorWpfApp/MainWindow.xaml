@@ -58,8 +58,8 @@
           <MenuItem Header="WtchNo" Click="OnWtchNo" />
           <MenuItem Header="ReWtch" Click="OnReWtch" />
           <MenuItem Header="Setngs" Click="OnSetngs" ToolTip="Edit Settings.JSON with VS Code" />
-          <Button Content="  _1  " Click="OnStart6" />
-          <Button Content="  _0  " Click="OnStop_6" />
+          <MenuItem Header="  _1  " Click="OnStart6" />
+          <MenuItem Header="  _0  " Click="OnStop_6" />
         </MenuItem>
       </Menu>
 
