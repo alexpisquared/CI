@@ -42,6 +42,7 @@ public partial class MainWindow : Window
 
 #if !_DEBUG
     if (Environment.MachineName == "D21-MJ0AWBEV") /**/ { Top = 32; Left = 920; }
+
     if (Environment.MachineName == "RAZER1")       /**/ { Top = 32; Left = 0; }
 #endif
   }
@@ -65,7 +66,7 @@ public partial class MainWindow : Window
   }
 
   async void OnReWtch(object s, RoutedEventArgs e) { await StopWatch(); await Bpr.TickAsync(); StartWatch(); }
-  void OnExplre(object s, RoutedEventArgs e) { Bpr.Tick(); try { _ = new Process { StartInfo = new ProcessStartInfo(@"Explorer.exe", $"\"{tbxPath.Text}\"") { RedirectStandardError = true, UseShellExecute = false } }.Start(); } catch (Exception ex) { MessageBox.Show(ex.ToString()); } }
+  void OnExplre(object s, RoutedEventArgs e) { Bpr.Tick(); try { _ = new Process { StartInfo = new ProcessStartInfo(@"Explorer.exe", $"\"{tbxPath.Text}\"") { RedirectStandardError = true, UseShellExecute = false } }.Start(); } catch (Exception ex) { _ = MessageBox.Show(ex.ToString()); } }
   async void OnVSCode(object s, RoutedEventArgs e)
   {
     Bpr.Tick();
@@ -77,7 +78,7 @@ public partial class MainWindow : Window
       if (process.Start())
         process.WaitForExit(); // does not hold the execution ... but only when multiple instances running !?!?!?!?!
     }
-    catch (Exception ex) { MessageBox.Show(ex.ToString()); }
+    catch (Exception ex) { _ = MessageBox.Show(ex.ToString()); }
     finally
     {
       _ = ReScanFolder(tbxPath.Text); // resets the mark.
@@ -86,9 +87,8 @@ public partial class MainWindow : Window
     }
 
     while (_ctsVideo is not null || _ctsAudio is not null) { _ctsVideo?.Cancel(); _ctsAudio?.Cancel(); }
-
   }
-  void OnSetngs(object s, RoutedEventArgs e) { Bpr.Tick(); try { _ = new Process { StartInfo = new ProcessStartInfo(@$"{Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)}\Programs\Microsoft VS Code\Code.exe", $"\"{UserSettingsStore.Store}\"") { RedirectStandardError = true, UseShellExecute = false } }.Start(); } catch (Exception ex) { MessageBox.Show(ex.ToString()); } }//_ = new Process { StartInfo = new ProcessStartInfo(@"Notepad.exe", $"\"{UserSettingsStore._store}\"") { RedirectStandardError = true, UseShellExecute = false } }.Start(); //_ = new Process { StartInfo = new ProcessStartInfo(@"C:\Program Files\Microsoft Visual Studio\2022\Preview\Common7\IDE\devenv.exe", $"\"{UserSettingsStore._store}\"") { RedirectStandardError = true, UseShellExecute = false } }.Start(); }
+  void OnSetngs(object s, RoutedEventArgs e) { Bpr.Tick(); try { _ = new Process { StartInfo = new ProcessStartInfo(@$"{Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)}\Programs\Microsoft VS Code\Code.exe", $"\"{UserSettingsStore.Store}\"") { RedirectStandardError = true, UseShellExecute = false } }.Start(); } catch (Exception ex) { _ = MessageBox.Show(ex.ToString()); } }//_ = new Process { StartInfo = new ProcessStartInfo(@"Notepad.exe", $"\"{UserSettingsStore._store}\"") { RedirectStandardError = true, UseShellExecute = false } }.Start(); //_ = new Process { StartInfo = new ProcessStartInfo(@"C:\Program Files\Microsoft Visual Studio\2022\Preview\Common7\IDE\devenv.exe", $"\"{UserSettingsStore._store}\"") { RedirectStandardError = true, UseShellExecute = false } }.Start(); }
   async void OnResetW(object s, RoutedEventArgs e)
   {
     await StopWatch();
@@ -99,7 +99,7 @@ public partial class MainWindow : Window
 
       Title = $"Log Monitor  -  OnResetW on {DateTime.Now:HH:mm:ss}  -  {VersionHelper.CurVerStr}";
     }
-    catch (Exception ex) { MessageBox.Show(ex.ToString()); }
+    catch (Exception ex) { _ = MessageBox.Show(ex.ToString()); }
     finally { StartWatch(); }
   }
   async void OnMovOld(object s, RoutedEventArgs e)
@@ -122,7 +122,7 @@ public partial class MainWindow : Window
       Background = System.Windows.Media.Brushes.Cyan;
       Title = $"Log Monitor  -  {VersionHelper.CurVerStr}  -  {DateTime.Now:HH:mm:ss} Moved Olds   ";
     }
-    catch (Exception ex) { MessageBox.Show(ex.ToString()); }
+    catch (Exception ex) { _ = MessageBox.Show(ex.ToString()); }
     finally { StartWatch(); }
   }
   async void OnAckAck(object s, RoutedEventArgs e)
@@ -138,7 +138,7 @@ public partial class MainWindow : Window
     Topmost = false;
     await Bpr.TickAsync();
   }
-  void On0000(object s, RoutedEventArgs e) { Bpr.Tick(); try { } catch (Exception ex) { MessageBox.Show(ex.ToString()); } }
+  void On0000(object s, RoutedEventArgs e) { Bpr.Tick(); try { } catch (Exception ex) { _ = MessageBox.Show(ex.ToString()); } }
   void OnClose(object s, RoutedEventArgs e) => Close();
 
   string ReScanFolder(string path)
@@ -185,7 +185,7 @@ public partial class MainWindow : Window
 
       return rv; // $"Re-Scanned {_us.FileDataList.Count} files.  {del.Count()} deleted.";      //foreach (var fi in _us.FileDataList.OrderByDescending(r => r.LastWriteTime))        lb1.Items.Add($"\t{System.IO.Path.GetFileName(fi.FullName),-40} {fi.LastWriteTime:MM-dd HH:mm:ss}  {fi.IsDeleted,-5}  {fi.Status}");
     }
-    catch (Exception ex) { MessageBox.Show(ex.ToString()); return ex.Message; }
+    catch (Exception ex) { _ = MessageBox.Show(ex.ToString()); return ex.Message; }
   }
   void StartWatch([CallerMemberName] string? cmn = "")
   {
@@ -233,7 +233,7 @@ public partial class MainWindow : Window
     if (Application.Current.Dispatcher.CheckAccess()) // if on UI thread
       ReportAndRescan(msg, file1, file2);
     else
-      Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => //todo: rejoin properly to the UI thread (Oct 2017)
+      _ = Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => //todo: rejoin properly to the UI thread (Oct 2017)
       ReportAndRescan(msg, file1, file2)));
   }
   void ReportAndRescan(string msg, string file1, string file2)
@@ -284,7 +284,7 @@ public partial class MainWindow : Window
     Trace.WriteLine($"\n{DateTime.Now:HH:mm:ss}   Starting AUDIO by  {cmn} + + + + + + + + + + + + + + + ");
     _ctsAudio?.Cancel();
     _ctsAudio = new();
-    Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => tbkHeadr.Text = $" {_w} {_v} {++_a} "));
+    _ = Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => tbkHeadr.Text = $" {_w} {_v} {++_a} "));
 
     PeriodicTimer timer = new(TimeSpan.FromMilliseconds(1000));
     try
@@ -296,10 +296,10 @@ public partial class MainWindow : Window
       }
     }
     catch (OperationCanceledException ex) { Trace.WriteLine("Cancelled AUDIO:  - - - - - - - - - - - - - - - - - - " + ex.Message); }
-    catch (Exception ex) { MessageBox.Show(ex.ToString()); }
+    catch (Exception ex) { _ = MessageBox.Show(ex.ToString()); }
     finally
     {
-      if (_ctsAudio is not null) { _ctsAudio.Dispose(); _ctsAudio = null; Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => tbkHeadr.Text = $" {_w} {_v} {--_a} ")); }
+      if (_ctsAudio is not null) { _ctsAudio.Dispose(); _ctsAudio = null; _ = Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => tbkHeadr.Text = $" {_w} {_v} {--_a} ")); }
     }
   }
   async Task StartVisualNotifier([CallerMemberName] string? cmn = "")
@@ -307,7 +307,7 @@ public partial class MainWindow : Window
     Trace.WriteLine($"\n{DateTime.Now:HH:mm:ss}   Starting Visual by  {cmn} + + + + + + + + + + + + + + + ");
     _ctsVideo?.Cancel();
     _ctsVideo = new();
-    Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => tbkHeadr.Text = $" {_w} {++_v} {_a} "));
+    _ = Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => tbkHeadr.Text = $" {_w} {++_v} {_a} "));
 
     PeriodicTimer timer = new(TimeSpan.FromMilliseconds(_ms + _ms));
     try
@@ -328,10 +328,10 @@ public partial class MainWindow : Window
       }
     }
     catch (OperationCanceledException ex) { Trace.WriteLine("Cancelled Visual:  - - - - - - - - - - - - - - - - - - " + ex.Message); }
-    catch (Exception ex) { MessageBox.Show(ex.ToString()); }
+    catch (Exception ex) { _ = MessageBox.Show(ex.ToString()); }
     finally
     {
-      if (_ctsVideo is not null) { _ctsVideo.Dispose(); _ctsVideo = null; Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => tbkHeadr.Text = $" {_w} {--_v} {_a} ")); }
+      if (_ctsVideo is not null) { _ctsVideo.Dispose(); _ctsVideo = null; _ = Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => tbkHeadr.Text = $" {_w} {--_v} {_a} ")); }
     }
   }
   async Task StartPeriodicChecker()
@@ -349,7 +349,7 @@ public partial class MainWindow : Window
       }
     }
     catch (OperationCanceledException ex) { Trace.WriteLine("Cancelled:  " + ex.Message); }
-    catch (Exception ex) { MessageBox.Show(ex.ToString()); }
+    catch (Exception ex) { _ = MessageBox.Show(ex.ToString()); }
     finally { if (_ctsCheckr is not null) { _ctsCheckr.Dispose(); _ctsCheckr = null; } }
   }
 
@@ -366,7 +366,7 @@ public partial class MainWindow : Window
       _ctsAudio?.Cancel();
       Trace.WriteLine($"Cancelled   both !!!!! ({DateTime.Now:HH:mm:ss})");
     }
-    catch (Exception ex) { MessageBox.Show(ex.ToString()); }
+    catch (Exception ex) { _ = MessageBox.Show(ex.ToString()); }
   }
   static void UseSayExe(string msg) => new Process { StartInfo = new ProcessStartInfo(@"say.exe", $"\"{msg}\"") { RedirectStandardError = true, UseShellExecute = false } }.Start();
   void RemoveDeleteds()
@@ -375,9 +375,15 @@ public partial class MainWindow : Window
     {
       foreach (var deletedFile in _us.FileDataList.Where(r => r.IsDeleted))
       {
-        _us.FileDataList.Remove(deletedFile);
+        _ = _us.FileDataList.Remove(deletedFile);
         break;
       }
     } while (_us.FileDataList.Any(r => r.IsDeleted));
+  }
+
+  protected override async void OnClosed(EventArgs e)
+  {
+    await rsk.OnClosed(e);
+    base.OnClosed(e);
   }
 }
