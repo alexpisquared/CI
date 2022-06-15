@@ -44,16 +44,17 @@
     <Grid.RowDefinitions>
       <RowDefinition Height="Auto"/>
       <RowDefinition Height="Auto"/>
-      <RowDefinition Height="*"/>
-      <RowDefinition Height="*"/>
+      <RowDefinition Height="3*"/>
+      <RowDefinition Height="5"/>
+      <RowDefinition Height="1*"/>
     </Grid.RowDefinitions>
 
-    <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Grid.ColumnSpan="3" Margin="2" >
+    <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Grid.ColumnSpan="3" Margin="2 2 2 0" >
 
-      <Menu Margin="5 0" Background="Transparent" >
-        <CheckBox Content="A_ll" x:Name="chkAll" ToolTip="Monitor all changes (vs errors only)" />
+      <Menu Margin="10 0" Background="Transparent" >
+        <MenuItem Header="A_ll" x:Name="chkAll" ToolTip="Monitor all changes (vs errors only)" IsCheckable="True" />
 
-        <MenuItem Header="° ° °" FontSize="20" Background="Transparent">
+        <MenuItem Header="° ° °" Padding="8 8 8 0" FontSize="20" Background="Transparent">
           <MenuItem Header="ChckFS" Click="OnChckFS" />
           <MenuItem Header="WtchOn" Click="OnWtchOn" />
           <MenuItem Header="WtchNo" Click="OnWtchNo" />
@@ -62,14 +63,14 @@
           <MenuItem Header="  _1  " Click="OnStart6" />
           <MenuItem Header="  _0  " Click="OnStop_6" />
         </MenuItem>
+        <TextBox x:Name="tbxPath" Text="" MinWidth="200" />
+        <MenuItem Header=" E_xplore "   Click="OnExplre" />
+        <MenuItem Header=" _VS Code "   Click="OnVSCode" />
+        <MenuItem Header=" Move _Old "  Click="OnMovOld" ToolTip="Move old files to the ..\Logs.Old folder" />
       </Menu>
 
-      <TextBox x:Name="tbxPath" Text="" MinWidth="200" />
-      <Button Content=" E_xplore "   Click="OnExplre" />
-      <Button Content=" _VS Code "   Click="OnVSCode" />
-      <Button Content="  _ReWatch "  Click="OnResetW" IsDefault="True" ToolTip="Remove deleted from the list" />
-      <Button Content=" Move _Old "  Click="OnMovOld" ToolTip="Move old files to the ..\Logs.Old folder" />
-      <Button Content=" _Ack "       Click="OnAckAck" IsCancel="True" ToolTip="Stop Notifier + Minimize Window" />
+      <Button Content="  _ReWatch "  Click="OnResetW" IsDefault="True" Margin="5" ToolTip="Remove deleted from the list" />
+      <Button Content=" _Ack "       Click="OnAckAck" IsCancel="True"  Margin="5" ToolTip="Stop Notifier + Minimize Window" />
       <!--
       <Button Content="   _Re-Scan   "    Click="OnScan" />
       <Button Content="   Re-_Watch   "   Click="OnWtch" />
@@ -91,9 +92,9 @@
 
     <ListBox  Grid.Row="2" x:Name="lbxHist" Grid.Column="2" Margin="0 0 5 0" />
 
-    <GridSplitter Grid.Column="1" Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="Transparent" Margin="-5 0"/>
-    
-    <local:RdpSessionKeeperUsrCtrl Grid.Row="3" Grid.ColumnSpan="3" x:Name="rsk"/>
+    <local:RdpSessionKeeperUsrCtrl Grid.Row="4" Grid.ColumnSpan="3" x:Name="rsk"/>
 
+    <GridSplitter Grid.Column="1"     Grid.Row="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="Transparent" Margin="-5 0"/>
+    <GridSplitter Grid.ColumnSpan="3" Grid.Row="3" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="Transparent" Margin="0 -5"/>
   </Grid>
 </Window>

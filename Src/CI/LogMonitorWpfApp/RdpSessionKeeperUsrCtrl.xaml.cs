@@ -31,8 +31,7 @@ public partial class RdpSessionKeeperUsrCtrl : UserControl
     if (_appset.IsInsmnia)
       _insomniac.RequestActive(_crlf);
 
-    tbkMin.Content += $"ITA so far  {_idleTimeoutAnalizer.MinTimeoutMin:N1} min  {(_idleTimeoutAnalizer.RanByTaskScheduler ? "(byTS)" : "(!byTS)")}";
-    tbkBig.Content = $"{(_appset.IsInsmnia ? "ON" : "Off")} @ {DateTimeOffset.Now:HH:mm}";
+    tbkMin.Content = $"ITA so far  {_idleTimeoutAnalizer.MinTimeoutMin:N1} min  {(_idleTimeoutAnalizer.RanByTaskScheduler ? "(byTS)" : "(!byTS)")}";
     await Task.Delay(_dbgDelayMs);
 
     _ = new DispatcherTimer(TimeSpan.FromSeconds(_appset.PeriodSec), DispatcherPriority.Normal, new EventHandler(async (s, e) => await OnTick()), Dispatcher.CurrentDispatcher); //tu:
@@ -114,7 +113,6 @@ public partial class RdpSessionKeeperUsrCtrl : UserControl
   void OnPosition(object s, RoutedEventArgs e) => TogglePosition("Manual Menu Call");
 
   async void OnMark(object z, RoutedEventArgs e) { var s = $"{Prefix}Mark     \t"; tbkLog.Text += s; await File.AppendAllTextAsync(TextLog, $"{s}{_crlf}"); }
-  async void OnExit(object s, RoutedEventArgs e) => await File.AppendAllTextAsync(TextLog, $"{Prefix}onExit() by Escape.  {_crlf}");
   void OnRset(object s, RoutedEventArgs e) { _idleTimeoutAnalizer.MinTimeoutMin = 100; tbkMin.Content = $"ITA so far  {_idleTimeoutAnalizer.MinTimeoutMin:N1} min  {(_idleTimeoutAnalizer.RanByTaskScheduler ? "(ro)" : "(RW)")}"; _idleTimeoutAnalizer.SaveLastCloseAndAnalyzeIfMarkable(); }
 
   public async Task OnClosed(EventArgs e)
