@@ -119,7 +119,7 @@ public partial class MainWindow : Window
       _ctsVideo?.Cancel();
       _ctsAudio?.Cancel();
       await Bpr.TickAsync();
-      Background = System.Windows.Media.Brushes.Cyan;
+      brdr1.Background = Brushes.Cyan;
       Title = $"Log Monitor  -  {VersionHelper.CurVerStr}  -  {DateTime.Now:HH:mm:ss} Moved Olds   ";
     }
     catch (Exception ex) { _ = MessageBox.Show(ex.ToString()); }
@@ -132,7 +132,7 @@ public partial class MainWindow : Window
     while (_ctsVideo is not null || _ctsAudio is not null) { _ctsVideo?.Cancel(); _ctsAudio?.Cancel(); } // await Bpr.BeepAsync(400, .4);  
 
     WindowState = WindowState.Minimized;
-    Background = System.Windows.Media.Brushes.DarkCyan;
+    brdr1.Background = Brushes.DarkCyan;
     await Task.Delay(_ms * 10);
     Title = $"Log Monitor  -  {VersionHelper.CurVerStr}  -  {DateTime.Now:HH:mm:ss} minimized  * * * ";
     Topmost = false;
@@ -255,18 +255,18 @@ public partial class MainWindow : Window
     {
       WindowState = WindowState.Normal;
       await Task.Run(async () => await StartAudioNotifier(PlayErrorFAF));
-      Background = System.Windows.Media.Brushes.Fuchsia;
+      brdr1.Background = Brushes.Fuchsia;
     }
     else if (chkAll.IsChecked == true && _ctsAudio is null) // do not "hide" error sound!!!
     {
       WindowState = WindowState.Normal;
       await Task.Run(async () => await StartAudioNotifier(PlayQuietFAF));
-      Background = System.Windows.Media.Brushes.Brown;
+      brdr1.Background = Brushes.Brown;
     }
     else
     {
       PlayQuietFAF();
-      Background = System.Windows.Media.Brushes.Yellow;
+      brdr1.Background = Brushes.Yellow;
     }
 
     await Task.Run(async () => await StartVisualNotifier());
