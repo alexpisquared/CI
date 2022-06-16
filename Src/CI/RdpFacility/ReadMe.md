@@ -11,16 +11,23 @@ User preferences are stored in the application's settings file. There is no need
 
 
 Event Log
-The running application maintains an event log. The event log is a list of events that have occurred in the application. The event log is used to track the application's progress and to provide the user with feedback about the application's progress. Currently, the event log is set to the Information level. In case of a need to investigate an issue, the event log can be set to the Verbose level. After the application has been deployed and demonstrated stability in operations, the event log can be set to the Warning level in order to save space.
+The running application maintains an event log. The event log is a list of events that have occurred in the application. The event log is used to track the application's progress and to provide the user with feedback about the application's progress. Currently, the event log is set to the Information level. In case of a need to investigate an issue, the event log can be set to the Verbose level. After the application has been deployed and demonstrated stability in operations, the event log can be set to the Warning level in order to save space. 
+Currently, the event log's location is set to the application's local folder. The event log can be set to a different location by changing the event log's location in the application's settings file. But as of now, the location is not configurable (to allow quick access to the event log in the temporary dev accessible location).
 
 SQL Server Connection
 SQL server connection string is stored in the application's settings file. The connection string is used to connect to the SQL server. 
 Windows Authentication is used to connect to the SQL server. Thus, the user does not need to enter a username and password. And there is no need to store the password in the application's settings file.
 
 Security
-The application's security is based on the exisiting BMS security framework as well as native SQL server security built-in features such as SQL Server Login, SQL Server Role, etc. All users of the application must belong to the SQL Server Role named IpmRole. The IpmRole role is used to grant access to the objects in the database used by the application. The IpmRole role must be created in the following SQL Server databases: BS, Inventory, VBCM. There is a SQL script that is used to create the IpmRole role in all the databases.
+The application's security is based on the exisiting BMS security framework as well as native SQL server security built-in features such as SQL Server Login, SQL Server Role, etc. All users of the application must belong to the SQL Server Role named IpmUserRole. The IpmUserRole role is used to grant access to the objects in the database used by the application. The IpmUserRole role must be created in the following SQL Server databases: BS, Inventory, VBCM. There is a SQL script that is used to create the IpmUserRole role in all the databases.
 
-I have also created a helper application that is used to manage the IpmRole role and synchronise the users of the role and their privileges with the BMS security framework. it is called IpmRoleSync. It support the following modes:
-- Editing BMS security framework roles and privileges and synchronising them with the SQL Server IpmRole role.
-- Editing SQL Server IpmRole role and synchronising it with the BMS security framework roles and privileges.
+I have also created a helper application that is used to manage the IpmUserRole role and synchronise the users of the role and their privileges with the BMS security framework. it is called IpmRoleSync. It support the following modes:
+- Editing BMS security framework roles and privileges and synchronising them with the SQL Server IpmUserRole role.
+- Editing SQL Server IpmUserRole role and synchronising it with the BMS security framework roles and privileges.
 The IpmRoleSync application is currently under development, but the main functionality is implemented and is ready to be tested.
+
+SQL Server Database Objects
+All of the SQL Server database objects used by the application are prefixed with "Ipm" (which stands for Income Payment Manager). For example, the SQL Server database object that is used to store the application's settings is named IpmSettings.
+
+
+Deployment to Production
