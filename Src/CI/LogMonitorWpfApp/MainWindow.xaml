@@ -69,8 +69,8 @@
           <MenuItem Header=" Move _Old "  Click="OnMovOld" ToolTip="Move old files to the ..\Logs.Old folder" />
         </Menu>
 
-        <Button Content="  _ReWatch "  Click="OnResetW" IsDefault="True" Margin="5" ToolTip="Remove deleted from the list" />
-        <Button Content=" _Ack "       Click="OnAckAck" IsCancel="True"  Margin="5" ToolTip="Stop Notifier + Minimize Window" />
+        <Button Content=" ReWatch " Click="OnResetW" IsDefault="True" Margin="5" ToolTip="Remove deleted from the list" />
+        <Button Content="   Ack   " Click="OnAckAck" IsCancel="True"  Margin="5" ToolTip="Stop Notifier + Minimize Window" />
         <!--
       <Button Content="   _Re-Scan   "    Click="OnScan" />
       <Button Content="   Re-_Watch   "   Click="OnWtch" />
