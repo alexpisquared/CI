@@ -49,7 +49,7 @@ public partial class RdpSessionKeeperUsrCtrl : UserControl
   }
   async Task OnTick(bool isManual = false)
   {
-    if (_appset.IsAudible == true) await Bpr.StartAsync();
+    if (_appset.IsAudible == true) await Bpr.BeepAsync(333, .5);
 
     if (chkMind1.IsChecked == true)
     {
