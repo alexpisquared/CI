@@ -36,8 +36,6 @@ public partial class RdpSessionKeeperUsrCtrl : UserControl
 
     _ = new DispatcherTimer(TimeSpan.FromSeconds(_appset.PeriodSec), DispatcherPriority.Normal, new EventHandler(async (s, e) => await OnTick()), Dispatcher.CurrentDispatcher); //tu:
 
-    if (_appset.IsAudible == true) Bpr.Tick();
-
     if (_idleTimeoutAnalizer.RanByTaskScheduler)
     {
       if (_idleTimeoutAnalizer.SkipLoggingOnSelf)
@@ -51,7 +49,7 @@ public partial class RdpSessionKeeperUsrCtrl : UserControl
   }
   async Task OnTick(bool isManual = false)
   {
-    if (_appset.IsAudible == true) Bpr.Tick();
+    if (_appset.IsAudible == true) await Bpr.StartAsync();
 
     if (chkMind1.IsChecked == true)
     {
@@ -101,8 +99,8 @@ public partial class RdpSessionKeeperUsrCtrl : UserControl
   async void OnInsmnia(object s, RoutedEventArgs e) { _appset.IsInsmnia = ((MenuItem)s).IsChecked == true; if (_isLoaded) { await _appset.StoreAsync(); _insomniac.SetInso(((MenuItem)s).IsChecked == true); } }
   async void OnPosning(object s, RoutedEventArgs e) { _appset.IsPosning = ((MenuItem)s).IsChecked == true; if (_isLoaded) { await _appset.StoreAsync(); } }
   async void OnMindBiz(object s, RoutedEventArgs e) { _appset.IsMindBiz = ((MenuItem)s).IsChecked == true; if (_isLoaded) { await _appset.StoreAsync(); } }
-  async void OnPlus1hr(object s, RoutedEventArgs e) { _hrsAdded++; await OnTick(true); Bpr.Tick(); }
-  async void OnMinusHr(object s, RoutedEventArgs e) { _hrsAdded--; await OnTick(true); Bpr.Tick(); }
+  async void OnPlus1hr(object s, RoutedEventArgs e) { _hrsAdded++; await OnTick(true); await Bpr.TickAsync(); }
+  async void OnMinusHr(object s, RoutedEventArgs e) { _hrsAdded--; await OnTick(true); await Bpr.TickAsync(); }
 
   void OnPosition(object s, RoutedEventArgs e) => TogglePosition("Manual Menu Call");
 
@@ -115,7 +113,6 @@ public partial class RdpSessionKeeperUsrCtrl : UserControl
 
     _insomniac.RequestRelease(_crlf);
     await File.AppendAllTextAsync(TextLog, $"{Prefix}OnClosed   {DateTimeOffset.Now - AppStarted:hh\\:mm\\:ss}\n");
-    if (_appset.IsAudible == true) Bpr.Tick();
     _idleTimeoutAnalizer.SaveLastCloseAndAnalyzeIfMarkable();
   }
 }
