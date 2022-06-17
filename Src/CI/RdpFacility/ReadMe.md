@@ -27,7 +27,7 @@ I have also created a helper application that is used to manage the IpmUserRole 
 The IpmRoleSync application is currently under development, but the main functionality is implemented and is ready to be tested.
 
 SQL Server Database Objects
-All of the SQL Server database objects used by the application are prefixed with "Ipm" (which stands for Income Payment Manager). For example, the SQL Server database object that is used to store the application's settings is named IpmSettings.
+All of the SQL Server database objects used by the application are prefixed with "Ipm" (which stands for 'Income Payment Manager'). For example, the SQL Server database object that is used to store the scheduled payments is named IpmScheduledPayment.
 
 
 Deployment to Production
