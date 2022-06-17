@@ -44,7 +44,7 @@
         </MenuItem>
         <Label Content="Min"  x:Name="tbkMin" HorizontalAlignment="Center" Foreground="#0ff" />
       </Menu>
-      <TextBlock Text="Log" x:Name="tbkLog" HorizontalAlignment="Center" Foreground="#0a0" MaxWidth="500" FontSize="5" TextWrapping="Wrap" />
+      <TextBlock Text="Log" x:Name="tbkLog" HorizontalAlignment="Center" Foreground="#fff" Background="#036" MaxWidth="500" FontSize="5" TextWrapping="Wrap" Padding="2 0 2 1" />
     </StackPanel>
   </Viewbox>
 </UserControl>
