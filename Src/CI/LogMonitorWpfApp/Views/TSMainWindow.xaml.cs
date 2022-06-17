@@ -5,7 +5,7 @@ public partial class TSMainWindow : Window
   readonly FileSystemWatcher _watcher;
   readonly UserSettings _us;
   CancellationTokenSource? _ctsVideo, _ctsAudio, _ctsCheckr;
-  const int _ms = 200;
+  const int _200ms = 200;
   int _i = 0, _w = 0, _v = 0, _a = 0;
 
   public IBpr Bpr { get; }
@@ -133,7 +133,7 @@ public partial class TSMainWindow : Window
 
     WindowState = WindowState.Minimized;
     brdr1.Background = Brushes.DarkCyan;
-    await Task.Delay(_ms * 10);
+    await Task.Delay(_200ms / 4);
     Title = $"Log Monitor  -  {VersionHelper.CurVerStr}  -  {DateTime.Now:HH:mm:ss} minimized  * * * ";
     Topmost = false;
     await Bpr.TickAsync();
@@ -309,7 +309,7 @@ public partial class TSMainWindow : Window
     _ctsVideo = new();
     _ = Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => tbkHeadr.Text = $" {_w} {++_v} {_a} "));
 
-    PeriodicTimer timer = new(TimeSpan.FromMilliseconds(_ms + _ms));
+    PeriodicTimer timer = new(TimeSpan.FromMilliseconds(_200ms + _200ms));
     try
     {
       while (await timer.WaitForNextTickAsync(_ctsVideo.Token))
@@ -318,11 +318,11 @@ public partial class TSMainWindow : Window
 
         _ = Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(async () =>
         {
-          Title = $"▄▀▄▀▄▀▄▀   Log Monitor  -  {VersionHelper.CurVerStr}"; await Task.Delay(_ms);
-          Title = $" ▄▀▄▀▄▀▄▀  Log Monitor  -  {VersionHelper.CurVerStr}"; await Task.Delay(_ms);
-          Title = $"  ▄▀▄▀▄▀▄▀ Log Monitor  -  {VersionHelper.CurVerStr}"; await Task.Delay(_ms);
-          Title = $"▀▄▀▄▀▄▀▄   Log Monitor  -  {VersionHelper.CurVerStr}"; await Task.Delay(_ms);
-          Title = $" ▀▄▀▄▀▄▀▄  Log Monitor  -  {VersionHelper.CurVerStr}"; await Task.Delay(_ms);
+          Title = $"▄▀▄▀▄▀▄▀   Log Monitor  -  {VersionHelper.CurVerStr}"; await Task.Delay(_200ms);
+          Title = $" ▄▀▄▀▄▀▄▀  Log Monitor  -  {VersionHelper.CurVerStr}"; await Task.Delay(_200ms);
+          Title = $"  ▄▀▄▀▄▀▄▀ Log Monitor  -  {VersionHelper.CurVerStr}"; await Task.Delay(_200ms);
+          Title = $"▀▄▀▄▀▄▀▄   Log Monitor  -  {VersionHelper.CurVerStr}"; await Task.Delay(_200ms);
+          Title = $" ▀▄▀▄▀▄▀▄  Log Monitor  -  {VersionHelper.CurVerStr}"; await Task.Delay(_200ms);
           Title = $"  ▀▄▀▄▀▄▀▄ Log Monitor  -  {VersionHelper.CurVerStr}";
         }));
       }
