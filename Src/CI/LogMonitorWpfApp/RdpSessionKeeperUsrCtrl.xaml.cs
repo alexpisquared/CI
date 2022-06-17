@@ -36,7 +36,7 @@ public partial class RdpSessionKeeperUsrCtrl : UserControl
 
     _ = new DispatcherTimer(TimeSpan.FromSeconds(_appset.PeriodSec), DispatcherPriority.Normal, new EventHandler(async (s, e) => await OnTick()), Dispatcher.CurrentDispatcher); //tu:
 
-    if (_appset.IsAudible == true) SystemSounds.Exclamation.Play();
+    if (_appset.IsAudible == true) Bpr.Tick();
 
     if (_idleTimeoutAnalizer.RanByTaskScheduler)
     {
@@ -51,6 +51,8 @@ public partial class RdpSessionKeeperUsrCtrl : UserControl
   }
   async Task OnTick(bool isManual = false)
   {
+    if (_appset.IsAudible == true) Bpr.Tick();
+
     if (chkMind1.IsChecked == true)
     {
       var ibh = IsBizHours;
@@ -63,35 +65,27 @@ public partial class RdpSessionKeeperUsrCtrl : UserControl
       if (!isManual && !ibh) _hrsAdded = 0; // reset to 0 for the next day.
     }
 
-    //if (_appset.IsPosning)
-    //  TogglePosition("onTick");
-    //else
-    //  await File.AppendAllTextAsync(TextLog, $"■"); // {prefix}onTick  {_crlf}");
+    if (_appset.IsPosning)
+      TogglePosition("onTick");
+    else
+      await File.AppendAllTextAsync(TextLog, $"■"); // {prefix}onTick  {_crlf}");
   }
 
   bool IsBizHours => _from <= DateTimeOffset.Now.Hour && DateTimeOffset.Now.Hour <= (_till + _hrsAdded); // && DateTimeOffset.Now.Hour != 12 
+
+  public IBpr Bpr { get; internal set; }
 
   void TogglePosition(string msg)
   {
     try
     {
       _idleTimeoutAnalizer.SkipLoggingOnSelf = true;
-      _ = Mouse.Capture(this);
-      var pointToWindow = Mouse.GetPosition(this);
-      var pointToScreen = PointToScreen(pointToWindow);
-      var newPointToWin = new Win32.POINT((int)pointToWindow.X + _dx, (int)pointToWindow.Y + _dy);
+      _ = Mouse.Capture(this); // :fails outside of the owner window without it.
+      var pointToScreen = PointToScreen(Mouse.GetPosition(this));
 
-      _ = Win32.ClientToScreen(Process.GetCurrentProcess().MainWindowHandle, ref newPointToWin);
-
-      //Jan 2022: nothing reliably works :(  must be the interferance of non-RDP screens
-      //newPointToWin.x = 1400;  
-      //newPointToWin.y = 1400;
-
-      _ = Win32.SetCursorPos(newPointToWin.x, newPointToWin.y);
+      _ = Win32.SetCursorPos((int)pointToScreen.X + _dx, (int)pointToScreen.Y + _dy);
 
       tbkLog.Text += $" {DateTime.Now:HHmm}:{pointToScreen} ";
-      WriteLine($"** XY: {pointToWindow,12}  \t {pointToScreen,12} \t {newPointToWin.x,6:N0}-{newPointToWin.y,-6:N0}\t");
-      if (_appset.IsAudible == true) SystemSounds.Asterisk.Play();
     }
     catch (Exception ex) { _ = File.AppendAllTextAsync(TextLog, $"{Prefix}togglePosition  Exceptoin: {ex.Message}{_crlf}"); }
     finally
@@ -107,8 +101,8 @@ public partial class RdpSessionKeeperUsrCtrl : UserControl
   async void OnInsmnia(object s, RoutedEventArgs e) { _appset.IsInsmnia = ((MenuItem)s).IsChecked == true; if (_isLoaded) { await _appset.StoreAsync(); _insomniac.SetInso(((MenuItem)s).IsChecked == true); } }
   async void OnPosning(object s, RoutedEventArgs e) { _appset.IsPosning = ((MenuItem)s).IsChecked == true; if (_isLoaded) { await _appset.StoreAsync(); } }
   async void OnMindBiz(object s, RoutedEventArgs e) { _appset.IsMindBiz = ((MenuItem)s).IsChecked == true; if (_isLoaded) { await _appset.StoreAsync(); } }
-  async void OnPlus1hr(object s, RoutedEventArgs e) { _hrsAdded++; await OnTick(true); SystemSounds.Exclamation.Play(); }
-  async void OnMinusHr(object s, RoutedEventArgs e) { _hrsAdded--; await OnTick(true); SystemSounds.Exclamation.Play(); }
+  async void OnPlus1hr(object s, RoutedEventArgs e) { _hrsAdded++; await OnTick(true); Bpr.Tick(); }
+  async void OnMinusHr(object s, RoutedEventArgs e) { _hrsAdded--; await OnTick(true); Bpr.Tick(); }
 
   void OnPosition(object s, RoutedEventArgs e) => TogglePosition("Manual Menu Call");
 
@@ -121,7 +115,7 @@ public partial class RdpSessionKeeperUsrCtrl : UserControl
 
     _insomniac.RequestRelease(_crlf);
     await File.AppendAllTextAsync(TextLog, $"{Prefix}OnClosed   {DateTimeOffset.Now - AppStarted:hh\\:mm\\:ss}\n");
-    if (_appset.IsAudible == true) SystemSounds.Hand.Play();
+    if (_appset.IsAudible == true) Bpr.Tick();
     _idleTimeoutAnalizer.SaveLastCloseAndAnalyzeIfMarkable();
   }
 }

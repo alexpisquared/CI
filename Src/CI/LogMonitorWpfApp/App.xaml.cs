@@ -37,7 +37,7 @@ namespace LogMonitorWpfApp
           @$"..\Logs\",
           @$"\Temp\Logs\",
         }))
-      .CreateLogger<MainWindow>());
+      .CreateLogger<TSMainWindow>());
 
       _ = VersionHelper.IsDevEnv ? services.AddTransient<IBpr, Ambience.Lib.Bpr>() : services.AddTransient<IBpr, BprSilentMock>();
 
@@ -48,11 +48,11 @@ namespace LogMonitorWpfApp
 
 
 
-      _ = services.AddSingleton<IAddChild, MainWindow>(); // (sp => new MainWindow(sp.GetRequiredService<ILogger>(), sp.GetRequiredService<IConfigurationRoot>(), sp.GetRequiredService<InventoryContext>(), _started));
+      _ = services.AddSingleton<IAddChild, TSMainWindow>(); // (sp => new TSMainWindow(sp.GetRequiredService<ILogger>(), sp.GetRequiredService<IConfigurationRoot>(), sp.GetRequiredService<InventoryContext>(), _started));
       //_ = services.AddScoped<MainVM>();
 
       //services.AddSingleton<MainVM>();
-      //services.AddSingleton<Window>(s => new MainWindow() { DataContext = s.GetRequiredService <MainVM>() });
+      //services.AddSingleton<Window>(s => new TSMainWindow() { DataContext = s.GetRequiredService <MainVM>() });
 
       _serviceProvider = services.BuildServiceProvider();
     }
@@ -72,8 +72,8 @@ namespace LogMonitorWpfApp
 
         MainWindow = (Window)_serviceProvider.GetRequiredService<IAddChild>();
         MainWindow.Show();
-        //MainWindow.DataContext = _serviceProvider.GetRequiredService<MainVM>();
-        //await ((MainVM)MainWindow.DataContext).InitAsync();
+        //TSMainWindow.DataContext = _serviceProvider.GetRequiredService<MainVM>();
+        //await ((MainVM)TSMainWindow.DataContext).InitAsync();
 
         ShutdownMode = ShutdownMode.OnMainWindowClose;
       }

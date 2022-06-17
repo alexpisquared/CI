@@ -1,6 +1,6 @@
 ﻿namespace LogMonitorWpfApp;
 
-public partial class MainWindow : Window
+public partial class TSMainWindow : Window
 {
   readonly FileSystemWatcher _watcher;
   readonly UserSettings _us;
@@ -9,10 +9,10 @@ public partial class MainWindow : Window
   int _i = 0, _w = 0, _v = 0, _a = 0;
 
   public IBpr Bpr { get; }
-  public MainWindow(IBpr bpr)
+  public TSMainWindow(IBpr bpr)
   {
     InitializeComponent();
-    Bpr = bpr;
+    rsk.Bpr = Bpr = bpr;
     Topmost = Debugger.IsAttached;
     MouseLeftButtonDown += (s, e) => { if (e.LeftButton == MouseButtonState.Pressed) DragMove(); };
 
@@ -104,7 +104,7 @@ public partial class MainWindow : Window
   }
   async void OnMovOld(object s, RoutedEventArgs e)
   {
-    Bpr.Tick();
+    Bpr.Click();
     await StopWatch();
 
     try
@@ -127,7 +127,7 @@ public partial class MainWindow : Window
   }
   async void OnAckAck(object s, RoutedEventArgs e)
   {
-    Bpr.Tick();
+    Bpr.Click();
 
     while (_ctsVideo is not null || _ctsAudio is not null) { _ctsVideo?.Cancel(); _ctsAudio?.Cancel(); } // await Bpr.BeepAsync(400, .4);  
 
@@ -344,7 +344,7 @@ public partial class MainWindow : Window
     {
       while (await timer.WaitForNextTickAsync(_ctsCheckr.Token))
       {
-        Trace.Write($"C");
+        Write($"C");
         OnChckFS(null, null);
       }
     }

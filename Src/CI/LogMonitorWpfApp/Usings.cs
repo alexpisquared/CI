@@ -3,9 +3,9 @@ global using System.Data;
 global using System.Diagnostics;
 global using System.IO;
 global using System.Linq;
-global using System.Media;
 //obal using System.Text.Json; //tu: new and very performant Json lib (Dec 2021)
 global using System.Runtime.CompilerServices;
+global using System.Text.Json;
 global using System.Threading;
 global using System.Threading.Tasks;
 global using System.Windows;
@@ -21,7 +21,7 @@ global using LogMonitorWpfApp.RdpSession;
 global using Microsoft.Extensions.Logging;
 global using RdpFacility;
 global using StandardContracts.Lib;
+global using TacticalSupport.RdpSession;
 //global using System.Text.Json; //tu: new and very performant Json lib (Dec 2021)
 
 global using static System.Diagnostics.Trace;
-
