@@ -99,8 +99,8 @@ public partial class RdpSessionKeeperUsrCtrl : UserControl
   async void OnInsmnia(object s, RoutedEventArgs e) { _appset.IsInsmnia = ((MenuItem)s).IsChecked == true; if (_isLoaded) { await _appset.StoreAsync(); _insomniac.SetInso(((MenuItem)s).IsChecked == true); } }
   async void OnPosning(object s, RoutedEventArgs e) { _appset.IsPosning = ((MenuItem)s).IsChecked == true; if (_isLoaded) { await _appset.StoreAsync(); } }
   async void OnMindBiz(object s, RoutedEventArgs e) { _appset.IsMindBiz = ((MenuItem)s).IsChecked == true; if (_isLoaded) { await _appset.StoreAsync(); } }
-  async void OnPlus1hr(object s, RoutedEventArgs e) { _hrsAdded++; await OnTick(true); await Bpr.TickAsync(); }
-  async void OnMinusHr(object s, RoutedEventArgs e) { _hrsAdded--; await OnTick(true); await Bpr.TickAsync(); }
+  async void OnPlus2hr(object s, RoutedEventArgs e) { _hrsAdded += 2; await OnTick(true); await Bpr.TickAsync(); }
+  async void OnMinusHr(object s, RoutedEventArgs e) { _hrsAdded -= 1; await OnTick(true); await Bpr.TickAsync(); }
 
   void OnPosition(object s, RoutedEventArgs e) => TogglePosition("Manual Menu Call");
 
