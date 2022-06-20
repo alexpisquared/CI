@@ -5,11 +5,16 @@
     <TargetFramework>net6.0-windows</TargetFramework>
     <Nullable>enable</Nullable>
     <UseWPF>true</UseWPF>
-    <ApplicationIcon>tracelog.ico</ApplicationIcon>
+    <ApplicationIcon>crashdump.ico</ApplicationIcon>
     <!--AutoBuildVer: add 2 lines below as well as to AsseblyInfo.cs:  '[assembly: AssemblyVersion("0.8.25.*")] // <== ' -->
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <Deterministic>false</Deterministic>
+    <PackageIcon></PackageIcon>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Content Include="crashdump.ico" />
+  </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\..\CI-Reimagined-Invention\Src\CI-RI\Ambience.Lib\Ambience.Lib.csproj" />
