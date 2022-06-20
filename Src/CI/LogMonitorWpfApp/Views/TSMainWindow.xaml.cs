@@ -97,7 +97,7 @@ public partial class TSMainWindow : Window
     {
       RemoveDeleteds();
 
-      Title = $"Log Monitor  -  OnResetW on {DateTime.Now:HH:mm:ss}  -  {VersionHelper.CurVerStr}";
+      Title = $"Tac Sup   OnResetW on {DateTime.Now:HH:mm:ss}  -  {VersionHelper.CurVerStr}";
     }
     catch (Exception ex) { _ = MessageBox.Show(ex.ToString()); }
     finally { StartWatch(); }
@@ -120,21 +120,23 @@ public partial class TSMainWindow : Window
       _ctsAudio?.Cancel();
       await Bpr.TickAsync();
       brdr1.Background = Brushes.Cyan;
-      Title = $"Log Monitor  -  {VersionHelper.CurVerStr}  -  {DateTime.Now:HH:mm:ss} Moved Olds   ";
+      Title = $"Tac Sup   {VersionHelper.CurVerStr}  -  {DateTime.Now:HH:mm:ss} Moved Olds   ";
     }
     catch (Exception ex) { _ = MessageBox.Show(ex.ToString()); }
     finally { StartWatch(); }
   }
   async void OnAckAck(object s, RoutedEventArgs e)
   {
+    Title = $"Tac Sup   Ack...";
     Bpr.Click();
 
-    while (_ctsVideo is not null || _ctsAudio is not null) { _ctsVideo?.Cancel(); _ctsAudio?.Cancel(); } // await Bpr.BeepAsync(400, .4);  
+    while (_ctsVideo is not null || _ctsAudio is not null) { _ctsVideo?.Cancel(); _ctsAudio?.Cancel(); await Bpr.BeepAsync(200, .333); }
 
     WindowState = WindowState.Minimized;
     brdr1.Background = Brushes.DarkCyan;
-    await Task.Delay(_200ms / 4);
-    Title = $"Log Monitor  -  {VersionHelper.CurVerStr}  -  {DateTime.Now:HH:mm:ss} minimized  * * * ";
+    await Task.Delay(_200ms / 2); Title = $"Tac Sup   {VersionHelper.CurVerStr}  -  {DateTime.Now:HH:mm:ss} minimized  * * * ";
+    await Task.Delay(_200ms / 2); Title = $"Tac Sup   {VersionHelper.CurVerStr}  -  {DateTime.Now:HH:mm:ss} minimized  * * * ";
+    await Task.Delay(_200ms / 2); Title = $"Tac Sup   {VersionHelper.CurVerStr}  -  {DateTime.Now:HH:mm:ss} minimized  * * * ";
     Topmost = false;
     await Bpr.TickAsync();
   }
@@ -318,12 +320,12 @@ public partial class TSMainWindow : Window
 
         _ = Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(async () =>
         {
-          Title = $"▄▀▄▀▄▀▄▀   Log Monitor  -  {VersionHelper.CurVerStr}"; await Task.Delay(_200ms);
-          Title = $" ▄▀▄▀▄▀▄▀  Log Monitor  -  {VersionHelper.CurVerStr}"; await Task.Delay(_200ms);
-          Title = $"  ▄▀▄▀▄▀▄▀ Log Monitor  -  {VersionHelper.CurVerStr}"; await Task.Delay(_200ms);
-          Title = $"▀▄▀▄▀▄▀▄   Log Monitor  -  {VersionHelper.CurVerStr}"; await Task.Delay(_200ms);
-          Title = $" ▀▄▀▄▀▄▀▄  Log Monitor  -  {VersionHelper.CurVerStr}"; await Task.Delay(_200ms);
-          Title = $"  ▀▄▀▄▀▄▀▄ Log Monitor  -  {VersionHelper.CurVerStr}";
+          Title = $"▄▀▄▀▄▀▄▀   Tac Sup   {VersionHelper.CurVerStr}"; await Task.Delay(_200ms);
+          Title = $" ▄▀▄▀▄▀▄▀  Tac Sup   {VersionHelper.CurVerStr}"; await Task.Delay(_200ms);
+          Title = $"  ▄▀▄▀▄▀▄▀ Tac Sup   {VersionHelper.CurVerStr}"; await Task.Delay(_200ms);
+          Title = $"▀▄▀▄▀▄▀▄   Tac Sup   {VersionHelper.CurVerStr}"; await Task.Delay(_200ms);
+          Title = $" ▀▄▀▄▀▄▀▄  Tac Sup   {VersionHelper.CurVerStr}"; await Task.Delay(_200ms);
+          Title = $"  ▀▄▀▄▀▄▀▄ Tac Sup   {VersionHelper.CurVerStr}";
         }));
       }
     }
