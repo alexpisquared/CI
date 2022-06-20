@@ -31,3 +31,4 @@ All of the SQL Server database objects used by the application are prefixed with
 
 
 Deployment to Production
+The methodology for deployment to production is as follows: just press the damn update button.
