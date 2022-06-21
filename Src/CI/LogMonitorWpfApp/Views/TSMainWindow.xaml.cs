@@ -335,12 +335,13 @@ public partial class TSMainWindow : Window
       {
         _ctsVideo.Dispose();
         _ctsVideo = null;
-        _ = Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() =>
-        {
-          Title = $"Out";
-          tbkHeadr.Text = $" {_w} {--_v} {_a} ";
-        }));
-      };
+      }
+
+      _ = Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() =>
+      {
+        Title = $"Out";
+        tbkHeadr.Text = $" {_w} {--_v} {_a} ";
+      }));
     }
   }
   async Task StartPeriodicChecker()
