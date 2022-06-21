@@ -62,11 +62,11 @@
             <MenuItem Header="  _1  " Click="OnStart6" />
             <MenuItem Header="  _0  " Click="OnStop_6" />
           </MenuItem>
-          <MenuItem Header="A_ll" x:Name="chkAll" ToolTip="Monitor all changes (vs errors only)" IsCheckable="True" />
+          <MenuItem Header="A_ll"   x:Name="chkAll"  ToolTip="Monitor all changes (vs errors only)" IsCheckable="True" />
+          <MenuItem Header="E_xp"   Click="OnExplre" ToolTip="E_xplore"/>
+          <MenuItem Header="_VSC"   Click="OnVSCode" ToolTip="_VS Code"/>
+          <MenuItem Header="_Old"   Click="OnMovOld" ToolTip="Move old files to the ..\Logs.Old folder" />
           <TextBox x:Name="tbxPath" Text="Z:\..." MinWidth="160" BorderThickness="0"/>
-          <MenuItem Header="E_xplore"   Click="OnExplre" />
-          <MenuItem Header="_VS Code"   Click="OnVSCode" />
-          <MenuItem Header="Move _Old"  Click="OnMovOld" ToolTip="Move old files to the ..\Logs.Old folder" />
         </Menu>
 
         <Button Content=" ReWatch " Click="OnResetW" IsDefault="True" Margin="5" Background="Transparent" ToolTip="Remove deleted from the list" />
