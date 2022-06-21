@@ -9,6 +9,7 @@ public partial class RdpSessionKeeperUsrCtrl : UserControl
   const int _from = 8, _till = 20, _dbgDelayMs = 500;
   int _dx = 10, _dy = 10, _hrsAdded = 0;
   bool _isLoaded = false;
+  IBpr? _bpr;
 
   string Prefix => $"{DateTimeOffset.Now:HH:mm:ss}+{DateTimeOffset.Now - AppStarted:hh\\:mm\\:ss}  {(_appset.IsAudible ? "A" : "a")}{(_appset.IsPosning ? "P" : "p")}{(_appset.IsInsmnia ? "I" : "i")}  ";
 
@@ -49,7 +50,7 @@ public partial class RdpSessionKeeperUsrCtrl : UserControl
   }
   async Task OnTick(bool isManual = false)
   {
-    if (_appset.IsAudible == true) await Bpr.BeepAsync(222, .33);
+    if (_appset.IsAudible == true) await Bpr.BeepAsync(160, .4);
 
     if (chkMind1.IsChecked == true)
     {
@@ -71,7 +72,7 @@ public partial class RdpSessionKeeperUsrCtrl : UserControl
 
   bool IsBizHours => _from <= DateTimeOffset.Now.Hour && DateTimeOffset.Now.Hour <= (_till + _hrsAdded); // && DateTimeOffset.Now.Hour != 12 
 
-  public IBpr Bpr { get; internal set; }
+  public IBpr Bpr { get => _bpr ?? throw new ArgumentNullException("▄▀▄▀▄▀▄▀▄"); internal set => _bpr = value; }
 
   void TogglePosition(string msg)
   {
@@ -99,8 +100,8 @@ public partial class RdpSessionKeeperUsrCtrl : UserControl
   async void OnInsmnia(object s, RoutedEventArgs e) { _appset.IsInsmnia = ((MenuItem)s).IsChecked == true; if (_isLoaded) { await _appset.StoreAsync(); _insomniac.SetInso(((MenuItem)s).IsChecked == true); } }
   async void OnPosning(object s, RoutedEventArgs e) { _appset.IsPosning = ((MenuItem)s).IsChecked == true; if (_isLoaded) { await _appset.StoreAsync(); } }
   async void OnMindBiz(object s, RoutedEventArgs e) { _appset.IsMindBiz = ((MenuItem)s).IsChecked == true; if (_isLoaded) { await _appset.StoreAsync(); } }
-  async void OnPlus2hr(object s, RoutedEventArgs e) { _hrsAdded += 2; await OnTick(true); await Bpr.TickAsync(); }
-  async void OnMinusHr(object s, RoutedEventArgs e) { _hrsAdded -= 1; await OnTick(true); await Bpr.TickAsync(); }
+  async void OnPlus2hr(object s, RoutedEventArgs e) { _hrsAdded += 2; await OnTick(true); await Bpr.ClickAsync(); }
+  async void OnMinusHr(object s, RoutedEventArgs e) { _hrsAdded -= 1; await OnTick(true); await Bpr.ClickAsync(); }
 
   void OnPosition(object s, RoutedEventArgs e) => TogglePosition("Manual Menu Call");
 

@@ -6,6 +6,7 @@ public partial class TSMainWindow : Window
   readonly UserSettings _us;
   CancellationTokenSource? _ctsVideo, _ctsAudio, _ctsCheckr;
   const int _200ms = 200;
+  const string _noChanges = "No changes";
   int _i = 0, _w = 0, _v = 0, _a = 0;
 
   public IBpr Bpr { get; }
@@ -53,23 +54,12 @@ public partial class TSMainWindow : Window
     StartWatch();
     await StartPeriodicChecker();
   }
-  void OnChckFS(object s, RoutedEventArgs e)
-  {
-    tbkTitle.Text = $"{DateTimeOffset.Now:HH:mm:ss}  OnChckFS";
-    Bpr.Tick();
-
-    var rv = ReScanFolder(tbxPath.Text);
-    if (rv != "")
-    {
-      ReportAndStartAlarms(rv, rv, null);
-    }
-  }
-
-  async void OnReWtch(object s, RoutedEventArgs e) { await StopWatch(); await Bpr.TickAsync(); StartWatch(); }
-  void OnExplre(object s, RoutedEventArgs e) { Bpr.Tick(); try { _ = new Process { StartInfo = new ProcessStartInfo(@"Explorer.exe", $"\"{tbxPath.Text}\"") { RedirectStandardError = true, UseShellExecute = false } }.Start(); } catch (Exception ex) { _ = MessageBox.Show(ex.ToString()); } }
+  void OnChckFS(object s, RoutedEventArgs e) { Bpr.Click(); ChckFS(); }
+  async void OnReWtch(object s, RoutedEventArgs e) { await StopWatch(); await Bpr.ClickAsync(); StartWatch(); }
+  void OnExplre(object s, RoutedEventArgs e) { Bpr.Click(); try { _ = new Process { StartInfo = new ProcessStartInfo(@"Explorer.exe", $"\"{tbxPath.Text}\"") { RedirectStandardError = true, UseShellExecute = false } }.Start(); } catch (Exception ex) { _ = MessageBox.Show(ex.ToString()); } }
   async void OnVSCode(object s, RoutedEventArgs e)
   {
-    Bpr.Tick();
+    Bpr.Click();
     await StopWatch();
     WindowState = WindowState.Minimized;
     try
@@ -88,11 +78,11 @@ public partial class TSMainWindow : Window
 
     while (_ctsVideo is not null || _ctsAudio is not null) { _ctsVideo?.Cancel(); _ctsAudio?.Cancel(); }
   }
-  void OnSetngs(object s, RoutedEventArgs e) { Bpr.Tick(); try { _ = new Process { StartInfo = new ProcessStartInfo(@$"{Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)}\Programs\Microsoft VS Code\Code.exe", $"\"{UserSettingsStore.Store}\"") { RedirectStandardError = true, UseShellExecute = false } }.Start(); } catch (Exception ex) { _ = MessageBox.Show(ex.ToString()); } }//_ = new Process { StartInfo = new ProcessStartInfo(@"Notepad.exe", $"\"{UserSettingsStore._store}\"") { RedirectStandardError = true, UseShellExecute = false } }.Start(); //_ = new Process { StartInfo = new ProcessStartInfo(@"C:\Program Files\Microsoft Visual Studio\2022\Preview\Common7\IDE\devenv.exe", $"\"{UserSettingsStore._store}\"") { RedirectStandardError = true, UseShellExecute = false } }.Start(); }
+  void OnSetngs(object s, RoutedEventArgs e) { Bpr.Click(); try { _ = new Process { StartInfo = new ProcessStartInfo(@$"{Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)}\Programs\Microsoft VS Code\Code.exe", $"\"{UserSettingsStore.Store}\"") { RedirectStandardError = true, UseShellExecute = false } }.Start(); } catch (Exception ex) { _ = MessageBox.Show(ex.ToString()); } }//_ = new Process { StartInfo = new ProcessStartInfo(@"Notepad.exe", $"\"{UserSettingsStore._store}\"") { RedirectStandardError = true, UseShellExecute = false } }.Start(); //_ = new Process { StartInfo = new ProcessStartInfo(@"C:\Program Files\Microsoft Visual Studio\2022\Preview\Common7\IDE\devenv.exe", $"\"{UserSettingsStore._store}\"") { RedirectStandardError = true, UseShellExecute = false } }.Start(); }
   async void OnResetW(object s, RoutedEventArgs e)
   {
     await StopWatch();
-    await Bpr.TickAsync();
+    await Bpr.ClickAsync();
     try
     {
       RemoveDeleteds();
@@ -138,12 +128,19 @@ public partial class TSMainWindow : Window
     Topmost = false;
     await Bpr.TickAsync();
   }
-  void On0000(object s, RoutedEventArgs e) { Bpr.Tick(); try { } catch (Exception ex) { _ = MessageBox.Show(ex.ToString()); } }
+  void On0000(object s, RoutedEventArgs e) { Bpr.Click(); try { } catch (Exception ex) { _ = MessageBox.Show(ex.ToString()); } }
   void OnClose(object s, RoutedEventArgs e) => Close();
 
+  void ChckFS()
+  {
+    tbkTitle.Text = $"{DateTimeOffset.Now:HH:mm:ss}  ChckFS";
+    var report = ReScanFolder(tbxPath.Text);
+    if (report != _noChanges)
+      ReportAndStartAlarms(report, report);
+  }
   string ReScanFolder(string path)
   {
-    var rv = "";
+    var report = _noChanges;
     try
     {
       var now = DateTime.Now;
@@ -154,27 +151,27 @@ public partial class TSMainWindow : Window
         if (fd == null)
         {
           _us.FileDataList.Add(new FileData { FullName = fi.FullName, LastWriteTime = fi.LastWriteTime, Status = "New" });
-          rv += $" New: {fi.Name} ";
+          report += $" New: {fi.Name} ";
         }
         else
         {
           fd.LastSeen = now;
           if (Math.Abs((fd.LastWriteTime - fi.LastWriteTime).TotalSeconds) < 5)
-            fd.Status = "No changes";
+            fd.Status = _noChanges;
           else
           {
             fd.LastWriteTime = fi.LastWriteTime;
             fd.Status += $"+";// Changed   at {fi.LastWriteTime}.";
-            rv += $" dTm: {fi.Name} ";
+            report += $" dTm: {fi.Name} ";
           }
         }
       }
 
       var del = _us.FileDataList.Where(r => Math.Abs((r.LastSeen - now).TotalSeconds) > 3); // if not seen above - mark as deleted
-      del.ToList().ForEach(fd => { fd.IsDeleted = true; fd.Status = "Deleted"; rv += $" Del: {fd.PartName} "; });
+      del.ToList().ForEach(fd => { fd.IsDeleted = true; fd.Status = "Deleted"; report += $" Del: {fd.PartName} "; });
 
       var exi = _us.FileDataList.Where(r => Math.Abs((r.LastSeen - now).TotalSeconds) <= 3); // if just seen - UN?deleted?
-      exi.ToList().ForEach(fd => { fd.IsDeleted = false; }); //  fd.Status = "Restored"; rv += $" Exi: {Path.GetFileNameWithoutExtension(fd.FullName)} "; });
+      exi.ToList().ForEach(fd => { fd.IsDeleted = false; }); //  fd.Status = "Restored"; report += $" Exi: {Path.GetFileNameWithoutExtension(fd.FullName)} "; });
 
       RemoveDeleteds();
 
@@ -183,7 +180,7 @@ public partial class TSMainWindow : Window
 
       dg1.Items.Refresh();
 
-      return rv; // $"Re-Scanned {_us.FileDataList.Count} files.  {del.Count()} deleted.";      //foreach (var fi in _us.FileDataList.OrderByDescending(r => r.LastWriteTime))        lb1.Items.Add($"\t{System.IO.Path.GetFileName(fi.FullName),-40} {fi.LastWriteTime:MM-dd HH:mm:ss}  {fi.IsDeleted,-5}  {fi.Status}");
+      return report; // $"Re-Scanned {_us.FileDataList.Count} files.  {del.Count()} deleted.";      //foreach (var fi in _us.FileDataList.OrderByDescending(r => r.LastWriteTime))        lb1.Items.Add($"\t{System.IO.Path.GetFileName(fi.FullName),-40} {fi.LastWriteTime:MM-dd HH:mm:ss}  {fi.IsDeleted,-5}  {fi.Status}");
     }
     catch (Exception ex) { _ = MessageBox.Show(ex.ToString()); return ex.Message; }
   }
@@ -215,7 +212,7 @@ public partial class TSMainWindow : Window
   void OnChanged(object s, FileSystemEventArgs e) { if (e.ChangeType == WatcherChangeTypes.Changed) ReportAndRescanSafe($"▼▲  Changed {File.GetLastWriteTime(e.FullPath).Second}. \t", e.FullPath); }
   void OnCreated(object s, FileSystemEventArgs e) => ReportAndRescanSafe($"▲▲  Created.   \t", e.FullPath);
   void OnDeleted(object s, FileSystemEventArgs e) => ReportAndRescanSafe($"▼▼  Deleted.   \t", e.FullPath);
-  void OnRenamed(object sner, RenamedEventArgs e) => ReportAndRescanSafe($"►◄  Renamed.   \t", e.OldFullPath, e.FullPath);
+  void OnRenamed(object sner, RenamedEventArgs e) => ReportAndRescanSafe($"►◄  Renamed.   \t", e.FullPath);
   void OnError(object senderrr, ErrorEventArgs e) => ReportAnd_Exception(e.GetException());
 
   void ReportAnd_Exception(Exception? ex)
@@ -228,25 +225,25 @@ public partial class TSMainWindow : Window
 
     Bpr.Error();
   }
-  void ReportAndRescanSafe(string msg, string file1 = "", string file2 = "")
+  void ReportAndRescanSafe(string msg, string file1 = "")
   {
     if (Application.Current.Dispatcher.CheckAccess()) // if on UI thread
-      ReportAndRescan(msg, file1, file2);
+      ReportAndRescan(msg, file1);
     else
       _ = Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => //todo: rejoin properly to the UI thread (Oct 2017)
-      ReportAndRescan(msg, file1, file2)));
+      ReportAndRescan(msg, file1)));
   }
-  void ReportAndRescan(string msg, string file1, string file2)
+  void ReportAndRescan(string msg, string file1)
   {
     var fd = _us.FileDataList.FirstOrDefault(r => r.FullName == file1);
     if (fd != null)
       fd.Status = msg;
 
-    ReportAndStartAlarms(msg, file1, file2);
+    ReportAndStartAlarms(msg, file1);
   }
-  async void ReportAndStartAlarms(string msg, string changedFile, string file__Q)
+  async void ReportAndStartAlarms(string msg, string changedFile)
   {
-    tbkTitle.Text = $"{DateTimeOffset.Now:HH:mm:ss}  {msg}  {Path.GetFileNameWithoutExtension(changedFile)}  {file__Q}";
+    tbkTitle.Text = $"{DateTimeOffset.Now:HH:mm:ss}  {msg}  {Path.GetFileNameWithoutExtension(changedFile)}  ";
     lbxHist.Items.Add(tbkTitle.Text);
 
     Topmost = true;
@@ -355,7 +352,7 @@ public partial class TSMainWindow : Window
       while (await timer.WaitForNextTickAsync(_ctsCheckr.Token))
       {
         Write($"C");
-        OnChckFS(null, null);
+        ChckFS();
       }
     }
     catch (OperationCanceledException ex) { WriteLine("Cancelled:  " + ex.Message); }
