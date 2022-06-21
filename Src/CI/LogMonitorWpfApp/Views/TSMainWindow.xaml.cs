@@ -49,7 +49,7 @@ public partial class TSMainWindow : Window
   async void OnLoaded(object s, RoutedEventArgs e)
   {
     dg1.ItemsSource = _us.FileDataList;
-    Title = $"Log Monitor - No events since  {DateTime.Now:HH:mm:ss}  -  {VersionHelper.CurVerStr}";
+    Title = $"No events since  {DateTime.Now:HH:mm:ss}  -  {VersionHelper.CurVerStr}";
     StartWatch();
     await StartPeriodicChecker();
   }
@@ -97,7 +97,7 @@ public partial class TSMainWindow : Window
     {
       RemoveDeleteds();
 
-      Title = $"Tac Sup   OnResetW on {DateTime.Now:HH:mm:ss}  -  {VersionHelper.CurVerStr}";
+      Title = $"OnResetW on {DateTime.Now:HH:mm:ss}  -  {VersionHelper.CurVerStr}";
     }
     catch (Exception ex) { _ = MessageBox.Show(ex.ToString()); }
     finally { StartWatch(); }
@@ -120,23 +120,21 @@ public partial class TSMainWindow : Window
       _ctsAudio?.Cancel();
       await Bpr.TickAsync();
       brdr1.Background = Brushes.Cyan;
-      Title = $"Tac Sup   {VersionHelper.CurVerStr}  -  {DateTime.Now:HH:mm:ss} Moved Olds   ";
+      Title = $"{VersionHelper.CurVerStr}  -  {DateTime.Now:HH:mm:ss} Moved Olds   ";
     }
     catch (Exception ex) { _ = MessageBox.Show(ex.ToString()); }
     finally { StartWatch(); }
   }
   async void OnAckAck(object s, RoutedEventArgs e)
   {
-    Title = $"Tac Sup   Ack...";
+    Title = $"Ack...";
     Bpr.Click();
 
     while (_ctsVideo is not null || _ctsAudio is not null) { _ctsVideo?.Cancel(); _ctsAudio?.Cancel(); await Bpr.BeepAsync(200, .333); }
 
     WindowState = WindowState.Minimized;
     brdr1.Background = Brushes.DarkCyan;
-    await Task.Delay(_200ms / 2); Title = $"Tac Sup   {VersionHelper.CurVerStr}  -  {DateTime.Now:HH:mm:ss} minimized  * * * ";
-    await Task.Delay(_200ms / 2); Title = $"Tac Sup   {VersionHelper.CurVerStr}  -  {DateTime.Now:HH:mm:ss} minimized  * * * ";
-    await Task.Delay(_200ms / 2); Title = $"Tac Sup   {VersionHelper.CurVerStr}  -  {DateTime.Now:HH:mm:ss} minimized  * * * ";
+    await Task.Delay(_200ms * 8); Title = $"{VersionHelper.CurVerStr}  -  {DateTime.Now:HH:mm:ss} minimized  * * * ";
     Topmost = false;
     await Bpr.TickAsync();
   }
@@ -191,7 +189,7 @@ public partial class TSMainWindow : Window
   }
   void StartWatch([CallerMemberName] string? cmn = "")
   {
-    Trace.WriteLine($"\n{DateTime.Now:HH:mm:ss}   Starting  FS WATCH  by  {cmn} {new string('+', 64)}");
+    WriteLine($"\n{DateTime.Now:HH:mm:ss}   Starting  FS WATCH  by  {cmn} {new string('+', 64)}");
     _watcher.Changed += OnChanged;
     _watcher.Created += OnCreated;
     _watcher.Deleted += OnDeleted;
@@ -202,7 +200,7 @@ public partial class TSMainWindow : Window
   }
   async Task StopWatch([CallerMemberName] string? cmn = "")
   {
-    Trace.WriteLine($"\n{DateTime.Now:HH:mm:ss}   Stoppping FS WATCH  by  {cmn} {new string('-', 64)}");
+    WriteLine($"\n{DateTime.Now:HH:mm:ss}   Stoppping FS WATCH  by  {cmn} {new string('-', 64)}");
     _watcher.Changed -= OnChanged;
     _watcher.Created -= OnCreated;
     _watcher.Deleted -= OnDeleted;
@@ -283,7 +281,7 @@ public partial class TSMainWindow : Window
 
   async Task StartAudioNotifier(Action audio, [CallerMemberName] string? cmn = "")
   {
-    Trace.WriteLine($"\n{DateTime.Now:HH:mm:ss}   Starting AUDIO by  {cmn} + + + + + + + + + + + + + + + ");
+    WriteLine($"\n{DateTime.Now:HH:mm:ss}   Starting AUDIO by  {cmn} + + + + + + + + + + + + + + + ");
     _ctsAudio?.Cancel();
     _ctsAudio = new();
     _ = Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => tbkHeadr.Text = $" {_w} {_v} {++_a} "));
@@ -297,7 +295,7 @@ public partial class TSMainWindow : Window
         _ = Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => tbkHeadr.Text = $" {_i++}++ "));          //await Task.Delay(_i);
       }
     }
-    catch (OperationCanceledException ex) { Trace.WriteLine("Cancelled AUDIO:  - - - - - - - - - - - - - - - - - - " + ex.Message); }
+    catch (OperationCanceledException ex) { WriteLine("Cancelled AUDIO:  - - - - - - - - - - - - - - - - - - " + ex.Message); }
     catch (Exception ex) { _ = MessageBox.Show(ex.ToString()); }
     finally
     {
@@ -306,7 +304,7 @@ public partial class TSMainWindow : Window
   }
   async Task StartVisualNotifier([CallerMemberName] string? cmn = "")
   {
-    Trace.WriteLine($"\n{DateTime.Now:HH:mm:ss}   Starting Visual by  {cmn} + + + + + + + + + + + + + + + ");
+    WriteLine($"\n{DateTime.Now:HH:mm:ss}   Starting Visual by  {cmn} + + + + + + + + + + + + + + + ");
     _ctsVideo?.Cancel();
     _ctsVideo = new();
     _ = Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => tbkHeadr.Text = $" {_w} {++_v} {_a} "));
@@ -316,29 +314,38 @@ public partial class TSMainWindow : Window
     {
       while (await timer.WaitForNextTickAsync(_ctsVideo.Token))
       {
-        Trace.Write($"v");
+        Write($"v");
 
         _ = Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(async () =>
         {
-          Title = $"▄▀▄▀▄▀▄▀   Tac Sup   {VersionHelper.CurVerStr}"; await Task.Delay(_200ms);
-          Title = $" ▄▀▄▀▄▀▄▀  Tac Sup   {VersionHelper.CurVerStr}"; await Task.Delay(_200ms);
-          Title = $"  ▄▀▄▀▄▀▄▀ Tac Sup   {VersionHelper.CurVerStr}"; await Task.Delay(_200ms);
-          Title = $"▀▄▀▄▀▄▀▄   Tac Sup   {VersionHelper.CurVerStr}"; await Task.Delay(_200ms);
-          Title = $" ▀▄▀▄▀▄▀▄  Tac Sup   {VersionHelper.CurVerStr}"; await Task.Delay(_200ms);
-          Title = $"  ▀▄▀▄▀▄▀▄ Tac Sup   {VersionHelper.CurVerStr}";
+          Title = $"▄▀▄▀▄▀▄▀   {VersionHelper.CurVerStr}"; await Task.Delay(_200ms);
+          Title = $" ▄▀▄▀▄▀▄▀  {VersionHelper.CurVerStr}"; await Task.Delay(_200ms);
+          Title = $"  ▄▀▄▀▄▀▄▀ {VersionHelper.CurVerStr}"; await Task.Delay(_200ms);
+          Title = $"▀▄▀▄▀▄▀▄   {VersionHelper.CurVerStr}"; await Task.Delay(_200ms);
+          Title = $" ▀▄▀▄▀▄▀▄  {VersionHelper.CurVerStr}"; await Task.Delay(_200ms);
+          Title = $"  ▀▄▀▄▀▄▀▄ {VersionHelper.CurVerStr}";
         }));
       }
     }
-    catch (OperationCanceledException ex) { Trace.WriteLine("Cancelled Visual:  - - - - - - - - - - - - - - - - - - " + ex.Message); }
+    catch (OperationCanceledException ex) { WriteLine("Cancelled Visual:  - - - - - - - - - - - - - - - - - - " + ex.Message); }
     catch (Exception ex) { _ = MessageBox.Show(ex.ToString()); }
     finally
     {
-      if (_ctsVideo is not null) { _ctsVideo.Dispose(); _ctsVideo = null; _ = Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => tbkHeadr.Text = $" {_w} {--_v} {_a} ")); }
+      if (_ctsVideo is not null)
+      {
+        _ctsVideo.Dispose();
+        _ctsVideo = null;
+        _ = Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() =>
+        {
+          Title = $"Out";
+          tbkHeadr.Text = $" {_w} {--_v} {_a} ";
+        }));
+      };
     }
   }
   async Task StartPeriodicChecker()
   {
-    Trace.WriteLine($"\n{DateTime.Now:HH:mm:ss}   Starting Checkr   ");
+    WriteLine($"\n{DateTime.Now:HH:mm:ss}   Starting Checkr   ");
     _ctsCheckr?.Cancel();
     _ctsCheckr = new();
     PeriodicTimer timer = new(TimeSpan.FromSeconds(60));
@@ -350,7 +357,7 @@ public partial class TSMainWindow : Window
         OnChckFS(null, null);
       }
     }
-    catch (OperationCanceledException ex) { Trace.WriteLine("Cancelled:  " + ex.Message); }
+    catch (OperationCanceledException ex) { WriteLine("Cancelled:  " + ex.Message); }
     catch (Exception ex) { _ = MessageBox.Show(ex.ToString()); }
     finally { if (_ctsCheckr is not null) { _ctsCheckr.Dispose(); _ctsCheckr = null; } }
   }
@@ -360,13 +367,13 @@ public partial class TSMainWindow : Window
   async void OnStart6(object sender, RoutedEventArgs e) => await StartVisualNotifier();
   void OnStop_6(object sender, RoutedEventArgs e)
   {
-    Trace.WriteLine($"\nCancelling  ({DateTime.Now:HH:mm:ss})");
+    WriteLine($"\nCancelling  ({DateTime.Now:HH:mm:ss})");
     PlayQuietFAF();
     try
     {
       _ctsVideo?.Cancel();
       _ctsAudio?.Cancel();
-      Trace.WriteLine($"Cancelled   both !!!!! ({DateTime.Now:HH:mm:ss})");
+      WriteLine($"Cancelled   both !!!!! ({DateTime.Now:HH:mm:ss})");
     }
     catch (Exception ex) { _ = MessageBox.Show(ex.ToString()); }
   }
