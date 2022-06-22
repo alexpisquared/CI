@@ -4,16 +4,16 @@ public partial class TSMainWindow : Window
 {
   readonly FileSystemWatcher _watcher;
   readonly UserSettings _us;
+  readonly IBpr _bpr;
   CancellationTokenSource? _ctsVideo, _ctsAudio, _ctsCheckr;
   const int _200ms = 200;
   const string _noChanges = "No changes";
   int _i = 0, _w = 0, _v = 0, _a = 0;
 
-  public IBpr Bpr { get; }
   public TSMainWindow(IBpr bpr)
   {
     InitializeComponent();
-    rsk.Bpr = Bpr = bpr;
+    rsk.Bpr = _bpr = bpr;
     Topmost = Debugger.IsAttached;
     MouseLeftButtonDown += (s, e) => { if (e.LeftButton == MouseButtonState.Pressed) DragMove(); };
 
@@ -54,12 +54,12 @@ public partial class TSMainWindow : Window
     StartWatch();
     await StartPeriodicChecker();
   }
-  void OnChckFS(object s, RoutedEventArgs e) { Bpr.Click(); ChckFS(); }
-  async void OnReWtch(object s, RoutedEventArgs e) { await StopWatch(); await Bpr.ClickAsync(); StartWatch(); }
-  void OnExplre(object s, RoutedEventArgs e) { Bpr.Click(); try { _ = new Process { StartInfo = new ProcessStartInfo(@"Explorer.exe", $"\"{tbxPath.Text}\"") { RedirectStandardError = true, UseShellExecute = false } }.Start(); } catch (Exception ex) { _ = MessageBox.Show(ex.ToString()); } }
+  void OnChckFS(object s, RoutedEventArgs e) { _bpr.Click(); ChckFS(); }
+  async void OnReWtch(object s, RoutedEventArgs e) { await StopWatch(); await _bpr.ClickAsync(); StartWatch(); }
+  void OnExplre(object s, RoutedEventArgs e) { _bpr.Click(); try { _ = new Process { StartInfo = new ProcessStartInfo(@"Explorer.exe", $"\"{tbxPath.Text}\"") { RedirectStandardError = true, UseShellExecute = false } }.Start(); } catch (Exception ex) { _ = MessageBox.Show(ex.ToString()); } }
   async void OnVSCode(object s, RoutedEventArgs e)
   {
-    Bpr.Click();
+    _bpr.Click();
     await StopWatch();
     WindowState = WindowState.Minimized;
     try
@@ -78,11 +78,11 @@ public partial class TSMainWindow : Window
 
     while (_ctsVideo is not null || _ctsAudio is not null) { _ctsVideo?.Cancel(); _ctsAudio?.Cancel(); }
   }
-  void OnSetngs(object s, RoutedEventArgs e) { Bpr.Click(); try { _ = new Process { StartInfo = new ProcessStartInfo(@$"{Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)}\Programs\Microsoft VS Code\Code.exe", $"\"{UserSettingsStore.Store}\"") { RedirectStandardError = true, UseShellExecute = false } }.Start(); } catch (Exception ex) { _ = MessageBox.Show(ex.ToString()); } }//_ = new Process { StartInfo = new ProcessStartInfo(@"Notepad.exe", $"\"{UserSettingsStore._store}\"") { RedirectStandardError = true, UseShellExecute = false } }.Start(); //_ = new Process { StartInfo = new ProcessStartInfo(@"C:\Program Files\Microsoft Visual Studio\2022\Preview\Common7\IDE\devenv.exe", $"\"{UserSettingsStore._store}\"") { RedirectStandardError = true, UseShellExecute = false } }.Start(); }
+  void OnSetngs(object s, RoutedEventArgs e) { _bpr.Click(); try { _ = new Process { StartInfo = new ProcessStartInfo(@$"{Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)}\Programs\Microsoft VS Code\Code.exe", $"\"{UserSettingsStore.Store}\"") { RedirectStandardError = true, UseShellExecute = false } }.Start(); } catch (Exception ex) { _ = MessageBox.Show(ex.ToString()); } }//_ = new Process { StartInfo = new ProcessStartInfo(@"Notepad.exe", $"\"{UserSettingsStore._store}\"") { RedirectStandardError = true, UseShellExecute = false } }.Start(); //_ = new Process { StartInfo = new ProcessStartInfo(@"C:\Program Files\Microsoft Visual Studio\2022\Preview\Common7\IDE\devenv.exe", $"\"{UserSettingsStore._store}\"") { RedirectStandardError = true, UseShellExecute = false } }.Start(); }
   async void OnResetW(object s, RoutedEventArgs e)
   {
     await StopWatch();
-    await Bpr.ClickAsync();
+    await _bpr.ClickAsync();
     try
     {
       RemoveDeleteds();
@@ -94,7 +94,7 @@ public partial class TSMainWindow : Window
   }
   async void OnMovOld(object s, RoutedEventArgs e)
   {
-    Bpr.Click();
+    _bpr.Click();
     await StopWatch();
 
     try
@@ -108,7 +108,7 @@ public partial class TSMainWindow : Window
 
       _ctsVideo?.Cancel();
       _ctsAudio?.Cancel();
-      await Bpr.TickAsync();
+      await _bpr.TickAsync();
       brdr1.Background = Brushes.Cyan;
       Title = $"{VersionHelper.CurVerStr}  -  {DateTime.Now:HH:mm:ss} Moved Olds   ";
     }
@@ -118,17 +118,17 @@ public partial class TSMainWindow : Window
   async void OnAckAck(object s, RoutedEventArgs e)
   {
     Title = $"Ack...";
-    Bpr.Click();
+    _bpr.Click();
 
-    while (_ctsVideo is not null || _ctsAudio is not null) { _ctsVideo?.Cancel(); _ctsAudio?.Cancel(); await Bpr.BeepAsync(200, .333); }
+    while (_ctsVideo is not null || _ctsAudio is not null) { _ctsVideo?.Cancel(); _ctsAudio?.Cancel(); await _bpr.BeepAsync(200, .333); }
 
     WindowState = WindowState.Minimized;
     brdr1.Background = Brushes.DarkCyan;
     await Task.Delay(_200ms * 8); Title = $"{VersionHelper.CurVerStr}  -  {DateTime.Now:HH:mm:ss} minimized  * * * ";
     Topmost = false;
-    await Bpr.TickAsync();
+    await _bpr.TickAsync();
   }
-  void On0000(object s, RoutedEventArgs e) { Bpr.Click(); try { } catch (Exception ex) { _ = MessageBox.Show(ex.ToString()); } }
+  void On0000(object s, RoutedEventArgs e) { _bpr.Click(); try { } catch (Exception ex) { _ = MessageBox.Show(ex.ToString()); } }
   void OnClose(object s, RoutedEventArgs e) => Close();
 
   void ChckFS()
@@ -223,7 +223,7 @@ public partial class TSMainWindow : Window
       ex = ex.InnerException;
     }
 
-    Bpr.Error();
+    _bpr.Error();
   }
   void ReportAndRescanSafe(string msg, string file1 = "")
   {
@@ -268,13 +268,15 @@ public partial class TSMainWindow : Window
 
     await Task.Run(async () => await StartVisualNotifier());
 
+    _ = ReScanFolder(tbxPath.Text); // resets the mark to prevent the changes to be picked by the FS checker and re-start the alarm.
+
 #if Obnoxious
     UseSayExe(msg);
 #endif
   }
 
-  void PlayErrorFAF() => Task.Run(async () => await Bpr.WaveAsync(2000, 5000, 3));
-  void PlayQuietFAF() => Task.Run(async () => await Bpr.WaveAsync(60, 401, 7)); //too quiet - worked on the old monitor speakers only: 060, 101, 7));
+  void PlayErrorFAF() => Task.Run(async () => await _bpr.WaveAsync(2000, 5000, 3));
+  void PlayQuietFAF() => Task.Run(async () => await _bpr.WaveAsync(60, 401, 7)); //too quiet - worked on the old monitor speakers only: 060, 101, 7));
 
   async Task StartAudioNotifier(Action audio, [CallerMemberName] string? cmn = "")
   {
