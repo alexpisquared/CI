@@ -136,7 +136,7 @@ public partial class TSMainWindow : Window
     tbkTitle.Text = $"{DateTimeOffset.Now:HH:mm:ss}  ChckFS";
     var report = ReScanFolder(tbxPath.Text);
     if (report != _noChanges)
-      ReportAndStartAlarms(report, report);
+      ReportAndStartAlarms("By FS Check", report);
   }
   string ReScanFolder(string path)
   {
@@ -270,7 +270,7 @@ public partial class TSMainWindow : Window
 
     _ = ReScanFolder(tbxPath.Text); // resets the mark to prevent the changes to be picked by the FS checker and re-start the alarm.
 
-#if Obnoxious
+#if !Obnoxious
     UseSayExe(msg);
 #endif
   }
