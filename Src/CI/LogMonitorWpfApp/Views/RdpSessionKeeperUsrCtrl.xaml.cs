@@ -20,10 +20,10 @@ public partial class RdpSessionKeeperUsrCtrl : UserControl
     var (ita, report) = IdleTimeoutAnalizer.Create(AppStarted);
     _idleTimeoutAnalizer = ita;
     tbkMin.Content = report;
-    chkAdbl2.IsChecked = chkAdbl1.IsChecked = /*chkAdbl.IsChecked = */_appset.IsAudible;/*).Value;*/
-    //chkInso2.IsChecked = chkInso1.IsChecked = /*chkInso.IsChecked = */_appset.IsInsmnia;/*).Value;*/
-    chkPosn2.IsChecked = chkPosn1.IsChecked = /*chkPosn.IsChecked = */_appset.IsPosning;/*).Value;*/
-    chkMind2.IsChecked = chkMind1.IsChecked = /*chkMind.IsChecked = */_appset.IsMindBiz;/*).Value;*/
+    chkAdbl2.IsChecked = chkAdbl1.IsChecked = _appset.IsAudible;
+    chkPstng.IsChecked = chkPstng.IsChecked = _appset.IsPosning;
+    chkInsoB.IsChecked = chkInsoA.IsChecked = _appset.IsInsmnia;
+    chkMind2.IsChecked = chkMind1.IsChecked = _appset.IsMindBiz;
   }
   async void OnLoaded(object s, RoutedEventArgs e)
   {
@@ -81,9 +81,11 @@ public partial class RdpSessionKeeperUsrCtrl : UserControl
   {
     if (_appset.IsAudible == true)
     {
-      await Bpr.BeepAsync(160, .4); await Bpr.BeepAsync(16, .2);
-      await Bpr.BeepAsync(160, .4); await Bpr.BeepAsync(16, .2);
-      await Bpr.BeepAsync(140, .8);
+      await Bpr.BeepAsync(260, .4); await Bpr.BeepAsync(16, 2.0);
+      await Bpr.BeepAsync(160, .4); await Bpr.BeepAsync(16, 0.2);
+      await Bpr.BeepAsync(160, .4); await Bpr.BeepAsync(16, 0.2);
+      await Bpr.BeepAsync(140, .8); await Bpr.BeepAsync(16, 0.2);
+      await Bpr.BeepAsync(400, .2);
     }
 
     try
