@@ -50,7 +50,10 @@ public partial class RdpSessionKeeperUsrCtrl : UserControl
   }
   async Task OnTick(bool isManual = false)
   {
-    if (_appset.IsAudible == true) await Bpr.BeepAsync(160, .4);
+    if (_appset.IsAudible == true)
+    {
+      await Bpr.BeepAsync(160, .4); await Bpr.BeepAsync(16, .2);
+    }
 
     if (chkMind1.IsChecked == true)
     {
@@ -65,7 +68,7 @@ public partial class RdpSessionKeeperUsrCtrl : UserControl
     }
 
     if (_appset.IsPosning)
-      TogglePosition("onTick");
+      await TogglePosition("onTick");
     else
       await File.AppendAllTextAsync(TextLog, $"■"); // {prefix}onTick  {_crlf}");
   }
@@ -74,8 +77,15 @@ public partial class RdpSessionKeeperUsrCtrl : UserControl
 
   public IBpr Bpr { get => _bpr ?? throw new ArgumentNullException("▄▀▄▀▄▀▄▀▄"); internal set => _bpr = value; }
 
-  void TogglePosition(string msg)
+  async Task TogglePosition(string msg)
   {
+    if (_appset.IsAudible == true)
+    {
+      await Bpr.BeepAsync(160, .4); await Bpr.BeepAsync(16, .2);
+      await Bpr.BeepAsync(160, .4); await Bpr.BeepAsync(16, .2);
+      await Bpr.BeepAsync(140, .8);
+    }
+
     try
     {
       _idleTimeoutAnalizer.SkipLoggingOnSelf = true;
@@ -103,7 +113,7 @@ public partial class RdpSessionKeeperUsrCtrl : UserControl
   async void OnPlus2hr(object s, RoutedEventArgs e) { _hrsAdded += 2; await OnTick(true); await Bpr.ClickAsync(); }
   async void OnMinusHr(object s, RoutedEventArgs e) { _hrsAdded -= 1; await OnTick(true); await Bpr.ClickAsync(); }
 
-  void OnPosition(object s, RoutedEventArgs e) => TogglePosition("Manual Menu Call");
+ async void OnPosition(object s, RoutedEventArgs e) => await TogglePosition("Manual Menu Call");
 
   async void OnMark(object z, RoutedEventArgs e) { var s = $"{Prefix}Mark     \t"; tbkLog.Text += s; await File.AppendAllTextAsync(TextLog, $"{s}{_crlf}"); }
   void OnRset(object s, RoutedEventArgs e) { _idleTimeoutAnalizer.MinTimeoutMin = 100; tbkMin.Content = $"ITA so far  {_idleTimeoutAnalizer.MinTimeoutMin:N1} min  {(_idleTimeoutAnalizer.RanByTaskScheduler ? "(ro)" : "(RW)")}"; _idleTimeoutAnalizer.SaveLastCloseAndAnalyzeIfMarkable(); }
