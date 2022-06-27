@@ -209,10 +209,10 @@ public partial class TSMainWindow : Window
     await Task.Delay(333);
   }
 
-  void OnChanged(object s, FileSystemEventArgs e) { if (e.ChangeType == WatcherChangeTypes.Changed) ReportAndRescanSafe($"▼▲  Changed {File.GetLastWriteTime(e.FullPath).Second}. \t", e.FullPath); }
-  void OnCreated(object s, FileSystemEventArgs e) => ReportAndRescanSafe($"▲▲  Created.   \t", e.FullPath);
-  void OnDeleted(object s, FileSystemEventArgs e) => ReportAndRescanSafe($"▼▼  Deleted.   \t", e.FullPath);
-  void OnRenamed(object sner, RenamedEventArgs e) => ReportAndRescanSafe($"►◄  Renamed.   \t", e.FullPath);
+  void OnChanged(object s, FileSystemEventArgs e) { if (e.ChangeType == WatcherChangeTypes.Changed) ReportAndRescanSafe($"▼▲  Changed {e.FullPath.Split('.')[2]}. \t", e.FullPath); }
+  void OnCreated(object s, FileSystemEventArgs e) => ReportAndRescanSafe($"▲▲  Created. {e.FullPath.Split('.')[2]}.  \t", e.FullPath);
+  void OnDeleted(object s, FileSystemEventArgs e) => ReportAndRescanSafe($"▼▼  Deleted. {e.FullPath.Split('.')[2]}.  \t", e.FullPath);
+  void OnRenamed(object sner, RenamedEventArgs e) => ReportAndRescanSafe($"►◄  Renamed. {e.FullPath.Split('.')[2]}.  \t", e.FullPath);
   void OnError(object senderrr, ErrorEventArgs e) => ReportAnd_Exception(e.GetException());
 
   void ReportAnd_Exception(Exception? ex)
