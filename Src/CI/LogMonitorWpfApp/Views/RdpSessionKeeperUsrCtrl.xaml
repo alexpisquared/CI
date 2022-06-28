@@ -52,14 +52,15 @@
       </Rectangle>
 
       <Menu Background="Transparent" Foreground="#ccc">
-        <ToggleButton Content="O_n/Off" VerticalAlignment="Bottom" HorizontalAlignment="Right" IsChecked="{Binding IsOn}" x:Name="btnOnOff" Visibility="Visible" />
-        <!--<CheckBox Content="_A" Checked="onAudible" Unchecked="onAudible" x:Name="chkAdbl" ToolTip="Audible on every tick (230 sec)"/>
-          <CheckBox Content="_I" Checked="onInsmnia" Unchecked="onInsmnia" x:Name="chkPosn" ToolTip="Insmnia or system request to disturb"/>
-          <CheckBox Content="_P" Checked="onPosning" Unchecked="onPosning" x:Name="chkInso" ToolTip="Posning crsr"/>
-          <CheckBox Content="_M" Checked="onMindBiz" Unchecked="onMindBiz" x:Name="chkMind" ToolTip="Mind Biz Hrs"/>-->
-        <MenuItem Header="_Aud    " IsCheckable="True" Checked="OnAudible" Unchecked="OnAudible" x:Name="chkAdbl1" ToolTip="Audible on every tick (230 sec)"/>
-        <MenuItem Header="_Ins    " IsCheckable="True" Checked="OnInsmnia" Unchecked="OnInsmnia" x:Name="chkInsoA" ToolTip="Insmnia or system request to disturb"/>
-        <MenuItem Header="_MBH    " IsCheckable="True" Checked="OnMindBiz" Unchecked="OnMindBiz" x:Name="chkMind1" ToolTip="Mind Biz Hrs" Foreground="#ff4"/>
+        <MenuItem Header="O_n/Off" IsCheckable="True" IsChecked="{Binding IsOn}" x:Name="btnOnOff" Visibility="Visible" />
+        <!--
+        <CheckBox Content="_A" Checked="onAudible" Unchecked="onAudible" x:Name="chkAdbl" ToolTip="Audible on every tick (230 sec)"/>          
+        <CheckBox Content="_I" Checked="onInsmnia" Unchecked="onInsmnia" x:Name="chkPosn" ToolTip="Insmnia or system request to disturb"/>
+        <CheckBox Content="_P" Checked="onPosning" Unchecked="onPosning" x:Name="chkInso" ToolTip="Posning crsr"/>
+        <CheckBox Content="_M" Checked="onMindBiz" Unchecked="onMindBiz" x:Name="chkMind" ToolTip="Mind Biz Hrs"/>-->
+        <MenuItem Header="_Aud   " IsCheckable="True" Checked="OnAudible" Unchecked="OnAudible" x:Name="chkAdbl1" ToolTip="Audible on every tick (230 sec)"/>
+        <MenuItem Header="_Ins   " IsCheckable="True" Checked="OnInsmnia" Unchecked="OnInsmnia" x:Name="chkInsoA" ToolTip="Insmnia or system request to disturb"/>
+        <MenuItem Header="_MBH   " IsCheckable="True" Checked="OnMindBiz" Unchecked="OnMindBiz" x:Name="chkMind1" ToolTip="Mind Biz Hrs" Foreground="#ff4"/>
         <MenuItem Header="+ _2 hr" Click="OnPlus2hr" Height="38" Foreground="#ff4" IsEnabled="{Binding ElementName=chkMind1, Path=IsChecked}" />
         <MenuItem Header="- _1 hr" Click="OnMinusHr" Height="38" Foreground="#ff4" IsEnabled="{Binding ElementName=chkMind1, Path=IsChecked}" />
         <Label Content="Hrs"  x:Name="tbkHrs" HorizontalAlignment="Center" Foreground="#ff0" MaxWidth="500" />
