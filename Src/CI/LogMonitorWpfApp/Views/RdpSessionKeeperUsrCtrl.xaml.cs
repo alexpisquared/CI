@@ -11,12 +11,14 @@ public partial class RdpSessionKeeperUsrCtrl : UserControl
   bool _isLoaded = false;
   IBpr? _bpr;
 
+
   string Prefix => $"{DateTimeOffset.Now:HH:mm:ss}+{DateTimeOffset.Now - AppStarted:hh\\:mm\\:ss}  {(_appset.IsAudible ? "A" : "a")}{(_appset.IsPosning ? "P" : "p")}{(_appset.IsInsmnia ? "I" : "i")}  ";
 
   public RdpSessionKeeperUsrCtrl()
   {
     InitializeComponent();
-    //Topmost = Debugger.IsAttached;
+    DataContext = this;
+
     var (ita, report) = IdleTimeoutAnalizer.Create(AppStarted);
     _idleTimeoutAnalizer = ita;
     tbkMin.Content = report;
@@ -49,7 +51,9 @@ public partial class RdpSessionKeeperUsrCtrl : UserControl
     _isLoaded = true;
   }
   async Task OnTick(bool isManual = false)
-  {
+{
+    IsOn = !IsOn;
+
     if (_appset.IsAudible == true)
     {
       await Bpr.BeepAsync(160, .4); await Bpr.BeepAsync(16, .2);
@@ -76,6 +80,7 @@ public partial class RdpSessionKeeperUsrCtrl : UserControl
   bool IsBizHours => _from <= DateTimeOffset.Now.Hour && DateTimeOffset.Now.Hour <= (_till + _hrsAdded); // && DateTimeOffset.Now.Hour != 12 
 
   public IBpr Bpr { get => _bpr ?? throw new ArgumentNullException("▄▀▄▀▄▀▄▀▄"); internal set => _bpr = value; }
+  public static readonly DependencyProperty IsOnProperty = DependencyProperty.Register("IsOn", typeof(bool), typeof(RdpSessionKeeperUsrCtrl)); public bool IsOn { get => (bool)GetValue(IsOnProperty); set => SetValue(IsOnProperty, value); }
 
   async Task TogglePosition(string msg)
   {

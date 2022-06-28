@@ -16,10 +16,43 @@
       <Setter Property="BorderBrush" Value="Transparent" />
       <Setter Property="Foreground"  Value="#ff0" />
     </Style>
+
+    <Storyboard x:Key="sbkFrvr">
+      <DoubleAnimation BeginTime="0:0:0" Duration="0:3:50" To="360" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[2].(Angle)" />
+    </Storyboard>
+    <Storyboard x:Key="sbkStop" FillBehavior='Stop'>
+      <DoubleAnimation BeginTime="0:0:0" Duration="0:3:50" To="0"   Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[2].(Angle)" />
+    </Storyboard>
+    <Style TargetType="Rectangle" x:Key="IsOnStyle">
+      <Style.Triggers>
+        <DataTrigger Binding="{Binding IsOn, UpdateSourceTrigger=PropertyChanged}" Value="True">
+          <DataTrigger.EnterActions>
+            <BeginStoryboard Storyboard="{StaticResource sbkFrvr}" />
+          </DataTrigger.EnterActions>
+          <DataTrigger.ExitActions>
+            <BeginStoryboard Storyboard="{StaticResource sbkStop}" />
+          </DataTrigger.ExitActions>
+        </DataTrigger>
+      </Style.Triggers>
+    </Style>
   </UserControl.Resources>
   <Viewbox Margin="10 5">
-    <StackPanel  VerticalAlignment="Center" HorizontalAlignment="Center">
+    <Grid  VerticalAlignment="Center" HorizontalAlignment="Center">
+      <TextBlock Text="Log" x:Name="tbkLog" HorizontalAlignment="Center" VerticalAlignment="Bottom" Foreground="#fff" Background="#036" MaxWidth="500" FontSize="5" TextWrapping="Wrap" Padding="2 0 2 1" />
+
+      <Rectangle x:Name="bg1" Width="800" Height="26" RenderTransformOrigin="0,0.5" Style="{StaticResource IsOnStyle}" Fill="#8000">
+        <Rectangle.RenderTransform>
+          <TransformGroup>
+            <ScaleTransform ScaleY="1"/>
+            <SkewTransform/>
+            <RotateTransform/>
+            <TranslateTransform Y="0"/>
+          </TransformGroup>
+        </Rectangle.RenderTransform>
+      </Rectangle>
+
       <Menu Background="Transparent" Foreground="#ccc">
+        <ToggleButton Content="O_n/Off" VerticalAlignment="Bottom" HorizontalAlignment="Right" IsChecked="{Binding IsOn}" x:Name="btnOnOff" Visibility="Visible" />
         <!--<CheckBox Content="_A" Checked="onAudible" Unchecked="onAudible" x:Name="chkAdbl" ToolTip="Audible on every tick (230 sec)"/>
           <CheckBox Content="_I" Checked="onInsmnia" Unchecked="onInsmnia" x:Name="chkPosn" ToolTip="Insmnia or system request to disturb"/>
           <CheckBox Content="_P" Checked="onPosning" Unchecked="onPosning" x:Name="chkInso" ToolTip="Posning crsr"/>
@@ -44,7 +77,6 @@
         </MenuItem>
         <Label Content="Min"  x:Name="tbkMin" HorizontalAlignment="Center" Foreground="#0ff" />
       </Menu>
-      <TextBlock Text="Log" x:Name="tbkLog" HorizontalAlignment="Center" Foreground="#fff" Background="#036" MaxWidth="500" FontSize="5" TextWrapping="Wrap" Padding="2 0 2 1" />
-    </StackPanel>
+    </Grid>
   </Viewbox>
 </UserControl>
