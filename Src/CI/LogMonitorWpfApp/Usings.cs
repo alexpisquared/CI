@@ -17,11 +17,11 @@ global using System.Windows.Threading;
 global using CI.Standard.Lib.Base;
 global using CI.Standard.Lib.Helpers;
 global using LogMonitorConsoleApp;
+global using LogMonitorLib;
 global using LogMonitorWpfApp.RdpSession;
 global using Microsoft.Extensions.Logging;
 global using RdpFacility;
 global using StandardContracts.Lib;
 global using TacticalSupport.RdpSession;
-//global using System.Text.Json; //tu: new and very performant Json lib (Dec 2021)
 
 global using static System.Diagnostics.Trace;

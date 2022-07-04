@@ -1,16 +1,12 @@
-﻿using CI.Standard.Lib.Base;
-using CI.Standard.Lib.Helpers;
-using System.Collections.ObjectModel;
+﻿namespace LogMonitorLib;
 
-namespace LogMonitorConsoleApp
+public class UserSettings : UserSettingsStore
 {
-  public class UserSettings : UserSettingsStore
-  {
-    public static UserSettings Load { get => Load<UserSettings>(); }
-    public static void Save(UserSettings o) => Save<UserSettings>(o);
+  public static UserSettings Load => Load<UserSettings>();
+  public static void Save(UserSettings o) => Save<UserSettings>(o);
 
-    public ObservableCollection<FileData> FileDataList { get; set; } = new();
-    
-    public string TrgPath { get; set; } = @"Z:\Dev\alexPi\Misc\Logs";
-  }
+  public ObservableCollection<FileData> FileDataList { get; set; } = new();
+
+  public string TrgPat_ { get; set; } = @"Z:\Dev\alexPi\Misc\Logs";
+  public string TrgPath { get; set; } = @"Z:\Dev\_Redis_MTDEV\CI.IPM\Logs";
 }

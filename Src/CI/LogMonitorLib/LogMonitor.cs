@@ -1,5 +1,6 @@
 ﻿using CI.Standard.Lib.Helpers;
 using Colorful;
+using LogMonitorLib;
 using System;
 using System.Diagnostics;
 using System.Drawing;

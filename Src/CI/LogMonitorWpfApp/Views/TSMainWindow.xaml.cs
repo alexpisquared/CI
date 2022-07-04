@@ -99,6 +99,7 @@ public partial class TSMainWindow : Window
 
     try
     {
+      Directory.CreateDirectory($"{tbxPath.Text}.Old");
       foreach (var file in new DirectoryInfo(tbxPath.Text).GetFiles()) // var process = new Process { StartInfo = new ProcessStartInfo(@"CMD", $@"CMD /C MOVE {tbxPath.Text}\*.* {tbxPath.Text.Replace("Logs", "Logs.Old")} ") { RedirectStandardError = true, UseShellExecute = false } };      if (process.Start())        process.WaitForExit();
         if (file.LastWriteTime < DateTime.Today)
           File.Move(file.FullName, file.FullName.Replace("Logs", "Logs.Old"));

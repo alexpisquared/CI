@@ -5,3 +5,5 @@ global using System.Diagnostics;
 global using System.IO;
 global using System.Linq;
 global using CI.Standard.Lib.Helpers;
+global using CI.Standard.Lib.Base;
+global using LogMonitorConsoleApp;
