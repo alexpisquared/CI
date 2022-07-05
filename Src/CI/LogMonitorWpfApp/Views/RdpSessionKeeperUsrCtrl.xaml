@@ -45,7 +45,7 @@
           <TransformGroup>
             <ScaleTransform ScaleY="1"/>
             <SkewTransform/>
-            <RotateTransform Angle="32"/>
+            <RotateTransform Angle="0"/>
             <TranslateTransform Y="0"/>
           </TransformGroup>
         </Rectangle.RenderTransform>

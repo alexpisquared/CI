@@ -251,22 +251,25 @@ public partial class TSMainWindow : Window
 
     Topmost = true;
 
-    if (changedFile.Contains(".Er▄▀."))
+    if (chkQuietMode.IsChecked == false)
     {
-      WindowState = WindowState.Normal;
-      await Task.Run(async () => await StartAudioNotifier(PlayErrorFAF));
-      brdr1.Background = Brushes.Fuchsia;
-    }
-    else if (chkAll.IsChecked == true && _ctsAudio is null) // do not "hide" error sound!!!
-    {
-      WindowState = WindowState.Normal;
-      await Task.Run(async () => await StartAudioNotifier(PlayQuietFAF));
-      brdr1.Background = Brushes.Brown;
-    }
-    else
-    {
-      PlayQuietFAF();
-      brdr1.Background = Brushes.Yellow;
+      if (changedFile.Contains(".Er▄▀."))
+      {
+        WindowState = WindowState.Normal;
+        await Task.Run(async () => await StartAudioNotifier(PlayErrorFAF));
+        brdr1.Background = Brushes.Fuchsia;
+      }
+      else if (chkLongAudio.IsChecked == true && _ctsAudio is null) // do not "hide" error sound!!!
+      {
+        WindowState = WindowState.Normal;
+        await Task.Run(async () => await StartAudioNotifier(PlayQuietFAF));
+        brdr1.Background = Brushes.Brown;
+      }
+      else
+      {
+        PlayQuietFAF();
+        brdr1.Background = Brushes.Yellow;
+      }
     }
 
     await Task.Run(async () => await StartVisualNotifier());
