@@ -9,6 +9,8 @@ public partial class TSMainWindow : Window
   const int _200ms = 200;
   const string _noChanges = "No changes";
   int _i = 0, _w = 0, _v = 0, _a = 0;
+  Index _4thFromEnd = ^4;
+
 
   public TSMainWindow(IBpr bpr)
   {
@@ -210,10 +212,10 @@ public partial class TSMainWindow : Window
     await Task.Delay(333);
   }
 
-  void OnChanged(object s, FileSystemEventArgs e) { if (e.ChangeType == WatcherChangeTypes.Changed) ReportAndRescanSafe($"▼▲  Changed {e.FullPath.Split('.')[2]}. \t", e.FullPath); }
-  void OnCreated(object s, FileSystemEventArgs e) => ReportAndRescanSafe($"▲▲  Created. {e.FullPath.Split('.')[2]}.  \t", e.FullPath);
-  void OnDeleted(object s, FileSystemEventArgs e) => ReportAndRescanSafe($"▼▼  Deleted. {e.FullPath.Split('.')[2]}.  \t", e.FullPath);
-  void OnRenamed(object sner, RenamedEventArgs e) => ReportAndRescanSafe($"►◄  Renamed. {e.FullPath.Split('.')[2]}.  \t", e.FullPath);
+  void OnChanged(object s, FileSystemEventArgs e) { if (e.ChangeType == WatcherChangeTypes.Changed) ReportAndRescanSafe($"▼▲  Changed {e.FullPath.Split('.')[_4thFromEnd]}. \t", e.FullPath); }
+  void OnCreated(object s, FileSystemEventArgs e) => ReportAndRescanSafe($"▲▲  Created. {e.FullPath.Split('.')[_4thFromEnd]}.  \t", e.FullPath);
+  void OnDeleted(object s, FileSystemEventArgs e) => ReportAndRescanSafe($"▼▼  Deleted. {e.FullPath.Split('.')[_4thFromEnd]}.  \t", e.FullPath);
+  void OnRenamed(object sner, RenamedEventArgs e) => ReportAndRescanSafe($"►◄  Renamed. {e.FullPath.Split('.')[_4thFromEnd]}.  \t", e.FullPath);
   void OnError(object senderrr, ErrorEventArgs e) => ReportAnd_Exception(e.GetException());
 
   void ReportAnd_Exception(Exception? ex)
