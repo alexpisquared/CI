@@ -40,12 +40,12 @@
     <Grid  VerticalAlignment="Center" HorizontalAlignment="Center">
       <TextBlock Text="Log" x:Name="tbkLog" HorizontalAlignment="Center" VerticalAlignment="Bottom" Foreground="#fff" Background="#036" MaxWidth="500" FontSize="5" TextWrapping="Wrap" Padding="2 0 2 1" />
 
-      <Rectangle x:Name="bg1" Width="800" Height="26" RenderTransformOrigin="0,0.5" Style="{StaticResource IsOnStyle}" Fill="#8000">
+      <Rectangle x:Name="bg1" Width="800" Height="26" RenderTransformOrigin="0.333,0.5" Style="{StaticResource IsOnStyle}" Fill="#8000">
         <Rectangle.RenderTransform>
           <TransformGroup>
             <ScaleTransform ScaleY="1"/>
             <SkewTransform/>
-            <RotateTransform/>
+            <RotateTransform Angle="32"/>
             <TranslateTransform Y="0"/>
           </TransformGroup>
         </Rectangle.RenderTransform>
