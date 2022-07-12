@@ -251,6 +251,8 @@ public partial class TSMainWindow : Window
 
     Topmost = true;
 
+    UseSayExe(msg); await Task.Delay(999);
+
     if (chkQuietMode.IsChecked == false)
     {
       if (changedFile.Contains(".Er▄▀."))
@@ -275,10 +277,6 @@ public partial class TSMainWindow : Window
     await Task.Run(async () => await StartVisualNotifier());
 
     _ = ReScanFolder(tbxPath.Text); // resets the mark to prevent the changes to be picked by the FS checker and re-start the alarm.
-
-#if !Obnoxious
-    UseSayExe(msg);
-#endif
   }
 
   void PlayErrorFAF() => Task.Run(async () => await _bpr.WaveAsync(2000, 5000, 3));
