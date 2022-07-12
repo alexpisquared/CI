@@ -1,0 +1,29 @@
+{
+    "solution": {
+        "teamsAppTenantId": "5009ac19-9d6d-42f4-a4da-2060cd4fdc00",
+        "subscriptionId": "55444df9-fdd4-43d1-a454-16a90de75646",
+        "subscriptionName": "Pay-As-You-Go",
+        "tenantId": "e1bc6c29-4278-4425-bbe2-e6912f9f7b6d",
+        "needCreateResourceGroup": false,
+        "resourceGroupName": "CI",
+        "location": "canadacentral",
+        "resourceNameSuffix": "f416e2",
+        "provisionSucceeded": true
+    },
+    "fx-resource-appstudio": {
+        "tenantId": "5009ac19-9d6d-42f4-a4da-2060cd4fdc00",
+        "teamsAppId": "85f90617-be46-4e91-a9b0-3a4c6aa22c8b",
+        "teamsAppUpdatedAt": 1657222222530
+    },
+    "fx-resource-identity": {
+        "identityName": "nonessotabdevf416e2",
+        "identityResourceId": "/subscriptions/55444df9-fdd4-43d1-a454-16a90de75646/resourceGroups/CI/providers/Microsoft.ManagedIdentity/userAssignedIdentities/nonessotabdevf416e2",
+        "identityClientId": "ea177e45-a664-4945-b823-1f0a6783c1d6"
+    },
+    "fx-resource-frontend-hosting": {
+        "domain": "nonessotabdevf416e2tab.z9.web.core.windows.net",
+        "endpoint": "https://nonessotabdevf416e2tab.z9.web.core.windows.net",
+        "indexPath": "/index.html#",
+        "storageResourceId": "/subscriptions/55444df9-fdd4-43d1-a454-16a90de75646/resourceGroups/CI/providers/Microsoft.Storage/storageAccounts/nonessotabdevf416e2tab"
+    }
+}
