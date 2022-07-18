@@ -10,7 +10,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\CI-Reimagined-Invention\Src\CI-RI\CI.Standard.Lib\CI.Standard.Lib.csproj" />
+    <ProjectReference Include="..\..\..\..\CI-DPL-IMP\Src\SharedLib\CI.Standard.Lib\CI.Standard.Lib.csproj" />
   </ItemGroup>
 
 </Project>
