@@ -14,7 +14,7 @@ global using System.Windows.Input;
 global using System.Windows.Markup;
 global using System.Windows.Media;
 global using System.Windows.Threading;
-global using Ambience.Lib;
+//global using Ambience.Lib;
 global using CI.Standard.Lib.Base;
 global using CI.Standard.Lib.Helpers;
 global using CI.Standard.Lib.Services;

@@ -1,4 +1,6 @@
-﻿namespace LogMonitorWpfApp;
+﻿using Ambience.Lib;
+
+namespace LogMonitorWpfApp;
 
 public partial class App : System.Windows.Application
 {
