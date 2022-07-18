@@ -212,10 +212,10 @@ public partial class TSMainWindow : Window
     await Task.Delay(333);
   }
 
-  void OnChanged(object s, FileSystemEventArgs e) { if (e.ChangeType == WatcherChangeTypes.Changed) ReportAndRescanSafe($"▼▲  Changed {e.FullPath.Split('.')[_4thFromEnd]}. \t", e.FullPath); }
-  void OnCreated(object s, FileSystemEventArgs e) => ReportAndRescanSafe($"▲▲  Created. {e.FullPath.Split('.')[_4thFromEnd]}.  \t", e.FullPath);
-  void OnDeleted(object s, FileSystemEventArgs e) => ReportAndRescanSafe($"▼▼  Deleted. {e.FullPath.Split('.')[_4thFromEnd]}.  \t", e.FullPath);
-  void OnRenamed(object sner, RenamedEventArgs e) => ReportAndRescanSafe($"►◄  Renamed. {e.FullPath.Split('.')[_4thFromEnd]}.  \t", e.FullPath);
+  void OnChanged(object s, FileSystemEventArgs e) { if (e.ChangeType == WatcherChangeTypes.Changed) ReportAndRescanSafe($"▼▲  Changed {e.FullPath.Split('.')[_4thFromEnd].ToUpper()}. \t", e.FullPath); }
+  void OnCreated(object s, FileSystemEventArgs e) => ReportAndRescanSafe($"▲▲  Created. {e.FullPath.Split('.')[_4thFromEnd].ToUpper()}.  \t", e.FullPath);
+  void OnDeleted(object s, FileSystemEventArgs e) => ReportAndRescanSafe($"▼▼  Deleted. {e.FullPath.Split('.')[_4thFromEnd].ToUpper()}.  \t", e.FullPath);
+  void OnRenamed(object sner, RenamedEventArgs e) => ReportAndRescanSafe($"►◄  Renamed. {e.FullPath.Split('.')[_4thFromEnd].ToUpper()}.  \t", e.FullPath);
   void OnError(object senderrr, ErrorEventArgs e) => ReportAnd_Exception(e.GetException());
 
   void ReportAnd_Exception(Exception? ex)
