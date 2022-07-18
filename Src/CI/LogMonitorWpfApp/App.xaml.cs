@@ -16,15 +16,10 @@ public partial class App : System.Windows.Application
     _ = services.AddSingleton<ILogger>(sp => SeriLogHelper.InitLoggerFactory(FSHelper.GetCreateSafeLogFolderAndFile(new[] { @$"..\Logs\" })).CreateLogger<TSMainWindow>());
     _ = services.AddTransient<IBpr, Bpr>();
     _ = services.AddTransient<IGTimer, GTimer>(sp => new GTimer(_appStarted));
-
-    //_ = services.AddTransient<HomeLandingPage0VM>();
-    //_ = services.AddTransient<UpdateViewCommand>();
-
     _ = services.AddSingleton<IAddChild, TSMainWindow>(); // (sp => new TSMainWindow(sp.GetRequiredService<ILogger>(), sp.GetRequiredService<IConfigurationRoot>(), sp.GetRequiredService<InventoryContext>(), _started));
-    //_ = services.AddScoped<MainVM>();
-
-    //services.AddSingleton<MainVM>();
-    //services.AddSingleton<Window>(s => new TSMainWindow() { DataContext = s.GetRequiredService <MainVM>() });
+    //  services.AddScoped<MainVM>();
+    //  services.AddSingleton<MainVM>();
+    //  services.AddSingleton<Window>(s => new TSMainWindow() { DataContext = s.GetRequiredService <MainVM>() });
 
     _serviceProvider = services.BuildServiceProvider();
   }
