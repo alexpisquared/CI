@@ -1,4 +1,6 @@
-﻿namespace LogMonitorWpfApp;
+﻿using System.ComponentModel;
+
+namespace LogMonitorWpfApp;
 
 public partial class TSMainWindow : Window
 {
@@ -185,6 +187,8 @@ public partial class TSMainWindow : Window
       _us.TrgPath = path;
       UserSettings.Save(_us);
 
+      dg1.Items.SortDescriptions.Clear();
+      dg1.Items.SortDescriptions.Add(new SortDescription("LastWriteTime", ListSortDirection.Descending));
       dg1.Items.Refresh();
 
       return report; // $"Re-Scanned {_us.FileDataList.Count} files.  {del.Count()} deleted.";      //foreach (var fi in _us.FileDataList.OrderByDescending(r => r.LastWriteTime))        lb1.Items.Add($"\t{System.IO.Path.GetFileName(fi.FullName),-40} {fi.LastWriteTime:MM-dd HH:mm:ss}  {fi.IsDeleted,-5}  {fi.Status}");
