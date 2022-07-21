@@ -44,7 +44,7 @@ public partial class TSMainWindow : Window
     };
 
 #if !_DEBUG
-    if (Environment.MachineName == "D21-MJ0AWBEV") /**/ { Top = 32; Left = 920; }
+    if (Environment.MachineName == "D21-MJ0AWBEV") /**/ { Top = 32; Left = 880; }
 
     if (Environment.MachineName == "RAZER1")       /**/ { Top = 32; Left = 0; }
 #endif
@@ -52,7 +52,7 @@ public partial class TSMainWindow : Window
   async void OnLoaded(object s, RoutedEventArgs e)
   {
     dg1.ItemsSource = _us.FileDataList;
-    Title = $"No events since  {DateTime.Now:HH:mm:ss}  -  {VersionHelper.CurVerStr}";
+    Title = $"No events since  {DateTime.Now:HH:mm:ss}  -  {VersionHelper.CurVerStr0Md}";
     StartWatch();
     await StartPeriodicChecker();
   }
@@ -80,7 +80,7 @@ public partial class TSMainWindow : Window
 
     while (_ctsVideo is not null || _ctsAudio is not null) { _ctsVideo?.Cancel(); _ctsAudio?.Cancel(); }
   }
-  void OnSetngs(object s, RoutedEventArgs e) { _bpr.Click(); try { _ = new Process { StartInfo = new ProcessStartInfo(@$"{Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)}\Programs\Microsoft VS Code\Code.exe", $"\"{UserSettingsStore.Store}\"") { RedirectStandardError = true, UseShellExecute = false } }.Start(); } catch (Exception ex) { _ = MessageBox.Show(ex.ToString()); } }//_ = new Process { StartInfo = new ProcessStartInfo(@"Notepad.exe", $"\"{UserSettingsStore._store}\"") { RedirectStandardError = true, UseShellExecute = false } }.Start(); //_ = new Process { StartInfo = new ProcessStartInfo(@"C:\Program Files\Microsoft Visual Studio\2022\Preview\Common7\IDE\devenv.exe", $"\"{UserSettingsStore._store}\"") { RedirectStandardError = true, UseShellExecute = false } }.Start(); }
+  void OnSetngs(object s, RoutedEventArgs e) { _bpr.Click(); try { _ = new Process { StartInfo = new ProcessStartInfo(@$"{Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)}\Programs\Microsoft VS Code\Code.exe", $"\"{UserSettingsStore.FullPath}\"") { RedirectStandardError = true, UseShellExecute = false } }.Start(); } catch (Exception ex) { _ = MessageBox.Show(ex.ToString()); } }//_ = new Process { StartInfo = new ProcessStartInfo(@"Notepad.exe", $"\"{UserSettingsStore._store}\"") { RedirectStandardError = true, UseShellExecute = false } }.Start(); //_ = new Process { StartInfo = new ProcessStartInfo(@"C:\Program Files\Microsoft Visual Studio\2022\Preview\Common7\IDE\devenv.exe", $"\"{UserSettingsStore._store}\"") { RedirectStandardError = true, UseShellExecute = false } }.Start(); }
   async void OnResetW(object s, RoutedEventArgs e)
   {
     await StopWatch();
@@ -89,7 +89,7 @@ public partial class TSMainWindow : Window
     {
       RemoveDeleteds();
 
-      Title = $"OnResetW on {DateTime.Now:HH:mm:ss}  -  {VersionHelper.CurVerStr}";
+      Title = $"OnResetW on {DateTime.Now:HH:mm:ss}  -  {VersionHelper.CurVerStr0Md}";
     }
     catch (Exception ex) { _ = MessageBox.Show(ex.ToString()); }
     finally { StartWatch(); }
@@ -104,7 +104,7 @@ public partial class TSMainWindow : Window
       Directory.CreateDirectory($"{tbxPath.Text}.Old");
       foreach (var file in new DirectoryInfo(tbxPath.Text).GetFiles()) // var process = new Process { StartInfo = new ProcessStartInfo(@"CMD", $@"CMD /C MOVE {tbxPath.Text}\*.* {tbxPath.Text.Replace("Logs", "Logs.Old")} ") { RedirectStandardError = true, UseShellExecute = false } };      if (process.Start())        process.WaitForExit();
         if (file.LastWriteTime < DateTime.Today)
-          File.Move(file.FullName, file.FullName.Replace("Logs", "Logs.Old"));
+          File.Move(file.FullName, file.FullName.Replace("Logs", "Logs.Old", StringComparison.OrdinalIgnoreCase));
 
       OnChckFS(s, e);
       OnResetW(s, e);
@@ -113,7 +113,7 @@ public partial class TSMainWindow : Window
       _ctsAudio?.Cancel();
       await _bpr.TickAsync();
       brdr1.Background = Brushes.Cyan;
-      Title = $"{VersionHelper.CurVerStr}  -  {DateTime.Now:HH:mm:ss} Moved Olds   ";
+      Title = $"{VersionHelper.CurVerStr0Md}  -  {DateTime.Now:HH:mm:ss} Moved Olds   ";
     }
     catch (Exception ex) { _ = MessageBox.Show(ex.ToString()); }
     finally { StartWatch(); }
@@ -127,7 +127,7 @@ public partial class TSMainWindow : Window
 
     WindowState = WindowState.Minimized;
     brdr1.Background = Brushes.DarkCyan;
-    await Task.Delay(_200ms * 8); Title = $"{VersionHelper.CurVerStr}  -  {DateTime.Now:HH:mm:ss} minimized  * * * ";
+    await Task.Delay(_200ms * 8); Title = $"{VersionHelper.CurVerStr0Md}  -  {DateTime.Now:HH:mm:ss} minimized  * * * ";
     Topmost = false;
     await _bpr.TickAsync();
   }
@@ -153,17 +153,21 @@ public partial class TSMainWindow : Window
         var fd = _us.FileDataList.FirstOrDefault(r => r.FullName.Equals(fi.FullName, StringComparison.OrdinalIgnoreCase));
         if (fd == null)
         {
-          _us.FileDataList.Add(new FileData { FullName = fi.FullName, LastWriteTime = fi.LastWriteTime, Status = "New" });
+          _us.FileDataList.Add(new FileData { FullName = fi.FullName, LastWriteTime = fi.LastWriteTime, Status = "New", LengthKb = new FileInfo(fi.FullName).Length / 1000 });
           report += $" New: {fi.Name} ";
         }
         else
         {
           fd.LastSeen = now;
           if (Math.Abs((fd.LastWriteTime - fi.LastWriteTime).TotalSeconds) < 5)
+          {
             fd.Status = _noChanges;
+            fd.LengthKb = new FileInfo(fi.FullName).Length / 1000;
+          }
           else
           {
             fd.LastWriteTime = fi.LastWriteTime;
+            fd.LengthKb = new FileInfo(fi.FullName).Length / 1000;
             fd.Status += $"+";// Changed   at {fi.LastWriteTime}.";
             report += $" dTm: {fi.Name} ";
           }
@@ -321,12 +325,12 @@ public partial class TSMainWindow : Window
 
         _ = Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(async () =>
         {
-          Title = $"▄▀▄▀▄▀▄▀   {VersionHelper.CurVerStr}"; await Task.Delay(_200ms);
-          Title = $" ▄▀▄▀▄▀▄▀  {VersionHelper.CurVerStr}"; await Task.Delay(_200ms);
-          Title = $"  ▄▀▄▀▄▀▄▀ {VersionHelper.CurVerStr}"; await Task.Delay(_200ms);
-          Title = $"▀▄▀▄▀▄▀▄   {VersionHelper.CurVerStr}"; await Task.Delay(_200ms);
-          Title = $" ▀▄▀▄▀▄▀▄  {VersionHelper.CurVerStr}"; await Task.Delay(_200ms);
-          Title = $"  ▀▄▀▄▀▄▀▄ {VersionHelper.CurVerStr}";
+          Title = $"▄▀▄▀▄▀▄▀   {VersionHelper.CurVerStr0Md}"; await Task.Delay(_200ms);
+          Title = $" ▄▀▄▀▄▀▄▀  {VersionHelper.CurVerStr0Md}"; await Task.Delay(_200ms);
+          Title = $"  ▄▀▄▀▄▀▄▀ {VersionHelper.CurVerStr0Md}"; await Task.Delay(_200ms);
+          Title = $"▀▄▀▄▀▄▀▄   {VersionHelper.CurVerStr0Md}"; await Task.Delay(_200ms);
+          Title = $" ▀▄▀▄▀▄▀▄  {VersionHelper.CurVerStr0Md}"; await Task.Delay(_200ms);
+          Title = $"  ▀▄▀▄▀▄▀▄ {VersionHelper.CurVerStr0Md}";
         }));
       }
     }
