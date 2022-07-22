@@ -58,11 +58,11 @@
         <Menu Margin="10 0" Background="Transparent" >
           <MenuItem Header="° ° °" Padding="0 8 0 0" FontSize="20" Background="Transparent">
             <TextBox x:Name="tbxPath" Text="Z:\..." MinWidth="160" BorderThickness="0"/>
-            <MenuItem Header="ChckFS" Click="OnChckFS" />
-            <MenuItem Header="WtchOn" Click="OnWtchOn" />
-            <MenuItem Header="WtchNo" Click="OnWtchNo" />
-            <MenuItem Header="RmvDel" Click="OnResetW" />
-            <MenuItem Header="Setngs" Click="OnSetngs" ToolTip="Edit Settings.JSON with VS Code" />
+            <MenuItem Header="Chck FS" Click="OnChckFS" />
+            <MenuItem Header="Watch On" Click="OnWtchOn" />
+            <MenuItem Header="Watch No" Click="OnWtchNo" />
+            <MenuItem Header="Reset Watch" Click="OnResetW" />
+            <MenuItem Header="Setngs VSCode" Click="OnSetngs" ToolTip="Edit Settings.JSON with VS Code" />
             <MenuItem Header="  _1  " Click="OnStart6" />
             <MenuItem Header="  _0  " Click="OnStop_6" />
           </MenuItem>

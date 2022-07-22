@@ -13,7 +13,6 @@ public partial class TSMainWindow : Window
   int _i = 0, _w = 0, _v = 0, _a = 0;
   Index _4thFromEnd = ^4;
 
-
   public TSMainWindow(IBpr bpr)
   {
     InitializeComponent();
@@ -108,7 +107,7 @@ public partial class TSMainWindow : Window
         if (file.LastWriteTime < DateTime.Today)
           File.Move(file.FullName, file.FullName.Replace("Logs", "Logs.Old", StringComparison.OrdinalIgnoreCase));
 
-      OnChckFS(s, e);
+      ChckFS(true);
       OnResetW(s, e);
 
       _ctsVideo?.Cancel();
@@ -136,11 +135,11 @@ public partial class TSMainWindow : Window
   void On0000(object s, RoutedEventArgs e) { _bpr.Click(); try { } catch (Exception ex) { _ = MessageBox.Show(ex.ToString()); } }
   void OnClose(object s, RoutedEventArgs e) => Close();
 
-  void ChckFS()
+  void ChckFS(bool skipReporting = false)
   {
     tbkTitle.Text = $"{DateTimeOffset.Now:HH:mm:ss}  ChckFS";
     var report = ReScanFolder(tbxPath.Text);
-    if (report != _noChanges)
+    if (report != _noChanges && !skipReporting)
       ReportAndStartAlarms("By FS Check", report);
   }
   string ReScanFolder(string path)
@@ -220,10 +219,10 @@ public partial class TSMainWindow : Window
     await Task.Delay(333);
   }
 
-  void OnChanged(object s, FileSystemEventArgs e) { if (e.ChangeType == WatcherChangeTypes.Changed) ReportAndRescanSafe($"▼▲  Changed {e.FullPath.Split('.')[_4thFromEnd].ToUpper()}. \t", e.FullPath); }
-  void OnCreated(object s, FileSystemEventArgs e) => ReportAndRescanSafe($"▲▲  Created. {e.FullPath.Split('.')[_4thFromEnd].ToUpper()}.  \t", e.FullPath);
-  void OnDeleted(object s, FileSystemEventArgs e) => ReportAndRescanSafe($"▼▼  Deleted. {e.FullPath.Split('.')[_4thFromEnd].ToUpper()}.  \t", e.FullPath);
-  void OnRenamed(object sner, RenamedEventArgs e) => ReportAndRescanSafe($"►◄  Renamed. {e.FullPath.Split('.')[_4thFromEnd].ToUpper()}.  \t", e.FullPath);
+  void OnChanged(object s, FileSystemEventArgs e) { if (e.ChangeType == WatcherChangeTypes.Changed) ReportAndRescanSafe($"▼▲  Changed. \t", e.FullPath); }
+  void OnCreated(object s, FileSystemEventArgs e) => ReportAndRescanSafe($"▲▲  Created. \t", e.FullPath);
+  void OnDeleted(object s, FileSystemEventArgs e) => ReportAndRescanSafe($"▼▼  Deleted. \t", e.FullPath);
+  void OnRenamed(object sner, RenamedEventArgs e) => ReportAndRescanSafe($"►◄  Renamed. \t", e.FullPath);
   void OnError(object senderrr, ErrorEventArgs e) => ReportAnd_Exception(e.GetException());
 
   void ReportAnd_Exception(Exception? ex)
@@ -238,12 +237,23 @@ public partial class TSMainWindow : Window
   }
   void ReportAndRescanSafe(string msg, string file1 = "")
   {
-    if (Application.Current.Dispatcher.CheckAccess()) // if on UI thread
-      ReportAndRescan(msg, file1);
-    else
-      _ = Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => //todo: rejoin properly to the UI thread (Oct 2017)
-      ReportAndRescan(msg, file1)));
+    var d = file1.Split('.');
+    var rpt =
+      (d.Length > 4) ? $"{msg} {d[_4thFromEnd].ToUpper()}" :
+      (d.Length > 2) ? $"{msg} {d[2].ToUpper()}" :
+      $"{msg}  {Path.GetFileNameWithoutExtension(file1)}";
+
+    RunUIThreadSafe(ReportAndRescan, rpt, file1);
   }
+
+  static void RunUIThreadSafe(Action<string, string> action, string report, string filename)
+  {
+    if (Application.Current.Dispatcher.CheckAccess()) // if on UI thread
+      action(report, filename);
+    else
+      _ = Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => action(report, filename))); //tu: rejoin properly to the UI thread (Oct 2017)
+  }
+
   void ReportAndRescan(string msg, string file1)
   {
     var fd = _us.FileDataList.FirstOrDefault(r => r.FullName == file1);
