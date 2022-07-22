@@ -58,7 +58,6 @@ public partial class TSMainWindow : Window
     await StartPeriodicChecker();
   }
   void OnChckFS(object s, RoutedEventArgs e) { _bpr.Click(); ChckFS(); }
-  async void OnReWtch(object s, RoutedEventArgs e) { await StopWatch(); await _bpr.ClickAsync(); StartWatch(); }
   void OnExplre(object s, RoutedEventArgs e) { _bpr.Click(); try { _ = new Process { StartInfo = new ProcessStartInfo(@"Explorer.exe", $"\"{tbxPath.Text}\"") { RedirectStandardError = true, UseShellExecute = false } }.Start(); } catch (Exception ex) { _ = MessageBox.Show(ex.ToString()); } }
   async void OnVSCode(object s, RoutedEventArgs e)
   {

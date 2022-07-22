@@ -73,7 +73,7 @@
           <MenuItem Header="_Old"   Click="OnMovOld"      ToolTip="Move old files to  ..\Logs.Old" />
         </Menu>
 
-        <Button Content=" ReWatch " Click="OnReWtch" IsDefault="True" Margin="5" Background="Transparent" ToolTip="Remove deleted from the list"    Foreground="#d00" />
+        <Button Content=" ReWatch " Click="OnResetW" IsDefault="True" Margin="5" Background="Transparent" ToolTip="Remove deleted from the list"    Foreground="#d00" />
         <Button Content="   Ack   " Click="OnAckAck" IsCancel="True"  Margin="5" Background="Transparent" ToolTip="Stop Notifier + Minimize Window" Foreground="#0a0" />
 
         <TextBlock                   Margin="5 8 5 0" Foreground="#ff0"  d:Text="Title" Text="{Binding ElementName=wnd, Path=Title}"/>
