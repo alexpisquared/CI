@@ -133,7 +133,9 @@ public partial class TSMainWindow : Window
 
     while (_ctsVideo is not null || _ctsAudio is not null) { _ctsVideo?.Cancel(); _ctsAudio?.Cancel(); await _bpr.BeepAsync(200, .333); }
 
-    WindowState = WindowState.Minimized;
+    if (s is Button)
+      WindowState = WindowState.Minimized;
+
     brdr1.Background = Brushes.DarkCyan;
     await Task.Delay(_200ms * 8); Title = $"{VersionHelper.CurVerStr0Md}  -  {DateTime.Now:HH:mm:ss} minimized  * * * ";
     Topmost = false;
