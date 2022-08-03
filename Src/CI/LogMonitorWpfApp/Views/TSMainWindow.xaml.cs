@@ -101,12 +101,13 @@ public partial class TSMainWindow : Window
 
     try
     {
-      Directory.CreateDirectory($"{tbxPath.Text}.Old");
+      var trgDir = Directory.CreateDirectory($"{tbxPath.Text}.Old");
+      
       foreach (var logFolder in new[] { tbxPath.Text, @"Z:\Dev\AlexPi\Misc\Logs" })
       {
         foreach (var fileInfo in new DirectoryInfo(logFolder).GetFiles().Where(fi => fi.LastWriteTime < DateTime.Today)) // var process = new Process { StartInfo = new ProcessStartInfo(@"CMD", $@"CMD /C MOVE {logFolder}\*.* {logFolder.Replace("Logs", "Logs.Old")} ") { RedirectStandardError = true, UseShellExecute = false } };      if (process.Start())        process.WaitForExit();
         {
-          var trg = fileInfo.FullName.Replace("Logs", "Logs.Old", StringComparison.OrdinalIgnoreCase);
+          var trg = Path.Combine(trgDir.FullName, Path.GetFileName(fileInfo.Name));
           var nm0 = Path.GetFileNameWithoutExtension(trg);
           for (int i = 0; File.Exists(trg) && i < 999; i++)
           {
