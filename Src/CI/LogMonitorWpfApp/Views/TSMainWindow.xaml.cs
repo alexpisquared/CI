@@ -102,9 +102,17 @@ public partial class TSMainWindow : Window
     try
     {
       Directory.CreateDirectory($"{tbxPath.Text}.Old");
-      foreach (var file in new DirectoryInfo(tbxPath.Text).GetFiles()) // var process = new Process { StartInfo = new ProcessStartInfo(@"CMD", $@"CMD /C MOVE {tbxPath.Text}\*.* {tbxPath.Text.Replace("Logs", "Logs.Old")} ") { RedirectStandardError = true, UseShellExecute = false } };      if (process.Start())        process.WaitForExit();
-        if (file.LastWriteTime < DateTime.Today)
-          File.Move(file.FullName, file.FullName.Replace("Logs", "Logs.Old", StringComparison.OrdinalIgnoreCase));
+      foreach (var fileInfo in new DirectoryInfo(tbxPath.Text).GetFiles().Where(fi => fi.LastWriteTime < DateTime.Today)) // var process = new Process { StartInfo = new ProcessStartInfo(@"CMD", $@"CMD /C MOVE {tbxPath.Text}\*.* {tbxPath.Text.Replace("Logs", "Logs.Old")} ") { RedirectStandardError = true, UseShellExecute = false } };      if (process.Start())        process.WaitForExit();
+      {
+        var trg = fileInfo.FullName.Replace("Logs", "Logs.Old", StringComparison.OrdinalIgnoreCase);
+        var nm0 = Path.GetFileNameWithoutExtension(trg);
+        for (int i = 0; File.Exists(trg) && i < 999; i++)
+        {
+          trg = Path.Combine(Path.GetDirectoryName(trg)!, $"{nm0}.{i}") + Path.GetExtension(trg);
+        }
+
+        File.Move(fileInfo.FullName, trg);
+      }
 
       ChckFS(true);
       OnResetW(s, e);
@@ -189,7 +197,7 @@ public partial class TSMainWindow : Window
       dg1.Items.SortDescriptions.Add(new SortDescription("LastWriteTime", ListSortDirection.Descending));
       dg1.Items.Refresh();
 
-      return report; // $"Re-Scanned {_us.FileDataList.Count} files.  {del.Count()} deleted.";      //foreach (var fi in _us.FileDataList.OrderByDescending(r => r.LastWriteTime))        lb1.Items.Add($"\t{System.IO.Path.GetFileName(fi.FullName),-40} {fi.LastWriteTime:MM-dd HH:mm:ss}  {fi.IsDeleted,-5}  {fi.Status}");
+      return report; // $"Re-Scanned {_us.FileDataList.Count} files.  {del.Count()} deleted.";      //foreach (var fi in _us.FileDataList.OrderByDescending(fi => fi.LastWriteTime))        lb1.Items.Add($"\t{System.IO.Path.GetFileName(fi.FullName),-40} {fi.LastWriteTime:MM-dd HH:mm:ss}  {fi.IsDeleted,-5}  {fi.Status}");
     }
     catch (Exception ex) { _ = MessageBox.Show(ex.ToString()); return ex.Message; }
   }
