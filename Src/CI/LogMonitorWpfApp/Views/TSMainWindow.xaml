@@ -79,10 +79,12 @@
         <TextBlock                   Margin="5 8 5 0" Foreground="#ff0"  d:Text="Title" Text="{Binding ElementName=wnd, Path=Title}" Width="290"/>
         <TextBlock x:Name="tbkHeadr" Margin="5 8 5 0" Foreground="#f8f"  d:Text="1 1 0" FontWeight="Bold"/>
         <TextBlock x:Name="tbkTitle" Margin="5 8 5 0" Foreground="#8ff"  d:Text="Title" Visibility="Collapsed" />
+        <Button Content="  X  "      Click="OnClose"                  Margin="5" Background="Transparent" Foreground="#600" ToolTip="Close"                           />
         <Button Content="  X  "      Click="OnClose"                  Margin="5" Background="Transparent" Foreground="#900" ToolTip="Close"                           />
-        <Button Content="  X  "      Click="OnClose"                  Margin="5" Background="Transparent" Foreground="#b00" ToolTip="Close"                           />
-        <Button Content="  X  "      Click="OnClose"                  Margin="5" Background="Transparent" Foreground="#d00" ToolTip="Close"                           />
+        <Button Content="  X  "      Click="OnClose"                  Margin="5" Background="Transparent" Foreground="#c00" ToolTip="Close"                           />
         <Button Content="  X  "      Click="OnClose"                  Margin="5" Background="Transparent" Foreground="#f00" ToolTip="Close"                           />
+        <Button Content="  X  "      Click="OnClose"                  Margin="5" Background="Transparent" Foreground="#f40" ToolTip="Close"                           />
+        <Button Content="  X  "      Click="OnClose"                  Margin="5" Background="Transparent" Foreground="#f80" ToolTip="Close"                           />
       </StackPanel>
 
       <DataGrid Grid.Row="2" x:Name="dg1" Grid.Column="0" Margin="5 0 0 0" CanUserDeleteRows="True" CanUserAddRows="False" AutoGenerateColumns="False" VerticalGridLinesBrush="Transparent" HorizontalGridLinesBrush="Transparent" RowHeaderStyle="{x:Null}"
