@@ -102,16 +102,19 @@ public partial class TSMainWindow : Window
     try
     {
       Directory.CreateDirectory($"{tbxPath.Text}.Old");
-      foreach (var fileInfo in new DirectoryInfo(tbxPath.Text).GetFiles().Where(fi => fi.LastWriteTime < DateTime.Today)) // var process = new Process { StartInfo = new ProcessStartInfo(@"CMD", $@"CMD /C MOVE {tbxPath.Text}\*.* {tbxPath.Text.Replace("Logs", "Logs.Old")} ") { RedirectStandardError = true, UseShellExecute = false } };      if (process.Start())        process.WaitForExit();
+      foreach (var logFolder in new[] { tbxPath.Text, @"Z:\Dev\AlexPi\Misc\Logs" })
       {
-        var trg = fileInfo.FullName.Replace("Logs", "Logs.Old", StringComparison.OrdinalIgnoreCase);
-        var nm0 = Path.GetFileNameWithoutExtension(trg);
-        for (int i = 0; File.Exists(trg) && i < 999; i++)
+        foreach (var fileInfo in new DirectoryInfo(logFolder).GetFiles().Where(fi => fi.LastWriteTime < DateTime.Today)) // var process = new Process { StartInfo = new ProcessStartInfo(@"CMD", $@"CMD /C MOVE {logFolder}\*.* {logFolder.Replace("Logs", "Logs.Old")} ") { RedirectStandardError = true, UseShellExecute = false } };      if (process.Start())        process.WaitForExit();
         {
-          trg = Path.Combine(Path.GetDirectoryName(trg)!, $"{nm0}.{i}") + Path.GetExtension(trg);
-        }
+          var trg = fileInfo.FullName.Replace("Logs", "Logs.Old", StringComparison.OrdinalIgnoreCase);
+          var nm0 = Path.GetFileNameWithoutExtension(trg);
+          for (int i = 0; File.Exists(trg) && i < 999; i++)
+          {
+            trg = Path.Combine(Path.GetDirectoryName(trg)!, $"{nm0}.{i}") + Path.GetExtension(trg);
+          }
 
-        File.Move(fileInfo.FullName, trg);
+          File.Move(fileInfo.FullName, trg);
+        }
       }
 
       ChckFS(true);
