@@ -40,12 +40,12 @@
     <Grid  VerticalAlignment="Center" HorizontalAlignment="Center">
       <TextBlock Text="Log" x:Name="tbkLog" HorizontalAlignment="Center" VerticalAlignment="Bottom" Foreground="#fff" Background="#036" MaxWidth="500" FontSize="5" TextWrapping="Wrap" Padding="2 0 2 1" />
 
-      <Rectangle x:Name="bg1" Width="800" Height="26" RenderTransformOrigin="0.333,0.5" Style="{StaticResource IsOnStyle}" Fill="#3000">
+      <Rectangle x:Name="bg1" Width="800" Height="26" RenderTransformOrigin="0.25,0.5" Style="{StaticResource IsOnStyle}" Fill="#3000">
         <Rectangle.RenderTransform>
           <TransformGroup>
             <ScaleTransform ScaleY="1"/>
             <SkewTransform/>
-            <RotateTransform Angle="0"/>
+            <RotateTransform Angle="90"/>
             <TranslateTransform Y="0"/>
           </TransformGroup>
         </Rectangle.RenderTransform>
@@ -58,7 +58,7 @@
         <CheckBox Content="_I" Checked="onInsmnia" Unchecked="onInsmnia" x:Name="chkPosn" ToolTip="Insmnia or system request to disturb"/>
         <CheckBox Content="_P" Checked="onPosning" Unchecked="onPosning" x:Name="chkInso" ToolTip="Posning crsr"/>
         <CheckBox Content="_M" Checked="onMindBiz" Unchecked="onMindBiz" x:Name="chkMind" ToolTip="Mind Biz Hrs"/>-->
-        <MenuItem Header="_Aud   " IsCheckable="True" Checked="OnAudible" Unchecked="OnAudible" x:Name="chkAdbl1" ToolTip="Audible on every tick (230 sec)"/>
+        <MenuItem Header="A_ud   " IsCheckable="True" Checked="OnAudible" Unchecked="OnAudible" x:Name="chkAdbl1" ToolTip="Audible on every tick (230 sec)"/>
         <MenuItem Header="_Ins   " IsCheckable="True" Checked="OnInsmnia" Unchecked="OnInsmnia" x:Name="chkInsoA" ToolTip="Insmnia or system request to disturb"/>
         <MenuItem Header="_MBH   " IsCheckable="True" Checked="OnMindBiz" Unchecked="OnMindBiz" x:Name="chkMind1" ToolTip="Mind Biz Hrs" Foreground="#ff4"/>
         <MenuItem Header="+ _2 hr" Click="OnPlus2hr" Height="38" Foreground="#ff4" IsEnabled="{Binding ElementName=chkMind1, Path=IsChecked}" />

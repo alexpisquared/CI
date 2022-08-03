@@ -71,14 +71,18 @@
           <MenuItem Header="E_xp"   Click="OnExplre"      ToolTip="E_xplore log folder"/>
           <MenuItem Header="_VSC"   Click="OnVSCode"      ToolTip="_VS Code at the log folder"/>
           <MenuItem Header="_Old"   Click="OnMovOld"      ToolTip="Move old files to  ..\Logs.Old" />
+          <MenuItem Header="_Ack"   Click="OnAckAck"      ToolTip="Ack + Stay" Foreground="#0a0" />
         </Menu>
+        <Button Content="   Ack   " Click="OnAckAck" IsCancel="True"  Margin="5" Background="Transparent" Foreground="#0a0" ToolTip="Stop Notifier + Minimize Window" />
+        <Button Content=" ReWatch " Click="OnResetW" IsDefault="True" Margin="5" Background="Transparent" Foreground="#00d" ToolTip="Remove deleted from the list"    />
 
-        <Button Content=" ReWatch " Click="OnResetW" IsDefault="True" Margin="5" Background="Transparent" ToolTip="Remove deleted from the list"    Foreground="#d00" />
-        <Button Content="   Ack   " Click="OnAckAck" IsCancel="True"  Margin="5" Background="Transparent" ToolTip="Stop Notifier + Minimize Window" Foreground="#0a0" />
-
-        <TextBlock                   Margin="5 8 5 0" Foreground="#ff0"  d:Text="Title" Text="{Binding ElementName=wnd, Path=Title}"/>
+        <TextBlock                   Margin="5 8 5 0" Foreground="#ff0"  d:Text="Title" Text="{Binding ElementName=wnd, Path=Title}" Width="290"/>
         <TextBlock x:Name="tbkHeadr" Margin="5 8 5 0" Foreground="#f8f"  d:Text="1 1 0" FontWeight="Bold"/>
         <TextBlock x:Name="tbkTitle" Margin="5 8 5 0" Foreground="#8ff"  d:Text="Title" />
+        <Button Content="  X  "      Click="OnClose"                  Margin="5" Background="Transparent" Foreground="#900" ToolTip="Close"                           />
+        <Button Content="  X  "      Click="OnClose"                  Margin="5" Background="Transparent" Foreground="#b00" ToolTip="Close"                           />
+        <Button Content="  X  "      Click="OnClose"                  Margin="5" Background="Transparent" Foreground="#d00" ToolTip="Close"                           />
+        <Button Content="  X  "      Click="OnClose"                  Margin="5" Background="Transparent" Foreground="#f00" ToolTip="Close"                           />
       </StackPanel>
 
       <DataGrid Grid.Row="2" x:Name="dg1" Grid.Column="0" Margin="5 0 0 0" CanUserDeleteRows="True" CanUserAddRows="False" AutoGenerateColumns="False" VerticalGridLinesBrush="Transparent" HorizontalGridLinesBrush="Transparent" RowHeaderStyle="{x:Null}"
