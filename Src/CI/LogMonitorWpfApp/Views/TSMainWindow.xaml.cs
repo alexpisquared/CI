@@ -1,11 +1,8 @@
-﻿using System.ComponentModel;
-
-namespace LogMonitorWpfApp;
-
+﻿namespace LogMonitorWpfApp;
 public partial class TSMainWindow : Window
 {
   readonly FileSystemWatcher _watcher;
-  readonly UserSettings _us;
+  readonly UserSettings _userSettingsAndStateOfFS;
   readonly IBpr _bpr;
   CancellationTokenSource? _ctsVideo, _ctsAudio, _ctsCheckr;
   const int _200ms = 200;
@@ -20,17 +17,17 @@ public partial class TSMainWindow : Window
     Topmost = Debugger.IsAttached;
     MouseLeftButtonDown += (s, e) => { if (e.LeftButton == MouseButtonState.Pressed) DragMove(); };
 
-    _us = UserSettings.Load;
+    _userSettingsAndStateOfFS = UserSettings.Load;
     if (Environment.GetCommandLineArgs().Length > 1)
     {
-      _us.TrgPath = Environment.GetCommandLineArgs()[1];
+      _userSettingsAndStateOfFS.TrgPath = Environment.GetCommandLineArgs()[1];
     }
 
-    tbxPath.Text = _us.TrgPath;
+    tbxPath.Text = _userSettingsAndStateOfFS.TrgPath;
 
-    _ = ReScanFolder(tbxPath.Text); // resets the mark.
+    _ = ReScanFolder_SetCurrentStateToWatchChangesAgainst(tbxPath.Text); // resets the mark.
 
-    _watcher = new FileSystemWatcher(_us.TrgPath)
+    _watcher = new FileSystemWatcher(_userSettingsAndStateOfFS.TrgPath)
     {
       NotifyFilter = NotifyFilters.Attributes
                    | NotifyFilters.CreationTime
@@ -52,7 +49,7 @@ public partial class TSMainWindow : Window
   }
   async void OnLoaded(object s, RoutedEventArgs e)
   {
-    dg1.ItemsSource = _us.FileDataList;
+    dg1.ItemsSource = _userSettingsAndStateOfFS.FileDataList;
     Title = $"No events since  {DateTime.Now:HH:mm:ss}  -  {VersionHelper.CurVerStr0Md}";
     StartWatch();
     await StartPeriodicChecker();
@@ -73,7 +70,7 @@ public partial class TSMainWindow : Window
     catch (Exception ex) { _ = MessageBox.Show(ex.ToString()); }
     finally
     {
-      _ = ReScanFolder(tbxPath.Text); // resets the mark.
+      _ = ReScanFolder_SetCurrentStateToWatchChangesAgainst(tbxPath.Text); // resets the mark.
       StartWatch();
       WindowState = WindowState.Normal;
     }
@@ -151,11 +148,11 @@ public partial class TSMainWindow : Window
   void ChckFS(bool skipReporting = false)
   {
     tbkTitle.Text = $"{DateTimeOffset.Now:HH:mm:ss}  ChckFS";
-    var report = ReScanFolder(tbxPath.Text);
+    var report = ReScanFolder_SetCurrentStateToWatchChangesAgainst(tbxPath.Text);
     if (report != _noChanges && !skipReporting)
       ReportAndStartAlarms("By FS Check", report);
   }
-  string ReScanFolder(string path)
+  string ReScanFolder_SetCurrentStateToWatchChangesAgainst(string path)
   {
     var report = _noChanges;
     try
@@ -164,10 +161,10 @@ public partial class TSMainWindow : Window
 
       foreach (var fi in new DirectoryInfo(path).GetFiles().OrderByDescending(r => r.LastWriteTime))
       {
-        var fd = _us.FileDataList.FirstOrDefault(r => r.FullName.Equals(fi.FullName, StringComparison.OrdinalIgnoreCase));
+        var fd = _userSettingsAndStateOfFS.FileDataList.FirstOrDefault(r => r.FullName.Equals(fi.FullName, StringComparison.OrdinalIgnoreCase));
         if (fd == null)
         {
-          _us.FileDataList.Add(new FileData { FullName = fi.FullName, LastWriteTime = fi.LastWriteTime, Status = "New", LengthKb = new FileInfo(fi.FullName).Length / 1000 });
+          _userSettingsAndStateOfFS.FileDataList.Add(new FileData { FullName = fi.FullName, LastWriteTime = fi.LastWriteTime, Status = "New", LengthKb = new FileInfo(fi.FullName).Length / 1000 });
           report += $" New: {fi.Name} ";
         }
         else
@@ -188,22 +185,22 @@ public partial class TSMainWindow : Window
         }
       }
 
-      var del = _us.FileDataList.Where(r => Math.Abs((r.LastSeen - now).TotalSeconds) > 3); // if not seen above - mark as deleted
+      var del = _userSettingsAndStateOfFS.FileDataList.Where(r => Math.Abs((r.LastSeen - now).TotalSeconds) > 3); // if not seen above - mark as deleted
       del.ToList().ForEach(fd => { fd.IsDeleted = true; fd.Status = "Deleted"; report += $" Del: {fd.PartName} "; });
 
-      var exi = _us.FileDataList.Where(r => Math.Abs((r.LastSeen - now).TotalSeconds) <= 3); // if just seen - UN?deleted?
+      var exi = _userSettingsAndStateOfFS.FileDataList.Where(r => Math.Abs((r.LastSeen - now).TotalSeconds) <= 3); // if just seen - UN?deleted?
       exi.ToList().ForEach(fd => { fd.IsDeleted = false; }); //  fd.Status = "Restored"; report += $" Exi: {Path.GetFileNameWithoutExtension(fd.FullName)} "; });
 
       RemoveDeleteds();
 
-      _us.TrgPath = path;
-      UserSettings.Save(_us);
+      _userSettingsAndStateOfFS.TrgPath = path;
+      UserSettings.Save(_userSettingsAndStateOfFS);
 
       dg1.Items.SortDescriptions.Clear();
       dg1.Items.SortDescriptions.Add(new SortDescription("LastWriteTime", ListSortDirection.Descending));
       dg1.Items.Refresh();
 
-      return report; // $"Re-Scanned {_us.FileDataList.Count} files.  {del.Count()} deleted.";      //foreach (var fi in _us.FileDataList.OrderByDescending(fi => fi.LastWriteTime))        lb1.Items.Add($"\t{System.IO.Path.GetFileName(fi.FullName),-40} {fi.LastWriteTime:MM-dd HH:mm:ss}  {fi.IsDeleted,-5}  {fi.Status}");
+      return report; // $"Re-Scanned {_userSettingsAndStateOfFS.FileDataList.Count} files.  {del.Count()} deleted.";      //foreach (var fi in _userSettingsAndStateOfFS.FileDataList.OrderByDescending(fi => fi.LastWriteTime))        lb1.Items.Add($"\t{System.IO.Path.GetFileName(fi.FullName),-40} {fi.LastWriteTime:MM-dd HH:mm:ss}  {fi.IsDeleted,-5}  {fi.Status}");
     }
     catch (Exception ex) { _ = MessageBox.Show(ex.ToString()); return ex.Message; }
   }
@@ -258,7 +255,6 @@ public partial class TSMainWindow : Window
 
     RunUIThreadSafe(ReportAndRescan, rpt, file1);
   }
-
   static void RunUIThreadSafe(Action<string, string> action, string report, string filename)
   {
     if (Application.Current.Dispatcher.CheckAccess()) // if on UI thread
@@ -266,10 +262,9 @@ public partial class TSMainWindow : Window
     else
       _ = Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => action(report, filename))); //tu: rejoin properly to the UI thread (Oct 2017)
   }
-
   void ReportAndRescan(string msg, string file1)
   {
-    var fd = _us.FileDataList.FirstOrDefault(r => r.FullName == file1);
+    var fd = _userSettingsAndStateOfFS.FileDataList.FirstOrDefault(r => r.FullName == file1);
     if (fd != null)
       fd.Status = msg;
 
@@ -305,9 +300,9 @@ public partial class TSMainWindow : Window
       }
     }
 
-    await Task.Run(async () => await StartVisualNotifier());
+    _ = ReScanFolder_SetCurrentStateToWatchChangesAgainst(tbxPath.Text); // resets the mark to prevent the changes to be picked by the FS checker and re-start the alarm.
 
-    _ = ReScanFolder(tbxPath.Text); // resets the mark to prevent the changes to be picked by the FS checker and re-start the alarm.
+    await Task.Run(async () => await StartVisualNotifier());
   }
 
   void PlayErrorFAF() => Task.Run(async () => await _bpr.WaveAsync(2000, 5000, 3));
@@ -417,12 +412,12 @@ public partial class TSMainWindow : Window
   {
     do
     {
-      foreach (var deletedFile in _us.FileDataList.Where(r => r.IsDeleted))
+      foreach (var deletedFile in _userSettingsAndStateOfFS.FileDataList.Where(r => r.IsDeleted))
       {
-        _ = _us.FileDataList.Remove(deletedFile);
+        _ = _userSettingsAndStateOfFS.FileDataList.Remove(deletedFile);
         break;
       }
-    } while (_us.FileDataList.Any(r => r.IsDeleted));
+    } while (_userSettingsAndStateOfFS.FileDataList.Any(r => r.IsDeleted));
   }
 
   protected override async void OnClosed(EventArgs e)

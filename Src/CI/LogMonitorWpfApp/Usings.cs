@@ -1,4 +1,5 @@
 ﻿global using System;
+global using System.ComponentModel;
 global using System.Data;
 global using System.Diagnostics;
 global using System.IO;
@@ -19,7 +20,6 @@ global using CI.Standard.Lib.Base;
 global using CI.Standard.Lib.Helpers;
 global using CI.Standard.Lib.Services;
 global using CI.Visual.Lib.Helpers;
-global using LogMonitorConsoleApp;
 global using LogMonitorLib;
 global using LogMonitorWpfApp.RdpSession;
 global using Microsoft.Extensions.Configuration;
@@ -28,6 +28,5 @@ global using Microsoft.Extensions.Logging;
 global using RdpFacility;
 global using StandardContracts.Lib;
 global using TacticalSupport.RdpSession;
-
 global using static System.Diagnostics.Trace;
 
