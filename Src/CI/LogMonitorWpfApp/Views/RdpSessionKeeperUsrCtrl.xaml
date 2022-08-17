@@ -37,15 +37,25 @@
     </Style>
   </UserControl.Resources>
   <Viewbox Margin="10 5">
-    <Grid  VerticalAlignment="Center" HorizontalAlignment="Center">
+    <Grid>
       <TextBlock Text="Log" x:Name="tbkLog" HorizontalAlignment="Center" VerticalAlignment="Bottom" Foreground="#fff" Background="#036" MaxWidth="500" FontSize="5" TextWrapping="Wrap" Padding="2 0 2 1" />
 
-      <Rectangle x:Name="bg1" Width="800" Height="26" RenderTransformOrigin="0.25,0.5" Style="{StaticResource IsOnStyle}" Fill="#3000">
+      <Rectangle Width="800" Height="1" RenderTransformOrigin="0.80,0.5" Style="{StaticResource IsOnStyle}" Fill="#0f0" VerticalAlignment="Top" >
         <Rectangle.RenderTransform>
           <TransformGroup>
             <ScaleTransform ScaleY="1"/>
             <SkewTransform/>
-            <RotateTransform Angle="90"/>
+            <RotateTransform Angle="0"/>
+            <TranslateTransform Y="0"/>
+          </TransformGroup>
+        </Rectangle.RenderTransform>
+      </Rectangle>
+      <Rectangle Width="800" Height="1" RenderTransformOrigin="0.20,0.5" Style="{StaticResource IsOnStyle}" Fill="#f0f" VerticalAlignment="Top" >
+        <Rectangle.RenderTransform>
+          <TransformGroup>
+            <ScaleTransform ScaleY="1"/>
+            <SkewTransform/>
+            <RotateTransform Angle="0"/>
             <TranslateTransform Y="0"/>
           </TransformGroup>
         </Rectangle.RenderTransform>

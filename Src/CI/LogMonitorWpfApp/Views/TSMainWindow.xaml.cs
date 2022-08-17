@@ -8,7 +8,7 @@ public partial class TSMainWindow : Window
   const int _200ms = 200;
   const string _noChanges = "No changes";
   int _i = 0, _w = 0, _v = 0, _a = 0;
-  Index _4thFromEnd = ^4;
+  readonly Index _4thFromEnd = ^4;
 
   public TSMainWindow(IBpr bpr)
   {
@@ -99,14 +99,14 @@ public partial class TSMainWindow : Window
     try
     {
       var trgOldFolder = Directory.CreateDirectory($"{tbxPath.Text}.Old");
-      
+
       foreach (var srcLogFolder in new[] { tbxPath.Text, @"Z:\Dev\AlexPi\Misc\Logs" })
       {
         foreach (var logFileInfo in new DirectoryInfo(srcLogFolder).GetFiles().Where(fi => fi.LastWriteTime < DateTime.Today)) // var process = new Process { StartInfo = new ProcessStartInfo(@"CMD", $@"CMD /C MOVE {srcLogFolder}\*.* {srcLogFolder.Replace("Logs", "Logs.Old")} ") { RedirectStandardError = true, UseShellExecute = false } };      if (process.Start())        process.WaitForExit();
         {
           var trg = Path.Combine(trgOldFolder.FullName, logFileInfo.Name);
           var nm0 = Path.GetFileNameWithoutExtension(trg);
-          for (int i = 0; File.Exists(trg) && i < 999; i++)
+          for (var i = 0; File.Exists(trg) && i < 999; i++)
           {
             trg = Path.Combine(Path.GetDirectoryName(trg)!, $"{nm0}.{i}") + Path.GetExtension(trg);
           }
@@ -127,7 +127,9 @@ public partial class TSMainWindow : Window
     catch (Exception ex) { _ = MessageBox.Show(ex.ToString()); }
     finally { StartWatch(); }
   }
-  async void OnAckAck(object s, RoutedEventArgs e)
+  async void OnAckAck(object s, RoutedEventArgs e) => await AckAck(s);
+
+  private async Task AckAck(object s)
   {
     Title = $"Ack...";
     _bpr.Click();
@@ -142,6 +144,7 @@ public partial class TSMainWindow : Window
     Topmost = false;
     await _bpr.TickAsync();
   }
+
   void On0000(object s, RoutedEventArgs e) { _bpr.Click(); try { } catch (Exception ex) { _ = MessageBox.Show(ex.ToString()); } }
   void OnClose(object s, RoutedEventArgs e) => Close();
 
@@ -273,7 +276,7 @@ public partial class TSMainWindow : Window
   async void ReportAndStartAlarms(string msg, string changedFile)
   {
     tbkTitle.Text = $"{DateTimeOffset.Now:HH:mm:ss}  {msg}  {Path.GetFileNameWithoutExtension(changedFile)}  ";
-    lbxHist.Items.Add(tbkTitle.Text);
+    _ = lbxHist.Items.Add(tbkTitle.Text);
 
     Topmost = true;
 
@@ -284,14 +287,15 @@ public partial class TSMainWindow : Window
       if (changedFile.Contains(".Er▄▀."))
       {
         WindowState = WindowState.Normal;
-        await Task.Run(async () => await StartAudioNotifier(PlayErrorFAF));
         brdr1.Background = Brushes.Fuchsia;
+        await Task.Run(async () => await StartAudioNotifier(PlayErrorFAF));
+        await Task.Run(async () => await StartVisualNotifier());
       }
       else if (chkLongAudio.IsChecked == true && _ctsAudio is null) // do not "hide" error sound!!!
       {
         WindowState = WindowState.Normal;
-        await Task.Run(async () => await StartAudioNotifier(PlayQuietFAF));
         brdr1.Background = Brushes.Brown;
+        await Task.Run(async () => await StartAudioNotifier(PlayQuietFAF));
       }
       else
       {
@@ -300,9 +304,9 @@ public partial class TSMainWindow : Window
       }
     }
 
-    _ = ReScanFolder_SetCurrentStateToWatchChangesAgainst(tbxPath.Text); // resets the mark to prevent the changes to be picked by the FS checker and re-start the alarm.
+    Title = $"▄▀▄▀▄▀▄▀   {VersionHelper.CurVerStr0Md}";
 
-    await Task.Run(async () => await StartVisualNotifier());
+    _ = ReScanFolder_SetCurrentStateToWatchChangesAgainst(tbxPath.Text); // resets the mark to prevent the changes to be picked by the FS checker and re-start the alarm.
   }
 
   void PlayErrorFAF() => Task.Run(async () => await _bpr.WaveAsync(2000, 5000, 3));
@@ -394,6 +398,19 @@ public partial class TSMainWindow : Window
 
   void OnWtchOn(object sender, RoutedEventArgs e) => StartWatch();
   async void OnWtchNo(object sender, RoutedEventArgs e) => await StopWatch();
+
+  void OnSizeChanged(object sender, SizeChangedEventArgs e) => WriteLine($"{DateTime.Now:HH:mm:ss}  OnSizeChanged");
+
+  async void OnStateChanged(object s, EventArgs e)
+  {
+    WriteLine($"{DateTime.Now:HH:mm:ss}  OnStateChanged({WindowState})");
+    switch (WindowState)
+    {
+      default:
+      case WindowState.Minimized: await AckAck(s); break;
+    }
+  }
+
   async void OnStart6(object sender, RoutedEventArgs e) => await StartVisualNotifier();
   void OnStop_6(object sender, RoutedEventArgs e)
   {
