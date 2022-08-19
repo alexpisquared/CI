@@ -50,7 +50,7 @@ public partial class TSMainWindow : Window
   async void OnLoaded(object s, RoutedEventArgs e)
   {
     dg1.ItemsSource = _userSettingsAndStateOfFS.FileDataList;
-    Title = $"{DateTime.Now:HH:mm}  No events since  ..  {VersionHelper.CurVerStr0Md}";
+    Title = $"{DateTime.Now:HH:mm}  No events since  ..  {VersionHelper.CurVerStrYMd}";
     StartWatch();
     await StartPeriodicChecker();
   }
@@ -86,7 +86,7 @@ public partial class TSMainWindow : Window
     {
       RemoveDeleteds();
 
-      Title = $"{DateTime.Now:HH:mm}  OnResetW on  ..  {VersionHelper.CurVerStr0Md}";
+      Title = $"{DateTime.Now:HH:mm}  OnResetW on  ..  {VersionHelper.CurVerStrYMd}";
     }
     catch (Exception ex) { _ = MessageBox.Show(ex.ToString()); }
     finally { StartWatch(); }
@@ -122,7 +122,7 @@ public partial class TSMainWindow : Window
       _ctsAudio?.Cancel();
       await _bpr.TickAsync();
       brdr1.Background = Brushes.Cyan;
-      Title = $"{DateTime.Now:HH:mm}  Olds moved  ..  {VersionHelper.CurVerStr0Md}  ";
+      Title = $"{DateTime.Now:HH:mm}  Olds moved  ..  {VersionHelper.CurVerStrYMd}  ";
     }
     catch (Exception ex) { _ = MessageBox.Show(ex.ToString()); }
     finally { StartWatch(); }
@@ -143,7 +143,7 @@ public partial class TSMainWindow : Window
     //?await Task.Delay(_200ms * 8); 
     Topmost = false;
     await _bpr.TickAsync();
-    Title = $"{DateTime.Now:HH:mm}  Minimized  ..  {VersionHelper.CurVerStr0Md}  ";
+    Title = $"{DateTime.Now:HH:mm}  Minimized  ..  {VersionHelper.CurVerStrYMd}  ";
   }
 
   void On0000(object s, RoutedEventArgs e) { _bpr.Click(); try { } catch (Exception ex) { _ = MessageBox.Show(ex.ToString()); } }
@@ -305,7 +305,7 @@ public partial class TSMainWindow : Window
       }
     }
 
-    Title = $"{DateTime.Now:HH:mm}  ▄▀▄▀▄▀▄▀   {VersionHelper.CurVerStr0Md}";
+    Title = $"{DateTime.Now:HH:mm}  ▄▀▄▀▄▀▄▀   {VersionHelper.CurVerStrYMd}";
 
     _ = ReScanFolder_SetCurrentStateToWatchChangesAgainst(tbxPath.Text); // resets the mark to prevent the changes to be picked by the FS checker and re-start the alarm.
   }
@@ -352,12 +352,12 @@ public partial class TSMainWindow : Window
 
         _ = Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(async () =>
         {
-          Title = $"▄▀▄▀▄▀▄▀   {VersionHelper.CurVerStr0Md}"; await Task.Delay(_200ms);
-          Title = $" ▄▀▄▀▄▀▄▀  {VersionHelper.CurVerStr0Md}"; await Task.Delay(_200ms);
-          Title = $"  ▄▀▄▀▄▀▄▀ {VersionHelper.CurVerStr0Md}"; await Task.Delay(_200ms);
-          Title = $"▀▄▀▄▀▄▀▄   {VersionHelper.CurVerStr0Md}"; await Task.Delay(_200ms);
-          Title = $" ▀▄▀▄▀▄▀▄  {VersionHelper.CurVerStr0Md}"; await Task.Delay(_200ms);
-          Title = $"  ▀▄▀▄▀▄▀▄ {VersionHelper.CurVerStr0Md}";
+          Title = $"▄▀▄▀▄▀▄▀   {VersionHelper.CurVerStrYMd}"; await Task.Delay(_200ms);
+          Title = $" ▄▀▄▀▄▀▄▀  {VersionHelper.CurVerStrYMd}"; await Task.Delay(_200ms);
+          Title = $"  ▄▀▄▀▄▀▄▀ {VersionHelper.CurVerStrYMd}"; await Task.Delay(_200ms);
+          Title = $"▀▄▀▄▀▄▀▄   {VersionHelper.CurVerStrYMd}"; await Task.Delay(_200ms);
+          Title = $" ▀▄▀▄▀▄▀▄  {VersionHelper.CurVerStrYMd}"; await Task.Delay(_200ms);
+          Title = $"  ▀▄▀▄▀▄▀▄ {VersionHelper.CurVerStrYMd}";
         }));
       }
     }
