@@ -45,7 +45,7 @@
     <Grid>
       <TextBlock Text="Log" x:Name="tbkLog" HorizontalAlignment="Center" VerticalAlignment="Bottom" Foreground="#fff" Background="#036" MaxWidth="500" FontSize="5" TextWrapping="Wrap" Padding="2 0 2 1" />
 
-      <Rectangle Width="800" Height="1" RenderTransformOrigin="0.80,0.5" Style="{StaticResource IsOnStyle}" Fill="#0ff" VerticalAlignment="Top" >
+      <Rectangle Width="800" Height="1" RenderTransformOrigin="0.90,0.5" Style="{StaticResource IsOnStyle}" Fill="#0ff" VerticalAlignment="Top" >
         <Rectangle.RenderTransform>
           <TransformGroup>
             <ScaleTransform ScaleY="1"/>
@@ -55,7 +55,7 @@
           </TransformGroup>
         </Rectangle.RenderTransform>
       </Rectangle>
-      <Rectangle Width="800" Height="1" RenderTransformOrigin="0.20,0.5" Style="{StaticResource IsOnStyle}" Fill="#ff0" VerticalAlignment="Top" >
+      <Rectangle Width="800" Height="1" RenderTransformOrigin="0.10,0.5" Style="{StaticResource IsOnStyle}" Fill="#ff0" VerticalAlignment="Top" >
         <Rectangle.RenderTransform>
           <TransformGroup>
             <ScaleTransform ScaleY="1"/>
