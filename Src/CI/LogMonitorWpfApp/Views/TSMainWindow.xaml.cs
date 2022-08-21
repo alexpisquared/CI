@@ -59,7 +59,7 @@ public partial class TSMainWindow : Window
   async void OnVSCode(object s, RoutedEventArgs e)
   {
     _bpr.Click();
-    await StopWatch();
+    StopWatch();
     WindowState = WindowState.Minimized;
     try
     {
@@ -80,7 +80,7 @@ public partial class TSMainWindow : Window
   void OnSetngs(object s, RoutedEventArgs e) { _bpr.Click(); try { _ = new Process { StartInfo = new ProcessStartInfo(@$"{Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)}\Programs\Microsoft VS Code\Code.exe", $"\"{UserSettingsStore.FullPath}\"") { RedirectStandardError = true, UseShellExecute = false } }.Start(); } catch (Exception ex) { _ = MessageBox.Show(ex.ToString()); } }//_ = new Process { StartInfo = new ProcessStartInfo(@"Notepad.exe", $"\"{UserSettingsStore._store}\"") { RedirectStandardError = true, UseShellExecute = false } }.Start(); //_ = new Process { StartInfo = new ProcessStartInfo(@"C:\Program Files\Microsoft Visual Studio\2022\Preview\Common7\IDE\devenv.exe", $"\"{UserSettingsStore._store}\"") { RedirectStandardError = true, UseShellExecute = false } }.Start(); }
   async void OnResetW(object s, RoutedEventArgs e)
   {
-    await StopWatch();
+    StopWatch();
     await _bpr.ClickAsync();
     try
     {
@@ -94,7 +94,7 @@ public partial class TSMainWindow : Window
   async void OnMovOld(object s, RoutedEventArgs e)
   {
     _bpr.Click();
-    await StopWatch();
+    StopWatch();
 
     try
     {
@@ -219,7 +219,7 @@ public partial class TSMainWindow : Window
 
     tbkHeadr.Text = $" {++_w} {_v} {_a}";
   }
-  async Task StopWatch([CallerMemberName] string? cmn = "")
+  void StopWatch([CallerMemberName] string? cmn = "")
   {
     WriteLine($"\n{DateTime.Now:HH:mm:ss}   Stoppping FS WATCH  by  {cmn} {new string('-', 64)}");
     _watcher.Changed -= OnChanged;
@@ -229,8 +229,6 @@ public partial class TSMainWindow : Window
     _watcher.Error -= OnError;
 
     tbkHeadr.Text = $" {--_w} {_v} {_a} ";
-
-    await Task.Delay(333);
   }
 
   void OnChanged(object s, FileSystemEventArgs e) { if (e.ChangeType == WatcherChangeTypes.Changed) ReportAndRescanSafe($"▼▲  Changed. \t", e.FullPath); }
@@ -398,7 +396,7 @@ public partial class TSMainWindow : Window
   }
 
   void OnWtchOn(object sender, RoutedEventArgs e) => StartWatch();
-  async void OnWtchNo(object sender, RoutedEventArgs e) => await StopWatch();
+  void OnWtchNo(object sender, RoutedEventArgs e) => StopWatch();
 
   void OnSizeChanged(object sender, SizeChangedEventArgs e) => WriteLine($"{DateTime.Now:HH:mm:ss}  OnSizeChanged");
 
@@ -440,6 +438,7 @@ public partial class TSMainWindow : Window
 
   protected override async void OnClosed(EventArgs e)
   {
+    StopWatch();
     await rsk.OnClosed(e);
     base.OnClosed(e);
   }

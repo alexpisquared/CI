@@ -2,45 +2,50 @@
              xmlns:local="clr-namespace:LogMonitorWpfApp"
              Loaded="OnLoaded" Background="#246" >
   <UserControl.Resources>
-    <Style TargetType="CheckBox">
-      <Setter Property="Margin" Value="10" />
-      <Setter Property="Foreground" Value="#ff0" />
-    </Style>
-    <Style TargetType="Label">
-      <Setter Property="Margin" Value="5" />
-      <Setter Property="Foreground" Value="#ff0" />
-    </Style>
-    <Style TargetType="Button">
-      <Setter Property="Margin" Value="5" />
-      <Setter Property="Background"  Value="Transparent" />
-      <Setter Property="BorderBrush" Value="Transparent" />
-      <Setter Property="Foreground"  Value="#ff0" />
-    </Style>
+    <ResourceDictionary>
+      <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="/CI.Visual.Lib;component/Base/Anime.Base.xaml" />
+      </ResourceDictionary.MergedDictionaries>
+      <Style TargetType="CheckBox">
+        <Setter Property="Margin" Value="10" />
+        <Setter Property="Foreground" Value="#ff0" />
+      </Style>
+      <Style TargetType="Label">
+        <Setter Property="Margin" Value="5" />
+        <Setter Property="Foreground" Value="#ff0" />
+      </Style>
+      <Style TargetType="Button">
+        <Setter Property="Margin" Value="5" />
+        <Setter Property="Background"  Value="Transparent" />
+        <Setter Property="BorderBrush" Value="Transparent" />
+        <Setter Property="Foreground"  Value="#ff0" />
+      </Style>
 
-    <Storyboard x:Key="sbkFrvr">
-      <DoubleAnimation BeginTime="0:0:0" Duration="0:3:50" To="360" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[2].(Angle)" />
-    </Storyboard>
-    <Storyboard x:Key="sbkStop" FillBehavior='Stop'>
-      <DoubleAnimation BeginTime="0:0:0" Duration="0:3:50" To="0"   Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[2].(Angle)" />
-    </Storyboard>
-    <Style TargetType="Rectangle" x:Key="IsOnStyle">
-      <Style.Triggers>
-        <DataTrigger Binding="{Binding IsOn, UpdateSourceTrigger=PropertyChanged}" Value="True">
-          <DataTrigger.EnterActions>
-            <BeginStoryboard Storyboard="{StaticResource sbkFrvr}" />
-          </DataTrigger.EnterActions>
-          <DataTrigger.ExitActions>
-            <BeginStoryboard Storyboard="{StaticResource sbkStop}" />
-          </DataTrigger.ExitActions>
-        </DataTrigger>
-      </Style.Triggers>
-    </Style>
+      <Storyboard x:Key="sbkFrvr">
+        <DoubleAnimation BeginTime="0:0:0" Duration="0:3:50" To="360" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[2].(Angle)" EasingFunction="{StaticResource eb}" />
+      </Storyboard>
+      <Storyboard x:Key="sbkStop" FillBehavior='Stop'>
+        <DoubleAnimation BeginTime="0:0:0" Duration="0:3:50" To="0"   Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[2].(Angle)" EasingFunction="{StaticResource bb}" />
+      </Storyboard>
+      <Style TargetType="Rectangle" x:Key="IsOnStyle">
+        <Style.Triggers>
+          <DataTrigger Binding="{Binding IsOn, UpdateSourceTrigger=PropertyChanged}" Value="True">
+            <DataTrigger.EnterActions>
+              <BeginStoryboard Storyboard="{StaticResource sbkFrvr}" />
+            </DataTrigger.EnterActions>
+            <DataTrigger.ExitActions>
+              <BeginStoryboard Storyboard="{StaticResource sbkStop}" />
+            </DataTrigger.ExitActions>
+          </DataTrigger>
+        </Style.Triggers>
+      </Style>
+    </ResourceDictionary>
   </UserControl.Resources>
   <Viewbox Margin="10 5">
     <Grid>
       <TextBlock Text="Log" x:Name="tbkLog" HorizontalAlignment="Center" VerticalAlignment="Bottom" Foreground="#fff" Background="#036" MaxWidth="500" FontSize="5" TextWrapping="Wrap" Padding="2 0 2 1" />
 
-      <Rectangle Width="800" Height="1" RenderTransformOrigin="0.80,0.5" Style="{StaticResource IsOnStyle}" Fill="#0f0" VerticalAlignment="Top" >
+      <Rectangle Width="800" Height="1" RenderTransformOrigin="0.80,0.5" Style="{StaticResource IsOnStyle}" Fill="#0ff" VerticalAlignment="Top" >
         <Rectangle.RenderTransform>
           <TransformGroup>
             <ScaleTransform ScaleY="1"/>
@@ -50,7 +55,7 @@
           </TransformGroup>
         </Rectangle.RenderTransform>
       </Rectangle>
-      <Rectangle Width="800" Height="1" RenderTransformOrigin="0.20,0.5" Style="{StaticResource IsOnStyle}" Fill="#f0f" VerticalAlignment="Top" >
+      <Rectangle Width="800" Height="1" RenderTransformOrigin="0.20,0.5" Style="{StaticResource IsOnStyle}" Fill="#ff0" VerticalAlignment="Top" >
         <Rectangle.RenderTransform>
           <TransformGroup>
             <ScaleTransform ScaleY="1"/>
