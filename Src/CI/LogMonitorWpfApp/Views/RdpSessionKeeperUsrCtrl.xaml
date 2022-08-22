@@ -21,11 +21,11 @@
         <Setter Property="Foreground"  Value="#ff0" />
       </Style>
 
-      <Storyboard x:Key="sbkFrvr">
-        <DoubleAnimation BeginTime="0:0:0" Duration="0:3:50" To="360" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[2].(Angle)" EasingFunction="{StaticResource eb}" />
+      <Storyboard x:Key="sbkFrvr" Timeline.DesiredFrameRate="3" >
+        <DoubleAnimation BeginTime="0:0:0" Duration="0:3:50" To="360" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[2].(Angle)" />
       </Storyboard>
-      <Storyboard x:Key="sbkStop" FillBehavior='Stop'>
-        <DoubleAnimation BeginTime="0:0:0" Duration="0:3:50" To="0"   Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[2].(Angle)" EasingFunction="{StaticResource bb}" />
+      <Storyboard x:Key="sbkStop" Timeline.DesiredFrameRate="3" FillBehavior='Stop'>
+        <DoubleAnimation BeginTime="0:0:0" Duration="0:3:50" To="0"   Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[2].(Angle)" />
       </Storyboard>
       <Style TargetType="Rectangle" x:Key="IsOnStyle">
         <Style.Triggers>
