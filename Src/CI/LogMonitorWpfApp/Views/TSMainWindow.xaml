@@ -66,11 +66,12 @@
             <MenuItem Header="  _1  " Click="OnStart6" />
             <MenuItem Header="  _0  " Click="OnStop_6" />
           </MenuItem>
-          <MenuItem Header="_Qet"   x:Name="chkQuietMode" ToolTip="Silent mode" IsCheckable="True" />
-          <MenuItem Header="_Lng"   x:Name="chkLongAudio" ToolTip="Long sound on changes (vs errors only)" IsCheckable="True" />
+          <MenuItem Header="_Qet"   x:Name="chkQuietMode" ToolTip="Silent mode"                             IsCheckable="True" />
+          <MenuItem Header="_Lng"   x:Name="chkLongAudio" ToolTip="Long sound on changes (vs errors only)"  IsCheckable="True" />
           <MenuItem Header="E_xp"   Click="OnExplre"      ToolTip="E_xplore log folder"/>
           <MenuItem Header="_VSC"   Click="OnVSCode"      ToolTip="_VS Code at the log folder"/>
-          <MenuItem Header="_Old"   Click="OnMovOld"      ToolTip="Move old files to  ..\Logs.Old" />
+          <MenuItem Header="_Old"   Click="OnMovOld"      ToolTip="Move old files to  ..\Logs.Old" Foreground="#00a" />
+          <MenuItem Header="A_pi"   Click="OnMovApi"      ToolTip="Move old files to  ..\Logs.Old" Foreground="#00a" />
           <MenuItem Header="_Ack"   Click="OnAckAck"      ToolTip="Ack + Stay" Foreground="#0a0" />
         </Menu>
         <Button Content="   Ack   " Click="OnAckAck" IsCancel="True"  Margin="5" Background="Transparent" Foreground="#0a0" ToolTip="Stop Notifier + Minimize Window" />

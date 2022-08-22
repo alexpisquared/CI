@@ -127,6 +127,42 @@ public partial class TSMainWindow : Window
     catch (Exception ex) { _ = MessageBox.Show(ex.ToString()); }
     finally { StartWatch(); }
   }
+  async void OnMovApi(object s, RoutedEventArgs e)
+  {
+    _bpr.Click();
+    StopWatch();
+
+    try
+    {
+      var trgOldFolder = Directory.CreateDirectory($"{tbxPath.Text}.Old");
+
+      foreach (var srcLogFolder in new[] { tbxPath.Text, @"Z:\Dev\AlexPi\Misc\Logs" })
+      {
+        foreach (var logFileInfo in new DirectoryInfo(srcLogFolder).GetFiles().Where(fi => fi.Name.Contains(".api.", StringComparison.OrdinalIgnoreCase)))
+        {
+          var trg = Path.Combine(trgOldFolder.FullName, logFileInfo.Name);
+          var nm0 = Path.GetFileNameWithoutExtension(trg);
+          for (var i = 0; File.Exists(trg) && i < 999; i++)
+          {
+            trg = Path.Combine(Path.GetDirectoryName(trg)!, $"{nm0}.{i}") + Path.GetExtension(trg);
+          }
+
+          File.Move(logFileInfo.FullName, trg);
+        }
+      }
+
+      ChckFS(true);
+      OnResetW(s, e);
+
+      _ctsVideo?.Cancel();
+      _ctsAudio?.Cancel();
+      await _bpr.TickAsync();
+      brdr1.Background = Brushes.Cyan;
+      Title = $"{DateTime.Now:HH:mm}  Olds moved  ..  {VersionHelper.CurVerStrYMd}  ";
+    }
+    catch (Exception ex) { _ = MessageBox.Show(ex.ToString()); }
+    finally { StartWatch(); }
+  }
   async void OnAckAck(object s, RoutedEventArgs e) => await AckAck(s);
 
   private async Task AckAck(object s)

@@ -21,7 +21,7 @@
         <Setter Property="Foreground"  Value="#ff0" />
       </Style>
 
-      <Storyboard x:Key="sbkFrvr" Timeline.DesiredFrameRate="3" >
+      <Storyboard x:Key="sbkFrvr" Timeline.DesiredFrameRate="1" >
         <DoubleAnimation BeginTime="0:0:0" Duration="0:3:50" To="360" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[2].(Angle)" />
       </Storyboard>
       <Storyboard x:Key="sbkStop" Timeline.DesiredFrameRate="3" FillBehavior='Stop'>
@@ -35,6 +35,24 @@
             </DataTrigger.EnterActions>
             <DataTrigger.ExitActions>
               <BeginStoryboard Storyboard="{StaticResource sbkStop}" />
+            </DataTrigger.ExitActions>
+          </DataTrigger>
+        </Style.Triggers>
+      </Style>
+      <Storyboard x:Key="sbk2Frvr" Timeline.DesiredFrameRate="3" >
+        <DoubleAnimation BeginTime="0:0:0" Duration="0:3:50" To="1" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[0].(ScaleX)" />
+      </Storyboard>
+      <Storyboard x:Key="sbk2Stop" Timeline.DesiredFrameRate="3" >
+        <DoubleAnimation BeginTime="0:0:0" Duration="0:3:50" To="0" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[0].(ScaleX)" />
+      </Storyboard>
+      <Style TargetType="Rectangle" x:Key="IsOnStyle2">
+        <Style.Triggers>
+          <DataTrigger Binding="{Binding IsOn, UpdateSourceTrigger=PropertyChanged}" Value="True">
+            <DataTrigger.EnterActions>
+              <BeginStoryboard Storyboard="{StaticResource sbk2Frvr}" />
+            </DataTrigger.EnterActions>
+            <DataTrigger.ExitActions>
+              <BeginStoryboard Storyboard="{StaticResource sbk2Stop}" />
             </DataTrigger.ExitActions>
           </DataTrigger>
         </Style.Triggers>
@@ -59,6 +77,18 @@
         <Rectangle.RenderTransform>
           <TransformGroup>
             <ScaleTransform ScaleY="1"/>
+            <SkewTransform/>
+            <RotateTransform Angle="0"/>
+            <TranslateTransform Y="0"/>
+          </TransformGroup>
+        </Rectangle.RenderTransform>
+      </Rectangle>
+
+      <Rectangle Width="800" Height="2" RenderTransformOrigin="0.0,0.5" Fill="#600" VerticalAlignment="Bottom" />
+      <Rectangle Width="800" Height="2" RenderTransformOrigin="0.0,0.5" Fill="#f88" VerticalAlignment="Bottom" Style="{StaticResource IsOnStyle2}" >
+        <Rectangle.RenderTransform>
+          <TransformGroup>
+            <ScaleTransform ScaleX=".1"/>
             <SkewTransform/>
             <RotateTransform Angle="0"/>
             <TranslateTransform Y="0"/>
