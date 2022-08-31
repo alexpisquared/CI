@@ -42,9 +42,8 @@ public partial class TSMainWindow : Window
     };
 
 #if !_DEBUG
-    if (Environment.MachineName == "D21-MJ0AWBEV") /**/ { Top = 32; Left = 880; }
-
-    if (Environment.MachineName == "RAZER1")       /**/ { Top = 32; Left = 0; }
+    if (Environment.MachineName == "D21-MJ0AWBEV") /**/ { Top = 32; Left = 180; }
+    if (Environment.MachineName == "RAZER1")       /**/ { Top = 32; Left = 180; }
 #endif
   }
   async void OnLoaded(object s, RoutedEventArgs e)

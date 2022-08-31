@@ -7,6 +7,7 @@ public partial class RdpSessionKeeperUsrCtrl : UserControl
   readonly string _crlf = $" ", TextLog = @$"RdpFacility.{Environment.MachineName}.Log.txt";
   readonly DateTime AppStarted = DateTime.Now;
   const int _from = 8, _till = 20, _dbgDelayMs = 500;
+  const string _mmc = "Manual Menu Call";
   int _dx = 10, _dy = 10, _hrsAdded = 0;
   bool _isLoaded = false;
   IBpr? _bpr;
@@ -94,12 +95,19 @@ public partial class RdpSessionKeeperUsrCtrl : UserControl
     try
     {
       _idleTimeoutAnalizer.SkipLoggingOnSelf = true;
-      _ = Mouse.Capture(this); // :fails outside of the owner window without it.
-      var pointToScreen = PointToScreen(Mouse.GetPosition(this));
 
-      _ = Win32.SetCursorPos((int)pointToScreen.X + _dx, (int)pointToScreen.Y + _dy);
+      //if (msg == _mmc)
+      //{
+      _ = Win32.SetCursorPos(910 + _dx, 336 + _dy);
+      //}
+      //else
+      //{
+      //  _ = Mouse.Capture(this); // :fails outside of the owner window without it.
+      //  var pointToScreen = PointToScreen(Mouse.GetPosition(this));
 
-      tbkLog.Text += $" {DateTime.Now:HHmm}:{pointToScreen} ";
+      //  _ = Win32.SetCursorPos((int)pointToScreen.X + _dx, (int)pointToScreen.Y + _dy);
+      //  tbkLog.Text += $" {DateTime.Now:HHmm}:{pointToScreen} ";
+      //}
     }
     catch (Exception ex) { _ = File.AppendAllTextAsync(TextLog, $"{Prefix}togglePosition  Exceptoin: {ex.Message}{_crlf}"); }
     finally
@@ -117,7 +125,7 @@ public partial class RdpSessionKeeperUsrCtrl : UserControl
   async void OnMindBiz(object s, RoutedEventArgs e) { _appset.IsMindBiz = ((MenuItem)s).IsChecked == true; if (_isLoaded) { await _appset.StoreAsync(); } }
   async void OnPlus2hr(object s, RoutedEventArgs e) { _hrsAdded += 2; await OnTick(true); await Bpr.ClickAsync(); }
   async void OnMinusHr(object s, RoutedEventArgs e) { _hrsAdded -= 1; await OnTick(true); await Bpr.ClickAsync(); }
-  async void OnPosition(object s, RoutedEventArgs e) => await TogglePosition("Manual Menu Call");
+  async void OnPosition(object s, RoutedEventArgs e) => await TogglePosition(_mmc);
   async void OnMark(object z, RoutedEventArgs e) { var s = $"{Prefix}Mark     \t"; tbkLog.Text += s; await File.AppendAllTextAsync(TextLog, $"{s}{_crlf}"); }
   void OnRset(object s, RoutedEventArgs e) { _idleTimeoutAnalizer.MinTimeoutMin = 100; tbkMin.Content = $"ITA so far  {_idleTimeoutAnalizer.MinTimeoutMin:N1} min  {(_idleTimeoutAnalizer.RanByTaskScheduler ? "(ro)" : "(RW)")}"; _idleTimeoutAnalizer.SaveLastCloseAndAnalyzeIfMarkable(); }
 

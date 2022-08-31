@@ -121,6 +121,7 @@
           <MenuItem Header="_Pos    " IsCheckable="True" Checked="OnPosning" Unchecked="OnPosning" x:Name="chkInso_" ToolTip="Positioning of the cursor" IsEnabled="False" IsChecked="False"/>
           <MenuItem Header="Position Cursor _Now" Click="OnPosition"  />
         </MenuItem>
+          <MenuItem Header="_Pos" Click="OnPosition"  />
         <Label Content="Min"  x:Name="tbkMin" HorizontalAlignment="Center" Foreground="#0ff" />
       </Menu>
     </Grid>
