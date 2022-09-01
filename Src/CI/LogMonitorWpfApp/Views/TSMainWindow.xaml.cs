@@ -6,7 +6,7 @@ public partial class TSMainWindow : Window
   readonly IBpr _bpr;
   CancellationTokenSource? _ctsVideo, _ctsAudio, _ctsCheckr;
   const int _200ms = 200;
-  const string _noChanges = "No changes";
+  const string _noChanges = "·";
   int _i = 0, _w = 0, _v = 0, _a = 0;
   readonly Index _4thFromEnd = ^4;
 
@@ -413,7 +413,7 @@ public partial class TSMainWindow : Window
   }
   async Task StartPeriodicChecker()
   {
-    WriteLine($"\n{DateTime.Now:HH:mm:ss}   Starting Checkr   ");
+    WriteLine($"\n{DateTime.Now:HH:mm:ss}   Starting Periodic Checkr ...  ");
     _ctsCheckr?.Cancel();
     _ctsCheckr = new();
     PeriodicTimer timer = new(TimeSpan.FromSeconds(60));
