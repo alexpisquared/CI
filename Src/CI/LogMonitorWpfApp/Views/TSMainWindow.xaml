@@ -91,9 +91,9 @@
       <DataGrid Grid.Row="2" x:Name="dg1" Grid.Column="0" Margin="5 0 0 0" CanUserDeleteRows="True" CanUserAddRows="False" AutoGenerateColumns="False" VerticalGridLinesBrush="Transparent" HorizontalGridLinesBrush="Transparent" RowHeaderStyle="{x:Null}"
                 BorderThickness="0">
         <DataGrid.Columns>
-          <DataGridTextColumn     Header=" Filename" Binding="{Binding PartName, Mode=OneWay}"		                   Width="196" />
-          <DataGridTextColumn     Header="FileTime"  Binding="{Binding LastWriteTime, StringFormat=\{0:d-HH\\:mm\}}" Width="69"   Foreground="#ff0" />
-          <DataGridTextColumn     Header="Len (kb) " Binding="{Binding LengthKb, StringFormat='{}{0,8:N0}'}"			       Width="Auto"	Foreground="#0f0" />
+          <DataGridTextColumn     Header=" Filename" Binding="{Binding PartName, Mode=OneWay}"		                   MinWidth="226" />
+          <DataGridTextColumn     Header="FileTime"  Binding="{Binding LastWriteTime, StringFormat=\{0:d-HH\\:mm\}}" MinWidth="69"   Foreground="#ff0" />
+          <DataGridTextColumn     Header="Len (kb) " Binding="{Binding LengthKb, StringFormat='{}{0,8:N0}'}"			      Width="Auto" Foreground="#0f0" />
           <DataGridTextColumn     Header="Status"    Binding="{Binding Status      }"			Width="*"		              />
           <DataGridCheckBoxColumn Header="Gone "    Binding="{Binding IsDeleted   }"			                          />
           <!--<DataGridTextColumn Header=" Seen  "	 Binding="{Binding LastSeen  	 , StringFormat=\{0:HH\\:mm\}}"   />-->
