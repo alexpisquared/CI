@@ -8,9 +8,12 @@ public partial class RdpSessionKeeperUsrCtrl : UserControl
   readonly DateTime AppStarted = DateTime.Now;
   const int _from = 8, _till = 20, _dbgDelayMs = 500;
   const string _mmc = "Manual Menu Call";
-  int _dx = 10, _dy = 10, _hrsAdded = 0;
+  private int _dx = 11;
+  private readonly int _dy = 10;
+  private int _hrsAdded = 0;
   bool _isLoaded = false;
   IBpr? _bpr;
+  private Point _previos;
 
   public RdpSessionKeeperUsrCtrl()
   {
@@ -96,25 +99,25 @@ public partial class RdpSessionKeeperUsrCtrl : UserControl
     {
       _idleTimeoutAnalizer.SkipLoggingOnSelf = true;
 
-      //if (msg == _mmc)
-      //{
-      _ = Win32.SetCursorPos(910 + _dx, 336 + _dy);
-      //}
-      //else
-      //{
-      //  _ = Mouse.Capture(this); // :fails outside of the owner window without it.
-      //  var pointToScreen = PointToScreen(Mouse.GetPosition(this));
-
-      //  _ = Win32.SetCursorPos((int)pointToScreen.X + _dx, (int)pointToScreen.Y + _dy);
-      //  tbkLog.Text += $" {DateTime.Now:HHmm}:{pointToScreen} ";
-      //}
+      _ = Mouse.Capture(this); // :fails outside of the owner window without it.
+      var current = PointToScreen(Mouse.GetPosition(this));
+      if (current == _previos)
+      {
+        _previos.X = current.X + _dx;
+        WriteLine($"+++ Idled ==> Moving to  {_previos}");
+        _ = Win32.SetCursorPos((int)_previos.X, (int)_previos.Y);        //_ = Win32.SetCursorPos(/*910*/(int)current.X + _dx, /*336*/(int)current.Y + _dy);        //await Task.Delay(99);        //_previos = PointToScreen(Mouse.GetPosition(this));
+        _dx = -_dx;
+      }
+      else // moved or 1st time:
+      {
+        WriteLine($"--- Smbdy moved to new   {current}");
+        _previos = current;
+      }
     }
     catch (Exception ex) { _ = File.AppendAllTextAsync(TextLog, $"{Prefix}togglePosition  Exceptoin: {ex.Message}{_crlf}"); }
     finally
     {
       _ = Mouse.Capture(null);
-      _dx = -_dx;
-      _dy = -_dy;
       _ = File.AppendAllTextAsync(TextLog, $"{Prefix}tglPsn({msg}).{_crlf}");
     }
   }
