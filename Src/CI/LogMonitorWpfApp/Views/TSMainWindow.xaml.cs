@@ -239,6 +239,8 @@ public partial class TSMainWindow : Window
       dg1.Items.SortDescriptions.Add(new SortDescription("LastWriteTime", ListSortDirection.Descending));
       dg1.Items.Refresh();
 
+      Height = 156 + 26 * _userSettingsAndStateOfFS.FileDataList.Count;
+
       return report; // $"Re-Scanned {_userSettingsAndStateOfFS.FileDataList.Count} files.  {del.Count()} deleted.";      //foreach (var fi in _userSettingsAndStateOfFS.FileDataList.OrderByDescending(fi => fi.LastWriteTime))        lb1.Items.Add($"\t{System.IO.Path.GetFileName(fi.FullName),-40} {fi.LastWriteTime:MM-dd HH:mm:ss}  {fi.IsDeleted,-5}  {fi.Status}");
     }
     catch (Exception ex) { _ = MessageBox.Show(ex.ToString()); return ex.Message; }
