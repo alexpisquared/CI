@@ -7,15 +7,15 @@
         <ResourceDictionary Source="/CI.Visual.Lib;component/Base/Anime.Base.xaml" />
       </ResourceDictionary.MergedDictionaries>
       <Style TargetType="CheckBox">
-        <Setter Property="Margin" Value="10" />
+        <Setter Property="Margin" Value="0" />
         <Setter Property="Foreground" Value="#ff0" />
       </Style>
       <Style TargetType="Label">
-        <Setter Property="Margin" Value="5" />
+        <Setter Property="Margin" Value="0" />
         <Setter Property="Foreground" Value="#ff0" />
       </Style>
       <Style TargetType="Button">
-        <Setter Property="Margin" Value="5" />
+        <Setter Property="Margin" Value="0" />
         <Setter Property="Background"  Value="Transparent" />
         <Setter Property="BorderBrush" Value="Transparent" />
         <Setter Property="Foreground"  Value="#ff0" />
@@ -59,7 +59,7 @@
       </Style>
     </ResourceDictionary>
   </UserControl.Resources>
-  <Viewbox Margin="10 5">
+  <Viewbox>
     <Grid>
       <TextBlock Text="Log" x:Name="tbkLog" HorizontalAlignment="Center" VerticalAlignment="Bottom" Foreground="#fff" Background="#036" MaxWidth="500" FontSize="5" TextWrapping="Wrap" Padding="2 0 2 1" />
 
@@ -106,8 +106,8 @@
         <MenuItem Header="A_ud   " IsCheckable="True" Checked="OnAudible" Unchecked="OnAudible" x:Name="chkAdbl1" ToolTip="Audible on every tick (230 sec)"/>
         <MenuItem Header="_Ins   " IsCheckable="True" Checked="OnInsmnia" Unchecked="OnInsmnia" x:Name="chkInsoA" ToolTip="Insmnia or system request to disturb"/>
         <MenuItem Header="_MBH   " IsCheckable="True" Checked="OnMindBiz" Unchecked="OnMindBiz" x:Name="chkMind1" ToolTip="Mind Biz Hrs" Foreground="#ff4"/>
-        <MenuItem Header="+ _2 hr" Click="OnPlus2hr" Height="38" Foreground="#ff4" IsEnabled="{Binding ElementName=chkMind1, Path=IsChecked}" />
-        <MenuItem Header="- _1 hr" Click="OnMinusHr" Height="38" Foreground="#ff4" IsEnabled="{Binding ElementName=chkMind1, Path=IsChecked}" />
+        <MenuItem Header="+ _2 hr" Click="OnPlus2hr" Foreground="#ff4" IsEnabled="{Binding ElementName=chkMind1, Path=IsChecked}" />
+        <MenuItem Header="- _1 hr" Click="OnMinusHr" Foreground="#ff4" IsEnabled="{Binding ElementName=chkMind1, Path=IsChecked}" />
         <Label Content="Hrs"  x:Name="tbkHrs" HorizontalAlignment="Center" Foreground="#ff0" MaxWidth="500" />
         <MenuItem   Header="° ° °" Padding="8 8 8 0" >
           <MenuItem IsCheckable="True" Checked="OnAudible" Unchecked="OnAudible" x:Name="chkAdbl2" Header="Audible on every tick (230 sec)"/>
