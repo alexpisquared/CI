@@ -90,7 +90,7 @@ public class LogMonitor
         {
           fd.LastWriteTime = fi.LastWriteTime;
           fd.LengthKb = new FileInfo(fi.FullName).Length / 1000;
-          fd.Status = $"Has been changed   at {fi.LastWriteTime}.";
+          fd.Status = $"Has been changed   @ {fi.LastWriteTime}.";
         }
       }
     }
