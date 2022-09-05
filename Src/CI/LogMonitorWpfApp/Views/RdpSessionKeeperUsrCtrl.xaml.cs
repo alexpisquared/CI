@@ -104,13 +104,13 @@ public partial class RdpSessionKeeperUsrCtrl : UserControl
       if (current == _previos)
       {
         _previos.X = current.X + _dx;
-        WriteLine($"+++ Idled ==> Moving to  {_previos}");
+        WriteLine(tbkMin.Content = $"Idled: moving to {_previos}");
         _ = Win32.SetCursorPos((int)_previos.X, (int)_previos.Y);        //_ = Win32.SetCursorPos(/*910*/(int)current.X + _dx, /*336*/(int)current.Y + _dy);        //await Task.Delay(99);        //_previos = PointToScreen(Mouse.GetPosition(this));
         _dx = -_dx;
       }
       else // moved or 1st time:
       {
-        WriteLine($"--- Smbdy moved to new   {current}");
+        WriteLine(tbkMin.Content = $"Smbdy moved to {current}");
         _previos = current;
       }
     }
