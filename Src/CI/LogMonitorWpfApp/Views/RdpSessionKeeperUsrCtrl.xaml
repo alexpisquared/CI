@@ -96,7 +96,7 @@
         </Rectangle.RenderTransform>
       </Rectangle>
 
-      <Menu Background="Transparent" Foreground="#ccc">
+      <Menu Background="Transparent" Foreground="#808">
         <MenuItem Header="O_n/Off" IsCheckable="True" IsChecked="{Binding IsOn}" x:Name="btnOnOff" Visibility="Visible" />
         <!--
         <CheckBox Content="_A" Checked="onAudible" Unchecked="onAudible" x:Name="chkAdbl" ToolTip="Audible on every tick (230 sec)"/>          
