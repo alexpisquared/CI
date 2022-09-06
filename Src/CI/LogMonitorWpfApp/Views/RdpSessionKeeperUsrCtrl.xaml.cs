@@ -8,7 +8,7 @@ public partial class RdpSessionKeeperUsrCtrl : UserControl
   readonly DateTime AppStarted = DateTime.Now;
   const int _from = 8, _till = 20, _dbgDelayMs = 500;
   const string _mmc = "Manual Menu Call";
-  private int _dx = 11;
+  private int _dx = 111;
   private int _hrsAdded = 0;
   bool _isLoaded = false;
   IBpr? _bpr;
