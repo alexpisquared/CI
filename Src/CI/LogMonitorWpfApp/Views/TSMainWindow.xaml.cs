@@ -42,8 +42,8 @@ public partial class TSMainWindow : Window
     };
 
 #if !_DEBUG
-    if (Environment.MachineName == "D21-MJ0AWBEV") /**/ { Top = 32; Left = 180; }
-    if (Environment.MachineName == "RAZER1")       /**/ { Top = 32; Left = 180; }
+    if (Environment.MachineName == "D21-MJ0AWBEV") /**/ { Top = Left = 32; }
+    if (Environment.MachineName == "RAZER1")       /**/ { Top = Left = 32; }
 #endif
   }
   async void OnLoaded(object s, RoutedEventArgs e)
@@ -55,7 +55,7 @@ public partial class TSMainWindow : Window
   }
   void OnChckFS(object s, RoutedEventArgs e) { _bpr.Click(); ChckFS(); }
   void OnExplre(object s, RoutedEventArgs e) { _bpr.Click(); try { _ = new Process { StartInfo = new ProcessStartInfo(@"Explorer.exe", $"\"{tbxPath.Text}\"") { RedirectStandardError = true, UseShellExecute = false } }.Start(); } catch (Exception ex) { _ = MessageBox.Show(ex.ToString()); } }
-  async void OnVSCode(object s, RoutedEventArgs e)
+  void OnVSCode(object s, RoutedEventArgs e)
   {
     _bpr.Click();
     StopWatch();
