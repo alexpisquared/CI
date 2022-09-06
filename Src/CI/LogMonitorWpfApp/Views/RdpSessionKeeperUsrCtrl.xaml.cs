@@ -9,7 +9,6 @@ public partial class RdpSessionKeeperUsrCtrl : UserControl
   const int _from = 8, _till = 20, _dbgDelayMs = 500;
   const string _mmc = "Manual Menu Call";
   private int _dx = 11;
-  private readonly int _dy = 10;
   private int _hrsAdded = 0;
   bool _isLoaded = false;
   IBpr? _bpr;
@@ -132,7 +131,7 @@ public partial class RdpSessionKeeperUsrCtrl : UserControl
   async void OnMark(object z, RoutedEventArgs e) { var s = $"{Prefix}Mark     \t"; tbkLog.Text += s; await File.AppendAllTextAsync(TextLog, $"{s}{_crlf}"); }
   void OnRset(object s, RoutedEventArgs e) { _idleTimeoutAnalizer.MinTimeoutMin = 100; tbkMin.Content = $"ITA so far  {_idleTimeoutAnalizer.MinTimeoutMin:N1} min  {(_idleTimeoutAnalizer.RanByTaskScheduler ? "(ro)" : "(RW)")}"; _idleTimeoutAnalizer.SaveLastCloseAndAnalyzeIfMarkable(); }
 
-  public async Task OnClosed(EventArgs e)
+  public async Task OnClosed(/*EventArgs e*/)
   {
     //if (_idleTimeoutAnalizer.RanByTaskScheduler && !_idleTimeoutAnalizer.SkipLoggingOnSelf)      EvLogHelper.LogScrSvrEnd(AppStarted.DateTime.AddSeconds(-4 * 60), 4 * 60, $"RDP Facility - OnClosed()  {DateTimeOffset.Now - AppStarted:hh\\:mm\\:ss}");
 

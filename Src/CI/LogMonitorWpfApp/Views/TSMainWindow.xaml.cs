@@ -476,7 +476,7 @@ public partial class TSMainWindow : Window
   protected override async void OnClosed(EventArgs e)
   {
     StopWatch();
-    await rsk.OnClosed(e);
+    await rsk.OnClosed();
     base.OnClosed(e);
   }
 }

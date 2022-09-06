@@ -8,7 +8,7 @@ public class LogMonitor
 {
   readonly StyleSheet _styleSheet = new(Color.DarkGray);
   readonly UserSettings _us;
-  FileSystemWatcher _watcher;
+  FileSystemWatcher? _watcher;
 
   public LogMonitor()
   {
