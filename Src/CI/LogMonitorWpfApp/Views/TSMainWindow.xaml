@@ -33,12 +33,12 @@
       </Style.Triggers>
     </Style>
     <Style TargetType="DataGrid" BasedOn="{StaticResource c0}">
-      <Setter Property="RowBackground" Value="#678" />
+      <Setter Property="RowBackground" Value="Transparent" />
       <Setter Property="ColumnHeaderStyle" Value="{StaticResource ColumnHeaderStyle_Aav0}" />
       <Setter Property="HeadersVisibility"		    Value="Column" />
     </Style>
   </Window.Resources>
-  <Border CornerRadius="12" Background="#888" x:Name="brdr1">
+  <Border CornerRadius="12" Background="#8888" x:Name="brdr1">
     <Grid Margin="5">
       <Grid.ColumnDefinitions>
         <ColumnDefinition Width="600"/>
@@ -89,18 +89,18 @@
         <Button Content="  X  "      Click="OnClose"                  Margin="5" Background="Transparent" Foreground="#f80" ToolTip="Close"                           />
       </StackPanel>
 
-      <DataGrid Grid.Row="2" x:Name="dg1" Grid.Column="0" Margin="5 0 0 0" CanUserDeleteRows="True" CanUserAddRows="False" AutoGenerateColumns="False" VerticalGridLinesBrush="Transparent" HorizontalGridLinesBrush="Transparent" RowHeaderStyle="{x:Null}" BorderThickness="0">
+      <DataGrid Grid.Row="2" x:Name="dg1" Grid.Column="0" Margin="5 0 0 0" CanUserDeleteRows="True" CanUserAddRows="False" AutoGenerateColumns="False" VerticalGridLinesBrush="Transparent" HorizontalGridLinesBrush="Transparent" RowHeaderStyle="{x:Null}" BorderThickness="0" Background="Transparent" >
         <DataGrid.Columns>
           <DataGridTextColumn     Header=" Filename" Binding="{Binding PartName, Mode=OneWay}"		                   MinWidth="240" />
           <DataGridTextColumn     Header="FileTime"  Binding="{Binding LastWriteTime, StringFormat=\{0:d-HH\\:mm\}}" MinWidth="69"   Foreground="#ff0" />
           <DataGridTextColumn     Header="Len (kb) " Binding="{Binding LengthKb, StringFormat='{}{0,8:N0}'}"			      Width="Auto" Foreground="#0f0" />
           <DataGridTextColumn     Header="Status"    Binding="{Binding Status      }"			Width="*"		              />
-          <DataGridCheckBoxColumn Header="Gone "    Binding="{Binding IsDeleted   }"			                          />
+          <DataGridCheckBoxColumn Header="Gone "     Binding="{Binding IsDeleted   }"			                          />
           <!--<DataGridTextColumn Header=" Seen  "	 Binding="{Binding LastSeen  	 , StringFormat=\{0:HH\\:mm\}}"   />-->
         </DataGrid.Columns>
       </DataGrid>
 
-      <ListBox  Grid.Row="2" x:Name="lbxHist" Grid.Column="2" Margin="0 0 5 0" BorderThickness="0" />
+      <ListBox  Grid.Row="2" x:Name="lbxHist" Grid.Column="2" Margin="0 0 5 0" BorderThickness="0" Background="Transparent" />
 
       <local:RdpSessionKeeperUsrCtrl Grid.Row="4" Grid.ColumnSpan="3" x:Name="rsk" Margin="5 0 5 5" />
 
