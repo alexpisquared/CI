@@ -65,7 +65,7 @@ public partial class RdpSessionKeeperUsrCtrl : UserControl
       var ibh = IsBizHours;
       //chkInso1.IsChecked = ibh;
       _insomniac.SetInso(ibh);
-      Background = new SolidColorBrush(ibh ? Colors.DarkCyan : Colors.DarkRed);
+      //Background = new SolidColorBrush(ibh ? Colors.DarkCyan : Colors.DarkRed);
 
       tbkHrs.Content = $"{_from} - {_till + _hrsAdded} : currently {(ibh ? "On" : "Off")}";
 
