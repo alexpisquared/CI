@@ -18,7 +18,7 @@ namespace CsvManipulator
     readonly bool _ignoreHeaderColumnName = false; // for rare case scenario could be false.
     const int _topN = 3;
     CsvConfiguration? _config;
-    List<dynamic> _allCsvRecords;
+    List<dynamic>? _allCsvRecords;
 
     public CsvConverter(string filename)
     {
@@ -56,18 +56,18 @@ namespace CsvManipulator
       var report = "";
       try
       {
-        var allCsvHeaders = ((IDictionary<string, object>?)_allCsvRecords.FirstOrDefault())?.Values;
+        var allCsvHeaders = ((IDictionary<string, object>?)_allCsvRecords?.FirstOrDefault())?.Values;
         var columnCount = allCsvHeaders?.Count ?? 0;
 
-        var nonEmptyRows = _allCsvRecords.Skip(_ignoreHeaderColumnName ? 1 : 0).ToList().Where(kvp => ((ExpandoObject)kvp).Any(v => !string.IsNullOrEmpty(v.Value?.ToString())));
+        var nonEmptyRows = _allCsvRecords?.Skip(_ignoreHeaderColumnName ? 1 : 0).ToList().Where(kvp => ((ExpandoObject)kvp).Any(v => !string.IsNullOrEmpty(v.Value?.ToString())));
 
         //allCsvHeaders.ToList().ForEach(header => report += $"  {header}\t"); report += ($"\n");
 
-        var ecrv = findEmptyColumnsTemplate(columnCount, nonEmptyRows.Skip(1));
+        var ecrv = FindEmptyColumnsTemplate(columnCount, nonEmptyRows?.Skip(1));
 
         report += ($"Empty columns:  "); ecrv.ToList().ForEach(r => report += (r ? "#" : "·")); report += ($"\n");
 
-        var ourv = removeEmptyColumns(nonEmptyRows, ecrv);
+        var ourv = RemoveEmptyColumns(nonEmptyRows, ecrv);
         report += DumpTopRows("AFTER", ourv);
 
         using var writer = new StreamWriter(_filename2);
@@ -93,11 +93,11 @@ namespace CsvManipulator
       return report + $"  ... + {allCsvRecords.Count - topCount} more rows.\n\n";
     }
 
-    static List<dynamic> removeEmptyColumns(IEnumerable<dynamic> nonEmptyRows, bool[] emptyColumns)
+    static List<dynamic> RemoveEmptyColumns(IEnumerable<dynamic>? nonEmptyRows, bool[] emptyColumns)
     {
       var outCsvRecords = new List<dynamic>();
 
-      nonEmptyRows.ToList().ForEach(kvp =>
+      nonEmptyRows?.ToList().ForEach(kvp =>
       {
         var outCsvRecord = new ExpandoObject() as IDictionary<string, object>;
 
@@ -115,10 +115,10 @@ namespace CsvManipulator
 
       return outCsvRecords;
     }
-    static bool[] findEmptyColumnsTemplate(int colCnt, IEnumerable<dynamic> rows, int topCount = _topN)
+    static bool[] FindEmptyColumnsTemplate(int colCnt, IEnumerable<dynamic>? rows, int topCount = _topN)
     {
       var emptyColumnFlags = new bool[colCnt];
-      rows.Take(topCount).ToList().ForEach(row =>
+      rows?.Take(topCount).ToList().ForEach(row =>
       {
         var c = 0;
         ((IDictionary<string, object>)row).Values.ToList().ForEach(cell =>
