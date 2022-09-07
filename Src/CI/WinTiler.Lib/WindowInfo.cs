@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 
 namespace WinTiler.Lib
 {
@@ -15,7 +14,7 @@ namespace WinTiler.Lib
       WTitle = title;
       AppNme = exePth;
       Handle = handle;
-      var appName = title.Split(" - ");
+      _ = title.Split(" - ");
       Sorter = // appName.Length > 1 ? $"{appName.LastOrDefault()} · {appName.FirstOrDefault()}" : 
         $"{AppNme} · {WTitle}";
     }
