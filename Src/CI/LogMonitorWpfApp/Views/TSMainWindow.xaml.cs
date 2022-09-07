@@ -120,7 +120,7 @@ public partial class TSMainWindow : Window
       _ctsVideo?.Cancel();
       _ctsAudio?.Cancel();
       await _bpr.TickAsync();
-      brdr1.Background = Brushes.Cyan;
+      // brdr1.Background Brushes.Cyan;
       Title = $"{DateTime.Now:HH:mm}  Olds moved  ..  {VersionHelper.CurVerStrYMd}  ";
     }
     catch (Exception ex) { _ = MessageBox.Show(ex.ToString()); }
@@ -156,7 +156,7 @@ public partial class TSMainWindow : Window
       _ctsVideo?.Cancel();
       _ctsAudio?.Cancel();
       await _bpr.TickAsync();
-      brdr1.Background = Brushes.Cyan;
+      // brdr1.Background Brushes.Cyan;
       Title = $"{DateTime.Now:HH:mm}  Olds moved  ..  {VersionHelper.CurVerStrYMd}  ";
     }
     catch (Exception ex) { _ = MessageBox.Show(ex.ToString()); }
@@ -174,7 +174,7 @@ public partial class TSMainWindow : Window
     if (s is Button)
       WindowState = WindowState.Minimized;
 
-    brdr1.Background = Brushes.DarkCyan;
+    // brdr1.Background Brushes.DarkCyan;
     //?await Task.Delay(_200ms * 8); 
     Topmost = false;
     await _bpr.TickAsync();
@@ -323,20 +323,20 @@ public partial class TSMainWindow : Window
       if (changedFile.Contains(".Er▄▀."))
       {
         WindowState = WindowState.Normal;
-        brdr1.Background = Brushes.Fuchsia;
+        // brdr1.Background Brushes.Fuchsia;
         await Task.Run(async () => await StartAudioNotifier(PlayErrorFAF));
         await Task.Run(async () => await StartVisualNotifier());
       }
       else if (chkLongAudio.IsChecked == true && _ctsAudio is null) // do not "hide" error sound!!!
       {
         WindowState = WindowState.Normal;
-        brdr1.Background = Brushes.Brown;
+        // brdr1.Background Brushes.Brown;
         await Task.Run(async () => await StartAudioNotifier(PlayQuietFAF));
       }
       else
       {
         PlayQuietFAF();
-        brdr1.Background = Brushes.Yellow;
+        // brdr1.Background Brushes.Yellow;
       }
     }
 

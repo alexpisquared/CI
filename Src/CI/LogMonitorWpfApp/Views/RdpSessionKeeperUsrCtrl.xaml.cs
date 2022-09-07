@@ -102,8 +102,11 @@ public partial class RdpSessionKeeperUsrCtrl : UserControl
       var current = PointToScreen(Mouse.GetPosition(this));
       if (current == _previos)
       {
+        if (current.X < 1000) current.X = 1200; // wierd bug moves far left: force to a designated spot.
+        if (_previos.Y < 500) _previos.Y = 500;
+
         _previos.X = current.X + _dx;
-        WriteLine(tbkMin.Content = $"Idle: {current.X}►{_previos.X}");
+        WriteLine(tbkMin.Content = $"Idle: {current.X}►{_previos.X}-{_previos.Y}");
         _ = Win32.SetCursorPos((int)_previos.X, (int)_previos.Y);        //_ = Win32.SetCursorPos(/*910*/(int)current.X + _dx, /*336*/(int)current.Y + _dy);        //await Task.Delay(99);        //_previos = PointToScreen(Mouse.GetPosition(this));
         _dx = -_dx;
       }
