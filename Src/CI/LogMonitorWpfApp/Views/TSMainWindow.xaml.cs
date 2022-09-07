@@ -178,7 +178,7 @@ public partial class TSMainWindow : Window
     //?await Task.Delay(_200ms * 8); 
     Topmost = false;
     await _bpr.TickAsync();
-    Title = $"{DateTime.Now:HH:mm}  Minimized  ..  {VersionHelper.CurVerStrYMd}  ";
+    //Title = $"{DateTime.Now:HH:mm}  Minimized  ..  {VersionHelper.CurVerStrYMd}  ";
   }
 
   void On0000(object s, RoutedEventArgs e) { _bpr.Click(); try { } catch (Exception ex) { _ = MessageBox.Show(ex.ToString()); } }
@@ -340,7 +340,7 @@ public partial class TSMainWindow : Window
       }
     }
 
-    Title = $"{DateTime.Now:HH:mm}  ▄▀▄▀▄▀▄▀   {VersionHelper.CurVerStrYMd}";
+    Title = $"{DateTime.Now:HH:mm} {msg} ▄▀▄▀ {VersionHelper.CurVerStrYMd}";
 
     _ = ReScanFolder_SetCurrentStateToWatchChangesAgainst(tbxPath.Text); // resets the mark to prevent the changes to be picked by the FS checker and re-start the alarm.
   }
