@@ -33,11 +33,13 @@ steps:
 - checkout: MyGitHubRepo2
 - script: dir $(Build.SourcesDirectory)
 
-#Removing, since not in CI-RI:
-#- task: UseDotNet@2
-#  inputs:
-#    packageType: 'sdk'
-#    version: '6.x'                   #27 72s
+#Was Commented out:Removing, since not in CI-RI:
+- task: UseDotNet@2
+  inputs:
+    packageType: 'sdk'
+    version: '6.x'                   #27 72s
+    installationPath: $(Agent.ToolsDirectory)/dotnet  # new in Sep 2022
+    includePreviewVersions: true                      # new in Sep 2022
 
 - task: DotNetCoreCLI@2
   inputs:
