@@ -62,7 +62,7 @@ steps:
     command: 'restore'
     restoreSolution: '**/*.sln'
     feedsToUse: 'select'
-## ++ 2021-07-09: fixing  error NETSDK1004: Assets file project.assets.json not found.
+## ++ 2021-07-09: fixing  error NETSDK1004: Assets file project.assets.json not found. 200+s
 
 - task: VSBuild@1
   inputs:
