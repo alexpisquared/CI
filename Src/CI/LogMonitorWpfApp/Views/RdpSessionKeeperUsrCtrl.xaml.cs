@@ -6,7 +6,7 @@ public partial class RdpSessionKeeperUsrCtrl : UserControl
   readonly Insomniac _insomniac = new();
   readonly string _crlf = $" ", TextLog = @$"RdpFacility.{Environment.MachineName}.Log.txt";
   readonly DateTime AppStarted = DateTime.Now;
-  const int _from = 8, _till = 20, _dbgDelayMs = 500;
+  const int _from = 8, _till = 18, _dbgDelayMs = 500;
   const string _mmc = "Manual Menu Call";
   private int _dx = 111;
   private int _hrsAdded = 0;
