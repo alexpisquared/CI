@@ -63,7 +63,7 @@
     <Grid>
       <TextBlock Text="Log" x:Name="tbkLog" HorizontalAlignment="Center" VerticalAlignment="Bottom" Foreground="#fff" Background="#036" MaxWidth="500" FontSize="5" TextWrapping="Wrap" Padding="2 0 2 1" />
 
-      <Rectangle Width="800" Height="1" RenderTransformOrigin="0.90,0.5" Style="{StaticResource IsOnStyle}" Fill="#0ff" VerticalAlignment="Top" >
+      <!--<Rectangle Width="800" Height="1" RenderTransformOrigin="0.90,0.5" Style="{StaticResource IsOnStyle}" Fill="#0ff" VerticalAlignment="Top" >
         <Rectangle.RenderTransform>
           <TransformGroup>
             <ScaleTransform ScaleY="1"/>
@@ -82,10 +82,10 @@
             <TranslateTransform Y="0"/>
           </TransformGroup>
         </Rectangle.RenderTransform>
-      </Rectangle>
+      </Rectangle>-->
 
-      <Rectangle Width="800" Height="2" RenderTransformOrigin="0.0,0.5" Fill="#600" VerticalAlignment="Bottom" />
-      <Rectangle Width="800" Height="2" RenderTransformOrigin="0.0,0.5" Fill="#f88" VerticalAlignment="Bottom" Style="{StaticResource IsOnStyle2}" >
+      <Rectangle Width="800" Height="2" RenderTransformOrigin="0.0,0.5" Fill="#000" VerticalAlignment="Bottom" />
+      <Rectangle Width="800" Height="2" RenderTransformOrigin="0.0,0.5" Fill="#ddd" VerticalAlignment="Bottom" Style="{StaticResource IsOnStyle2}" >
         <Rectangle.RenderTransform>
           <TransformGroup>
             <ScaleTransform ScaleX=".1"/>
