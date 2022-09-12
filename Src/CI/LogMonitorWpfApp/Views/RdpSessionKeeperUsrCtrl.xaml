@@ -24,7 +24,7 @@
       <Storyboard x:Key="sbkFrvr" Timeline.DesiredFrameRate="1" >
         <DoubleAnimation BeginTime="0:0:0" Duration="0:1:0" To="360" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[2].(Angle)" />
       </Storyboard>
-      <Storyboard x:Key="sbkStop" Timeline.DesiredFrameRate="3" FillBehavior='Stop'>
+      <Storyboard x:Key="sbkStop">
         <DoubleAnimation BeginTime="0:0:0" Duration="0:1:0" To="0"   Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[2].(Angle)" />
       </Storyboard>
       <Style TargetType="Rectangle" x:Key="IsOnStyle">
