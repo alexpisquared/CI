@@ -38,10 +38,10 @@
       <Setter Property="HeadersVisibility"		    Value="Column" />
     </Style>
   </Window.Resources>
-  <Border CornerRadius="12" Background="#8888" x:Name="brdr1">
+  <Border CornerRadius="12" Background="#8888" BorderBrush="#aaa" BorderThickness="1" x:Name="brdr1">
     <Grid Margin="5">
       <Grid.ColumnDefinitions>
-        <ColumnDefinition Width="600"/>
+        <ColumnDefinition Width="560"/>
         <ColumnDefinition Width="05"/>
         <ColumnDefinition Width="*"/>
       </Grid.ColumnDefinitions>
@@ -92,16 +92,17 @@
       <DataGrid Grid.Row="2" x:Name="dg1" SelectionChanged="dg1_SelectionChanged" MouseDoubleClick="dg1_MouseDoubleClick" CanUserDeleteRows="True" CanUserAddRows="False" AutoGenerateColumns="False" VerticalGridLinesBrush="Transparent" HorizontalGridLinesBrush="Transparent" RowHeaderStyle="{x:Null}" BorderThickness="0" Background="Transparent" >
         <DataGrid.Columns>
           <DataGridTextColumn     Header=" Filename" Binding="{Binding PartName, Mode=OneWay}"		                   MinWidth="240" />
-          <DataGridTextColumn     Header="FileTime"  Binding="{Binding LastWriteTime, StringFormat=\{0:d-HH\\:mm\}}" MinWidth="69"   Foreground="#ff0" />
+          <DataGridTextColumn     Header="FileTime"  Binding="{Binding LastWriteTime, StringFormat=\{0:HH\\:mm\}}"   MinWidth="69"   Foreground="#ff0" />
           <DataGridTextColumn     Header="Len (kb) " Binding="{Binding LengthKb, StringFormat='{}{0,8:N0}'}"			      Width="Auto" Foreground="#0f0" />
           <DataGridTextColumn     Header="Status"    Binding="{Binding Status      }"			Width="*"		              />
+          <!--
           <DataGridCheckBoxColumn Header="Gone "     Binding="{Binding IsDeleted   }"			                          />
-          <!--<DataGridTextColumn Header=" Seen  "	 Binding="{Binding LastSeen  	 , StringFormat=\{0:HH\\:mm\}}"   />-->
+          <DataGridTextColumn Header=" Seen  "	 Binding="{Binding LastSeen  	 , StringFormat=\{0:HH\\:mm\}}"   />-->
         </DataGrid.Columns>
       </DataGrid>
 
-      <ListBox  Grid.Row="2" x:Name="lbxHist" Grid.Column="2" Margin="0 0 5 0" BorderThickness="0" Background="Transparent" />
-      <TextBox  Grid.Row="2" x:Name="txtText" Grid.Column="2" Margin="0 0 5 0" BorderThickness="0" Background="Transparent" />
+      <ListBox Grid.Row="2" Grid.Column="2" x:Name="lbxHist" Background="#002" BorderBrush="#5888" VerticalAlignment="Top"    />
+      <TextBox Grid.Row="2" Grid.Column="2" x:Name="txtText" Background="#200" BorderBrush="#5888" VerticalAlignment="Bottom" />
 
       <local:RdpSessionKeeperUsrCtrl Grid.Row="4" Grid.ColumnSpan="3" x:Name="rsk" Margin="5 0 5 5" />
 
