@@ -43,6 +43,7 @@ public partial class TSMainWindow : Window
 
 #if !_DEBUG
     if (Environment.MachineName == "D21-MJ0AWBEV") /**/ { Top = Left = 32; }
+
     if (Environment.MachineName == "RAZER1")       /**/ { Top = Left = 32; }
 #endif
   }
@@ -239,7 +240,7 @@ public partial class TSMainWindow : Window
       dg1.Items.SortDescriptions.Add(new SortDescription("LastWriteTime", ListSortDirection.Descending));
       dg1.Items.Refresh();
 
-      Height = 126 + 22 * _userSettingsAndStateOfFS.FileDataList.Count;
+      Height = 126 + (23 * _userSettingsAndStateOfFS.FileDataList.Count);
 
       return report; // $"Re-Scanned {_userSettingsAndStateOfFS.FileDataList.Count} files.  {del.Count()} deleted.";      //foreach (var fi in _userSettingsAndStateOfFS.FileDataList.OrderByDescending(fi => fi.LastWriteTime))        lb1.Items.Add($"\t{System.IO.Path.GetFileName(fi.FullName),-40} {fi.LastWriteTime:MM-dd HH:mm:ss}  {fi.IsDeleted,-5}  {fi.Status}");
     }
@@ -445,6 +446,45 @@ public partial class TSMainWindow : Window
       default: break;
       case WindowState.Minimized: await AckAck(s); break;
     }
+  }
+
+  void dg1_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+  {
+    _bpr.Click();
+    WindowState = WindowState.Minimized;
+    StopWatch();
+    UseSayExe("Suspenging the watch for 5 min .. to prevent alerts.");
+    try
+    {
+      var si = ((LogMonitorLib.FileData)((System.Windows.Controls.Primitives.Selector)sender).SelectedItem).FullName;
+      var process = new Process { StartInfo = new ProcessStartInfo(@$"{Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)}\Programs\Microsoft VS Code\Code.exe", $"\"{si}\"") { RedirectStandardError = true, UseShellExecute = false } };
+      if (process.Start())
+        _ = process.WaitForExit(300000); // does not hold the execution ... but only when multiple instances running !?!?!?!?!
+    }
+    catch (Exception ex) { _ = MessageBox.Show(ex.ToString()); }
+    finally
+    {
+      _ = ReScanFolder_SetCurrentStateToWatchChangesAgainst(tbxPath.Text); // resets the mark.
+      StartWatch();
+      WindowState = WindowState.Normal;
+      UseSayExe("Watch restarted.");
+    }
+
+    while (_ctsVideo is not null || _ctsAudio is not null) { _ctsVideo?.Cancel(); _ctsAudio?.Cancel(); }
+  }
+
+  void dg1_SelectionChanged(object sender, SelectionChangedEventArgs e)
+  {
+    _bpr.Click();
+    brdr1.Background = new SolidColorBrush(Color.FromRgb(30, 0, 20));
+    try
+    {
+      var si = ((FileData)((System.Windows.Controls.Primitives.Selector)sender).SelectedItem).FullName;
+      var tx = File.ReadAllText(si);
+      txtText.AppendText(tx);
+    }
+    catch (Exception ex) { txtText.AppendText(ex.ToString()); }
+    finally { txtText.ScrollToEnd(); }
   }
 
   async void OnStart6(object sender, RoutedEventArgs e) => await StartVisualNotifier();
