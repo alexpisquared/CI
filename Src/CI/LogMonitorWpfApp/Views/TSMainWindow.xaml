@@ -95,6 +95,7 @@
         <Button Content="  X  "      Click="OnClose"                  Margin="5" Background="Transparent" Foreground="#f00" ToolTip="Close"                           />
         <Button Content="  X  "      Click="OnClose"                  Margin="5" Background="Transparent" Foreground="#f40" ToolTip="Close"                           />
         <Button Content="  X  "      Click="OnClose"                  Margin="5" Background="Transparent" Foreground="#f80" ToolTip="Close"                           />
+        <TextBlock x:Name="tbkSelec" Margin="15 8 5 0" Foreground="#08f"  d:Text="Title" />
       </StackPanel>
 
       <DataGrid Grid.Row="2" x:Name="dg1" SelectionChanged="dg1_SelectionChanged" MouseDoubleClick="dg1_MouseDoubleClick" CanUserDeleteRows="True" CanUserAddRows="False" AutoGenerateColumns="False" VerticalGridLinesBrush="Transparent" HorizontalGridLinesBrush="Transparent" RowHeaderStyle="{x:Null}" BorderThickness="0" Background="Transparent" >

@@ -196,7 +196,7 @@ public partial class TSMainWindow : Window
   string ReScanFolder_SetCurrentStateToWatchChangesAgainst(string path)
   {
     var report = _noChanges;
-    dg1.SelectedItem = null;
+    //dg1.SelectedItem = null;
 
     try
     {
@@ -485,6 +485,7 @@ public partial class TSMainWindow : Window
     try
     {
       si.Status = Title = "· · ·";
+      tbkSelec.Text = si.PartName; 
       txtText.Text = File.ReadAllText(si.FullName);
     }
     catch (IOException ex)
