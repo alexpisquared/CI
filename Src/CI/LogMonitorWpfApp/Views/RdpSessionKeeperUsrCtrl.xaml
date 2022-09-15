@@ -96,7 +96,7 @@
         </Rectangle.RenderTransform>
       </Rectangle>
 
-      <Menu Background="Transparent" Foreground="#f0f">
+      <Menu Background="Transparent" Foreground="#c0c">
         <MenuItem Header="O_n/Off" IsCheckable="True" IsChecked="{Binding IsOn}" x:Name="btnOnOff" Visibility="Visible" />
         <!--
         <CheckBox Content="_A" Checked="onAudible" Unchecked="onAudible" x:Name="chkAdbl" ToolTip="Audible on every tick (230 sec)"/>          
@@ -105,10 +105,10 @@
         <CheckBox Content="_M" Checked="onMindBiz" Unchecked="onMindBiz" x:Name="chkMind" ToolTip="Mind Biz Hrs"/>-->
         <MenuItem Header="A_ud   " IsCheckable="True" Checked="OnAudible" Unchecked="OnAudible" x:Name="chkAdbl1" ToolTip="Audible on every tick (230 sec)"/>
         <MenuItem Header="_Ins   " IsCheckable="True" Checked="OnInsmnia" Unchecked="OnInsmnia" x:Name="chkInsoA" ToolTip="Insmnia or system request to disturb"/>
-        <MenuItem Header="_MBH   " IsCheckable="True" Checked="OnMindBiz" Unchecked="OnMindBiz" x:Name="chkMind1" ToolTip="Mind Biz Hrs" Foreground="#ff4"/>
-        <MenuItem Header="+ _2 hr" Click="OnPlus2hr" Foreground="#ff4" IsEnabled="{Binding ElementName=chkMind1, Path=IsChecked}" />
-        <MenuItem Header="- _1 hr" Click="OnMinusHr" Foreground="#ff4" IsEnabled="{Binding ElementName=chkMind1, Path=IsChecked}" />
-        <Label Content="Hrs"  x:Name="tbkHrs" HorizontalAlignment="Center" Foreground="#ff0" MaxWidth="500" />
+        <MenuItem Header="_MBH   " IsCheckable="True" Checked="OnMindBiz" Unchecked="OnMindBiz" x:Name="chkMind1" ToolTip="Mind Biz Hrs" Foreground="#dd0"/>
+        <MenuItem Header="+ _2 hr" Click="OnPlus2hr" Foreground="#dd0" IsEnabled="{Binding ElementName=chkMind1, Path=IsChecked}" />
+        <MenuItem Header="- _1 hr" Click="OnMinusHr" Foreground="#dd0" IsEnabled="{Binding ElementName=chkMind1, Path=IsChecked}" />
+        <Label Content="Hrs"  x:Name="tbkHrs"        Foreground="#dd0" />
         <MenuItem   Header="° ° °" Padding="8 8 8 0" >
           <MenuItem IsCheckable="True" Checked="OnAudible" Unchecked="OnAudible" x:Name="chkAdbl2" Header="Audible on every tick (230 sec)"/>
           <MenuItem IsCheckable="True" Checked="OnInsmnia" Unchecked="OnInsmnia" x:Name="chkInsoB" Header="Insmnia or system request to disturb"/>
@@ -122,7 +122,7 @@
           <MenuItem Header="Position Cursor _Now" Click="OnPosition"  />
         </MenuItem>
           <MenuItem Header="Po_s" Click="OnPosition"  />
-        <Label Content="Min"  x:Name="tbkMin" HorizontalAlignment="Center" Foreground="#0ff" />
+        <Label Content="Unk"  x:Name="tbkMin" HorizontalAlignment="Center" Foreground="#0ff" />
       </Menu>
     </Grid>
   </Viewbox>

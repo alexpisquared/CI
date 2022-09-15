@@ -6,7 +6,7 @@ public partial class RdpSessionKeeperUsrCtrl : UserControl
   readonly Insomniac _insomniac = new();
   readonly string _crlf = $" ", TextLog = @$"RdpFacility.{Environment.MachineName}.Log.txt";
   readonly DateTime AppStarted = DateTime.Now;
-  const int _from = 8, _till = 18, _dbgDelayMs = 500;
+  const int _dbgDelayMs = 500, _from = 8, _till = 17; //==17:59:59
   const string _mmc = "Manual Menu Call";
   private int _dx = 111;
   private int _hrsAdded = 0;
@@ -66,7 +66,7 @@ public partial class RdpSessionKeeperUsrCtrl : UserControl
       _insomniac.SetInso(ibh);
       //Background = new SolidColorBrush(ibh ? Colors.DarkCyan : Colors.DarkRed);
 
-      tbkHrs.Content = $"{_from} - {_till + _hrsAdded} : currently {(ibh ? "On" : "Off")}";
+      tbkHrs.Content = $"{_from} - {_till + _hrsAdded}:59  currently {(ibh ? "On" : "Off")}";
 
       if (!isManual && !ibh) _hrsAdded = 0; // reset to 0 for the next day.
     }
@@ -106,13 +106,13 @@ public partial class RdpSessionKeeperUsrCtrl : UserControl
         if (_previos.Y < 500) _previos.Y = 500;
 
         _previos.X = current.X + _dx;
-        WriteLine(tbkMin.Content = $"Idle: {current.X}►{_previos.X}-{_previos.Y}");
-        _ = Win32.SetCursorPos((int)_previos.X, (int)_previos.Y);        //_ = Win32.SetCursorPos(/*910*/(int)current.X + _dx, /*336*/(int)current.Y + _dy);        //await Task.Delay(99);        //_previos = PointToScreen(Mouse.GetPosition(this));
+        WriteLine(tbkMin.Content = $"App: {current.X}►{_previos.X}-{_previos.Y}");
+        _ = Win32.SetCursorPos((int)_previos.X, (int)_previos.Y);
         _dx = -_dx;
       }
       else // moved or 1st time:
       {
-        WriteLine(tbkMin.Content = $"Busy");
+        WriteLine(tbkMin.Content = $"Dev");
         _previos = current;
       }
     }
