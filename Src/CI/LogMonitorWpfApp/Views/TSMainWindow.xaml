@@ -102,7 +102,7 @@
       </DataGrid>
 
       <ListBox Grid.Row="2" Grid.Column="2" x:Name="lbxHist" Background="#002" BorderBrush="#5888" VerticalAlignment="Top"    />
-      <TextBox Grid.Row="2" Grid.Column="2" x:Name="txtText" Background="#200" BorderBrush="#5888" VerticalAlignment="Bottom" />
+      <TextBox Grid.Row="2" Grid.Column="2" x:Name="txtText" Background="#200" BorderBrush="#5888" />
 
       <local:RdpSessionKeeperUsrCtrl Grid.Row="4" Grid.ColumnSpan="3" x:Name="rsk" Margin="5 0 5 5" />
 

@@ -456,7 +456,7 @@ public partial class TSMainWindow : Window
     UseSayExe("Suspenging the watch for 5 min .. to prevent alerts.");
     try
     {
-      var si = ((LogMonitorLib.FileData)((System.Windows.Controls.Primitives.Selector)sender).SelectedItem).FullName;
+      var si = ((FileData)((System.Windows.Controls.Primitives.Selector)sender).SelectedItem).FullName;
       var process = new Process { StartInfo = new ProcessStartInfo(@$"{Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)}\Programs\Microsoft VS Code\Code.exe", $"\"{si}\"") { RedirectStandardError = true, UseShellExecute = false } };
       if (process.Start())
         _ = process.WaitForExit(300000); // does not hold the execution ... but only when multiple instances running !?!?!?!?!
@@ -480,10 +480,9 @@ public partial class TSMainWindow : Window
     try
     {
       var si = ((FileData)((System.Windows.Controls.Primitives.Selector)sender).SelectedItem).FullName;
-      var tx = File.ReadAllText(si);
-      txtText.AppendText(tx);
+      txtText.Text = File.ReadAllText(si);
     }
-    catch (Exception ex) { txtText.AppendText(ex.ToString()); }
+    catch (Exception ex) { txtText.Text = ex.ToString(); }
     finally { txtText.ScrollToEnd(); }
   }
 
