@@ -9,7 +9,7 @@
     </Style>
     <Style TargetType="Control" x:Key="c0">
       <Setter Property="Background" Value="#678" />
-      <Setter Property="Foreground" Value="#0dd" />
+      <Setter Property="Foreground" Value="#ddd" />
     </Style>
     <Style TargetType="ContentControl">
       <Setter Property="Background" Value="#ff0" />
@@ -18,6 +18,14 @@
     <Style TargetType="TextBox" BasedOn="{StaticResource c0}">
     </Style>
     <Style TargetType="ListBox" BasedOn="{StaticResource c0}">
+    </Style>
+
+    <Style TargetType="{x:Type TextBlock}" x:Key="CenterAlignStyle" >
+      <Setter Property="TextAlignment" Value="Center" />
+    </Style>
+    <Style TargetType="{x:Type TextBlock}" x:Key="RightAlignStyle" >
+      <Setter Property="TextAlignment" Value="Right"  />
+      <Setter Property="Margin"        Value="6 0"  />
     </Style>
 
     <Style TargetType="{x:Type DataGridColumnHeader}" x:Key="ColumnHeaderStyle_Aav0" >
@@ -79,7 +87,7 @@
         <Button Content="   Ack   " Click="OnAckAck" IsCancel="True"  Margin="5" Background="Transparent" Foreground="#0a0" ToolTip="Stop Notifier + Minimize Window" />
 
         <TextBlock                   Margin="5 8 5 0" Foreground="#ff0"  d:Text="Title" Text="{Binding ElementName=wnd, Path=Title}" Width="268"/>
-        <TextBlock x:Name="tbkHeadr" Margin="5 8 5 0" Foreground="#f8f"  d:Text="1 1 0" FontWeight="Bold"/>
+        <TextBlock x:Name="tbkHeadr" Margin="5 8 5 0" Foreground="#a0a"  d:Text="1 1 0" FontWeight="Bold"/>
         <TextBlock x:Name="tbkTitle" Margin="5 8 5 0" Foreground="#8ff"  d:Text="Title" Visibility="Collapsed" />
         <Button Content="  X  "      Click="OnClose"                  Margin="5" Background="Transparent" Foreground="#600" ToolTip="Close"                           />
         <Button Content="  X  "      Click="OnClose"                  Margin="5" Background="Transparent" Foreground="#900" ToolTip="Close"                           />
@@ -91,10 +99,10 @@
 
       <DataGrid Grid.Row="2" x:Name="dg1" SelectionChanged="dg1_SelectionChanged" MouseDoubleClick="dg1_MouseDoubleClick" CanUserDeleteRows="True" CanUserAddRows="False" AutoGenerateColumns="False" VerticalGridLinesBrush="Transparent" HorizontalGridLinesBrush="Transparent" RowHeaderStyle="{x:Null}" BorderThickness="0" Background="Transparent" >
         <DataGrid.Columns>
-          <DataGridTextColumn     Header=" Filename" Binding="{Binding PartName, Mode=OneWay}"		                   MinWidth="240" />
-          <DataGridTextColumn     Header="FileTime"  Binding="{Binding LastWriteTime, StringFormat=\{0:HH\\:mm\}}"   MinWidth="69"   Foreground="#ff0" />
-          <DataGridTextColumn     Header="Len (kb) " Binding="{Binding LengthKb, StringFormat='{}{0,8:N0}'}"			      Width="Auto" Foreground="#0f0" />
-          <DataGridTextColumn     Header="Status"    Binding="{Binding Status      }"			Width="*"		              />
+          <DataGridTextColumn     Header=" Filename"  Binding="{Binding PartName, Mode=OneWay}"		                   MinWidth="240"  Foreground="#08f" />
+          <DataGridTextColumn     Header="FileTime"   Binding="{Binding LastWriteTime, StringFormat=\{0:HH\\:mm\}}"  MinWidth="69"   Foreground="#dd0" ElementStyle="{StaticResource CenterAlignStyle}" />
+          <DataGridTextColumn     Header="Len (kb)  " Binding="{Binding LengthKb, StringFormat='{}{0,8:N0}'}"			      Width="Auto" Foreground="#0d0" ElementStyle="{StaticResource RightAlignStyle}" />
+          <DataGridTextColumn     Header="Status"     Binding="{Binding Status      }"			                            Width="*"		 Foreground="#f80" />
           <!--
           <DataGridCheckBoxColumn Header="Gone "     Binding="{Binding IsDeleted   }"			                          />
           <DataGridTextColumn Header=" Seen  "	 Binding="{Binding LastSeen  	 , StringFormat=\{0:HH\\:mm\}}"   />-->

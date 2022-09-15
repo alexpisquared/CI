@@ -49,8 +49,9 @@ public partial class TSMainWindow : Window
   }
   async void OnLoaded(object s, RoutedEventArgs e)
   {
-    dg1.ItemsSource = _userSettingsAndStateOfFS.FileDataList;
     Title = $"{DateTime.Now:HH:mm}  No events since  ..  {VersionHelper.CurVerStrYMd}";
+    dg1.ItemsSource = _userSettingsAndStateOfFS.FileDataList;
+    dg1.Focus();
     StartWatch();
     await StartPeriodicChecker();
   }
@@ -195,6 +196,8 @@ public partial class TSMainWindow : Window
   string ReScanFolder_SetCurrentStateToWatchChangesAgainst(string path)
   {
     var report = _noChanges;
+    dg1.SelectedItem = null;
+
     try
     {
       var now = DateTime.Now;
@@ -212,7 +215,7 @@ public partial class TSMainWindow : Window
           fd.LastSeen = now;
           if (Math.Abs((fd.LastWriteTime - fi.LastWriteTime).TotalSeconds) < 5)
           {
-            fd.Status = _noChanges;
+            //fd.Status = _noChanges;
             fd.LengthKb = new FileInfo(fi.FullName).Length / 1000;
           }
           else
@@ -472,20 +475,37 @@ public partial class TSMainWindow : Window
 
     while (_ctsVideo is not null || _ctsAudio is not null) { _ctsVideo?.Cancel(); _ctsAudio?.Cancel(); }
   }
-
   void dg1_SelectionChanged(object sender, SelectionChangedEventArgs e)
   {
     _bpr.Click();
     brdr1.Background = new SolidColorBrush(Color.FromRgb(30, 0, 20));
+    var si = (FileData)((System.Windows.Controls.Primitives.Selector)sender).SelectedItem;
+    if (si is null) return;
+
     try
     {
-      var si = ((FileData)((System.Windows.Controls.Primitives.Selector)sender).SelectedItem).FullName;
-      txtText.Text = File.ReadAllText(si);
+      si.Status = Title = "· · ·";
+      txtText.Text = File.ReadAllText(si.FullName);
     }
-    catch (Exception ex) { txtText.Text = ex.ToString(); }
+    catch (IOException ex)
+    {
+      si.Status = Title = ex.Message;
+      LoadLockedFile(si.FullName);
+    }
+    catch (Exception ex) { txtText.Text = ex.Message; }
     finally { txtText.ScrollToEnd(); }
   }
 
+  void LoadLockedFile(string logfile)
+  {
+    try
+    {
+      using var fileStream = new FileStream(logfile, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+      using var streamReader = new StreamReader(fileStream);
+      txtText.Text = streamReader.ReadToEnd();
+    }
+    catch (Exception ex) { txtText.Text = ex.Message; }
+  }
   async void OnStart6(object sender, RoutedEventArgs e) => await StartVisualNotifier();
   void OnStop_6(object sender, RoutedEventArgs e)
   {
