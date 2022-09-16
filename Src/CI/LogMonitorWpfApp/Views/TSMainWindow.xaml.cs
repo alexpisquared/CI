@@ -166,21 +166,29 @@ public partial class TSMainWindow : Window
   }
   async void OnAckAck(object s, RoutedEventArgs e) => await AckAck(s);
 
-  private async Task AckAck(object s)
+  async Task AckAck(object s)
   {
-    Title = $"Ack...";
-    _bpr.Click();
+    Title = $"Ack-ed... 00";
+    try
+    {
+      _bpr.Click();
+      Title = $"Ack-ed... A";
 
-    while (_ctsVideo is not null || _ctsAudio is not null) { _ctsVideo?.Cancel(); _ctsAudio?.Cancel(); await _bpr.BeepAsync(200, .333); }
+      while (_ctsVideo is not null || _ctsAudio is not null) { _ctsVideo?.Cancel(); _ctsAudio?.Cancel(); await _bpr.BeepAsync(200, .333); }
 
-    if (s is Button)
-      WindowState = WindowState.Minimized;
+      Title = $"Ack-ed... B";
 
-    // brdr1.Background Brushes.DarkCyan;
-    //?await Task.Delay(_200ms * 8); 
-    Topmost = false;
-    await _bpr.TickAsync();
-    //Title = $"{DateTime.Now:HH:mm}  Minimized  ..  {VersionHelper.CurVerStrYMd}  ";
+      if (s is Button)
+        WindowState = WindowState.Minimized;
+
+      // brdr1.Background Brushes.DarkCyan;
+      //?await Task.Delay(_200ms * 8); 
+      Topmost = false;
+      await _bpr.TickAsync();
+
+      Title = $"Ack-ed... Z";
+    }
+    catch (Exception ex) { _ = MessageBox.Show(ex.ToString(), "AckAck ??   " + Title); }
   }
 
   void On0000(object s, RoutedEventArgs e) { _bpr.Click(); try { } catch (Exception ex) { _ = MessageBox.Show(ex.ToString()); } }
@@ -485,7 +493,7 @@ public partial class TSMainWindow : Window
     try
     {
       si.Status = Title = "· · ·";
-      tbkSelec.Text = si.PartName; 
+      tbkSelec.Text = si.PartName;
       txtText.Text = File.ReadAllText(si.FullName);
     }
     catch (IOException ex)
