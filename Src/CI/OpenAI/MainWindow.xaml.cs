@@ -2,7 +2,7 @@
 public partial class MainWindow : Window
 {
   string _prevValue = "";
-  IConfigurationRoot _config;
+  readonly IConfigurationRoot _config;
   CancellationTokenSource? _cts;
 
   public MainWindow()
@@ -21,10 +21,10 @@ public partial class MainWindow : Window
       _cts = new CancellationTokenSource();
       while (_cts is not null && await tmr.WaitForNextTickAsync(_cts.Token))
       {
-        if (System.Windows.Application.Current.Dispatcher.CheckAccess()) // if on UI thread
+        if (Application.Current.Dispatcher.CheckAccess()) // if on UI thread
           OnCheckClipboardForData();
         else
-          await System.Windows.Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => { OnCheckClipboardForData(); }));
+          await Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => { OnCheckClipboardForData(); }));
 
         if (_cts?.Token.IsCancellationRequested == true) // Poll on this property if you have to do other cleanup before throwing.
         {
@@ -43,7 +43,7 @@ public partial class MainWindow : Window
     const int minLen = 10;
     try
     {
-      if (!Clipboard.ContainsText() || _prevValue == Clipboard.GetText()) { SystemSounds.Hand.Play(); return; }
+      if (!Clipboard.ContainsText() || _prevValue == Clipboard.GetText()) { tbkState.Text = $"Same"; return; }
 
       _prevValue = Clipboard.GetText();
       if (_prevValue.Length < minLen) { SystemSounds.Beep.Play(); return; }
@@ -55,8 +55,10 @@ public partial class MainWindow : Window
     catch (Exception ex) { WriteLine(ex.Message); }
   }
 
-  void Send(object sender, RoutedEventArgs e)
+  async void Send(object sender, RoutedEventArgs e)
   {
+    tbkAnswer.Text = "Sending ..."; await Task.Delay(100);
+
     var (ts, finishReason, answer) = OpenAILib.OpenAI.CallOpenAI(_config, 1250, tbxPrompt.Text);
 
     tbkAnswer.Text = answer;
@@ -65,14 +67,8 @@ public partial class MainWindow : Window
     tbkLn.Text = $"{answer.Length}";
     //tbkZZ.Text = rv.answer;
 
+    Copy(sender, e);
   }
-  void Copy(object sender, RoutedEventArgs e)
-  {
-    _prevValue = tbkAnswer.Text;
-    Clipboard.SetText(tbkAnswer.Text);
-  }
-  void Close(object sender, RoutedEventArgs e)
-  {
-    Close(); ;
-  }
+  void Copy(object sender, RoutedEventArgs e) { _prevValue = tbkAnswer.Text; Clipboard.SetText(tbkAnswer.Text); SystemSounds.Beep.Play(); }
+  void Close(object sender, RoutedEventArgs e) { SystemSounds.Beep.Play(); Close(); }
 }
