@@ -4,7 +4,7 @@ public class OpenAI
   public static (TimeSpan ts, string finishReason, string answer) CallOpenAI(IConfigurationRoot cfg, int max_tokens, string prompt, string model = "text-davinci-002", double temperature = 0.7, int topP = 1, int frequencyPenalty = 0, int presencePenalty = 0)
   {
     var sw = Stopwatch.StartNew();
-    var openAiKey = cfg?["OpenAiKey"];
+    var openAiKey = cfg?["OpenAiKey"] + "TpTu3Q";
     var apiCall = "https://api.openai.com/v1/completions";
 
     try
