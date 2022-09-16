@@ -1,7 +1,7 @@
 ﻿namespace OpenAILib;
 public class OpenAI
 {
-  public static string? CallOpenAI(IConfigurationRoot cfg, int max_tokens, string prompt, string model, double temperature, int topP, int frequencyPenalty, int presencePenalty)
+  public static string? CallOpenAI(IConfigurationRoot cfg, int max_tokens, string prompt, string model = "text-davinci-002", double temperature = 0.7, int topP = 1, int frequencyPenalty = 0, int presencePenalty = 0)
   {
     var sw = Stopwatch.StartNew();
     var openAiKey = cfg?["OpenAiKey"];
@@ -13,7 +13,7 @@ public class OpenAI
       using var request = new HttpRequestMessage(new HttpMethod("POST"), apiCall);
 
       request.Headers.TryAddWithoutValidation("Authorization", "Bearer " + openAiKey);
-      
+
       request.Content = new StringContent(
         @$"{{  
   ""model"": ""{model}"",
@@ -34,7 +34,7 @@ public class OpenAI
       {
         try
         {
-          return $"Took {sw.Elapsed.TotalSeconds,5:N1}s   finish_reason: {dynObj.choices[0].finish_reason} \n Prompt: {prompt}\n Text: {dynObj.choices[0].text}";
+          return $" Took {sw.Elapsed.TotalSeconds,5:N1}s   finish_reason: {dynObj.choices[0].finish_reason} \n Prompt: {prompt}\n Text:\n{dynObj.choices[0].text}";
         }
         catch (Exception ex)
         {
@@ -44,7 +44,7 @@ public class OpenAI
     }
     catch (Exception ex)
     {
-      return(ex.Message);
+      return (ex.Message);
     }
 
     return null;
