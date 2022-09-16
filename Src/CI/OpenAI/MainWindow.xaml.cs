@@ -11,7 +11,7 @@ public partial class MainWindow : Window
     _config = new ConfigurationBuilder().AddUserSecrets<MainWindow>().Build(); //var secretProvider = _config.Providers.First(); if (secretProvider.TryGet("WhereAmI", out var secretPass))  Console.WriteLine(secretPass);else  Console.WriteLine("Hello, World!");
   }
 
-  void Window_Loaded(object sender, RoutedEventArgs e) { DeblockingTimer(); ; }
+  void Window_Loaded(object sender, RoutedEventArgs e) { DeblockingTimer(); tbxPrompt.Focus(); }
   void DeblockingTimer() => Task.Run(async () => await BlockingTimer());
   async Task BlockingTimer()
   {
@@ -65,8 +65,9 @@ public partial class MainWindow : Window
     tbkTM.Text = $"{ts.TotalSeconds:N1}";
     tbkFR.Text = finishReason;
     tbkLn.Text = $"{answer.Length}";
-    //tbkZZ.Text = rv.answer;
+    tbkZZ.Text = "·";
 
+    tbxPrompt.Focus();
     Copy(sender, e);
   }
   void Copy(object sender, RoutedEventArgs e) { _prevValue = tbkAnswer.Text; Clipboard.SetText(tbkAnswer.Text); SystemSounds.Beep.Play(); }
