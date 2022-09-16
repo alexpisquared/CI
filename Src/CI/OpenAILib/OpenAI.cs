@@ -1,7 +1,7 @@
 ﻿namespace OpenAILib;
 public class OpenAI
 {
-  public static string? CallOpenAI(IConfigurationRoot cfg, int max_tokens, string prompt, string model = "text-davinci-002", double temperature = 0.7, int topP = 1, int frequencyPenalty = 0, int presencePenalty = 0)
+  public static (TimeSpan ts, string finishReason, string answer) CallOpenAI(IConfigurationRoot cfg, int max_tokens, string prompt, string model = "text-davinci-002", double temperature = 0.7, int topP = 1, int frequencyPenalty = 0, int presencePenalty = 0)
   {
     var sw = Stopwatch.StartNew();
     var openAiKey = cfg?["OpenAiKey"];
@@ -34,19 +34,17 @@ public class OpenAI
       {
         try
         {
-          return $" Took {sw.Elapsed.TotalSeconds,5:N1}s   finish_reason: {dynObj.choices[0].finish_reason} \n Prompt: {prompt}\n Text:\n{dynObj.choices[0].text}";
+          return (sw.Elapsed, dynObj.choices[0].finish_reason.ToString(), dynObj.choices[0].text.ToString());
         }
         catch (Exception ex)
         {
-          return $"Error: {ex.Message}\n\n         Json:  {((Newtonsoft.Json.Linq.JToken)dynObj).Root}";
+          return (sw.Elapsed, ex.Message, ((Newtonsoft.Json.Linq.JToken)dynObj).Root.ToString());
         }
       }
     }
     catch (Exception ex)
     {
-      return (ex.Message);
+      return (sw.Elapsed, ex.Message, ex.ToString());
     }
-
-    return null;
   }
 }

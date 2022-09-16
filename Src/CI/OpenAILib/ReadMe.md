@@ -15,3 +15,22 @@ https://techcommunity.microsoft.com/t5/microsoft-teams-blog/microsoft-teams-c-sa
 
 ALso, see my other project and working code somewhere.
 Google: c# teams read message
+
+developing custom solutions for Microsoft Teams using Microsoft SharePoint Framework or Yo Teams. 
+https://www.youtube.com/playlist?list=PLB_fukFwGnsT7FnVDBejvoHVcN4_8w9Uj
+
+Docs:
+https://docs.microsoft.com/en-us/microsoftteams/platform/resources/bot-v3/bot-conversations/bots-conversations
+
+https://github.com/Microsoft/BotBuilder-Samples/blob/main/README.md
+  tried:
+  01.console-echo, 
+https://github.com/OfficeDev/Microsoft-Teams-Samples/tree/main/samples/bot-daily-task-reminder/csharp
+  todo...
+
+
+  See more at OneNote\Dev\Azure\2022-09-15 
+https://onedrive.live.com/view.aspx?resid=869AFB15787C9269%21427703&id=documents&wd=target%28Dev.one%7C00D40C68-37E5-45BA-8AF6-AF6A7D7C3305%2FAzure%7C3DC239E6-BEBC-4041-842C-CF5C9496DC6D%2F%29
+onenote:https://d.docs.live.net/869afb15787c9269/Documents/_Unsorted/AP1N/Dev.one#Azure&section-id={00D40C68-37E5-45BA-8AF6-AF6A7D7C3305}&page-id={3DC239E6-BEBC-4041-842C-CF5C9496DC6D}&end
+
+
