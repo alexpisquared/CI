@@ -1,27 +1,28 @@
 {
-    "appName": "TabOnlyApp",
-    "projectId": "85a5a5e6-1cb1-4b5c-a3c3-ac3a580ac23e",
-    "version": "2.1.0",
-    "isFromSample": false,
-    "solutionSettings": {
-        "name": "fx-solution-azure",
-        "version": "1.0.0",
-        "hostType": "Azure",
-        "azureResources": [],
-        "capabilities": [
-            "Tab"
-        ],
-        "activeResourcePlugins": [
-            "fx-resource-frontend-hosting",
-            "fx-resource-identity",
-            "fx-resource-aad-app-for-teams",
-            "fx-resource-local-debug",
-            "fx-resource-appstudio",
-            "fx-resource-cicd"
-        ]
-    },
-    "programmingLanguage": "csharp",
-    "pluginSettings": {
-        "projectFilePath": "C:\\g\\CI\\Src\\CI\\Teams Toolkit for Visual Studio\\TabOnlyApp\\TabOnlyApp.csproj"
-    }
+  "appName": "TabOnlyApp",
+  "projectId": "85a5a5e6-1cb1-4b5c-a3c3-ac3a580ac23e",
+  "version": "2.1.0",
+  "isFromSample": false,
+  "solutionSettings": {
+    "name": "fx-solution-azure",
+    "version": "1.0.0",
+    "hostType": "Azure",
+    "azureResources": [],
+    "capabilities": [
+      "Tab"
+    ],
+    "activeResourcePlugins": [
+      "fx-resource-frontend-hosting",
+      "fx-resource-identity",
+      "fx-resource-aad-app-for-teams",
+      "fx-resource-local-debug",
+      "fx-resource-appstudio",
+      "fx-resource-cicd"
+    ]
+  },
+  "programmingLanguage": "csharp",
+  "pluginSettings": {
+    "projectFilePath": "C:\\g\\CI\\Src\\CI\\Teams Toolkit for Visual Studio\\TabOnlyApp\\TabOnlyApp.csproj"
+  },
+  "isFirstTimeOpenProject": false
 }
