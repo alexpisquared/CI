@@ -37,7 +37,7 @@
       <RowDefinition Height="4*"/>
     </Grid.RowDefinitions>
 
-    <TextBlock x:Name="tbkState" Foreground="#08f" Text="State" />
+    <TextBlock x:Name="tbkStatus" Foreground="#08f" Text="State" HorizontalAlignment="Center" />
 
     <Button     Grid.Row="0" Margin="0" Content="X"    HorizontalAlignment="Right" Click="Close" IsCancel="True"/>
     <TextBox    Grid.Row="1" Margin="5" TextWrapping="Wrap" Text="Prompt" x:Name="tbxPrompt" VerticalAlignment="Stretch" IsTabStop="True" />

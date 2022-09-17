@@ -24,7 +24,7 @@ public partial class MainWindow : Window
   {
     try
     {
-      using PeriodicTimer tmr = new(TimeSpan.FromSeconds(1.5));
+      using PeriodicTimer tmr = new(TimeSpan.FromSeconds(1));
       _cts = new CancellationTokenSource();
       while (_cts is not null && await tmr.WaitForNextTickAsync(_cts.Token))
       {
@@ -53,14 +53,14 @@ public partial class MainWindow : Window
     const int minLen = 10;
     try
     {
-      if (!Clipboard.ContainsText() || _prevValue == Clipboard.GetText()) { tbkState.Text = $"Same"; return; }
+      if (!Clipboard.ContainsText() || _prevValue == Clipboard.GetText()) { tbkStatus.Text = $"Same {DateTime.Now:ss}"; return; }
 
       _prevValue = Clipboard.GetText();
-      if (_prevValue.Length < minLen) { SystemSounds.Beep.Play(); return; }
+      if (_prevValue.Length < minLen) { tbkStatus.Text = $"Too Small"; SystemSounds.Beep.Play(); return; }
 
-      SystemSounds.Hand.Play();
-
+      tbkStatus.Text = $"Valid";
       tbxPrompt.Text = _prevValue;
+      SystemSounds.Hand.Play();
     }
     catch (Exception ex) { WriteLine(ex.Message); }
   }
