@@ -14,8 +14,7 @@ public class OpenAI
 
       request.Headers.TryAddWithoutValidation("Authorization", "Bearer " + openAiKey);
 
-      request.Content = new StringContent(
-        @$"{{  
+      var jsonString = @$"{{  
   ""model"": ""{model}"",
   ""prompt"": ""{prompt}"",  
   ""temperature"": {temperature},
@@ -23,7 +22,11 @@ public class OpenAI
   ""top_p"": {topP},
   ""frequency_penalty"": {frequencyPenalty},
   ""presence_penalty"": {presencePenalty}
-}}");
+}}";
+
+      WriteLine(jsonString);
+
+      request.Content = new StringContent(jsonString);
 
       request.Content.Headers.ContentType = MediaTypeHeaderValue.Parse("application/json");
 

@@ -4,17 +4,25 @@
   <Window.Resources>
     <Style TargetType="{x:Type Control}" x:Key="C">
       <Setter Property="Foreground" Value="#fff" />
-      <Setter Property="Background" Value="#333" />
+      <Setter Property="IsTabStop"  Value="False" />
+      <Setter Property="VerticalAlignment"  Value="Center" />
     </Style>
-    <Style TargetType="{x:Type Button}"     BasedOn="{StaticResource C}" />
+    <Style TargetType="{x:Type Label}"     BasedOn="{StaticResource C}" >
+      <Setter Property="Foreground" Value="#888" />
+    </Style>
+    <Style TargetType="{x:Type Button}"     BasedOn="{StaticResource C}" >
+      <Setter Property="Foreground" Value="#00f" />
+    </Style>
     <Style TargetType="{x:Type TextBox}"    BasedOn="{StaticResource C}" >
-      <Setter Property="Margin" Value="5" />
-      <Setter Property="VerticalAlignment" Value="Center" />
+      <Setter Property="Background" Value="#333" />
+      <Setter Property="MinWidth"   Value="40" />
+      <Setter Property="Margin"     Value="5" />
+      <Setter Property="Padding"    Value="8 3" />
+      <Setter Property="BorderThickness"    Value="0" />
     </Style>
     <Style TargetType="{x:Type TextBlock}"  >
-      <Setter Property="Margin" Value="5" />
       <Setter Property="VerticalAlignment" Value="Center" />
-      <Setter Property="Foreground" Value="#eee" />
+      <Setter Property="Foreground" Value="#ff0" />
       <!--<Setter Property="Background" Value="#444" />-->
     </Style>
     <!--
@@ -32,21 +40,25 @@
     <TextBlock x:Name="tbkState" Foreground="#08f" Text="State" />
 
     <Button     Grid.Row="0" Margin="0" Content="X"    HorizontalAlignment="Right" Click="Close" IsCancel="True"/>
-    <TextBox    Grid.Row="1" Margin="5" TextWrapping="Wrap" Text="Prompt" x:Name="tbxPrompt" VerticalAlignment="Stretch" />
+    <TextBox    Grid.Row="1" Margin="5" TextWrapping="Wrap" Text="Prompt" x:Name="tbxPrompt" VerticalAlignment="Stretch" IsTabStop="True" />
     <StackPanel Grid.Row="2" Margin="5" Orientation="Horizontal" HorizontalAlignment="Center">
-      <TextBox x:Name="tbkMod" d:Text="Mod" />
-      <TextBox x:Name="tbkTem" d:Text="Tem" />
-      <TextBox x:Name="tbkMax" d:Text="Max" />
-      <TextBox x:Name="tbkTop" d:Text="Top" />
-      <TextBox x:Name="tbkFre" d:Text="Fre" />
-      <TextBox x:Name="tbkPre" d:Text="Pre" />
+      <TextBox x:Name="tbkMod" Text="text-davinci-002" IsTabStop="True" />
+      <TextBox x:Name="tbkMax" Text="1000" />
+      <TextBox x:Name="tbkTem" Text="0.7" />
+      <TextBox x:Name="tbkTop" Text="1" />
+      <TextBox x:Name="tbkFre" Text="0" />
+      <TextBox x:Name="tbkPre" Text="0" />
       <Button  Margin="5" Content="_Send" Click="Send" IsDefault="True" />
+      <Label Content="    Took"/>
       <TextBlock x:Name="tbkTM" d:Text="TM" />
+      <Label Content="s    Finish reason"/>
       <TextBlock x:Name="tbkFR" d:Text="FR" />
+      <Label Content="    Len"/>
       <TextBlock x:Name="tbkLn" d:Text="Ln" />
+      <Label Content="    Zz"/>
       <TextBlock x:Name="tbkZZ" d:Text="ZZ" />
     </StackPanel>
-    <TextBox    Grid.Row="3" Margin="5" TextWrapping="Wrap" Text="Answer" x:Name="tbkAnswer" IsReadOnly="True" VerticalAlignment="Stretch" />
+    <TextBlock  Grid.Row="3" Margin="5" TextWrapping="Wrap" Text="Answer" x:Name="tbkAnswer" VerticalAlignment="Stretch" />
     <Button     Grid.Row="3" Margin="7" Content="_Copy"    HorizontalAlignment="Right" VerticalAlignment="Bottom" Click="Copy" />
 
   </Grid>

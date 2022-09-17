@@ -11,7 +11,14 @@ public partial class MainWindow : Window
     _config = new ConfigurationBuilder().AddUserSecrets<MainWindow>().Build(); //var secretProvider = _config.Providers.First(); if (secretProvider.TryGet("WhereAmI", out var secretPass))  Console.WriteLine(secretPass);else  Console.WriteLine("Hello, World!");
   }
 
-  void Window_Loaded(object sender, RoutedEventArgs e) { DeblockingTimer(); tbxPrompt.Focus(); }
+  void Window_Loaded(object sender, RoutedEventArgs e)
+  {
+    EventManager.RegisterClassHandler(typeof(TextBox), TextBox.GotFocusEvent, new RoutedEventHandler((s, re) => { (s as TextBox ?? new TextBox()).SelectAll(); }));
+    MouseLeftButtonDown += (s, e) => { if (e.LeftButton == MouseButtonState.Pressed) DragMove(); };
+    tbxPrompt.Focus();
+    DeblockingTimer();
+  }
+
   void DeblockingTimer() => Task.Run(async () => await BlockingTimer());
   async Task BlockingTimer()
   {
@@ -21,10 +28,13 @@ public partial class MainWindow : Window
       _cts = new CancellationTokenSource();
       while (_cts is not null && await tmr.WaitForNextTickAsync(_cts.Token))
       {
-        if (Application.Current.Dispatcher.CheckAccess()) // if on UI thread
-          OnCheckClipboardForData();
-        else
-          await Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => { OnCheckClipboardForData(); }));
+        if (Application.Current is not null)
+        {
+          if (Application.Current.Dispatcher.CheckAccess()) // if on UI thread
+            OnCheckClipboardForData();
+          else
+            await Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => { OnCheckClipboardForData(); }));
+        }
 
         if (_cts?.Token.IsCancellationRequested == true) // Poll on this property if you have to do other cleanup before throwing.
         {
