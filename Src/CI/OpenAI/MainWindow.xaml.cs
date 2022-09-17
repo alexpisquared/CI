@@ -8,6 +8,7 @@ public partial class MainWindow : Window
   public MainWindow()
   {
     InitializeComponent();
+    DataContext = this;
     _config = new ConfigurationBuilder().AddUserSecrets<MainWindow>().Build(); //var secretProvider = _config.Providers.First(); if (secretProvider.TryGet("WhereAmI", out var secretPass))  Console.WriteLine(secretPass);else  Console.WriteLine("Hello, World!");
   }
 
@@ -18,7 +19,6 @@ public partial class MainWindow : Window
     tbxPrompt.Focus();
     DeblockingTimer();
   }
-
   void DeblockingTimer() => Task.Run(async () => await BlockingTimer());
   async Task BlockingTimer()
   {
@@ -59,12 +59,17 @@ public partial class MainWindow : Window
       if (_prevValue.Length < minLen) { tbkStatus.Text = $"Too Small"; SystemSounds.Beep.Play(); return; }
 
       tbkStatus.Text = $"Valid";
-      tbxPrompt.Text = _prevValue;
+      tbxPrompt.Text = _prevValue.Trim();
+      
+      if (IsAutoSend)
+        Send(1, new RoutedEventArgs());
+
       SystemSounds.Hand.Play();
     }
     catch (Exception ex) { WriteLine(ex.Message); }
   }
 
+  public bool IsAutoSend { get; set; }
   async void Send(object sender, RoutedEventArgs e)
   {
     tbkAnswer.Text = "Sending ..."; await Task.Delay(100);
@@ -83,3 +88,4 @@ public partial class MainWindow : Window
   void Copy(object sender, RoutedEventArgs e) { _prevValue = tbkAnswer.Text; Clipboard.SetText(tbkAnswer.Text); SystemSounds.Beep.Play(); }
   void Close(object sender, RoutedEventArgs e) { SystemSounds.Beep.Play(); Close(); }
 }
+// Tell me more about Ukraine.

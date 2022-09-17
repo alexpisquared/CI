@@ -41,7 +41,7 @@ public class OpenAI
         }
         catch (Exception ex)
         {
-          return (sw.Elapsed, ex.Message, ((Newtonsoft.Json.Linq.JToken)dynObj).Root.ToString());
+          return (sw.Elapsed, ex.Message, $"{((Newtonsoft.Json.Linq.JToken)dynObj).Root}\n\n{jsonString}");
         }
       }
     }
