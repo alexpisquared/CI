@@ -13,6 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\..\CI-DPL-IMP\Src\SharedLib\WindowsFormsLib\WindowsFormsLib.csproj" />
     <ProjectReference Include="..\OpenAILib\OpenAILib.csproj" />
   </ItemGroup>
 

@@ -1,4 +1,6 @@
-﻿namespace OpenAI;
+﻿using WindowsFormsLib;
+
+namespace OpenAI;
 public partial class MainWindow : Window
 {
   string _prevValue = "";
@@ -60,7 +62,7 @@ public partial class MainWindow : Window
 
       tbkStatus.Text = $"Valid";
       tbxPrompt.Text = _prevValue.Trim();
-      
+
       if (IsAutoSend)
         Send(1, new RoutedEventArgs());
 
@@ -87,5 +89,7 @@ public partial class MainWindow : Window
   }
   void Copy(object sender, RoutedEventArgs e) { _prevValue = tbkAnswer.Text; Clipboard.SetText(tbkAnswer.Text); SystemSounds.Beep.Play(); }
   void Close(object sender, RoutedEventArgs e) { SystemSounds.Beep.Play(); Close(); }
+
+  void TypeToTextbox(object sender, RoutedEventArgs e) { SystemSounds.Beep.Play(); new TextSender().SendPOC(); }
 }
 // Tell me more about Ukraine.

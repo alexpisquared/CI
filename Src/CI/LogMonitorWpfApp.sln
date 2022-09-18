@@ -19,9 +19,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OpenAILib", "OpenAILib\Open
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OpenAI.ConsoleApp", "OpenAI.ConsoleApp\OpenAI.ConsoleApp.csproj", "{373955AB-0446-41E0-84E1-8E227C77B506}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenAI", "OpenAI\OpenAI.csproj", "{04530D95-8AA7-4034-9729-2184E440070E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OpenAI", "OpenAI\OpenAI.csproj", "{04530D95-8AA7-4034-9729-2184E440070E}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "OpenAI", "OpenAI", "{203BDF85-7AFB-4105-B145-71FAE4CAC4F0}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WindowsFormsLib", "..\..\..\CI-DPL-IMP\Src\SharedLib\WindowsFormsLib\WindowsFormsLib.csproj", "{A00C2267-B5CA-4B0E-AAF2-822EBC75B068}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -141,6 +143,18 @@ Global
 		{04530D95-8AA7-4034-9729-2184E440070E}.Release|x64.Build.0 = Release|Any CPU
 		{04530D95-8AA7-4034-9729-2184E440070E}.Release|x86.ActiveCfg = Release|Any CPU
 		{04530D95-8AA7-4034-9729-2184E440070E}.Release|x86.Build.0 = Release|Any CPU
+		{A00C2267-B5CA-4B0E-AAF2-822EBC75B068}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A00C2267-B5CA-4B0E-AAF2-822EBC75B068}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A00C2267-B5CA-4B0E-AAF2-822EBC75B068}.Debug|x64.ActiveCfg = Debug|x64
+		{A00C2267-B5CA-4B0E-AAF2-822EBC75B068}.Debug|x64.Build.0 = Debug|x64
+		{A00C2267-B5CA-4B0E-AAF2-822EBC75B068}.Debug|x86.ActiveCfg = Debug|x86
+		{A00C2267-B5CA-4B0E-AAF2-822EBC75B068}.Debug|x86.Build.0 = Debug|x86
+		{A00C2267-B5CA-4B0E-AAF2-822EBC75B068}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A00C2267-B5CA-4B0E-AAF2-822EBC75B068}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A00C2267-B5CA-4B0E-AAF2-822EBC75B068}.Release|x64.ActiveCfg = Release|x64
+		{A00C2267-B5CA-4B0E-AAF2-822EBC75B068}.Release|x64.Build.0 = Release|x64
+		{A00C2267-B5CA-4B0E-AAF2-822EBC75B068}.Release|x86.ActiveCfg = Release|x86
+		{A00C2267-B5CA-4B0E-AAF2-822EBC75B068}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
