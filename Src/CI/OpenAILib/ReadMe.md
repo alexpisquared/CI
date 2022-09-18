@@ -29,8 +29,10 @@ https://github.com/OfficeDev/Microsoft-Teams-Samples/tree/main/samples/bot-daily
   todo...
 
 
-  See more at OneNote\Dev\Azure\2022-09-15 
-https://onedrive.live.com/view.aspx?resid=869AFB15787C9269%21427703&id=documents&wd=target%28Dev.one%7C00D40C68-37E5-45BA-8AF6-AF6A7D7C3305%2FAzure%7C3DC239E6-BEBC-4041-842C-CF5C9496DC6D%2F%29
-onenote:https://d.docs.live.net/869afb15787c9269/Documents/_Unsorted/AP1N/Dev.one#Azure&section-id={00D40C68-37E5-45BA-8AF6-AF6A7D7C3305}&page-id={3DC239E6-BEBC-4041-842C-CF5C9496DC6D}&end
+## 2022-09-15  See more at 
+    OneNote\Dev\Azure\2022-09-15 
+    OneNote\Dev\Teams Toolkit\2022-09-16 
+    C:\g\CI\Src\CI\OpenAILib\ReadMe.md
 
-
+## 2022-09-16
+## 2022-09-17
