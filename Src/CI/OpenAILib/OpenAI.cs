@@ -12,7 +12,7 @@ public class OpenAI
       using var httpClient = new HttpClient();
       using var request = new HttpRequestMessage(new HttpMethod("POST"), apiCall);
 
-      request.Headers.TryAddWithoutValidation("Authorization", "Bearer " + openAiKey);
+      request.Headers.TryAddWithoutValidation("Authorization", $"Bearer {openAiKey}");
 
       var jsonString = @$"{{  
   ""model"": ""{model}"",

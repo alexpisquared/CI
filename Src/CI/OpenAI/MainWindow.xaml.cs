@@ -63,8 +63,8 @@ public partial class MainWindow : Window
       tbkStatus.Text = $"Valid";
       tbxPrompt.Text = _prevValue.Trim();
 
-      if (IsAutoSend)
-        Send(1, new RoutedEventArgs());
+      if (IsAutoSend) QueryAI(1, new RoutedEventArgs());
+      if (IsAutoText) TextMsg(1, new RoutedEventArgs());
 
       SystemSounds.Hand.Play();
     }
@@ -72,24 +72,33 @@ public partial class MainWindow : Window
   }
 
   public bool IsAutoSend { get; set; }
-  async void Send(object sender, RoutedEventArgs e)
+  public bool IsAutoText { get; set; }
+  async void QueryAI(object sender, RoutedEventArgs e)
   {
-    tbkAnswer.Text = "Sending ..."; await Task.Delay(100);
+    try
+    {
+      ((Control)sender).IsEnabled = false;
 
-    var (ts, finishReason, answer) = OpenAILib.OpenAI.CallOpenAI(_config, 1250, tbxPrompt.Text);
+      tbkAnswer.Text = "Sending ..."; await Task.Delay(100);
 
-    tbkAnswer.Text = answer;
-    tbkTM.Text = $"{ts.TotalSeconds:N1}";
-    tbkFR.Text = finishReason;
-    tbkLn.Text = $"{answer.Length}";
-    tbkZZ.Text = "·";
+      var (ts, finishReason, answer) = OpenAILib.OpenAI.CallOpenAI(_config, 1250, tbxPrompt.Text);
 
-    tbxPrompt.Focus();
-    Copy(sender, e);
+      tbkAnswer.Text = answer;
+      tbkTM.Text = $"{ts.TotalSeconds:N1}";
+      tbkFR.Text = finishReason;
+      tbkLn.Text = $"{answer.Length}";
+      tbkZZ.Text = "·";
+
+      tbxPrompt.Focus();
+      SetText(sender, e);
+    }
+    finally
+    {
+      ((Control)sender).IsEnabled = true;
+    }
   }
-  void Copy(object sender, RoutedEventArgs e) { _prevValue = tbkAnswer.Text; Clipboard.SetText(tbkAnswer.Text); SystemSounds.Beep.Play(); }
-  void Close(object sender, RoutedEventArgs e) { SystemSounds.Beep.Play(); Close(); }
-
-  void TypeToTextbox(object sender, RoutedEventArgs e) { SystemSounds.Beep.Play(); new TextSender().SendPOC(); }
+  void SetText(object sender, RoutedEventArgs e) { SystemSounds.Beep.Play(); _prevValue = tbkAnswer.Text; Clipboard.SetText(tbkAnswer.Text); }
+  void TextMsg(object sender, RoutedEventArgs e) { SystemSounds.Beep.Play(); new TextSender().SendOnce(tbkAnswer.Text); }
+  void ExitApp(object sender, RoutedEventArgs e) { SystemSounds.Beep.Play(); Close(); }
 }
 // Tell me more about Ukraine.
