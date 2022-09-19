@@ -1,10 +1,15 @@
-﻿namespace OpenAI;
+﻿using System.Reflection.Metadata;
+//using System.Windows.Forms;
+using System.Windows.Interop;
+
+namespace OpenAI;
 public partial class MainWindow : Window
 {
-  string _prevValue = "";
+  const int _checkPeriodSec = 5;
   readonly IConfigurationRoot _config;
   readonly TextSender _ts = new TextSender();
   CancellationTokenSource? _cts;
+  string _prevClpbrd = "", _prevReader = "";
 
   public MainWindow()
   {
@@ -28,16 +33,16 @@ public partial class MainWindow : Window
   {
     try
     {
-      using PeriodicTimer tmr = new(TimeSpan.FromSeconds(1));
+      using PeriodicTimer tmr = new(TimeSpan.FromSeconds(_checkPeriodSec));
       _cts = new CancellationTokenSource();
       while (_cts is not null && await tmr.WaitForNextTickAsync(_cts.Token))
       {
         if (Application.Current is not null)
         {
           if (Application.Current.Dispatcher.CheckAccess()) // if on UI thread
-            CheckEndpoints("On UI");
+            CheckEndpoints("UI");
           else
-            await Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => { CheckEndpoints("Not UI"); }));
+            await Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => { CheckEndpoints("--"); }));
         }
 
         if (_cts?.Token.IsCancellationRequested == true) // Poll on this property if you have to do other cleanup before throwing.
@@ -52,46 +57,55 @@ public partial class MainWindow : Window
     catch (Exception ex)             /**/ { WriteLine(tbkReport.Text = ex.Message); }
     finally { _cts?.Dispose(); _cts = null; }
   }
-  void CheckEndpoints(string thread)
-  {
-    WriteLine(tbkReport.Text = $"> thread:  {thread}");
-
-  }
-  void OnCheckTeamsForCahnges(string thread)
+  void CheckEndpoints(string thread) { Write($" {thread} "); OnCheckTeamsForCahnges(); }
+  void OnCheckTeamsForCahnges()
   {
     const int minLen = 10;
     try
     {
-      var rr = _ts.GetTwoWinndows(_config["Prc"], _config["Ttl"]);
+      var (reader, writer, whyFailed) = _ts.GetTwoWinndows(_config["Prc"], _config["Ttl"]);
 
-      if (!Clipboard.ContainsText() || _prevValue == Clipboard.GetText()) { tbkStatus.Text = $"Same {DateTime.Now:ss}"; return; }
+      if (!string.IsNullOrEmpty(whyFailed)) { tbkReport.Text = whyFailed; return; }
+      if (reader is null) { tbkReport.Text = "Error: Unable to read All   "; return; }
+      if (writer is null) { tbkReport.Text = "Error: Unable to read Sender"; return; }
 
-      _prevValue = Clipboard.GetText();
-      if (_prevValue.Length < minLen) { tbkStatus.Text = $"Too Small"; SystemSounds.Beep.Play(); return; }
+      var read = _ts.GetTargetTextFromWindow(reader ?? default);
 
-      tbkStatus.Text = $"Valid";
-      tbxPrompt.Text = _prevValue.Trim();
+      if (_prevReader == read) { tbkStatus.Text = $"Same read  {DateTime.Now:ss}"; return; }
+
+      _prevReader = read;
+      if (_prevReader.Length < minLen) { tbkStatus.Text = $"Too Small"; SystemSounds.Beep.Play(); return; }
+
+      tbkReport.Text =
+      tbkStatus.Text = $"Valid question!";
+
+      var ary = read.Trim().Split(new char[] { '\r', '\n' });
+
+      tbxPrompt.Text = ary[ary.Length - 5];
 
       if (IsAutoSend) QueryAI(1, new RoutedEventArgs());
       if (IsAutoText) TypeMsg(1, new RoutedEventArgs());
+
+      var rv = (_ts.SendMsg(writer ?? default, $"{tbxPrompt.Text}  {{ENTER}}"));
+
+      tbkReport .Text = String.IsNullOrEmpty(rv) ? "Success typing in" : rv;
 
       SystemSounds.Hand.Play();
     }
     catch (Exception ex) { WriteLine(tbkReport.Text = ex.Message); }
   }
-  void OnCheckClipboardForData_(string thread)
+  void OnCheckClipboardForData(string thread)
   {
-
     const int minLen = 10;
     try
     {
-      if (!Clipboard.ContainsText() || _prevValue == Clipboard.GetText()) { tbkStatus.Text = $"Same {DateTime.Now:ss}"; return; }
+      if (!Clipboard.ContainsText() || _prevClpbrd == Clipboard.GetText()) { tbkStatus.Text = $"Same {DateTime.Now:ss}"; return; }
 
-      _prevValue = Clipboard.GetText();
-      if (_prevValue.Length < minLen) { tbkStatus.Text = $"Too Small"; SystemSounds.Beep.Play(); return; }
+      _prevClpbrd = Clipboard.GetText();
+      if (_prevClpbrd.Length < minLen) { tbkStatus.Text = $"Too Small"; SystemSounds.Beep.Play(); return; }
 
       tbkStatus.Text = $"Valid";
-      tbxPrompt.Text = _prevValue.Trim();
+      tbxPrompt.Text = _prevClpbrd.Trim();
 
       if (IsAutoSend) QueryAI(1, new RoutedEventArgs());
       if (IsAutoText) TypeMsg(1, new RoutedEventArgs());
@@ -127,7 +141,7 @@ public partial class MainWindow : Window
       ((Control)s).IsEnabled = true;
     }
   }
-  void SetText(object s, RoutedEventArgs e) { SystemSounds.Beep.Play(); _prevValue = tbkAnswer.Text; Clipboard.SetText(tbkAnswer.Text); }
+  void SetText(object s, RoutedEventArgs e) { SystemSounds.Beep.Play(); _prevClpbrd = tbkAnswer.Text; Clipboard.SetText(tbkAnswer.Text); }
   void TypeMsg(object s, RoutedEventArgs e)
   {
     SystemSounds.Beep.Play();
