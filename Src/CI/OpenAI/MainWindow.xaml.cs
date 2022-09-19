@@ -1,15 +1,13 @@
 ﻿using System.Reflection.Metadata;
-//using System.Windows.Forms;
 using System.Windows.Interop;
-
 namespace OpenAI;
 public partial class MainWindow : Window
 {
-  const int _checkPeriodSec = 5;
+  const int _checkPeriodSec = 8;
   readonly IConfigurationRoot _config;
   readonly TextSender _ts = new TextSender();
   CancellationTokenSource? _cts;
-  string _prevClpbrd = "", _prevReader = "";
+  string _prevClpbrd = "", _prevReader = "", _prevMsgTpd = "";
 
   public MainWindow()
   {
@@ -37,13 +35,15 @@ public partial class MainWindow : Window
       _cts = new CancellationTokenSource();
       while (_cts is not null && await tmr.WaitForNextTickAsync(_cts.Token))
       {
-        if (Application.Current is not null)
+        if (IsTimer_On && Application.Current is not null)
         {
           if (Application.Current.Dispatcher.CheckAccess()) // if on UI thread
             CheckEndpoints("UI");
           else
             await Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => { CheckEndpoints("--"); }));
         }
+        else
+          tbkReport.Text = tbkStatus.Text = "Off";
 
         if (_cts?.Token.IsCancellationRequested == true) // Poll on this property if you have to do other cleanup before throwing.
         {
@@ -57,7 +57,7 @@ public partial class MainWindow : Window
     catch (Exception ex)             /**/ { WriteLine(tbkReport.Text = ex.Message); }
     finally { _cts?.Dispose(); _cts = null; }
   }
-  void CheckEndpoints(string thread) { Write($" {thread} "); OnCheckTeamsForCahnges(); }
+  void CheckEndpoints(string thread) { SystemSounds.Beep.Play(); /*Write($" {thread} ")*/; OnCheckTeamsForCahnges(); }
   void OnCheckTeamsForCahnges()
   {
     const int minLen = 10;
@@ -65,30 +65,44 @@ public partial class MainWindow : Window
     {
       var (reader, writer, whyFailed) = _ts.GetTwoWinndows(_config["Prc"], _config["Ttl"]);
 
-      if (!string.IsNullOrEmpty(whyFailed)) { tbkReport.Text = whyFailed; return; }
-      if (reader is null) { tbkReport.Text = "Error: Unable to read All   "; return; }
-      if (writer is null) { tbkReport.Text = "Error: Unable to read Sender"; return; }
+      if (!string.IsNullOrEmpty(whyFailed)) { tbkReport.Text = whyFailed; SystemSounds.Hand.Play(); return; }
+      if (reader is null) { tbkReport.Text = "Error: Unable to read All   "; SystemSounds.Hand.Play(); return; }
+      if (writer is null) { tbkReport.Text = "Error: Unable to read Sender"; SystemSounds.Hand.Play(); return; }
 
       var read = _ts.GetTargetTextFromWindow(reader ?? default);
 
-      if (_prevReader == read) { tbkStatus.Text = $"Same read  {DateTime.Now:ss}"; return; }
+      if (_prevReader == read) { tbkReport.Text = tbkStatus.Text = $"Same read  {DateTime.Now:ss}  {read.Length}"; SystemSounds.Hand.Play(); return; }
 
       _prevReader = read;
-      if (_prevReader.Length < minLen) { tbkStatus.Text = $"Too Small"; SystemSounds.Beep.Play(); return; }
+      if (_prevReader.Length < minLen) { tbkStatus.Text = $"Too Small  {DateTime.Now:ss}  '{read}'"; SystemSounds.Hand.Play(); return; }
 
-      tbkReport.Text =
-      tbkStatus.Text = $"Valid question!";
+      tbkReport.Text = tbkStatus.Text = $"Valid question!";
 
-      var ary = read.Trim().Split(new char[] { '\r', '\n' });
+      var ary = read.Trim().Split(new char[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
 
-      tbxPrompt.Text = ary[ary.Length - 5];
+      for (int i = 0; i < ary.Length; i++) { WriteLine($"{i,5})   {ary[i]}"); } // foreach (var ary2 in ary)WriteLine($"{i,3}) {ary2}");
 
-      if (IsAutoSend) QueryAI(1, new RoutedEventArgs());
-      if (IsAutoText) TypeMsg(1, new RoutedEventArgs());
+      tbxPrompt.Text = ary[^1];
 
-      var rv = (_ts.SendMsg(writer ?? default, $"{tbxPrompt.Text}  {{ENTER}}"));
-
-      tbkReport .Text = String.IsNullOrEmpty(rv) ? "Success typing in" : rv;
+      if (IsAutoQrAI) QueryAI(1, new RoutedEventArgs());
+      if (IsAutoType)
+      {
+        if (_prevMsgTpd != tbxPrompt.Text) //TypeMsg(1, new RoutedEventArgs());
+        {
+          WriteLine($"Typing   {tbxPrompt.Text}");
+          var failMsg = _ts.SendMsg(writer ?? default, $"{tbxPrompt.Text}  {{ENTER}} ");
+          if (string.IsNullOrEmpty(failMsg))
+          {
+            _prevMsgTpd = tbxPrompt.Text;
+            tbkReport.Text = tbkStatus.Text = string.IsNullOrEmpty(failMsg) ? "Success typing in" : failMsg;
+          }
+          var failMs2 = _ts.SendMsg(writer ?? default, $"**");
+        }
+        else
+          tbkReport.Text = tbkStatus.Text = "Same msg already typed in.";
+      }
+      else
+        tbkReport.Text = tbkStatus.Text = "Auto type is OFF.";
 
       SystemSounds.Hand.Play();
     }
@@ -99,24 +113,25 @@ public partial class MainWindow : Window
     const int minLen = 10;
     try
     {
-      if (!Clipboard.ContainsText() || _prevClpbrd == Clipboard.GetText()) { tbkStatus.Text = $"Same {DateTime.Now:ss}"; return; }
+      if (!Clipboard.ContainsText() || _prevClpbrd == Clipboard.GetText()) { tbkStatus.Text = $"Same {DateTime.Now:ss}"; SystemSounds.Hand.Play(); return; }
 
       _prevClpbrd = Clipboard.GetText();
-      if (_prevClpbrd.Length < minLen) { tbkStatus.Text = $"Too Small"; SystemSounds.Beep.Play(); return; }
+      if (_prevClpbrd.Length < minLen) { tbkStatus.Text = $"Too Small"; SystemSounds.Beep.Play(); SystemSounds.Hand.Play(); return; }
 
       tbkStatus.Text = $"Valid";
       tbxPrompt.Text = _prevClpbrd.Trim();
 
-      if (IsAutoSend) QueryAI(1, new RoutedEventArgs());
-      if (IsAutoText) TypeMsg(1, new RoutedEventArgs());
+      if (IsAutoQrAI) QueryAI(1, new RoutedEventArgs());
+      if (IsAutoType) TypeMsg(1, new RoutedEventArgs());
 
       SystemSounds.Hand.Play();
     }
     catch (Exception ex) { WriteLine(tbkReport.Text = ex.Message); }
   }
 
-  public bool IsAutoSend { get; set; }
-  public bool IsAutoText { get; set; }
+  public bool IsTimer_On { get; set; }
+  public bool IsAutoQrAI { get; set; }
+  public bool IsAutoType { get; set; }
   async void QueryAI(object s, RoutedEventArgs e)
   {
     try

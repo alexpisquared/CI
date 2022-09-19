@@ -1,6 +1,7 @@
 ﻿<Window x:Class="OpenAI.MainWindow" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d"
         xmlns:local="clr-namespace:OpenAI"
-        Title="Middleman" Height="600" Width="960" Loaded="Window_Loaded" Background="#222" Topmost="True" WindowStyle="None" AllowsTransparency="True" >
+        Title="Middleman" Height="260" Width="960" Loaded="Window_Loaded" Background="#222" Topmost="True" WindowStyle="None" AllowsTransparency="True" 
+        WindowStartupLocation="CenterScreen" Opacity=".9">
   <Window.Resources>
     <Style TargetType="{x:Type Control}"    x:Key="C">
       <Setter Property="Foreground"         Value="#fff" />
@@ -31,7 +32,7 @@
   <Grid>
     <Grid.RowDefinitions>
       <RowDefinition Height="42"/>
-      <RowDefinition Height="80"/>
+      <RowDefinition Height="60"/>
       <RowDefinition Height="Auto"/>
       <RowDefinition Height="4*"/>
       <RowDefinition Height="Auto"/>
@@ -44,12 +45,13 @@
 
     <Menu Background="#666" Foreground="#0df" HorizontalAlignment="Left" Padding="5">
       <MenuItem Header="≡" FontSize="26" Padding="8 -5 8 0">
-        <MenuItem Header="Auto _Send" IsCheckable="True" IsChecked="{Binding IsAutoSend}" />
-        <MenuItem Header="Auto _Type" IsCheckable="True" IsChecked="{Binding IsAutoText}" />
+        <MenuItem Header="Auto _Send" IsCheckable="True" IsChecked="{Binding IsAutoQrAI}" />
+        <MenuItem Header="Auto _Type" IsCheckable="True" IsChecked="{Binding IsAutoType}" />
         <MenuItem Header="T_ype" Click="TypeMsg"/>
       </MenuItem>
-      <MenuItem Header="Auto _Send" IsCheckable="True" IsChecked="{Binding IsAutoSend}" ToolTip="Send texts right away on appearance in the Clipboard"/>
-      <MenuItem Header="Auto _Type" IsCheckable="True" IsChecked="{Binding IsAutoText}" ToolTip="Type the answer in to the Teams right away on reply fron AI"/>
+      <MenuItem Header="_Is On"     IsCheckable="True" IsChecked="{Binding IsTimer_On}" ToolTip="Send texts right away on appearance in the Clipboard"/>
+      <MenuItem Header="Auto _Send" IsCheckable="True" IsChecked="{Binding IsAutoQrAI}" ToolTip="Send texts right away on appearance in the Clipboard"/>
+      <MenuItem Header="Auto _Type" IsCheckable="True" IsChecked="{Binding IsAutoType}" ToolTip="Type the answer in to the Teams right away on reply fron AI"/>
       <MenuItem Header="T_ype" Click="TypeMsg" ToolTip="Type the answer in to the Teams"/>
     </Menu>
 
