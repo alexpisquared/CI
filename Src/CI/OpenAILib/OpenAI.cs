@@ -5,16 +5,8 @@ public class OpenAI
   {
     var sw = Stopwatch.StartNew();
     var openAiKey = cfg?["OpenAiKey"] + "TpTu3Q";
-    var apiCall = "https://api.openai.com/v1/completions";
-
-    try
-    {
-      using var httpClient = new HttpClient();
-      using var request = new HttpRequestMessage(new HttpMethod("POST"), apiCall);
-
-      request.Headers.TryAddWithoutValidation("Authorization", $"Bearer {openAiKey}");
-
-      var jsonString = @$"{{  
+    var url = "https://api.openai.com/v1/completions";
+    var jsonString = @$"{{  
   ""model"": ""{model}"",
   ""prompt"": ""{prompt}"",  
   ""temperature"": {temperature},
@@ -24,25 +16,29 @@ public class OpenAI
   ""presence_penalty"": {presencePenalty}
 }}";
 
-      WriteLine(jsonString);
+    WriteLine(jsonString);
 
-      request.Content = new StringContent(jsonString);
+    try
+    {
+      using var httpClient = new HttpClient();
+      using var requestMsg = new HttpRequestMessage(new HttpMethod("POST"), url);
 
-      request.Content.Headers.ContentType = MediaTypeHeaderValue.Parse("application/json");
+      requestMsg.Headers.TryAddWithoutValidation("Authorization", $"Bearer {openAiKey}");
+      requestMsg.Content = new StringContent(jsonString);
+      requestMsg.Content.Headers.ContentType = MediaTypeHeaderValue.Parse("application/json");
 
-      var response = httpClient.SendAsync(request).Result;
+      var response = httpClient.SendAsync(requestMsg).Result;
       var json = response.Content.ReadAsStringAsync().Result;
 
       dynamic dynObj = JsonConvert.DeserializeObject(json ?? "what?") ?? "No way!";          //dynamic dynObj = JsonSerializer.Deserialize(json);
+
+      try
       {
-        try
-        {
-          return (sw.Elapsed, dynObj.choices[0].finish_reason.ToString(), dynObj.choices[0].text.ToString());
-        }
-        catch (Exception ex)
-        {
-          return (sw.Elapsed, ex.Message, $"{((Newtonsoft.Json.Linq.JToken)dynObj).Root}\n\n{jsonString}");
-        }
+        return (sw.Elapsed, dynObj.choices[0].finish_reason.ToString(), dynObj.choices[0].text.ToString());
+      }
+      catch (Exception ex)
+      {
+        return (sw.Elapsed, ex.Message, $"{((Newtonsoft.Json.Linq.JToken)dynObj).Root}\n\n{jsonString}");
       }
     }
     catch (Exception ex)

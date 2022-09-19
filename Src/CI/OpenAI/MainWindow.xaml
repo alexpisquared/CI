@@ -35,19 +35,25 @@
       <RowDefinition Height="Auto"/>
       <RowDefinition Height="4*"/>
     </Grid.RowDefinitions>
+    <Rectangle  Grid.Row="0" Fill="#555" />
+    <Rectangle  Grid.Row="2" Fill="#333" />
+
     <Button HorizontalAlignment="Right" Click="ExitApp" IsCancel="True" Width="0"/>
 
-    <Menu Background="#666" Foreground="#0df" >
-      <MenuItem Header="≡" IsCheckable="True" />
-      <MenuItem Header="_Auto Send" IsCheckable="True" IsChecked="{Binding IsAutoSend}" />
-      <MenuItem Header="Auto _Text" IsCheckable="True" IsChecked="{Binding IsAutoText}" />
-      <MenuItem Header="_Message" Click="TextMsg"/>
+    <Menu Background="#666" Foreground="#0df" HorizontalAlignment="Left" Height="26">
+      <MenuItem Header="≡" >
+        <MenuItem Header="Auto _Send" IsCheckable="True" IsChecked="{Binding IsAutoSend}" />
+        <MenuItem Header="Auto _Type" IsCheckable="True" IsChecked="{Binding IsAutoText}" />
+        <MenuItem Header="T_ype" Click="TypeMsg"/>
+      </MenuItem>
+      <MenuItem Header="Auto _Send" IsCheckable="True" IsChecked="{Binding IsAutoSend}" />
+      <MenuItem Header="Auto _Type" IsCheckable="True" IsChecked="{Binding IsAutoText}" />
+      <MenuItem Header="T_ype" Click="TypeMsg"/>
     </Menu>
 
     <TextBlock x:Name="tbkStatus" Foreground="#fff" d:Text="State ???" HorizontalAlignment="Right" Margin="15 0"/>
 
     <TextBox    Grid.Row="1" Margin="0" TextWrapping="Wrap" Text="Tell me more about Ukraine." x:Name="tbxPrompt" VerticalAlignment="Stretch" IsTabStop="True" />
-    <Rectangle  Grid.Row="2" Fill="#333" />
     <StackPanel Grid.Row="2" Margin="5" Orientation="Horizontal" HorizontalAlignment="Center">
       <TextBox x:Name="tbkMod" Text="text-davinci-002" />
       <TextBox x:Name="tbkMax" Text="1000" />

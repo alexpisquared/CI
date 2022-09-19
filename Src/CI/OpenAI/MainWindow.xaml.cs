@@ -64,7 +64,7 @@ public partial class MainWindow : Window
       tbxPrompt.Text = _prevValue.Trim();
 
       if (IsAutoSend) QueryAI(1, new RoutedEventArgs());
-      if (IsAutoText) TextMsg(1, new RoutedEventArgs());
+      if (IsAutoText) TypeMsg(1, new RoutedEventArgs());
 
       SystemSounds.Hand.Play();
     }
@@ -98,7 +98,7 @@ public partial class MainWindow : Window
     }
   }
   void SetText(object sender, RoutedEventArgs e) { SystemSounds.Beep.Play(); _prevValue = tbkAnswer.Text; Clipboard.SetText(tbkAnswer.Text); }
-  void TextMsg(object sender, RoutedEventArgs e) { SystemSounds.Beep.Play(); new TextSender().SendOnce(tbkAnswer.Text); }
+  void TypeMsg(object sender, RoutedEventArgs e) { SystemSounds.Beep.Play(); new TextSender().SendOnce(tbkAnswer.Text); }
   void ExitApp(object sender, RoutedEventArgs e) { SystemSounds.Beep.Play(); Close(); }
 }
 // Tell me more about Ukraine.
