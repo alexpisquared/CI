@@ -30,25 +30,27 @@
   </Window.Resources>
   <Grid>
     <Grid.RowDefinitions>
-      <RowDefinition Height="Auto"/>
-      <RowDefinition Height="1*"/>
+      <RowDefinition Height="42"/>
+      <RowDefinition Height="80"/>
       <RowDefinition Height="Auto"/>
       <RowDefinition Height="4*"/>
+      <RowDefinition Height="Auto"/>
     </Grid.RowDefinitions>
     <Rectangle  Grid.Row="0" Fill="#555" />
     <Rectangle  Grid.Row="2" Fill="#333" />
+    <Rectangle  Grid.Row="4" Fill="#333" />
 
     <Button HorizontalAlignment="Right" Click="ExitApp" IsCancel="True" Width="0"/>
 
-    <Menu Background="#666" Foreground="#0df" HorizontalAlignment="Left" Height="26">
-      <MenuItem Header="≡" >
+    <Menu Background="#666" Foreground="#0df" HorizontalAlignment="Left" Padding="5">
+      <MenuItem Header="≡" FontSize="26" Padding="8 -5 8 0">
         <MenuItem Header="Auto _Send" IsCheckable="True" IsChecked="{Binding IsAutoSend}" />
         <MenuItem Header="Auto _Type" IsCheckable="True" IsChecked="{Binding IsAutoText}" />
         <MenuItem Header="T_ype" Click="TypeMsg"/>
       </MenuItem>
-      <MenuItem Header="Auto _Send" IsCheckable="True" IsChecked="{Binding IsAutoSend}" />
-      <MenuItem Header="Auto _Type" IsCheckable="True" IsChecked="{Binding IsAutoText}" />
-      <MenuItem Header="T_ype" Click="TypeMsg"/>
+      <MenuItem Header="Auto _Send" IsCheckable="True" IsChecked="{Binding IsAutoSend}" ToolTip="Send texts right away on appearance in the Clipboard"/>
+      <MenuItem Header="Auto _Type" IsCheckable="True" IsChecked="{Binding IsAutoText}" ToolTip="Type the answer in to the Teams right away on reply fron AI"/>
+      <MenuItem Header="T_ype" Click="TypeMsg" ToolTip="Type the answer in to the Teams"/>
     </Menu>
 
     <TextBlock x:Name="tbkStatus" Foreground="#fff" d:Text="State ???" HorizontalAlignment="Right" Margin="15 0"/>
@@ -61,7 +63,7 @@
       <TextBox x:Name="tbkTop" Text="1" />
       <TextBox x:Name="tbkFre" Text="0" />
       <TextBox x:Name="tbkPre" Text="0" />
-      <Button  Margin="5" Content="_Ask AI" Click="QueryAI" IsDefault="True" x:Name="btnQryAI" />
+      <Button  Margin="5" Content="_Query" Click="QueryAI" IsDefault="True" x:Name="btnQryAI" />
       <Label Content="    Took"/>
       <TextBlock x:Name="tbkTM" d:Text="TM" />
       <Label Content="s    Finish reason"/>
@@ -77,6 +79,8 @@
     </ScrollViewer>
     
     <Button     Grid.Row="3" Margin="7" Content="_Copy"    HorizontalAlignment="Right" VerticalAlignment="Bottom" Click="SetText" />
+
+    <TextBlock  Grid.Row="4" x:Name="tbkReport" Foreground="#fff" d:Text="Report Report Report Report Report " Margin="15 0"/>
 
   </Grid>
 </Window>

@@ -7,4 +7,5 @@ global using System.Windows.Controls;
 global using System.Windows.Input;
 global using System.Windows.Threading;
 global using Microsoft.Extensions.Configuration;
+global using WindowsFormsLib;
 global using static System.Diagnostics.Trace;
