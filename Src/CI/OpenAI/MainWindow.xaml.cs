@@ -14,7 +14,7 @@ public partial class MainWindow : Window
     _config = new ConfigurationBuilder().AddUserSecrets<MainWindow>().Build(); //var secretProvider = _config.Providers.First(); if (secretProvider.TryGet("WhereAmI", out var secretPass))  Console.WriteLine(secretPass);else  Console.WriteLine("Hello, World!");
   }
 
-  void Window_Loaded(object sender, RoutedEventArgs e)
+  void Window_Loaded(object s, RoutedEventArgs e)
   {
     EventManager.RegisterClassHandler(typeof(TextBox), TextBox.GotFocusEvent, new RoutedEventHandler((s, re) => { (s as TextBox ?? new TextBox()).SelectAll(); }));
     MouseLeftButtonDown += (s, e) => { if (e.LeftButton == MouseButtonState.Pressed) DragMove(); };
@@ -73,15 +73,15 @@ public partial class MainWindow : Window
 
   public bool IsAutoSend { get; set; }
   public bool IsAutoText { get; set; }
-  async void QueryAI(object sender, RoutedEventArgs e)
+  async void QueryAI(object s, RoutedEventArgs e)
   {
     try
     {
-      ((Control)sender).IsEnabled = false;
+      ((Control)s).IsEnabled = false;
 
-      tbkAnswer.Text = "Sending ..."; await Task.Delay(100);
+      tbkAnswer.Text = "Sending ..."; 
 
-      var (ts, finishReason, answer) = OpenAILib.OpenAI.CallOpenAI(_config, 1250, tbxPrompt.Text);
+      var (ts, finishReason, answer) = await OpenAILib.OpenAI.CallOpenAI(_config, 1250, tbxPrompt.Text);
 
       tbkAnswer.Text = answer;
       tbkTM.Text = $"{ts.TotalSeconds:N1}";
@@ -90,15 +90,15 @@ public partial class MainWindow : Window
       tbkZZ.Text = "·";
 
       tbxPrompt.Focus();
-      SetText(sender, e);
+      SetText(s, e);
     }
     finally
     {
-      ((Control)sender).IsEnabled = true;
+      ((Control)s).IsEnabled = true;
     }
   }
-  void SetText(object sender, RoutedEventArgs e) { SystemSounds.Beep.Play(); _prevValue = tbkAnswer.Text; Clipboard.SetText(tbkAnswer.Text); }
-  void TypeMsg(object sender, RoutedEventArgs e) { SystemSounds.Beep.Play(); new TextSender().SendOnce(tbkAnswer.Text); }
-  void ExitApp(object sender, RoutedEventArgs e) { SystemSounds.Beep.Play(); Close(); }
+  void SetText(object s, RoutedEventArgs e) { SystemSounds.Beep.Play(); _prevValue = tbkAnswer.Text; Clipboard.SetText(tbkAnswer.Text); }
+  void TypeMsg(object s, RoutedEventArgs e) { SystemSounds.Beep.Play(); new TextSender().SendOnce(tbkAnswer.Text); }
+  void ExitApp(object s, RoutedEventArgs e) { SystemSounds.Beep.Play(); Close(); }
 }
 // Tell me more about Ukraine.

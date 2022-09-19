@@ -1,7 +1,7 @@
 ﻿namespace OpenAILib;
 public class OpenAI
 {
-  public static (TimeSpan ts, string finishReason, string answer) CallOpenAI(IConfigurationRoot cfg, int max_tokens, string prompt, string model = "text-davinci-002", double temperature = 0.7, int topP = 1, int frequencyPenalty = 0, int presencePenalty = 0)
+  public static async Task<(TimeSpan ts, string finishReason, string answer)> CallOpenAI(IConfigurationRoot cfg, int max_tokens, string prompt, string model = "text-davinci-002", double temperature = 0.7, int topP = 1, int frequencyPenalty = 0, int presencePenalty = 0)
   {
     var sw = Stopwatch.StartNew();
     var openAiKey = cfg?["OpenAiKey"] + "TpTu3Q";
@@ -27,10 +27,10 @@ public class OpenAI
       requestMsg.Content = new StringContent(jsonString);
       requestMsg.Content.Headers.ContentType = MediaTypeHeaderValue.Parse("application/json");
 
-      var response = httpClient.SendAsync(requestMsg).Result;
-      var json = response.Content.ReadAsStringAsync().Result;
+      var response = await httpClient.SendAsync(requestMsg);//.Result;
+      var jsonPart = await response.Content.ReadAsStringAsync();//.Result;
 
-      dynamic dynObj = JsonConvert.DeserializeObject(json ?? "what?") ?? "No way!";          //dynamic dynObj = JsonSerializer.Deserialize(json);
+      dynamic dynObj = JsonConvert.DeserializeObject(jsonPart ?? "what?") ?? "No way!";          //dynamic dynObj = JsonSerializer.Deserialize(json);
 
       try
       {
