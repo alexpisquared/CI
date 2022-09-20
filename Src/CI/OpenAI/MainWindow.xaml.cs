@@ -8,8 +8,7 @@ public partial class MainWindow : Window
   readonly TextSender _ts = new();
   CancellationTokenSource? _cts;
   string _prevClpbrd = "", _prevReader = "", _prevMsgTpd = "";
-  private bool _alreadyChecking;
-  private bool isTimer_On;
+  bool _alreadyChecking, isTimer_On;
 
   public MainWindow()
   {
@@ -24,7 +23,7 @@ public partial class MainWindow : Window
     MouseLeftButtonDown += (s, e) => { if (e.LeftButton == MouseButtonState.Pressed) DragMove(); };
     _ = tbxPrompt.Focus();
 
-    _ts.FindByProc(_config["Prc"], _config["Ttl"]);
+    //_ts.FindByProc(_config["Prc"], _config["Ttl"]);
 
     await BlockingTimer();
   }
@@ -117,21 +116,7 @@ public partial class MainWindow : Window
           {
             WriteLine(tbkReport.Text = string.IsNullOrEmpty(failMsg) ? $"Success answering to  '{tbxPrompt.Text}'  with  {tbkAnswer.Text.Length} char long ancwer; " : failMsg);
 
-            for (var i = 0; i < 100; i++)
-            {
-              var spacer = "   ";
-              var failMs2 = _ts.SendMsg(writer ?? default, spacer);
-
-              var rv = await _ts.GetTwoWinndows(_config["Prc"], _config["Ttl"]);
-              if (await _ts.GetTargetTextFromWindow(rv.writer ?? default) == spacer)
-              {
-                WriteLine(tbkReport.Text += $" spaced on {i}.");
-                break;
-              }
-
-              await Task.Delay(100);
-              Write($"{i} ");
-            }
+            await AddSpacerToWriterWindow(writer);
           }
         }
       }
@@ -140,6 +125,28 @@ public partial class MainWindow : Window
     }
     catch (Exception ex) { WriteLine(tbkReport.Text = ex.Message); if (Debugger.IsAttached) Debugger.Break(); }
   }
+
+  async Task AddSpacerToWriterWindow(IntPtr? writer)
+  {
+    for (var i = 0; i < 100; i++)
+    {
+      var spacer = " ° ";
+      var failMsg = _ts.SendMsg(writer ?? default, spacer);
+      if (!string.IsNullOrEmpty(failMsg))
+        WriteLine(tbkReport.Text = failMsg);
+
+      var rv = await _ts.GetTwoWinndows(_config["Prc"], _config["Ttl"]);
+      if (await _ts.GetTargetTextFromWindow(rv.writer ?? default) == spacer)
+      {
+        WriteLine(tbkReport.Text += $" spaced on {i}.");
+        break;
+      }
+
+      await Task.Delay(100);
+      Write($"{i} ");
+    }
+  }
+
   async void OnCheckClipboardForData(string thread)
   {
     const int minLen = 10;
@@ -203,11 +210,20 @@ public partial class MainWindow : Window
 
   async void RunOnce(object s, RoutedEventArgs e) => await CheckEndpoints("clk");
 
-  void TypeMsg(object s, RoutedEventArgs e)
+  async void TypeMsg(object s, RoutedEventArgs e)
   {
     SystemSounds.Beep.Play();
-    var rv = _ts.SendOnce(tbkAnswer.Text, _config["Ttl"]);
-    WriteLine(tbkReport.Text = $"> SendKey result: {(rv.Length == 0 ? "Suceess!" : rv)}");
+    var rv = _ts.SendOnce(IsAutoEntr ? $"{tbkAnswer.Text}{{ENTER}}" : tbkAnswer.Text, _config["Ttl"]);
+    if (rv.Length > 0)
+    {
+      WriteLine(tbkReport.Text = $"FAILED: SendKey() {rv}");
+    }
+
+    if (IsAutoEntr)
+    {
+      var (reader, writer, whyFailed) = await _ts.GetTwoWinndows(_config["Prc"], _config["Ttl"]);
+      await AddSpacerToWriterWindow(writer);
+    }
   }
   void ExitApp(object s, RoutedEventArgs e) { SystemSounds.Beep.Play(); Close(); }
 }
