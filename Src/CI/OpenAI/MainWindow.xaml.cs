@@ -44,8 +44,7 @@ public partial class MainWindow : Window
           else
             await Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => { CheckEndpoints("bg"); }));
         }
-        else
-          WriteLine(tbkReport.Text = "Off");
+        //else          WriteLine(tbkReport.Text = "Off");
 
         if (_cts?.Token.IsCancellationRequested == true) // Poll on this property if you have to do other cleanup before throwing.
         {
@@ -75,7 +74,7 @@ public partial class MainWindow : Window
     const int minLen = 10;
     try
     {
-      var (reader, writer, whyFailed) = _ts.GetTwoWinndows(_config["Prc"], _config["Ttl"]);
+      var (reader, writer, whyFailed) = await _ts.GetTwoWinndows(_config["Prc"], _config["Ttl"]);
 
       if (!string.IsNullOrEmpty(whyFailed)) { WriteLine(tbkReport.Text = whyFailed); SystemSounds.Hand.Play(); return; }
 
@@ -99,36 +98,45 @@ public partial class MainWindow : Window
       tbxPrompt.Text = ary[^1];
 
       if (IsAutoQrAI)
-      {
-        IsTimer_On = false;
         await QueryAiAsync(btnQryAI, new RoutedEventArgs());
-        IsTimer_On = true;
-      }
+      else
+        tbkAnswer.Text = tbxPrompt.Text;
 
-      if (IsAutoType)
+      if (!IsAutoType)
+        WriteLine(tbkReport.Text = "Auto type is OFF.");
+      else
       {
-        if (_prevMsgTpd != tbxPrompt.Text) //TypeMsg(1, new RoutedEventArgs());
+        //if (_prevMsgTpd == tbxPrompt.Text)           WriteLine(tbkReport.Text = "Same msg already typed in.");        else
         {
-          WriteLine(tbkReport.Text = $"Typing   '{tbxPrompt.Text}' ...");
+          _prevMsgTpd = tbxPrompt.Text;
 
-          var failMsg = _ts.SendMsg(writer ?? default, $"{(IsAutoQrAI ? tbkAnswer.Text : tbxPrompt.Text)}  {{ENTER}}");
-          if (string.IsNullOrEmpty(failMsg))
-          {
-            _prevMsgTpd = tbxPrompt.Text;
-            WriteLine(tbkReport.Text = string.IsNullOrEmpty(failMsg) ? $"Success typing in  '{tbxPrompt.Text}'." : failMsg);
-            Thread.Sleep(100);
-            var failMs2 = _ts.SendMsg(writer ?? default, $"  ");
-            WriteLine(tbkReport.Text = string.IsNullOrEmpty(failMs2) ? "Success adding '  '." : failMs2);
-          }
-          else
+          WriteLine(tbkReport.Text = $"Typing   '{tbkAnswer.Text}' ...");
+
+          var failMsg = _ts.SendMsg(writer ?? default, $"{tbkAnswer.Text}{{ENTER}}");
+          if (!string.IsNullOrEmpty(failMsg))
             WriteLine(tbkReport.Text = failMsg);
+          else
+          {
+            WriteLine(tbkReport.Text = string.IsNullOrEmpty(failMsg) ? $"Success answering to  '{tbxPrompt.Text}'  with  {tbkAnswer.Text.Length} char long ancwer; " : failMsg);
+
+            for (int i = 0; i < 100; i++)
+            {
+              var spacer = "   ";
+              var failMs2 = _ts.SendMsg(writer ?? default, spacer);
+
+              var rv = await _ts.GetTwoWinndows(_config["Prc"], _config["Ttl"]);
+              if (_ts.GetTargetTextFromWindow(rv.writer ?? default) == spacer)
+              {
+                WriteLine(tbkReport.Text += $" spaced on {i}.");
+                break;
+              }
+              Thread.Sleep(100);
+              Write($"{i} ");
+            }
+          }
 
         }
-        else
-          WriteLine(tbkReport.Text = "Same msg already typed in.");
       }
-      else
-        WriteLine(tbkReport.Text = "Auto type is OFF.");
 
       SystemSounds.Hand.Play();
     }
@@ -184,7 +192,7 @@ public partial class MainWindow : Window
       tbkZZ.Text = "·";
 
       _ = tbxPrompt.Focus();
-      SetText(s, e);
+      //SetText(s, e);
     }
     finally
     {
