@@ -45,17 +45,18 @@
 
     <Menu Background="#666" Foreground="#0df" HorizontalAlignment="Left" Padding="5">
       <MenuItem Header="≡" FontSize="26" Padding="8 -5 8 0">
-        <MenuItem Header="Auto _Send" IsCheckable="True" IsChecked="{Binding IsAutoQrAI}" />
+        <MenuItem Header="Auto _Qery" IsCheckable="True" IsChecked="{Binding IsAutoQrAI}" />
         <MenuItem Header="Auto _Type" IsCheckable="True" IsChecked="{Binding IsAutoType}" />
         <MenuItem Header="T_ype" Click="TypeMsg"/>
       </MenuItem>
-      <MenuItem Header="_Is On"     IsCheckable="True" IsChecked="{Binding IsTimer_On}" ToolTip="Send texts right away on appearance in the Clipboard"/>
-      <MenuItem Header="Auto _Send" IsCheckable="True" IsChecked="{Binding IsAutoQrAI}" ToolTip="Send texts right away on appearance in the Clipboard"/>
+      <MenuItem Header="_Is On"     IsCheckable="True" IsChecked="{Binding IsTimer_On}" ToolTip="Timer"/>
+      <MenuItem Header="Auto _Qery" IsCheckable="True" IsChecked="{Binding IsAutoQrAI}" ToolTip="Send texts right away on appearance in the Clipboard"/>
       <MenuItem Header="Auto _Type" IsCheckable="True" IsChecked="{Binding IsAutoType}" ToolTip="Type the answer in to the Teams right away on reply fron AI"/>
       <MenuItem Header="T_ype" Click="TypeMsg" ToolTip="Type the answer in to the Teams"/>
+      <MenuItem Header="_Run Once" Click="RunOnce" ToolTip="Full cyccle"/>
     </Menu>
 
-    <TextBlock x:Name="tbkStatus" Foreground="#fff" d:Text="State ???" HorizontalAlignment="Right" Margin="50 0"/>
+    <TextBlock x:Name="tbk____" Foreground="#fff" d:Text="State ???" HorizontalAlignment="Right" Margin="50 0"/>
 
     <TextBox    Grid.Row="1" Margin="0" TextWrapping="Wrap" Text="Tell me more about Ukraine." x:Name="tbxPrompt" VerticalAlignment="Stretch" IsTabStop="True" />
     <StackPanel Grid.Row="2" Margin="5" Orientation="Horizontal" HorizontalAlignment="Center">

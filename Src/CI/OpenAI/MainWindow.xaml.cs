@@ -1,13 +1,15 @@
-﻿using System.Reflection.Metadata;
-using System.Windows.Interop;
+﻿using System.Diagnostics;
+
 namespace OpenAI;
 public partial class MainWindow : Window
 {
-  const int _checkPeriodSec = 8;
+  const int _checkPeriodSec = 15;
   readonly IConfigurationRoot _config;
-  readonly TextSender _ts = new TextSender();
+  readonly TextSender _ts = new();
   CancellationTokenSource? _cts;
   string _prevClpbrd = "", _prevReader = "", _prevMsgTpd = "";
+  private bool _alreadyChecking;
+  private bool isTimer_On;
 
   public MainWindow()
   {
@@ -20,7 +22,7 @@ public partial class MainWindow : Window
   {
     EventManager.RegisterClassHandler(typeof(TextBox), TextBox.GotFocusEvent, new RoutedEventHandler((s, re) => { (s as TextBox ?? new TextBox()).SelectAll(); }));
     MouseLeftButtonDown += (s, e) => { if (e.LeftButton == MouseButtonState.Pressed) DragMove(); };
-    tbxPrompt.Focus();
+    _ = tbxPrompt.Focus();
 
     _ts.FindByProc(_config["Prc"], _config["Ttl"]);
 
@@ -40,10 +42,10 @@ public partial class MainWindow : Window
           if (Application.Current.Dispatcher.CheckAccess()) // if on UI thread
             CheckEndpoints("UI");
           else
-            await Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => { CheckEndpoints("--"); }));
+            await Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => { CheckEndpoints("bg"); }));
         }
         else
-          tbkReport.Text = tbkStatus.Text = "Off";
+          WriteLine(tbkReport.Text = "Off");
 
         if (_cts?.Token.IsCancellationRequested == true) // Poll on this property if you have to do other cleanup before throwing.
         {
@@ -57,82 +59,115 @@ public partial class MainWindow : Window
     catch (Exception ex)             /**/ { WriteLine(tbkReport.Text = ex.Message); }
     finally { _cts?.Dispose(); _cts = null; }
   }
-  void CheckEndpoints(string thread) { SystemSounds.Beep.Play(); /*Write($" {thread} ")*/; OnCheckTeamsForCahnges(); }
-  void OnCheckTeamsForCahnges()
+  void CheckEndpoints(string thread)
+  {
+    if (_alreadyChecking) return;
+
+    WriteLine($"\n>>> Starting on  '{thread}' ... ");
+
+    _alreadyChecking = true;
+    SystemSounds.Beep.Play();
+    OnCheckTeamsForCahnges();
+    _alreadyChecking = false;
+  }
+  async void OnCheckTeamsForCahnges()
   {
     const int minLen = 10;
     try
     {
       var (reader, writer, whyFailed) = _ts.GetTwoWinndows(_config["Prc"], _config["Ttl"]);
 
-      if (!string.IsNullOrEmpty(whyFailed)) { tbkReport.Text = whyFailed; SystemSounds.Hand.Play(); return; }
-      if (reader is null) { tbkReport.Text = "Error: Unable to read All   "; SystemSounds.Hand.Play(); return; }
-      if (writer is null) { tbkReport.Text = "Error: Unable to read Sender"; SystemSounds.Hand.Play(); return; }
+      if (!string.IsNullOrEmpty(whyFailed)) { WriteLine(tbkReport.Text = whyFailed); SystemSounds.Hand.Play(); return; }
+
+      if (reader is null) { WriteLine(tbkReport.Text = "Error: Unable to read All   "); SystemSounds.Hand.Play(); return; }
+
+      if (writer is null) { WriteLine(tbkReport.Text = "Error: Unable to read Sender"); SystemSounds.Hand.Play(); return; }
 
       var read = _ts.GetTargetTextFromWindow(reader ?? default);
 
-      if (_prevReader == read) { tbkReport.Text = tbkStatus.Text = $"Same read  {DateTime.Now:ss}  {read.Length}"; SystemSounds.Hand.Play(); return; }
+      if (_prevReader == read) { WriteLine(tbkReport.Text = $"Same (len {read.Length}) read.    [{DateTime.Now:ss}]  "); SystemSounds.Hand.Play(); return; }
 
       _prevReader = read;
-      if (_prevReader.Length < minLen) { tbkStatus.Text = $"Too Small  {DateTime.Now:ss}  '{read}'"; SystemSounds.Hand.Play(); return; }
+      if (read.Length < minLen) { WriteLine(tbkReport.Text = $"Too Small: '{read}'.    [{DateTime.Now:ss}]  "); SystemSounds.Hand.Play(); return; }
 
-      tbkReport.Text = tbkStatus.Text = $"Valid question!";
+      WriteLine(tbkReport.Text = $"Valid question: '{read}'.");
 
       var ary = read.Trim().Split(new char[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
 
-      for (int i = 0; i < ary.Length; i++) { WriteLine($"{i,5})   {ary[i]}"); } // foreach (var ary2 in ary)WriteLine($"{i,3}) {ary2}");
+      for (var i = 0; i < ary.Length; i++) { WriteLine($"{i,5})   {ary[i]}"); } // foreach (var ary2 in ary)WriteLine($"{i,3}) {ary2}");
 
       tbxPrompt.Text = ary[^1];
 
-      if (IsAutoQrAI) QueryAI(1, new RoutedEventArgs());
+      if (IsAutoQrAI)
+      {
+        IsTimer_On = false;
+        await QueryAiAsync(btnQryAI, new RoutedEventArgs());
+        IsTimer_On = true;
+      }
+
       if (IsAutoType)
       {
         if (_prevMsgTpd != tbxPrompt.Text) //TypeMsg(1, new RoutedEventArgs());
         {
-          WriteLine($"Typing   {tbxPrompt.Text}");
-          var failMsg = _ts.SendMsg(writer ?? default, $"{tbxPrompt.Text}  {{ENTER}} ");
+          WriteLine(tbkReport.Text = $"Typing   '{tbxPrompt.Text}' ...");
+
+          var failMsg = _ts.SendMsg(writer ?? default, $"{(IsAutoQrAI ? tbkAnswer.Text : tbxPrompt.Text)}  {{ENTER}}");
           if (string.IsNullOrEmpty(failMsg))
           {
             _prevMsgTpd = tbxPrompt.Text;
-            tbkReport.Text = tbkStatus.Text = string.IsNullOrEmpty(failMsg) ? "Success typing in" : failMsg;
+            WriteLine(tbkReport.Text = string.IsNullOrEmpty(failMsg) ? $"Success typing in  '{tbxPrompt.Text}'." : failMsg);
+            Thread.Sleep(100);
+            var failMs2 = _ts.SendMsg(writer ?? default, $"  ");
+            WriteLine(tbkReport.Text = string.IsNullOrEmpty(failMs2) ? "Success adding '  '." : failMs2);
           }
-          var failMs2 = _ts.SendMsg(writer ?? default, $"**");
+          else
+            WriteLine(tbkReport.Text = failMsg);
+
         }
         else
-          tbkReport.Text = tbkStatus.Text = "Same msg already typed in.";
+          WriteLine(tbkReport.Text = "Same msg already typed in.");
       }
       else
-        tbkReport.Text = tbkStatus.Text = "Auto type is OFF.";
+        WriteLine(tbkReport.Text = "Auto type is OFF.");
 
       SystemSounds.Hand.Play();
     }
-    catch (Exception ex) { WriteLine(tbkReport.Text = ex.Message); }
+    catch (Exception ex) { WriteLine(tbkReport.Text = ex.Message); if (Debugger.IsAttached) Debugger.Break(); }
   }
-  void OnCheckClipboardForData(string thread)
+  async void OnCheckClipboardForData(string thread)
   {
     const int minLen = 10;
     try
     {
-      if (!Clipboard.ContainsText() || _prevClpbrd == Clipboard.GetText()) { tbkStatus.Text = $"Same {DateTime.Now:ss}"; SystemSounds.Hand.Play(); return; }
+      if (!Clipboard.ContainsText() || _prevClpbrd == Clipboard.GetText()) { WriteLine(tbkReport.Text = $"Same   [{DateTime.Now:ss}]"); SystemSounds.Hand.Play(); return; }
 
       _prevClpbrd = Clipboard.GetText();
-      if (_prevClpbrd.Length < minLen) { tbkStatus.Text = $"Too Small"; SystemSounds.Beep.Play(); SystemSounds.Hand.Play(); return; }
+      if (_prevClpbrd.Length < minLen) { WriteLine(tbkReport.Text = $"Too Small"); SystemSounds.Beep.Play(); SystemSounds.Hand.Play(); return; }
 
-      tbkStatus.Text = $"Valid";
+      WriteLine(tbkReport.Text = $"Valid");
       tbxPrompt.Text = _prevClpbrd.Trim();
 
-      if (IsAutoQrAI) QueryAI(1, new RoutedEventArgs());
-      if (IsAutoType) TypeMsg(1, new RoutedEventArgs());
+      if (IsAutoQrAI) await QueryAiAsync(btnQryAI, new RoutedEventArgs());
+      if (IsAutoType) TypeMsg(btnQryAI, new RoutedEventArgs());
 
       SystemSounds.Hand.Play();
     }
-    catch (Exception ex) { WriteLine(tbkReport.Text = ex.Message); }
+    catch (Exception ex) { WriteLine(tbkReport.Text = ex.Message); if (Debugger.IsAttached) Debugger.Break(); }
   }
 
-  public bool IsTimer_On { get; set; }
+  public bool IsTimer_On
+  {
+    get => isTimer_On; set
+    {
+      isTimer_On = value;
+      CheckEndpoints("set");
+    }
+  }
   public bool IsAutoQrAI { get; set; }
-  public bool IsAutoType { get; set; }
-  async void QueryAI(object s, RoutedEventArgs e)
+  public bool IsAutoType { get; set; } = true;
+  async void QueryAI(object s, RoutedEventArgs e) => await QueryAiAsync(s, e);
+
+  async Task QueryAiAsync(object s, RoutedEventArgs e)
   {
     try
     {
@@ -148,7 +183,7 @@ public partial class MainWindow : Window
       tbkLn.Text = $"{answer.Length}";
       tbkZZ.Text = "·";
 
-      tbxPrompt.Focus();
+      _ = tbxPrompt.Focus();
       SetText(s, e);
     }
     finally
@@ -156,7 +191,14 @@ public partial class MainWindow : Window
       ((Control)s).IsEnabled = true;
     }
   }
+
   void SetText(object s, RoutedEventArgs e) { SystemSounds.Beep.Play(); _prevClpbrd = tbkAnswer.Text; Clipboard.SetText(tbkAnswer.Text); }
+
+  void RunOnce(object s, RoutedEventArgs e)
+  {
+    CheckEndpoints("clk");
+  }
+
   void TypeMsg(object s, RoutedEventArgs e)
   {
     SystemSounds.Beep.Play();
