@@ -40,9 +40,9 @@ public partial class MainWindow : Window
         if (IsTimer_On && Application.Current is not null)
         {
           if (Application.Current.Dispatcher.CheckAccess()) // if on UI thread
-            CheckEndpoints("UI");
+            await CheckEndpoints("UI");
           else
-            await Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => { CheckEndpoints("bg"); }));
+            await Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(async () => { await CheckEndpoints("bg"); }));
         }
         //else          WriteLine(tbkReport.Text = "Off");
 
@@ -58,7 +58,7 @@ public partial class MainWindow : Window
     catch (Exception ex)             /**/ { WriteLine(tbkReport.Text = ex.Message); }
     finally { _cts?.Dispose(); _cts = null; }
   }
-  void CheckEndpoints(string thread)
+  async Task CheckEndpoints(string thread)
   {
     if (_alreadyChecking) return;
 
@@ -66,10 +66,10 @@ public partial class MainWindow : Window
 
     _alreadyChecking = true;
     SystemSounds.Beep.Play();
-    OnCheckTeamsForCahnges();
+    await OnCheckTeamsForCahnges();
     _alreadyChecking = false;
   }
-  async void OnCheckTeamsForCahnges()
+  async Task OnCheckTeamsForCahnges()
   {
     const int minLen = 10;
     try
@@ -82,14 +82,12 @@ public partial class MainWindow : Window
 
       if (writer is null) { WriteLine(tbkReport.Text = "Error: Unable to read Sender"); SystemSounds.Hand.Play(); return; }
 
-      var read = _ts.GetTargetTextFromWindow(reader ?? default);
+      var read = await _ts.GetTargetTextFromWindow(reader ?? default);
 
       if (_prevReader == read) { WriteLine(tbkReport.Text = $"Same (len {read.Length}) read.    [{DateTime.Now:ss}]  "); SystemSounds.Hand.Play(); return; }
 
       _prevReader = read;
       if (read.Length < minLen) { WriteLine(tbkReport.Text = $"Too Small: '{read}'.    [{DateTime.Now:ss}]  "); SystemSounds.Hand.Play(); return; }
-
-      WriteLine(tbkReport.Text = $"Valid question: '{read}'.");
 
       var ary = read.Trim().Split(new char[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
 
@@ -112,29 +110,29 @@ public partial class MainWindow : Window
 
           WriteLine(tbkReport.Text = $"Typing   '{tbkAnswer.Text}' ...");
 
-          var failMsg = _ts.SendMsg(writer ?? default, $"{tbkAnswer.Text}{{ENTER}}");
+          var failMsg = _ts.SendMsg(writer ?? default, IsAutoEntr ? $"{tbkAnswer.Text}{{ENTER}}" : tbkAnswer.Text);
           if (!string.IsNullOrEmpty(failMsg))
             WriteLine(tbkReport.Text = failMsg);
           else
           {
             WriteLine(tbkReport.Text = string.IsNullOrEmpty(failMsg) ? $"Success answering to  '{tbxPrompt.Text}'  with  {tbkAnswer.Text.Length} char long ancwer; " : failMsg);
 
-            for (int i = 0; i < 100; i++)
+            for (var i = 0; i < 100; i++)
             {
               var spacer = "   ";
               var failMs2 = _ts.SendMsg(writer ?? default, spacer);
 
               var rv = await _ts.GetTwoWinndows(_config["Prc"], _config["Ttl"]);
-              if (_ts.GetTargetTextFromWindow(rv.writer ?? default) == spacer)
+              if (await _ts.GetTargetTextFromWindow(rv.writer ?? default) == spacer)
               {
                 WriteLine(tbkReport.Text += $" spaced on {i}.");
                 break;
               }
-              Thread.Sleep(100);
+
+              await Task.Delay(100);
               Write($"{i} ");
             }
           }
-
         }
       }
 
@@ -168,11 +166,12 @@ public partial class MainWindow : Window
     get => isTimer_On; set
     {
       isTimer_On = value;
-      CheckEndpoints("set");
+      //CheckEndpoints("set");
     }
   }
-  public bool IsAutoQrAI { get; set; }
+  public bool IsAutoQrAI { get; set; } = true;
   public bool IsAutoType { get; set; } = true;
+  public bool IsAutoEntr { get; set; }
   async void QueryAI(object s, RoutedEventArgs e) => await QueryAiAsync(s, e);
 
   async Task QueryAiAsync(object s, RoutedEventArgs e)
@@ -181,7 +180,7 @@ public partial class MainWindow : Window
     {
       ((Control)s).IsEnabled = false;
 
-      tbkAnswer.Text = "Sending ...";
+      tbkAnswer.Text = "Asking AI ...";
 
       var (ts, finishReason, answer) = await OpenAILib.OpenAI.CallOpenAI(_config, 1250, tbxPrompt.Text);
 
@@ -202,10 +201,7 @@ public partial class MainWindow : Window
 
   void SetText(object s, RoutedEventArgs e) { SystemSounds.Beep.Play(); _prevClpbrd = tbkAnswer.Text; Clipboard.SetText(tbkAnswer.Text); }
 
-  void RunOnce(object s, RoutedEventArgs e)
-  {
-    CheckEndpoints("clk");
-  }
+  async void RunOnce(object s, RoutedEventArgs e) => await CheckEndpoints("clk");
 
   void TypeMsg(object s, RoutedEventArgs e)
   {
