@@ -82,12 +82,10 @@ public partial class MainWindow : Window
       var (reader, writer, whyFailed) = await _ts.GetTwoWinndows(_config["Prc"], WinTitle, bpr.Tick);
 
       if (!string.IsNullOrEmpty(whyFailed)) { WriteLine(tbkReport.Text = whyFailed); bpr.Error(); return; }
-
+      if (writer is null) { WriteLine(tbkReport.Text = "Error: Unable to read Sender"); bpr.Error(); return; }
       if (reader is null) { WriteLine(tbkReport.Text = "Error: Unable to read All   "); bpr.Error(); return; }
 
-      if (writer is null) { WriteLine(tbkReport.Text = "Error: Unable to read Sender"); bpr.Error(); return; }
-
-      var ary = await ScrapeLastMsgFromteams(reader);
+      var ary = await ScrapeLastMsgFromteams(reader ?? throw new ArgumentNullException());
 
       tbxPrompt.Text = ary;
 
@@ -123,22 +121,20 @@ public partial class MainWindow : Window
     catch (Exception ex) { WriteLine(tbkReport.Text = ex.Message); if (Debugger.IsAttached) Debugger.Break(); }
   }
 
-  async Task<string> ScrapeLastMsgFromteams(IntPtr? reader)
+  async Task<string> ScrapeLastMsgFromteams(IntPtr winh)
   {
-    const int minLen = 3;
+    var read = await _ts.GetTargetTextFromWindow(winh);
 
-    var read = await _ts.GetTargetTextFromWindow(reader ?? default);
-
-    if (_prevReader == read) { WriteLine(tbkReport.Text = $"Same (len {read.Length}) read.    [{DateTime.Now:ss}]  "); bpr.Error(); throw new ArgumentOutOfRangeException($"AP: {tbkReport.Text}"); }
+    //if (_prevReader == read) { WriteLine(tbkReport.Text = $"Same (len {read.Length}) read.    [{DateTime.Now:ss}]  "); bpr.Error(); throw new ArgumentOutOfRangeException($"AP: {tbkReport.Text}"); }
 
     _prevReader = read;
-    if (read.Length < minLen) { WriteLine(tbkReport.Text = $"Too Small: '{read}'.    [{DateTime.Now:ss}]           "); bpr.Error(); throw new ArgumentOutOfRangeException($"AP: {tbkReport.Text}"); }
+    //if (read.Length < minLen) { WriteLine(tbkReport.Text = $"Too Small: '{read}'.    [{DateTime.Now:ss}]           "); bpr.Error(); throw new ArgumentOutOfRangeException($"AP: {tbkReport.Text}"); }
 
     var ary = read.Trim().Split(new char[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
 
     //TMI: hundreds of lines!!! for (var i = 0; i < ary.Length; i++) { WriteLine($".. {i,5})   {ary[i]}"); } 
-    
-    for (var i = 5 - 1; i >= 1; i--) { WriteLine($"·· {ary.Length-i,5})   {ary[^i]}"); } 
+
+    for (var i = 5 - 1; i >= 1; i--) { WriteLine($"·· {ary.Length - i,5})   {ary[^i]}"); }
 
     return ary[^1];
   }
@@ -195,9 +191,10 @@ public partial class MainWindow : Window
 
   async Task QueryAiAsync(object s, RoutedEventArgs e)
   {
+    var sw = Stopwatch.StartNew(); bpr.Start(); WriteLine(tbkReport.Text = "Asking AI ...");
     try
     {
-      ((Control)s).IsEnabled = false;
+      ((Control)s).Visibility = Visibility.Hidden;
 
       tbkAnswer.Text = "Asking AI ...";
 
@@ -209,49 +206,88 @@ public partial class MainWindow : Window
       tbkLn.Text = $"{answer.Length}";
       tbkZZ.Text = "·";
 
-      _ = tbxPrompt.Focus();
+      //_ = tbxPrompt.Focus();
       //SetText(s, e);
     }
-    finally
-    {
-      ((Control)s).IsEnabled = true;
-    }
+    finally { bpr.Finish(); tbkReport.Text += $"  {sw.Elapsed.TotalSeconds:N1}s"; ((Control)s).Visibility = Visibility.Visible; }
   }
 
   void SetText(object s, RoutedEventArgs e) { bpr.Start(); _prevClpbrd = tbkAnswer.Text; Clipboard.SetText(tbkAnswer.Text); }
 
   async void ScrapeT(object sender, RoutedEventArgs e)
   {
-    bpr.Start();
-    WriteLine(tbkReport.Text = "Scraing Teams' last msg...");
+    var sw = Stopwatch.StartNew(); bpr.Start(); WriteLine(tbkReport.Text = "Scraping Teams' last msg...");
 
     try
     {
-      var winh = await _ts.GetFirstMatch(_config["Prc"], WinTitle);
-      tbxPrompt.Text = await ScrapeLastMsgFromteams(winh);
+      var winh = await _ts.GetFirstMatch(_config["Prc"], WinTitle, byEndsWith: true);
+      if (winh is null)
+        tbkReport.Text = $"Window '{WinTitle}' not found";
+      else
+        tbxPrompt.Text = await ScrapeLastMsgFromteams(winh ?? throw new ArgumentNullException());
+    }
+    catch (ArgumentOutOfRangeException ex) { WriteLine(tbkReport.Text = ex.Message); }
+    catch (IndexOutOfRangeException ex) { WriteLine(tbkReport.Text = ex.Message); }
+    catch (Exception ex) { WriteLine(tbkReport.Text = ex.Message); if (Debugger.IsAttached) Debugger.Break(); }
+    finally { bpr.Finish(); tbkReport.Text += $"  {sw.Elapsed.TotalSeconds:N1}s"; }
+  }
+  async void TypeMsg(object s, RoutedEventArgs e)
+  {
+    var sw = Stopwatch.StartNew(); bpr.Start(); WriteLine(tbkReport.Text = "Typing into Teams...");
+
+    try
+    {
+      var winh = await _ts.GetFirstMatch(_config["Prc"], WinTitle, byEndsWith: true);
+      if (winh is null)
+        tbkReport.Text = $"Window '{WinTitle}' not found";
+      else
+      {
+        var failReport = _ts.SendMsg(winh ?? throw new ArgumentNullException(), IsAutoEntr ? $"{tbkAnswer.Text}{{ENTER}}" : tbkAnswer.Text);
+        if (failReport.Length > 0)
+        {
+          WriteLine(tbkReport.Text = $"FAILED SendKey(): {failReport}");
+          return;
+        }
+
+        if (IsAutoEntr)
+        {
+          await AddSpacerToWriterWindow(winh);
+        }
+      }
     }
     catch (ArgumentOutOfRangeException ex) { WriteLine(tbkReport.Text = ex.Message); }
     catch (Exception ex) { WriteLine(tbkReport.Text = ex.Message); if (Debugger.IsAttached) Debugger.Break(); }
-    finally { bpr.Finish(); }
+    finally { bpr.Finish(); tbkReport.Text += $"  {sw.Elapsed.TotalSeconds:N1}s"; }
+  }
+
+  async void TabNSee(object sender, RoutedEventArgs e)
+  {
+    var sw = Stopwatch.StartNew(); bpr.Start(); WriteLine(tbkReport.Text = "TabNSee()...");
+
+    try
+    {
+      var winh = await _ts.GetFirstMatch(_config["Prc"], WinTitle, byEndsWith: true);
+      if (winh is null)
+        tbkReport.Text = $"Window '{WinTitle}' not found";
+      else
+      {
+        var text = await _ts.TabAndGetText(winh ?? throw new ArgumentNullException());
+        if (text.Length > 0)
+        {
+          tbkAnswer.Text =
+          tbxPrompt.Text = text;
+          return;
+        }
+
+        WriteLine(tbkReport.Text = $"FAILED TabAndGetText().");
+      }
+    }
+    catch (ArgumentOutOfRangeException ex) { WriteLine(tbkReport.Text = ex.Message); }
+    catch (Exception ex) { WriteLine(tbkReport.Text = ex.Message); if (Debugger.IsAttached) Debugger.Break(); }
+    finally { bpr.Finish(); tbkReport.Text += $"  {sw.Elapsed.TotalSeconds:N1}s"; }
   }
 
   async void RunOnce(object s, RoutedEventArgs e) => await CheckEndpoints("clk");
-
-  async void TypeMsg(object s, RoutedEventArgs e)
-  {
-    bpr.Start();
-    var rv = _ts.SendOnce(IsAutoEntr ? $"{tbkAnswer.Text}{{ENTER}}" : tbkAnswer.Text, WinTitle);
-    if (rv.Length > 0)
-    {
-      WriteLine(tbkReport.Text = $"FAILED SendKey(): {rv}");
-    }
-
-    if (IsAutoEntr)
-    {
-      var (_, writer, _) = await _ts.GetTwoWinndows(_config["Prc"], WinTitle, bpr.Tick);
-      await AddSpacerToWriterWindow(writer);
-    }
-  }
-  void ExitApp(object s, RoutedEventArgs e) { bpr.Start(); Close(); }
+  async void ExitApp(object s, RoutedEventArgs e) { await bpr.FinishAsync(); Close(); }
 }
 // Tell me more about Ukraine.

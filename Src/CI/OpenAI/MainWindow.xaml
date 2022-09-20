@@ -48,16 +48,15 @@
 
     <Menu Background="#666" Foreground="#0df" HorizontalAlignment="Left" Padding="5">
       <MenuItem Header="≡" FontSize="26" Padding="8 -5 8 0">
-        <MenuItem Header="Auto _Qery" IsCheckable="True" IsChecked="{Binding IsAutoQrAI}" />
-        <MenuItem Header="Auto _Type" IsCheckable="True" IsChecked="{Binding IsAutoType}" />
-        <MenuItem Header="T_ype" Click="TypeMsg"/>
+        <MenuItem Header="_Tab and Get Text - NOGO" Click="TabNSee" ToolTip="Unfortunately, Unable to tab into the send textbox."/>
+        <MenuItem Header="T_ype into Teams" Click="TypeMsg"/>
       </MenuItem>
-      <MenuItem Header="Timer _On"     IsCheckable="True" IsChecked="{Binding IsTimer_On}" ToolTip="Timer"/>
+      <MenuItem Header="Timer _On"  IsCheckable="True" IsChecked="{Binding IsTimer_On}" ToolTip="Timer"/>
       <MenuItem Header="Auto _Qery" IsCheckable="True" IsChecked="{Binding IsAutoQrAI}" ToolTip="Send texts right away on appearance in the Clipboard"/>
       <MenuItem Header="Auto _Type" IsCheckable="True" IsChecked="{Binding IsAutoType}" ToolTip="Type the answer in to the Teams right away on reply fron AI"/>
       <MenuItem Header="Auto _Entr" IsCheckable="True" IsChecked="{Binding IsAutoEntr}" ToolTip="Type the answer in to the Teams right away on reply fron AI"/>
-      <MenuItem Header="_Run Once"    Click="RunOnce" ToolTip="Full cyccle"/>
-      <MenuItem Header="Scrape _Last" Click="ScrapeT" ToolTip="Full cyccle"/>
+      <MenuItem Header="_Run Once"    Click="RunOnce" ToolTip="Run full cyccle once"/>
+      <MenuItem Header="Scrape _Last" Click="ScrapeT" ToolTip="!!!MUST be focused/clicked in the past messages area!!!"/>
       <ComboBox SelectedItem="{Binding WinTitle}" Width="120" x:Name="cbxTeams" />
     </Menu>
 
@@ -89,7 +88,7 @@
     </ScrollViewer>
 
     <StackPanel Grid.Row="3" Margin="2" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom">
-      <Button   Content="T_ype" Click="TypeMsg" ToolTip="Type the answer in to the Teams"/>
+      <Button   Content="T_ype" Click="TypeMsg" ToolTip="Type the answer in to the Teams...!!!MUST be focused in the Send texbox!!!"/>
       <Button   Content="_Copy" Click="SetText" ToolTip="Copy to Clipboard"/>
     </StackPanel>
 
