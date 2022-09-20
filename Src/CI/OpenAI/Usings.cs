@@ -9,5 +9,7 @@ global using System.Windows.Threading;
 global using Microsoft.Extensions.Configuration;
 global using WindowsFormsLib;
 global using System.Linq;
+global using System.Diagnostics;
+global using Ambience.Lib;
 
 global using static System.Diagnostics.Trace;

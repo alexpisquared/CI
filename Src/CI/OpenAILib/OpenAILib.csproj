@@ -6,6 +6,7 @@
     <Nullable>enable</Nullable>
     <LangVersion>latest</LangVersion>
     <UserSecretsId>d873983c-2f4f-41eb-bf3e-00004c4739a1</UserSecretsId>
+    <Platforms>AnyCPU;x64</Platforms>
   </PropertyGroup>
 
   <ItemGroup>

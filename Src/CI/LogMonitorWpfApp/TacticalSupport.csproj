@@ -10,6 +10,7 @@
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <Deterministic>false</Deterministic>
     <PackageIcon></PackageIcon>
+    <Platforms>AnyCPU;x64</Platforms>
   </PropertyGroup>
 
   <ItemGroup>

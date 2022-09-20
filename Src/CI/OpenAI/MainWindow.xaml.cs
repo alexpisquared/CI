@@ -1,29 +1,36 @@
-﻿using System.Diagnostics;
-
-namespace OpenAI;
+﻿namespace OpenAI;
 public partial class MainWindow : Window
 {
   const int _checkPeriodSec = 15;
   readonly IConfigurationRoot _config;
+  readonly Bpr bpr;
   readonly TextSender _ts = new();
   CancellationTokenSource? _cts;
   string _prevClpbrd = "", _prevReader = "", _prevMsgTpd = "";
-  bool _alreadyChecking, isTimer_On;
+  bool _alreadyChecking;
 
   public MainWindow()
   {
     InitializeComponent();
     DataContext = this;
     _config = new ConfigurationBuilder().AddUserSecrets<MainWindow>().Build(); //var secretProvider = _config.Providers.First(); if (secretProvider.TryGet("WhereAmI", out var secretPass))  WriteLine(secretPass);else  WriteLine("Hello, World!");
+    bpr = new Bpr();
   }
 
   async void Window_Loaded(object s, RoutedEventArgs e)
   {
     EventManager.RegisterClassHandler(typeof(TextBox), TextBox.GotFocusEvent, new RoutedEventHandler((s, re) => { (s as TextBox ?? new TextBox()).SelectAll(); }));
     MouseLeftButtonDown += (s, e) => { if (e.LeftButton == MouseButtonState.Pressed) DragMove(); };
+
+    cbxTeams.ItemsSource = new string[] {
+      _config["Ttl"],
+      "PBO-581 DB Process Launcher App | Microsoft Teams",
+      "Microsoft Teams"};
+    cbxTeams.SelectedIndex = 0;
+
     _ = tbxPrompt.Focus();
 
-    //_ts.FindByProc(_config["Prc"], _config["Ttl"]);
+    //_ts.FindByProc(_config["Prc"], WinTitle);
 
     await BlockingTimer();
   }
@@ -64,35 +71,25 @@ public partial class MainWindow : Window
     WriteLine($"\n>>> Starting on  '{thread}' ... ");
 
     _alreadyChecking = true;
-    SystemSounds.Beep.Play();
+    bpr.Start();
     await OnCheckTeamsForCahnges();
     _alreadyChecking = false;
   }
   async Task OnCheckTeamsForCahnges()
   {
-    const int minLen = 10;
     try
     {
-      var (reader, writer, whyFailed) = await _ts.GetTwoWinndows(_config["Prc"], _config["Ttl"]);
+      var (reader, writer, whyFailed) = await _ts.GetTwoWinndows(_config["Prc"], WinTitle, bpr.Tick);
 
-      if (!string.IsNullOrEmpty(whyFailed)) { WriteLine(tbkReport.Text = whyFailed); SystemSounds.Hand.Play(); return; }
+      if (!string.IsNullOrEmpty(whyFailed)) { WriteLine(tbkReport.Text = whyFailed); bpr.Error(); return; }
 
-      if (reader is null) { WriteLine(tbkReport.Text = "Error: Unable to read All   "); SystemSounds.Hand.Play(); return; }
+      if (reader is null) { WriteLine(tbkReport.Text = "Error: Unable to read All   "); bpr.Error(); return; }
 
-      if (writer is null) { WriteLine(tbkReport.Text = "Error: Unable to read Sender"); SystemSounds.Hand.Play(); return; }
+      if (writer is null) { WriteLine(tbkReport.Text = "Error: Unable to read Sender"); bpr.Error(); return; }
 
-      var read = await _ts.GetTargetTextFromWindow(reader ?? default);
+      var ary = await ScrapeLastMsgFromteams(reader);
 
-      if (_prevReader == read) { WriteLine(tbkReport.Text = $"Same (len {read.Length}) read.    [{DateTime.Now:ss}]  "); SystemSounds.Hand.Play(); return; }
-
-      _prevReader = read;
-      if (read.Length < minLen) { WriteLine(tbkReport.Text = $"Too Small: '{read}'.    [{DateTime.Now:ss}]  "); SystemSounds.Hand.Play(); return; }
-
-      var ary = read.Trim().Split(new char[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
-
-      for (var i = 0; i < ary.Length; i++) { WriteLine($"{i,5})   {ary[i]}"); } // foreach (var ary2 in ary)WriteLine($"{i,3}) {ary2}");
-
-      tbxPrompt.Text = ary[^1];
+      tbxPrompt.Text = ary;
 
       if (IsAutoQrAI)
         await QueryAiAsync(btnQryAI, new RoutedEventArgs());
@@ -121,21 +118,41 @@ public partial class MainWindow : Window
         }
       }
 
-      SystemSounds.Hand.Play();
+      bpr.Error();
     }
     catch (Exception ex) { WriteLine(tbkReport.Text = ex.Message); if (Debugger.IsAttached) Debugger.Break(); }
+  }
+
+  async Task<string> ScrapeLastMsgFromteams(IntPtr? reader)
+  {
+    const int minLen = 3;
+
+    var read = await _ts.GetTargetTextFromWindow(reader ?? default);
+
+    if (_prevReader == read) { WriteLine(tbkReport.Text = $"Same (len {read.Length}) read.    [{DateTime.Now:ss}]  "); bpr.Error(); throw new ArgumentOutOfRangeException($"AP: {tbkReport.Text}"); }
+
+    _prevReader = read;
+    if (read.Length < minLen) { WriteLine(tbkReport.Text = $"Too Small: '{read}'.    [{DateTime.Now:ss}]           "); bpr.Error(); throw new ArgumentOutOfRangeException($"AP: {tbkReport.Text}"); }
+
+    var ary = read.Trim().Split(new char[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
+
+    //TMI: hundreds of lines!!! for (var i = 0; i < ary.Length; i++) { WriteLine($".. {i,5})   {ary[i]}"); } 
+    
+    for (var i = 5 - 1; i >= 1; i--) { WriteLine($"·· {ary.Length-i,5})   {ary[^i]}"); } 
+
+    return ary[^1];
   }
 
   async Task AddSpacerToWriterWindow(IntPtr? writer)
   {
     for (var i = 0; i < 100; i++)
     {
-      var spacer = " ° ";
+      var spacer = "     ";
       var failMsg = _ts.SendMsg(writer ?? default, spacer);
       if (!string.IsNullOrEmpty(failMsg))
         WriteLine(tbkReport.Text = failMsg);
 
-      var rv = await _ts.GetTwoWinndows(_config["Prc"], _config["Ttl"]);
+      var rv = await _ts.GetTwoWinndows(_config["Prc"], WinTitle, bpr.Tick);
       if (await _ts.GetTargetTextFromWindow(rv.writer ?? default) == spacer)
       {
         WriteLine(tbkReport.Text += $" spaced on {i}.");
@@ -152,10 +169,10 @@ public partial class MainWindow : Window
     const int minLen = 10;
     try
     {
-      if (!Clipboard.ContainsText() || _prevClpbrd == Clipboard.GetText()) { WriteLine(tbkReport.Text = $"Same   [{DateTime.Now:ss}]"); SystemSounds.Hand.Play(); return; }
+      if (!Clipboard.ContainsText() || _prevClpbrd == Clipboard.GetText()) { WriteLine(tbkReport.Text = $"Same   [{DateTime.Now:ss}]"); bpr.Error(); return; }
 
       _prevClpbrd = Clipboard.GetText();
-      if (_prevClpbrd.Length < minLen) { WriteLine(tbkReport.Text = $"Too Small"); SystemSounds.Beep.Play(); SystemSounds.Hand.Play(); return; }
+      if (_prevClpbrd.Length < minLen) { WriteLine(tbkReport.Text = $"Too Small"); bpr.Start(); bpr.Error(); return; }
 
       WriteLine(tbkReport.Text = $"Valid");
       tbxPrompt.Text = _prevClpbrd.Trim();
@@ -163,22 +180,17 @@ public partial class MainWindow : Window
       if (IsAutoQrAI) await QueryAiAsync(btnQryAI, new RoutedEventArgs());
       if (IsAutoType) TypeMsg(btnQryAI, new RoutedEventArgs());
 
-      SystemSounds.Hand.Play();
+      bpr.Error();
     }
     catch (Exception ex) { WriteLine(tbkReport.Text = ex.Message); if (Debugger.IsAttached) Debugger.Break(); }
   }
 
-  public bool IsTimer_On
-  {
-    get => isTimer_On; set
-    {
-      isTimer_On = value;
-      //CheckEndpoints("set");
-    }
-  }
+  public bool IsTimer_On { get; set; }
   public bool IsAutoQrAI { get; set; } = true;
   public bool IsAutoType { get; set; } = true;
   public bool IsAutoEntr { get; set; }
+  public static readonly DependencyProperty WinTitleProperty = DependencyProperty.Register("WinTitle", typeof(string), typeof(MainWindow)); public string WinTitle { get { return (string)GetValue(WinTitleProperty); } set { SetValue(WinTitleProperty, value); } }
+
   async void QueryAI(object s, RoutedEventArgs e) => await QueryAiAsync(s, e);
 
   async Task QueryAiAsync(object s, RoutedEventArgs e)
@@ -206,25 +218,40 @@ public partial class MainWindow : Window
     }
   }
 
-  void SetText(object s, RoutedEventArgs e) { SystemSounds.Beep.Play(); _prevClpbrd = tbkAnswer.Text; Clipboard.SetText(tbkAnswer.Text); }
+  void SetText(object s, RoutedEventArgs e) { bpr.Start(); _prevClpbrd = tbkAnswer.Text; Clipboard.SetText(tbkAnswer.Text); }
+
+  async void ScrapeT(object sender, RoutedEventArgs e)
+  {
+    bpr.Start();
+    WriteLine(tbkReport.Text = "Scraing Teams' last msg...");
+
+    try
+    {
+      var winh = await _ts.GetFirstMatch(_config["Prc"], WinTitle);
+      tbxPrompt.Text = await ScrapeLastMsgFromteams(winh);
+    }
+    catch (ArgumentOutOfRangeException ex) { WriteLine(tbkReport.Text = ex.Message); }
+    catch (Exception ex) { WriteLine(tbkReport.Text = ex.Message); if (Debugger.IsAttached) Debugger.Break(); }
+    finally { bpr.Finish(); }
+  }
 
   async void RunOnce(object s, RoutedEventArgs e) => await CheckEndpoints("clk");
 
   async void TypeMsg(object s, RoutedEventArgs e)
   {
-    SystemSounds.Beep.Play();
-    var rv = _ts.SendOnce(IsAutoEntr ? $"{tbkAnswer.Text}{{ENTER}}" : tbkAnswer.Text, _config["Ttl"]);
+    bpr.Start();
+    var rv = _ts.SendOnce(IsAutoEntr ? $"{tbkAnswer.Text}{{ENTER}}" : tbkAnswer.Text, WinTitle);
     if (rv.Length > 0)
     {
-      WriteLine(tbkReport.Text = $"FAILED: SendKey() {rv}");
+      WriteLine(tbkReport.Text = $"FAILED SendKey(): {rv}");
     }
 
     if (IsAutoEntr)
     {
-      var (reader, writer, whyFailed) = await _ts.GetTwoWinndows(_config["Prc"], _config["Ttl"]);
+      var (_, writer, _) = await _ts.GetTwoWinndows(_config["Prc"], WinTitle, bpr.Tick);
       await AddSpacerToWriterWindow(writer);
     }
   }
-  void ExitApp(object s, RoutedEventArgs e) { SystemSounds.Beep.Play(); Close(); }
+  void ExitApp(object s, RoutedEventArgs e) { bpr.Start(); Close(); }
 }
 // Tell me more about Ukraine.
