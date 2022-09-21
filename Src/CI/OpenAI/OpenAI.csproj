@@ -6,7 +6,12 @@
     <Nullable>enable</Nullable>
     <UseWPF>true</UseWPF>
     <UserSecretsId>19e125b5-72e0-41c3-b120-c96f8568ce4b</UserSecretsId>
+    <ApplicationIcon>Assets\Teams-Round.ico</ApplicationIcon>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Content Include="Assets\Teams-Round.ico" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="5.0.0" />
