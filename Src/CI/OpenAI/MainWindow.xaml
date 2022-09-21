@@ -46,7 +46,7 @@
 
     <Button Content="X" HorizontalAlignment="Right" Click="ExitApp" IsCancel="True" Width="40" Height="40" FontSize="19" Background="Transparent" Foreground="#c00" Margin="0"/>
 
-    <Menu Background="#666" Foreground="#0df" HorizontalAlignment="Left" Padding="5">
+    <Menu Background="#666" Foreground="#0df" HorizontalAlignment="Left" Padding="5" x:Name="menu1">
       <MenuItem Header="≡" FontSize="26" Padding="8 -5 8 0">
         <MenuItem Header="_Tab and Get Text - NOGO" Click="TabNSee" ToolTip="Unfortunately, Unable to tab into the send textbox."/>
         <MenuItem Header="T_ype into Teams" Click="TypeMsg"/>

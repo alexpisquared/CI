@@ -8,11 +8,11 @@ public partial class RdpSessionKeeperUsrCtrl : UserControl
   readonly DateTime AppStarted = DateTime.Now;
   const int _dbgDelayMs = 500, _from = 8, _till = 17; //==17:59:59
   const string _mmc = "Manual Menu Call";
-  private int _dx = 111;
-  private int _hrsAdded = 0;
+   int _dx = 111;
+   int _hrsAdded = 0;
   bool _isLoaded = false;
   IBpr? _bpr;
-  private Point _previos;
+   Point _previos;
 
   public RdpSessionKeeperUsrCtrl()
   {

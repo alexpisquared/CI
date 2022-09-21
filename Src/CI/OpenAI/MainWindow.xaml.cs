@@ -1,4 +1,6 @@
-﻿namespace OpenAI;
+﻿//using System.Windows.Forms;
+
+namespace OpenAI;
 public partial class MainWindow : Window
 {
   const int _checkPeriodSec = 15;
@@ -8,7 +10,6 @@ public partial class MainWindow : Window
   CancellationTokenSource? _cts;
   string _prevClpbrd = "", _prevReader = "", _prevMsgTpd = "";
   bool _alreadyChecking;
-
   public MainWindow()
   {
     InitializeComponent();
@@ -16,7 +17,6 @@ public partial class MainWindow : Window
     _config = new ConfigurationBuilder().AddUserSecrets<MainWindow>().Build(); //var secretProvider = _config.Providers.First(); if (secretProvider.TryGet("WhereAmI", out var secretPass))  WriteLine(secretPass);else  WriteLine("Hello, World!");
     bpr = new Bpr();
   }
-
   async void Window_Loaded(object s, RoutedEventArgs e)
   {
     EventManager.RegisterClassHandler(typeof(TextBox), TextBox.GotFocusEvent, new RoutedEventHandler((s, re) => { (s as TextBox ?? new TextBox()).SelectAll(); }));
@@ -35,8 +35,7 @@ public partial class MainWindow : Window
 
     await BlockingTimer();
   }
-  void DeblockingTimer() => Task.Run(async () => await BlockingTimer());
-  async Task BlockingTimer()
+  void DeblockingTimer() => Task.Run(async () => await BlockingTimer()); async Task BlockingTimer()
   {
     try
     {
@@ -86,7 +85,7 @@ public partial class MainWindow : Window
       if (writer is null) { WriteLine(tbkReport.Text = "Error: Unable to read Sender"); bpr.Error(); return; }
       if (reader is null) { WriteLine(tbkReport.Text = "Error: Unable to read All   "); bpr.Error(); return; }
 
-      var ary = await ScrapeLastMsgFromteams(reader ?? throw new ArgumentNullException());
+      var ary = await ScrapeLastMsgFromteams(reader ?? throw new ArgumentNullException(nameof(reader)));
 
       tbxPrompt.Text = ary;
 
@@ -121,7 +120,6 @@ public partial class MainWindow : Window
     }
     catch (Exception ex) { WriteLine(tbkReport.Text = ex.Message); if (Debugger.IsAttached) Debugger.Break(); }
   }
-
   async Task<string> ScrapeLastMsgFromteams(IntPtr winh)
   {
     var read = await _ts.GetTargetTextFromWindow(winh);
@@ -135,11 +133,10 @@ public partial class MainWindow : Window
 
     //TMI: hundreds of lines!!! for (var i = 0; i < ary.Length; i++) { WriteLine($".. {i,5})   {ary[i]}"); } 
 
-    for (var i = 5 - 1; i >= 1; i--) { WriteLine($"·· {ary.Length - i,5})   {ary[^i]}"); }
+    for (var i = Math.Min(5, ary.Length + 1) - 1; i >= 1; i--) { WriteLine($"·· {ary.Length - i,5})   {ary[^i]}"); }
 
     return ary[^1];
   }
-
   async Task AddSpacerToWriterWindow(IntPtr? writer)
   {
     for (var i = 0; i < 100; i++)
@@ -160,7 +157,6 @@ public partial class MainWindow : Window
       Write($"{i} ");
     }
   }
-
   async void OnCheckClipboardForData(string thread)
   {
     const int minLen = 10;
@@ -181,15 +177,11 @@ public partial class MainWindow : Window
     }
     catch (Exception ex) { WriteLine(tbkReport.Text = ex.Message); if (Debugger.IsAttached) Debugger.Break(); }
   }
-
   public bool IsTimer_On { get; set; }
   public bool IsAutoQrAI { get; set; } = true;
   public bool IsAutoType { get; set; } = true;
   public bool IsAutoEntr { get; set; }
   public static readonly DependencyProperty WinTitleProperty = DependencyProperty.Register("WinTitle", typeof(string), typeof(MainWindow)); public string WinTitle { get { return (string)GetValue(WinTitleProperty); } set { SetValue(WinTitleProperty, value); } }
-
-  async void QueryAI(object s, RoutedEventArgs e) => await QueryAiAsync(s, e);
-
   async Task QueryAiAsync(object s, RoutedEventArgs e)
   {
     var sw = Stopwatch.StartNew(); bpr.Start(); WriteLine(tbkReport.Text = "Asking AI ...");
@@ -212,12 +204,16 @@ public partial class MainWindow : Window
     }
     finally { bpr.Finish(); tbkReport.Text += $"  {sw.Elapsed.TotalSeconds:N1}s"; ((Control)s).Visibility = Visibility.Visible; }
   }
-
-  void SetText(object s, RoutedEventArgs e) { bpr.Start(); _prevClpbrd = tbkAnswer.Text; Clipboard.SetText(tbkAnswer.Text); }
-
-  async void ScrapeT(object sender, RoutedEventArgs e)
+  async void QueryAI(object s, RoutedEventArgs e) => await QueryAiAsync(s, e);
+  async void SetText(object s, RoutedEventArgs e) { bpr.Start(); _prevClpbrd = tbkAnswer.Text; Clipboard.SetText(tbkAnswer.Text); await Task.Yield(); }
+  async void ScrapeT(object s, RoutedEventArgs e)
   {
-    var sw = Stopwatch.StartNew(); bpr.Start(); WriteLine(tbkReport.Text = "Scraping Teams' last msg...");
+    var sw = Stopwatch.StartNew(); bpr.Start(); WriteLine(tbkReport.Text = "Scraping Teams' last msg..."); menu1.IsEnabled = false;
+
+    _ = Mouse.Capture(this);
+    var current = PointToScreen(Mouse.GetPosition(this));
+
+    MouseOperations.MouseClickEvent(960, 900);   // await Task.Delay(8); // needs time to realise that ~at the new spot already
 
     try
     {
@@ -225,16 +221,27 @@ public partial class MainWindow : Window
       if (winh is null)
         tbkReport.Text = $"Window '{WinTitle}' not found";
       else
-        tbxPrompt.Text = await ScrapeLastMsgFromteams(winh ?? throw new ArgumentNullException());
+        tbxPrompt.Text = await ScrapeLastMsgFromteams(winh ?? throw new ArgumentNullException(nameof(s)));
     }
     catch (ArgumentOutOfRangeException ex) { WriteLine(tbkReport.Text = ex.Message); }
     catch (IndexOutOfRangeException ex) { WriteLine(tbkReport.Text = ex.Message); }
     catch (Exception ex) { WriteLine(tbkReport.Text = ex.Message); if (Debugger.IsAttached) Debugger.Break(); }
-    finally { bpr.Finish(); tbkReport.Text += $"  {sw.Elapsed.TotalSeconds:N1}s"; }
+    finally
+    {
+      bpr.Finish(); tbkReport.Text += $"  {sw.Elapsed.TotalSeconds:N1}s"; menu1.IsEnabled = true;
+
+      MouseOperations.SetCursorPosition((int)current.X, (int)current.Y);
+      _ = Mouse.Capture(null);
+    }
   }
   async void TypeMsg(object s, RoutedEventArgs e)
   {
     var sw = Stopwatch.StartNew(); bpr.Start(); WriteLine(tbkReport.Text = "Typing into Teams...");
+
+    _ = Mouse.Capture(this);
+    var current = PointToScreen(Mouse.GetPosition(this));
+
+    MouseOperations.MouseClickEvent(960, 960); await Task.Delay(40);
 
     try
     {
@@ -243,7 +250,7 @@ public partial class MainWindow : Window
         tbkReport.Text = $"Window '{WinTitle}' not found";
       else
       {
-        var failReport = _ts.SendMsg(winh ?? throw new ArgumentNullException(), IsAutoEntr ? $"{tbkAnswer.Text}{{ENTER}}" : tbkAnswer.Text);
+        var failReport = _ts.SendMsg(winh ?? throw new ArgumentNullException(nameof(s)), IsAutoEntr ? $"{tbkAnswer.Text}{{ENTER}}" : tbkAnswer.Text);
         if (failReport.Length > 0)
         {
           WriteLine(tbkReport.Text = $"FAILED SendKey(): {failReport}");
@@ -258,10 +265,15 @@ public partial class MainWindow : Window
     }
     catch (ArgumentOutOfRangeException ex) { WriteLine(tbkReport.Text = ex.Message); }
     catch (Exception ex) { WriteLine(tbkReport.Text = ex.Message); if (Debugger.IsAttached) Debugger.Break(); }
-    finally { bpr.Finish(); tbkReport.Text += $"  {sw.Elapsed.TotalSeconds:N1}s"; }
-  }
+    finally
+    {
+      bpr.Finish(); tbkReport.Text += $"  {sw.Elapsed.TotalSeconds:N1}s";
 
-  async void TabNSee(object sender, RoutedEventArgs e)
+      MouseOperations.SetCursorPosition((int)current.X, (int)current.Y);
+      _ = Mouse.Capture(null);
+    }
+  }
+  async void TabNSee(object s, RoutedEventArgs e)
   {
     var sw = Stopwatch.StartNew(); bpr.Start(); WriteLine(tbkReport.Text = "TabNSee()...");
 
@@ -272,7 +284,7 @@ public partial class MainWindow : Window
         tbkReport.Text = $"Window '{WinTitle}' not found";
       else
       {
-        var text = await _ts.TabAndGetText(winh ?? throw new ArgumentNullException());
+        var text = await _ts.TabAndGetText(winh ?? throw new ArgumentNullException(nameof(s)));
         if (text.Length > 0)
         {
           tbkAnswer.Text =
@@ -287,8 +299,6 @@ public partial class MainWindow : Window
     catch (Exception ex) { WriteLine(tbkReport.Text = ex.Message); if (Debugger.IsAttached) Debugger.Break(); }
     finally { bpr.Finish(); tbkReport.Text += $"  {sw.Elapsed.TotalSeconds:N1}s"; }
   }
-
   async void RunOnce(object s, RoutedEventArgs e) => await CheckEndpoints("clk");
   async void ExitApp(object s, RoutedEventArgs e) { await bpr.FinishAsync(); Close(); }
-}
-// Tell me more about Ukraine.
+}// Tell me more about Ukraine.
