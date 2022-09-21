@@ -25,6 +25,7 @@ public partial class MainWindow : Window
     cbxTeams.ItemsSource = new string[] {
       _config["Ttl"],
       "PBO-581 DB Process Launcher App | Microsoft Teams",
+      "Oleksa Pigid | Microsoft Teams",
       "Microsoft Teams"};
     cbxTeams.SelectedIndex = 0;
 
@@ -200,7 +201,7 @@ public partial class MainWindow : Window
 
       var (ts, finishReason, answer) = await OpenAILib.OpenAI.CallOpenAI(_config, 1250, tbxPrompt.Text);
 
-      tbkAnswer.Text = answer;
+      tbkAnswer.Text = answer.StartsWith("\n") ? answer.Trim('\n') : $"{tbxPrompt.Text}{answer}";
       tbkTM.Text = $"{ts.TotalSeconds:N1}";
       tbkFR.Text = finishReason;
       tbkLn.Text = $"{answer.Length}";
