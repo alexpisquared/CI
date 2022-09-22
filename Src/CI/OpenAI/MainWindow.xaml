@@ -46,7 +46,7 @@
 
     <Button Content="X" HorizontalAlignment="Right" Click="ExitApp" IsCancel="True" Width="40" Height="40" FontSize="19" Background="Transparent" Foreground="#c00" Margin="0"/>
 
-    <Menu Background="#666" Foreground="#0df" HorizontalAlignment="Left" Padding="5" x:Name="menu1">
+    <Menu Background="#666" Foreground="#0df" HorizontalAlignment="Left" Padding="5" IsEnabled="{Binding EnabledY}">
       <MenuItem Header="≡" FontSize="26" Padding="8 -5 8 0">
         <MenuItem Header="_Tab and Get Text - NOGO" Click="TabNSee" ToolTip="Unfortunately, Unable to tab into the send textbox."/>
         <MenuItem Header="T_ype into Teams" Click="TypeMsg"/>
@@ -62,11 +62,11 @@
 
     <TextBlock x:Name="tbk____" Foreground="#fff" d:Text="State ???" HorizontalAlignment="Right" Margin="50 0"/>
 
-    <TextBox    Grid.Row="1" Margin="0" TextWrapping="Wrap" Text="Tell me more about Ukraine." x:Name="tbxPrompt" VerticalAlignment="Stretch" IsTabStop="True" />
-    <StackPanel Grid.Row="1" Margin="2" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom">
-      <Button   Content="_Query" Click="QueryAI" IsDefault="True" x:Name="btnQryAI" />
+    <TextBox    Grid.Row="1" IsEnabled="{Binding EnabledY}" Margin="0" TextWrapping="Wrap" Text="Tell me more about Ukraine." x:Name="tbxPrompt" VerticalAlignment="Stretch" IsTabStop="True" AcceptsReturn="True" />
+    <StackPanel Grid.Row="1" IsEnabled="{Binding EnabledY}" Margin="2" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom">
+      <Button   Content="Query" Click="QueryAI" IsDefault="True" x:Name="btnQryAI" />
     </StackPanel>
-    <StackPanel Grid.Row="2" Margin="5" Orientation="Horizontal" HorizontalAlignment="Center">
+    <StackPanel Grid.Row="2" IsEnabled="{Binding EnabledY}" Margin="5" Orientation="Horizontal" HorizontalAlignment="Center">
       <TextBox x:Name="tbkMod" Text="text-davinci-002" />
       <TextBox x:Name="tbkMax" Text="1000" />
       <TextBox x:Name="tbkTem" Text="0.7" />
@@ -87,7 +87,7 @@
       <TextBlock  Margin="8" TextWrapping="Wrap" Text="Answer will show up here. " x:Name="tbkAnswer" VerticalAlignment="Stretch" />
     </ScrollViewer>
 
-    <StackPanel Grid.Row="3" Margin="2" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom">
+    <StackPanel Grid.Row="3" Margin="2" IsEnabled="{Binding EnabledY}" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom">
       <Button   Content="T_ype" Click="TypeMsg" ToolTip="Type the answer in to the Teams...!!!MUST be focused in the Send texbox!!!"/>
       <Button   Content="_Copy" Click="SetText" ToolTip="Copy to Clipboard"/>
     </StackPanel>
