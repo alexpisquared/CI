@@ -1,5 +1,4 @@
 ﻿using Ambience.Lib;
-using OpenAI;
 using WindowsFormsLib;
 
 namespace LogMonitorWpfApp;
