@@ -87,7 +87,7 @@ public partial class MainWindow : Window
     else
       tbkAnswer.Text = tbxPrompt.Text;
 
-    if (IsAutoType)
+    if (IsAutoAnsr)
       await TypeMsgAsync();
     else
       WriteLine(tbkReport.Text = "Auto type is OFF.");
@@ -103,25 +103,6 @@ public partial class MainWindow : Window
 
     return ary[^1];
   }
-  async Task AddSpacerToWriterWindow(IntPtr? winh)
-  {
-    for (var i = 0; i < 100; i++)
-    {
-      var spacer = "     ";
-      var failMsg = _ts.SendMsg(winh ?? default, spacer);
-      if (!string.IsNullOrEmpty(failMsg))
-        WriteLine(tbkReport.Text = failMsg);
-
-      if (await _ts.GetTargetTextFromWindow(winh ?? default, bpr.Tick) == spacer)
-      {
-        WriteLine(tbkReport.Text += $" spaced on {i}.");
-        break;
-      }
-
-      await Task.Delay(100);
-      Write($"{i} ");
-    }
-  }
   async void OnCheckClipboardForData()
   {
     const int minLen = 10;
@@ -136,15 +117,15 @@ public partial class MainWindow : Window
       tbxPrompt.Text = _prevClpbrd.Trim();
 
       if (IsAutoQrAI) await QueryAiAsync(btnQryAI);
-      if (IsAutoType) TypeMsg(btnQryAI, new RoutedEventArgs());
+      if (IsAutoAnsr) TypeMsg(btnQryAI, new RoutedEventArgs());
 
       bpr.Error();
     }
     catch (Exception ex) { WriteLine(tbkReport.Text = ex.Message); if (Debugger.IsAttached) Debugger.Break(); }
   }
-  public bool IsTimer_On { get; set; }
-  public bool IsAutoQrAI { get; set; } = true;
-  public bool IsAutoType { get; set; } = true;
+  public bool IsTimer_On { get; set; } = false;
+  public bool IsAutoQrAI { get; set; } = false;
+  public bool IsAutoAnsr { get; set; } = false;
   public static readonly DependencyProperty WinTitleProperty = DependencyProperty.Register("WinTitle", typeof(string), typeof(MainWindow)); public string WinTitle { get => (string)GetValue(WinTitleProperty); set => SetValue(WinTitleProperty, value); }
   public static readonly DependencyProperty EnabledYProperty = DependencyProperty.Register("EnabledY", typeof(bool), typeof(MainWindow)); public bool EnabledY { get => (bool)GetValue(EnabledYProperty); set => SetValue(EnabledYProperty, value); }
   async Task<string> ScrapeTAsync()
@@ -157,14 +138,16 @@ public partial class MainWindow : Window
     IntPtr? winh;
     try
     {
+      Hide();
       winh = await _ts.GetFirstMatch(_config["Prc"], WinTitle, byEndsWith: true);
 
       var (right, bottom) = _ts.GetRB(winh ?? throw new ArgumentNullException(nameof(winh)));
       await MouseOperations.MouseClickEventAsync(right - 400, bottom - 400);
       MouseOperations.SetCursorPosition((int)current.X, (int)current.Y);
+      Show();
     }
-    catch (ArgumentOutOfRangeException ex) { WriteLine(tbkReport.Text = ex.Message); return ex.Message; }
-    catch (IndexOutOfRangeException ex)/**/{ WriteLine(tbkReport.Text = ex.Message); return ex.Message; }
+    catch (ArgumentOutOfRangeException ex) { WriteLine(tbkReport.Text = ex.Message); if (Debugger.IsAttached) Debugger.Break(); return ex.Message; }
+    catch (IndexOutOfRangeException ex)/**/{ WriteLine(tbkReport.Text = ex.Message); if (Debugger.IsAttached) Debugger.Break(); return ex.Message; }
     catch (Exception ex)               /**/{ WriteLine(tbkReport.Text = ex.Message); if (Debugger.IsAttached) Debugger.Break(); return ex.Message; }
 
     try
@@ -172,11 +155,12 @@ public partial class MainWindow : Window
       var text = await ScrapeLastMsgFromteams(winh ?? throw new ArgumentNullException(nameof(winh), $"Window '{WinTitle}' not found"));
       return text;
     }
-    catch (ArgumentOutOfRangeException ex) { WriteLine(tbkReport.Text = ex.Message); return ex.Message; }
-    catch (IndexOutOfRangeException ex)/**/{ WriteLine(tbkReport.Text = ex.Message); return ex.Message; }
+    catch (ArgumentOutOfRangeException ex) { WriteLine(tbkReport.Text = ex.Message); if (Debugger.IsAttached) Debugger.Break(); return ex.Message; }
+    catch (IndexOutOfRangeException ex)/**/{ WriteLine(tbkReport.Text = ex.Message); if (Debugger.IsAttached) Debugger.Break(); return ex.Message; }
     catch (Exception ex)               /**/{ WriteLine(tbkReport.Text = ex.Message); if (Debugger.IsAttached) Debugger.Break(); return ex.Message; }
     finally
     {
+      Show();
       bpr.Finish(); tbkReport.Text += $"  {sw.Elapsed.TotalSeconds:N1}s"; //menu1.IsEnabled = true;
 
       _ = Mouse.Capture(null);
@@ -198,10 +182,11 @@ public partial class MainWindow : Window
         tbkReport.Text = $"Window '{WinTitle}' not found";
       else
       {
+        //Hide();
         var (right, bottom) = _ts.GetRB(winh ?? throw new ArgumentNullException(nameof(winh)));
-        await MouseOperations.MouseClickEventAsync(right - 120, bottom - 80);
+        await MouseOperations.MouseClickEventAsync(right - 220, bottom - 88);
         MouseOperations.SetCursorPosition((int)ptsPosn.X, (int)ptsPosn.Y);
-
+        Show();
         var failReport = _ts.SendMsg(winh ?? throw new ArgumentNullException(nameof(winh)), $"{tbkAnswer.Text}{{ENTER}}");
         if (failReport.Length > 0)
         {
@@ -214,6 +199,7 @@ public partial class MainWindow : Window
     catch (Exception ex) { WriteLine(tbkReport.Text = ex.Message); if (Debugger.IsAttached) Debugger.Break(); }
     finally
     {
+      Show();
       bpr.Finish(); tbkReport.Text += $"  {sw.Elapsed.TotalSeconds:N1}s"; tbkAnswer.Background = Brushes.Transparent;
 
       _ = Mouse.Capture(null);
