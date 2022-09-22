@@ -1,6 +1,5 @@
 ﻿using System.Runtime.InteropServices;
 using System.Windows.Forms;
-
 namespace OpenAI;
 public class MouseOperations
 {
@@ -17,15 +16,16 @@ public class MouseOperations
 
     return currentMousePoint;
   }
-  public static void MouseClickEvent(int x, int y)
+  public static async Task MouseClickEventAsync(int x, int y)
   {
-
     _ = SetCursorPos(x, y); // without actually moving cursor does not seem to be clicking on the indicated spot.
 
     if (SystemInformation.MouseButtonsSwapped)
       MouseEvent(x, y, MouseEventFlags.RightDown | MouseEventFlags.RightUp);
     else
       MouseEvent(x, y, MouseEventFlags.LeftDown | MouseEventFlags.LeftUp);
+
+    await Task.Delay(200); // needs time to realise that ~at the new spot already; at after ~100 ms all is good. Works on the big screen on Of.
   }
   public static void MouseEvent(MouseEventFlags value)
   {

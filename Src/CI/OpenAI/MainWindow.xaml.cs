@@ -3,7 +3,7 @@
 namespace OpenAI;
 public partial class MainWindow : Window
 {
-  const int _checkPeriodSec = 15;
+  const int _checkPeriodSec = 20;
   readonly IConfigurationRoot _config;
   readonly Bpr bpr;
   readonly TextSender _ts = new();
@@ -77,8 +77,8 @@ public partial class MainWindow : Window
   async Task AllDialogSteps()
   {
     var questn = await ScrapeTAsync();
-    if (tbxPrompt.Text == questn)        /**/ { WriteLine(tbkReport.Text = $"Same msg: ignored!"); return; }
-    if (tbkAnswer.Text.Contains(questn)) /**/ { WriteLine(tbkReport.Text = $"This is my last answer: ignored!"); return; }
+    if (tbxPrompt.Text == questn)        /**/ { WriteLine(tbkReport.Text = $"Ignoring the same msg: '{TextSender.SafeLengthTrim(questn)}'."); return; }
+    if (tbkAnswer.Text.Contains(questn)) /**/ { WriteLine(tbkReport.Text = $"Ignoring prev answer: '{TextSender.SafeLengthTrim(questn)}'."); return; }
 
     tbxPrompt.Text = questn;
 
@@ -155,12 +155,14 @@ public partial class MainWindow : Window
     _ = Mouse.Capture(this);
     var current = PointToScreen(Mouse.GetPosition(this));
 
-    MouseOperations.MouseClickEvent(960, 900);   // await Task.Delay(8); // needs time to realise that ~at the new spot already
-
     IntPtr? winh;
     try
     {
       winh = await _ts.GetFirstMatch(_config["Prc"], WinTitle, byEndsWith: true);
+
+      var (right, bottom) = _ts.GetRB(winh ?? throw new ArgumentNullException(nameof(winh)));
+      await MouseOperations.MouseClickEventAsync(right - 400, bottom - 400);
+      MouseOperations.SetCursorPosition((int)current.X, (int)current.Y);
     }
     catch (ArgumentOutOfRangeException ex) { WriteLine(tbkReport.Text = ex.Message); return ex.Message; }
     catch (IndexOutOfRangeException ex)/**/{ WriteLine(tbkReport.Text = ex.Message); return ex.Message; }
@@ -178,7 +180,6 @@ public partial class MainWindow : Window
     {
       bpr.Finish(); tbkReport.Text += $"  {sw.Elapsed.TotalSeconds:N1}s"; //menu1.IsEnabled = true;
 
-      MouseOperations.SetCursorPosition((int)current.X, (int)current.Y);
       _ = Mouse.Capture(null);
     }
   }
@@ -186,10 +187,10 @@ public partial class MainWindow : Window
   {
     var sw = Stopwatch.StartNew(); bpr.Start(); WriteLine(tbkReport.Text = "Typing into Teams...");
 
-    _ = Mouse.Capture(this);
-    var current = PointToScreen(Mouse.GetPosition(this));
+    if (!Mouse.Capture(this)) throw new InvalidOperationException("Failed to get the WinH coordinates.");
 
-    MouseOperations.MouseClickEvent(960, 960); await Task.Delay(40);
+    var rawPosn = Mouse.GetPosition(this);     
+    var ptsPosn = PointToScreen(rawPosn);    WriteLine($"\t raw:{rawPosn}\t pts:{ptsPosn}  :before");
 
     try
     {
@@ -198,6 +199,10 @@ public partial class MainWindow : Window
         tbkReport.Text = $"Window '{WinTitle}' not found";
       else
       {
+        var (right, bottom) = _ts.GetRB(winh ?? throw new ArgumentNullException(nameof(winh)));
+        await MouseOperations.MouseClickEventAsync(right - 120, bottom - 80);
+        MouseOperations.SetCursorPosition((int)ptsPosn.X, (int)ptsPosn.Y);
+
         var failReport = _ts.SendMsg(winh ?? throw new ArgumentNullException(nameof(winh)), IsAutoEntr ? $"{tbkAnswer.Text}{{ENTER}}" : tbkAnswer.Text);
         if (failReport.Length > 0)
         {
@@ -214,7 +219,6 @@ public partial class MainWindow : Window
     {
       bpr.Finish(); tbkReport.Text += $"  {sw.Elapsed.TotalSeconds:N1}s";
 
-      MouseOperations.SetCursorPosition((int)current.X, (int)current.Y);
       _ = Mouse.Capture(null);
     }
   }
