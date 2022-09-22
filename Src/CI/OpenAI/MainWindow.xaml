@@ -19,6 +19,11 @@
       <Setter Property="Margin"             Value="2" />
       <Setter Property="Width"              Value="64" />
     </Style>
+    <Style TargetType="{x:Type MenuItem}"     BasedOn="{StaticResource C}" >
+      <Setter Property="Foreground"         Value="#0c0" />
+      <Setter Property="Background"         Value="#666" />
+      <Setter Property="Margin"             Value="2" />
+    </Style>
     <Style TargetType="{x:Type TextBox}"    BasedOn="{StaticResource C}" >
       <Setter Property="Background"         Value="#383838" />
       <Setter Property="MinWidth"           Value="40" />
@@ -47,14 +52,14 @@
 
     <Button Content="X" HorizontalAlignment="Right" Click="ExitApp" IsCancel="True" Width="40" Height="40" FontSize="19" Background="Transparent" Foreground="#c00" Margin="0"/>
 
-    <Menu Background="#444" Foreground="#0c0" HorizontalAlignment="Left" Padding="5" IsEnabled="{Binding EnabledY}">
+    <Menu Background="#444" HorizontalAlignment="Left" Padding="5" IsEnabled="{Binding EnabledY}">
       <MenuItem Header="≡" FontSize="26" Padding="8 -5 8 0">
         <MenuItem Header="_Tab and Get Text - NOGO" Click="TabNSee" ToolTip="Unfortunately, Unable to tab into the send textbox."/>
         <MenuItem Header="T_ype into Teams" Click="TypeMsg"/>
       </MenuItem>
-      <MenuItem Header="Timer _On"    IsCheckable="True" Width="120" IsChecked="{Binding IsTimer_On}" Background="#666" ToolTip="Timer" />
-      <MenuItem Header="Auto _Query"  IsCheckable="True" Width="120" IsChecked="{Binding IsAutoQrAI}" Background="#666" ToolTip="Send texts right away on appearance in the Clipboard"/>
-      <MenuItem Header="Auto _Answer" IsCheckable="True" Width="120" IsChecked="{Binding IsAutoType}" Background="#666" ToolTip="Type the answer in to the Teams right away on reply fron AI"/>
+      <MenuItem Header="Timer _On"    IsCheckable="True" Width="120" IsChecked="{Binding IsTimer_On}" ToolTip="Timer" />
+      <MenuItem Header="Auto _Query"  IsCheckable="True" Width="120" IsChecked="{Binding IsAutoQrAI}" ToolTip="Send texts right away on appearance in the Clipboard"/>
+      <MenuItem Header="Auto _Answer" IsCheckable="True" Width="120" IsChecked="{Binding IsAutoType}" ToolTip="Type the answer in to the Teams right away on reply fron AI"/>
       <MenuItem Header="_Run Once"    Click="RunOnce" ToolTip="Run full cyccle once"/>
       <MenuItem Header="Scrape _Last" Click="ScrapeT" ToolTip="!!!MUST be focused/clicked in the past messages area!!!"/>
       <ComboBox SelectedItem="{Binding WinTitle}" Width="120" x:Name="cbxTeams" />
