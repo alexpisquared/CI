@@ -53,23 +53,24 @@
     <Button Content="X" HorizontalAlignment="Right" Click="ExitApp" IsCancel="True" Width="40" Height="40" FontSize="19" Background="Transparent" Foreground="#c00" Margin="0"/>
 
     <Menu Background="#444" HorizontalAlignment="Left" Padding="5" IsEnabled="{Binding EnabledY}">
-      <MenuItem Header="≡" FontSize="26" Padding="8 -5 8 0">
+      <MenuItem Header="≡" FontSize="26" Padding="8 -8 8 0">
+        <ComboBox SelectedItem="{Binding WinTitle}" Width="120" x:Name="cbxTeams" />
+        <Separator/>
         <MenuItem Header="_Tab and Get Text - NOGO" Click="TabNSee" ToolTip="Unfortunately, Unable to tab into the send textbox."/>
         <MenuItem Header="T_ype into Teams" Click="TypeMsg"/>
       </MenuItem>
-      <MenuItem Header="Timer _On"    IsCheckable="True" Width="120" IsChecked="{Binding IsTimer_On}" ToolTip="Timer" />
-      <MenuItem Header="Auto _Query"  IsCheckable="True" Width="120" IsChecked="{Binding IsAutoQrAI}" ToolTip="Send texts right away on appearance in the Clipboard"/>
-      <MenuItem Header="Auto _Answer" IsCheckable="True" Width="120" IsChecked="{Binding IsAutoAnsr}" ToolTip="Type the answer in to the Teams right away on reply fron AI"/>
-      <MenuItem Header="_Run Once"    Click="RunOnce" ToolTip="Run full cyccle once"/>
-      <MenuItem Header="Scrape _Last" Click="ScrapeT" ToolTip="!!!MUST be focused/clicked in the past messages area!!!"/>
-      <ComboBox SelectedItem="{Binding WinTitle}" Width="120" x:Name="cbxTeams" />
+      <MenuItem Header="Timer _On"    Width="120" IsCheckable="True" IsChecked="{Binding IsTimer_On}" ToolTip="Timer" />
+      <MenuItem Header="Auto _Query"  Width="120" IsCheckable="True" IsChecked="{Binding IsAutoQrAI}" ToolTip="Send texts right away on appearance in the Clipboard"/>
+      <MenuItem Header="Auto Ans_wer" Width="120" IsCheckable="True" IsChecked="{Binding IsAutoAnsr}" ToolTip="Type the answer in to the Teams right away on reply fron AI"/>
+      <MenuItem Header="   _Run Once" Width="120" Click="RunOnce" ToolTip="Run full cyccle once"/>
     </Menu>
 
     <TextBlock x:Name="tbk____" Foreground="#fff" d:Text="State ???" HorizontalAlignment="Right" Margin="50 0"/>
 
     <TextBox    Grid.Row="1" IsEnabled="{Binding EnabledY}" Margin="0" TextWrapping="Wrap" Text="Tell me more about Ukraine." x:Name="tbxPrompt" VerticalAlignment="Stretch" IsTabStop="True" AcceptsReturn="True" />
     <StackPanel Grid.Row="1" IsEnabled="{Binding EnabledY}" Margin="2" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom">
-      <Button   Content="Query" Click="QueryAI" IsDefault="True" x:Name="btnQryAI" />
+      <Button   Content="_Scrape" Click="ScrapeT" ToolTip="!!!MUST be focused/clicked in the past messages area!!!"/>
+      <Button   Content="_Ask AI" Click="QueryAI" IsDefault="True" x:Name="btnQryAI" />
     </StackPanel>
     <StackPanel Grid.Row="2" IsEnabled="{Binding EnabledY}" Margin="5" Orientation="Horizontal" HorizontalAlignment="Center">
       <TextBox x:Name="tbkMod" Text="text-davinci-002" />
@@ -93,7 +94,7 @@
     </ScrollViewer>
 
     <StackPanel Grid.Row="3" Margin="2" IsEnabled="{Binding EnabledY}" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom">
-      <Button   Content="T_ype" Click="TypeMsg" ToolTip="Type the answer in to the Teams...!!!MUST be focused in the Send texbox!!!"/>
+      <Button   Content="_Type" Click="TypeMsg" ToolTip="Type the answer in to the Teams...!!!MUST be focused in the Send texbox!!!"/>
       <Button   Content="_Copy" Click="SetText" ToolTip="Copy to Clipboard"/>
     </StackPanel>
 
