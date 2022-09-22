@@ -1,4 +1,8 @@
-﻿namespace LogMonitorWpfApp;
+﻿using Ambience.Lib;
+using OpenAI;
+using WindowsFormsLib;
+
+namespace LogMonitorWpfApp;
 public partial class RdpSessionKeeperUsrCtrl : UserControl
 {
   readonly IdleTimeoutAnalizer _idleTimeoutAnalizer;
@@ -100,19 +104,21 @@ public partial class RdpSessionKeeperUsrCtrl : UserControl
 
       _ = Mouse.Capture(this); // :fails outside of the owner window without it.
       var current = PointToScreen(Mouse.GetPosition(this));
-      if (current == _previos)
+      if (current == _previos) // if idle
       {
+        await BringUpTeamsWindow();
+
         if (current.X < 1000) current.X = 1200; // wierd bug moves far left: force to a designated spot.
         if (_previos.Y < 500) _previos.Y = 500;
 
         _previos.X = current.X + _dx;
-        WriteLine(tbkMin.Content = $"App: {current.X}►{_previos.X}-{_previos.Y}");
+        WriteLine(tbkMin.Content = $"Idle - Covered: {current.X}►{_previos.X}-{_previos.Y}");
         _ = Win32.SetCursorPos((int)_previos.X, (int)_previos.Y);
         _dx = -_dx;
       }
-      else // moved or 1st time:
+      else // not idle: moved or 1st time:
       {
-        WriteLine(tbkMin.Content = $"Dev");
+        WriteLine(tbkMin.Content = $"Busy - no action.");
         _previos = current;
       }
     }
@@ -121,6 +127,40 @@ public partial class RdpSessionKeeperUsrCtrl : UserControl
     {
       _ = Mouse.Capture(null);
       _ = File.AppendAllTextAsync(TextLog, $"{Prefix}tglPsn({msg}).{_crlf}");
+    }
+  }
+  readonly TextSender _ts = new();
+  async Task BringUpTeamsWindow    () //todo: works ...but not here.
+  {
+    var sw = Stopwatch.StartNew(); WriteLine("Typing into Teams..."); tbkLog.Background = Brushes.DarkRed;
+
+    if (!Mouse.Capture(this)) throw new InvalidOperationException("Failed to get the WinH coordinates.");
+
+    var rawPosn = Mouse.GetPosition(this);
+    var ptsPosn = PointToScreen(rawPosn); WriteLine($"\t raw:{rawPosn}\t pts:{ptsPosn}  :before");
+
+    try
+    {
+      var winh = await _ts.GetFirstMatch("msteams", "Microsoft Teams", byEndsWith: true);
+      if (winh is null)
+        tbkLog.Text = $"Window \"Microsoft Teams\" not found";
+      else
+      {
+        var (right, bottom) = _ts.GetRB(winh ?? throw new ArgumentNullException(nameof(winh)));
+        await MouseOperations.MouseClickEventAsync(right - 220, bottom - 88);
+        MouseOperations.SetCursorPosition((int)ptsPosn.X, (int)ptsPosn.Y);
+        var failReport = _ts.SendMsg(winh ?? throw new ArgumentNullException(nameof(winh)), $"321");
+        if (failReport.Length > 0)
+          WriteLine($"FAILED SendKey(): {failReport}");
+      }
+    }
+    catch (ArgumentOutOfRangeException ex) { WriteLine(ex.Message); }
+    catch (Exception ex) { WriteLine(ex.Message); if (Debugger.IsAttached) Debugger.Break(); }
+    finally
+    {
+      tbkLog.Text += $"  {sw.Elapsed.TotalSeconds:N1}s"; tbkLog.Background = Brushes.Transparent;
+
+      _ = Mouse.Capture(null);
     }
   }
 

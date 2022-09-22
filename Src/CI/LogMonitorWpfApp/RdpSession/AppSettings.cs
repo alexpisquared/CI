@@ -6,7 +6,12 @@ class AppSettings
   public bool IsInsmnia { get; set; }
   public bool IsPosning { get; set; }
   public bool IsMindBiz { get; set; }
-  public double PeriodSec { get; } = 60; // 230; //240 - 10
+  public double PeriodSec { get; }
+#if DEBUG
+    = 5;
+#else
+    = 60; // 230; //240 - 10
+#endif
   public double QuitAtHour { get; set; } = 18;
 
   static readonly string _stgFile;

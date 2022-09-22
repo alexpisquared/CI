@@ -21,6 +21,7 @@
     <ProjectReference Include="..\..\..\..\CI-DPL-IMP\Src\SharedLib\Ambience.Lib\Ambience.Lib.csproj" />
     <ProjectReference Include="..\..\..\..\CI-DPL-IMP\Src\SharedLib\CI.Standard.Lib\CI.Standard.Lib.csproj" />
     <ProjectReference Include="..\..\..\..\CI-DPL-IMP\Src\SharedLib\CI.Visual.Lib\CI.Visual.Lib.csproj" />
+    <ProjectReference Include="..\..\..\..\CI-DPL-IMP\Src\SharedLib\WindowsFormsLib\WindowsFormsLib.csproj" />
     <ProjectReference Include="..\LogMonitorLib\LogMonitorLib.csproj" />
   </ItemGroup>
 

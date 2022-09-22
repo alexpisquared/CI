@@ -142,7 +142,7 @@ public partial class MainWindow : Window
       winh = await _ts.GetFirstMatch(_config["Prc"], WinTitle, byEndsWith: true);
 
       var (right, bottom) = _ts.GetRB(winh ?? throw new ArgumentNullException(nameof(winh)));
-      await MouseOperations.MouseClickEventAsync(right - 400, bottom - 400);
+      await MouseOperations.MouseClickEventAsync(right - 32, bottom - 400);
       MouseOperations.SetCursorPosition((int)current.X, (int)current.Y);
       Show();
     }
@@ -184,7 +184,7 @@ public partial class MainWindow : Window
       {
         //Hide();
         var (right, bottom) = _ts.GetRB(winh ?? throw new ArgumentNullException(nameof(winh)));
-        await MouseOperations.MouseClickEventAsync(right - 220, bottom - 88);
+        await MouseOperations.MouseClickEventAsync(right - 520, bottom - 88);
         MouseOperations.SetCursorPosition((int)ptsPosn.X, (int)ptsPosn.Y);
         Show();
         var failReport = _ts.SendMsg(winh ?? throw new ArgumentNullException(nameof(winh)), $"{tbkAnswer.Text}{{ENTER}}");
