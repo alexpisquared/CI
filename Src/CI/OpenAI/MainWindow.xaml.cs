@@ -1,4 +1,6 @@
-﻿namespace OpenAI;
+﻿using System.Windows.Media;
+
+namespace OpenAI;
 public partial class MainWindow : Window
 {
   const int _checkPeriodSec = 15;
@@ -218,11 +220,9 @@ public partial class MainWindow : Window
   }
   async Task QueryAiAsync(object s)
   {
-    var sw = Stopwatch.StartNew(); bpr.Start(); WriteLine(tbkReport.Text = "Asking AI ...");
+    var sw = Stopwatch.StartNew(); bpr.Start(); WriteLine(tbkReport.Text = "Asking AI ..."); tbkAnswer.Background = Brushes.DarkOliveGreen; ((Control)s).Visibility = Visibility.Hidden;
     try
     {
-      ((Control)s).Visibility = Visibility.Hidden;
-
       tbkAnswer.Text = "Asking AI ...";
 
       var (ts, finishReason, answer) = await OpenAILib.OpenAI.CallOpenAI(_config, 1250, tbxPrompt.Text);
@@ -233,7 +233,7 @@ public partial class MainWindow : Window
       tbkLn.Text = $"{answer.Length}";
       tbkZZ.Text = "·";
     }
-    finally { bpr.Finish(); tbkReport.Text += $"  {sw.Elapsed.TotalSeconds:N1}s"; ((Control)s).Visibility = Visibility.Visible; }
+    finally { bpr.Finish(); tbkReport.Text += $"  {sw.Elapsed.TotalSeconds:N1}s"; tbkAnswer.Background = Brushes.Transparent; ((Control)s).Visibility = Visibility.Visible; }
   }
   async void QueryAI(object s, RoutedEventArgs e) => await QueryAiAsync(s);
   async void SetText(object s, RoutedEventArgs e) { bpr.Start(); _prevClpbrd = tbkAnswer.Text; Clipboard.SetText(tbkAnswer.Text); await Task.Yield(); }
