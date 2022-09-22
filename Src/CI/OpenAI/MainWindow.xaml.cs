@@ -145,7 +145,6 @@ public partial class MainWindow : Window
   public bool IsTimer_On { get; set; }
   public bool IsAutoQrAI { get; set; } = true;
   public bool IsAutoType { get; set; } = true;
-  public bool IsAutoEntr { get; set; }
   public static readonly DependencyProperty WinTitleProperty = DependencyProperty.Register("WinTitle", typeof(string), typeof(MainWindow)); public string WinTitle { get => (string)GetValue(WinTitleProperty); set => SetValue(WinTitleProperty, value); }
   public static readonly DependencyProperty EnabledYProperty = DependencyProperty.Register("EnabledY", typeof(bool), typeof(MainWindow)); public bool EnabledY { get => (bool)GetValue(EnabledYProperty); set => SetValue(EnabledYProperty, value); }
   async Task<string> ScrapeTAsync()
@@ -185,7 +184,7 @@ public partial class MainWindow : Window
   }
   async Task TypeMsgAsync()
   {
-    var sw = Stopwatch.StartNew(); bpr.Start(); WriteLine(tbkReport.Text = "Typing into Teams...");
+    var sw = Stopwatch.StartNew(); bpr.Start(); WriteLine(tbkReport.Text = "Typing into Teams..."); tbkAnswer.Background = Brushes.DarkRed;
 
     if (!Mouse.Capture(this)) throw new InvalidOperationException("Failed to get the WinH coordinates.");
 
@@ -203,21 +202,19 @@ public partial class MainWindow : Window
         await MouseOperations.MouseClickEventAsync(right - 120, bottom - 80);
         MouseOperations.SetCursorPosition((int)ptsPosn.X, (int)ptsPosn.Y);
 
-        var failReport = _ts.SendMsg(winh ?? throw new ArgumentNullException(nameof(winh)), IsAutoEntr ? $"{tbkAnswer.Text}{{ENTER}}" : tbkAnswer.Text);
+        var failReport = _ts.SendMsg(winh ?? throw new ArgumentNullException(nameof(winh)), $"{tbkAnswer.Text}{{ENTER}}");
         if (failReport.Length > 0)
         {
           WriteLine(tbkReport.Text = $"FAILED SendKey(): {failReport}");
           return;
         }
-
-        //if (IsAutoEntr) { await AddSpacerToWriterWindow(winh); }
       }
     }
     catch (ArgumentOutOfRangeException ex) { WriteLine(tbkReport.Text = ex.Message); }
     catch (Exception ex) { WriteLine(tbkReport.Text = ex.Message); if (Debugger.IsAttached) Debugger.Break(); }
     finally
     {
-      bpr.Finish(); tbkReport.Text += $"  {sw.Elapsed.TotalSeconds:N1}s";
+      bpr.Finish(); tbkReport.Text += $"  {sw.Elapsed.TotalSeconds:N1}s"; tbkAnswer.Background = Brushes.Transparent;
 
       _ = Mouse.Capture(null);
     }
