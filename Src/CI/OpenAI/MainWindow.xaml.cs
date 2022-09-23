@@ -103,7 +103,7 @@ public partial class MainWindow : Window
 
     for (var i = Math.Min(4, ary.Length + 1) - 1; i >= 1; i--) { WriteLine($"·· {ary.Length - i,5})   {ary[^i]}"); }    //TMI: hundreds of lines!!! for (var i = 0; i < ary.Length; i++) { WriteLine($".. {i,5})   {ary[i]}"); } 
 
-    return ary[^1];
+    return ary[^1] == "has context menu" && ary.Length > 1 ? ary[^2] : ary[^1];
   }
   async void OnCheckClipboardForData()
   {
@@ -131,6 +131,7 @@ public partial class MainWindow : Window
   public static readonly DependencyProperty WinTitleProperty = DependencyProperty.Register("WinTitle", typeof(string), typeof(MainWindow)); public string WinTitle { get => (string)GetValue(WinTitleProperty); set => SetValue(WinTitleProperty, value); }
   public static readonly DependencyProperty EnabledYProperty = DependencyProperty.Register("EnabledY", typeof(bool), typeof(MainWindow)); public bool EnabledY { get => (bool)GetValue(EnabledYProperty); set => SetValue(EnabledYProperty, value); }
   public static readonly DependencyProperty IsWaitingProperty = DependencyProperty.Register("IsWaiting", typeof(bool), typeof(MainWindow)); public bool IsWaiting { get => (bool)GetValue(IsWaitingProperty); set => SetValue(IsWaitingProperty, value); }
+
   async Task<string> ScrapeTAsync()
   {
     var sw = Stopwatch.StartNew(); bpr.Start(); WriteLine(tbkReport.Text = "Scraping Teams' last msg..."); //menu1.IsEnabled = false;
@@ -185,7 +186,7 @@ public partial class MainWindow : Window
         tbkReport.Text = $"Window '{WinTitle}' not found";
       else
       {
-        //Hide();
+        Hide();
         var (right, bottom) = _ts.GetRB(winh ?? throw new ArgumentNullException(nameof(winh)));
         await MouseOperations.MouseClickEventAsync(right - 520, bottom - 88);
         MouseOperations.SetCursorPosition((int)ptsPosn.X, (int)ptsPosn.Y);
@@ -202,10 +203,9 @@ public partial class MainWindow : Window
     catch (Exception ex) { WriteLine(tbkReport.Text = ex.Message); if (Debugger.IsAttached) Debugger.Break(); }
     finally
     {
+      _ = Mouse.Capture(null);
       Show();
       bpr.Finish(); tbkReport.Text += $"  {sw.Elapsed.TotalSeconds:N1}s"; tbkAnswer.Background = Brushes.Transparent;
-
-      _ = Mouse.Capture(null);
     }
   }
   async Task QueryAiAsync(object s)
@@ -215,7 +215,10 @@ public partial class MainWindow : Window
     {
       tbkAnswer.Text = "Asking AI ...";
 
-      var (ts, finishReason, answer) = await OpenAILib.OpenAI.CallOpenAI(_config, 1250, tbxPrompt.Text);
+      (bt ??= new(TimeSpan.FromSeconds(.1))).Start(UpdateClock);
+      started = DateTime.Now;
+
+      var (ts, finishReason, answer) = await OpenAILib.OpenAI.CallOpenAI(_config, tbkMax.Text, tbxPrompt.Text);
 
       tbkAnswer.Text = answer.StartsWith("\n") ? answer.Trim('\n') : $"{tbxPrompt.Text}{answer}";
       tbkTM.Text = $"{ts.TotalSeconds:N1}";
@@ -223,7 +226,11 @@ public partial class MainWindow : Window
       tbkLn.Text = $"{answer.Length}";
       tbkZZ.Text = "·";
     }
-    finally { bpr.Finish(); tbkReport.Text += $"  {sw.Elapsed.TotalSeconds:N1}s"; tbkAnswer.Background = Brushes.Transparent; ((Control)s).Visibility = Visibility.Visible; }
+    finally
+    {
+      bpr.Finish(); tbkReport.Text += $"  {sw.Elapsed.TotalSeconds:N1}s"; tbkAnswer.Background = Brushes.Transparent; ((Control)s).Visibility = Visibility.Visible;
+      if (bt is not null) await bt.StopAsync();
+    }
   }
   async void QueryAI(object s, RoutedEventArgs e) => await QueryAiAsync(s);
   async void SetText(object s, RoutedEventArgs e) { bpr.Start(); _prevClpbrd = tbkAnswer.Text; Clipboard.SetText(tbkAnswer.Text); await Task.Yield(); }
@@ -257,4 +264,21 @@ public partial class MainWindow : Window
   }
   async void RunOnce(object s, RoutedEventArgs e) => await OnTimer("clk");
   async void ExitApp(object s, RoutedEventArgs e) { await bpr.FinishAsync(); Close(); }
+
+
+  DateTime started;
+  public void UpdateClock() { tbkTM.Text = (DateTime.Now - started).ToString("s\\.f"); }
+  BackgroundTask? bt;
+  void OnClockStart(object sender, RoutedEventArgs e)
+  {
+    bpr.Start();
+    (bt ??= new(TimeSpan.FromSeconds(.1))).Start(UpdateClock);
+    started = DateTime.Now;
+  }
+
+  async void OnClockStop(object sender, RoutedEventArgs e)
+  {
+    bpr.Finish();
+    if (bt is not null) await bt.StopAsync();
+  }
 }// Tell me more about Ukraine.

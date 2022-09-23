@@ -1,7 +1,7 @@
 ﻿namespace OpenAILib;
 public class OpenAI
 {
-  public static async Task<(TimeSpan ts, string finishReason, string answer)> CallOpenAI(IConfigurationRoot cfg, int max_tokens, string prompt, string model = "text-davinci-002", double temperature = 0.7, int topP = 1, int frequencyPenalty = 0, int presencePenalty = 0)
+  public static async Task<(TimeSpan ts, string finishReason, string answer)> CallOpenAI(IConfigurationRoot cfg, string max_tokens, string prompt, string model = "text-davinci-002", double temperature = 0.7, int topP = 1, int frequencyPenalty = 0, int presencePenalty = 0)
   {
     var sw = Stopwatch.StartNew();
     var openAiKey = cfg?["OpenAiKey"] + "TpTu3Q";
