@@ -7,15 +7,16 @@ public partial class RdpSessionKeeperUsrCtrl : UserControl
   readonly IdleTimeoutAnalizer _idleTimeoutAnalizer;
   readonly AppSettings _appset = AppSettings.Create();
   readonly Insomniac _insomniac = new();
+  readonly TextSender _ts = new();
   readonly string _crlf = $" ", TextLog = @$"RdpFacility.{Environment.MachineName}.Log.txt";
   readonly DateTime AppStarted = DateTime.Now;
   const int _dbgDelayMs = 500, _from = 8, _till = 17; //==17:59:59
   const string _mmc = "Manual Menu Call";
-   int _dx = 111;
-   int _hrsAdded = 0;
+  int _dx = 111;
+  int _hrsAdded = 0;
   bool _isLoaded = false;
   IBpr? _bpr;
-   Point _previos;
+  Point _previos;
 
   public RdpSessionKeeperUsrCtrl()
   {
@@ -128,8 +129,7 @@ public partial class RdpSessionKeeperUsrCtrl : UserControl
       _ = File.AppendAllTextAsync(TextLog, $"{Prefix}tglPsn({msg}).{_crlf}");
     }
   }
-  readonly TextSender _ts = new();
-  async Task BringUpTeamsWindow    () //todo: works ...but not here.
+  async Task BringUpTeamsWindow() //todo: works ...but not here... I think it needs to be manually launched - Not by timer.
   {
     var sw = Stopwatch.StartNew(); WriteLine("Typing into Teams..."); tbkLog.Background = Brushes.DarkRed;
 

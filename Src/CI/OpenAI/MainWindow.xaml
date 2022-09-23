@@ -37,6 +37,38 @@
       <Setter Property="Foreground"         Value="#ff0" />
       <!--<Setter Property="Background"     Value="#444" />-->
     </Style>
+
+    <Duration x:Key="WaitDuration">0:0:30</Duration>
+    <Style TargetType="Rectangle" x:Key="IsOnStyle">
+      <Style.Triggers>
+        <DataTrigger Binding="{Binding IsWaiting, UpdateSourceTrigger=PropertyChanged}" Value="True">
+          <DataTrigger.EnterActions>
+            <BeginStoryboard Storyboard="{StaticResource sbkFrvr}" />
+          </DataTrigger.EnterActions>
+          <DataTrigger.ExitActions>
+            <BeginStoryboard Storyboard="{StaticResource sbkStop}" />
+          </DataTrigger.ExitActions>
+        </DataTrigger>
+      </Style.Triggers>
+    </Style>
+    <Storyboard x:Key="sbk2Frvr" >
+      <DoubleAnimation Duration="{StaticResource WaitDuration}" To="1" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[0].(ScaleX)" />
+    </Storyboard>
+    <Storyboard x:Key="sbk2Stop" >
+      <DoubleAnimation Duration="0:0:0.3" To="0" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[0].(ScaleX)" />
+    </Storyboard>
+    <Style TargetType="Rectangle" x:Key="IsOnStyle2">
+      <Style.Triggers>
+        <DataTrigger Binding="{Binding IsWaiting, UpdateSourceTrigger=PropertyChanged}" Value="True">
+          <DataTrigger.EnterActions>
+            <BeginStoryboard Storyboard="{StaticResource sbk2Frvr}" />
+          </DataTrigger.EnterActions>
+          <DataTrigger.ExitActions>
+            <BeginStoryboard Storyboard="{StaticResource sbk2Stop}" />
+          </DataTrigger.ExitActions>
+        </DataTrigger>
+      </Style.Triggers>
+    </Style>
   </Window.Resources>
   <Grid>
     <Grid.RowDefinitions>
@@ -46,9 +78,19 @@
       <RowDefinition Height="4*"/>
       <RowDefinition Height="Auto"/>
     </Grid.RowDefinitions>
-    <Rectangle  Grid.Row="0" Fill="#484848" />
-    <Rectangle  Grid.Row="2" Fill="#2c2c2c" />
-    <Rectangle  Grid.Row="4" Fill="#333" />
+    <Rectangle Grid.Row="0" Fill="#484848" />
+    <Rectangle Grid.Row="1" RenderTransformOrigin="0.0,0.5" Fill="#333" Style="{StaticResource IsOnStyle2}" >
+      <Rectangle.RenderTransform>
+        <TransformGroup>
+          <ScaleTransform ScaleX=".1"/>
+          <SkewTransform/>
+          <RotateTransform Angle="0"/>
+          <TranslateTransform Y="0"/>
+        </TransformGroup>
+      </Rectangle.RenderTransform>
+    </Rectangle>
+    <Rectangle Grid.Row="2" Fill="#2c2c2c" />
+    <Rectangle Grid.Row="4" Fill="#333" />
 
     <Button Content="X" HorizontalAlignment="Right" Click="ExitApp" IsCancel="True" Width="40" Height="40" FontSize="19" Background="Transparent" Foreground="#c00" Margin="0"/>
 
@@ -67,7 +109,7 @@
 
     <TextBlock x:Name="tbk____" Foreground="#fff" d:Text="State ???" HorizontalAlignment="Right" Margin="50 0"/>
 
-    <TextBox    Grid.Row="1" IsEnabled="{Binding EnabledY}" Margin="0" TextWrapping="Wrap" Text="Tell me more about Ukraine." x:Name="tbxPrompt" VerticalAlignment="Stretch" IsTabStop="True" AcceptsReturn="True" />
+    <TextBox    Grid.Row="1" IsEnabled="{Binding EnabledY}" Margin="0" TextWrapping="Wrap" Text="Tell me more about Ukraine." x:Name="tbxPrompt" VerticalAlignment="Stretch" IsTabStop="True" AcceptsReturn="True" Background="Transparent" />
     <StackPanel Grid.Row="1" IsEnabled="{Binding EnabledY}" Margin="2" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom">
       <Button   Content="_Scrape" Click="ScrapeT" ToolTip="!!!MUST be focused/clicked in the past messages area!!!"/>
       <Button   Content="_Ask AI" Click="QueryAI" IsDefault="True" x:Name="btnQryAI" />
@@ -99,6 +141,7 @@
     </StackPanel>
 
     <TextBlock  Grid.Row="4" x:Name="tbkReport" Foreground="#ccc" d:Text="Report Report Report Report Report " Padding="10 3"/>
+
 
   </Grid>
 </Window>

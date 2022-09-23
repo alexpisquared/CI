@@ -1,21 +1,21 @@
-﻿using System.Windows.Media;
-using CI.Standard.Lib.Services;
-
-namespace OpenAI;
+﻿namespace OpenAI;
 public partial class MainWindow : Window
 {
-  const int _checkPeriodSec = 20;
+  readonly TimeSpan _waitDuration;
   readonly IConfigurationRoot _config;
   readonly Bpr bpr;
   readonly TextSender _ts = new();
   CancellationTokenSource? _cts;
   string _prevClpbrd = "";
+  bool isTimer_On = false;
+
   public MainWindow()
   {
     InitializeComponent();
     DataContext = this;
     _config = new ConfigurationBuilder().AddUserSecrets<MainWindow>().Build(); //var secretProvider = _config.Providers.First(); if (secretProvider.TryGet("WhereAmI", out var secretPass))  WriteLine(secretPass);else  WriteLine("Hello, World!");
     bpr = new Bpr();
+    _waitDuration = (Resources["WaitDuration"] as Duration?)?.TimeSpan ?? TimeSpan.FromSeconds(20);
   }
   async void Window_Loaded(object s, RoutedEventArgs e)
   {
@@ -40,7 +40,7 @@ public partial class MainWindow : Window
   {
     try
     {
-      using PeriodicTimer tmr = new(TimeSpan.FromSeconds(_checkPeriodSec));
+      using PeriodicTimer tmr = new(_waitDuration);
       _cts = new CancellationTokenSource();
       while (_cts is not null && await tmr.WaitForNextTickAsync(_cts.Token))
       {
@@ -51,7 +51,6 @@ public partial class MainWindow : Window
           else
             await Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(async () => { await OnTimer("bg"); }));
         }
-        //else          WriteLine(tbkReport.Text = "Off");
 
         if (_cts?.Token.IsCancellationRequested == true) // Poll on this property if you have to do other cleanup before throwing.
         {
@@ -72,7 +71,9 @@ public partial class MainWindow : Window
 
     WriteLine($"\n>>> Starting on  '{thread}' ... ");
 
+    IsWaiting = false;
     await AllDialogSteps();
+    IsWaiting = true;
     EnabledY = true;
   }
   async Task AllDialogSteps()
@@ -124,11 +125,12 @@ public partial class MainWindow : Window
     }
     catch (Exception ex) { WriteLine(tbkReport.Text = ex.Message); if (Debugger.IsAttached) Debugger.Break(); }
   }
-  public bool IsTimer_On { get; set; } = false;
+  public bool IsTimer_On { get => isTimer_On; set { IsWaiting = isTimer_On = value; } }
   public bool IsAutoQrAI { get; set; } = false;
   public bool IsAutoAnsr { get; set; } = false;
   public static readonly DependencyProperty WinTitleProperty = DependencyProperty.Register("WinTitle", typeof(string), typeof(MainWindow)); public string WinTitle { get => (string)GetValue(WinTitleProperty); set => SetValue(WinTitleProperty, value); }
   public static readonly DependencyProperty EnabledYProperty = DependencyProperty.Register("EnabledY", typeof(bool), typeof(MainWindow)); public bool EnabledY { get => (bool)GetValue(EnabledYProperty); set => SetValue(EnabledYProperty, value); }
+  public static readonly DependencyProperty IsWaitingProperty = DependencyProperty.Register("IsWaiting", typeof(bool), typeof(MainWindow)); public bool IsWaiting { get => (bool)GetValue(IsWaitingProperty); set => SetValue(IsWaitingProperty, value); }
   async Task<string> ScrapeTAsync()
   {
     var sw = Stopwatch.StartNew(); bpr.Start(); WriteLine(tbkReport.Text = "Scraping Teams' last msg..."); //menu1.IsEnabled = false;
@@ -173,8 +175,8 @@ public partial class MainWindow : Window
 
     if (!Mouse.Capture(this)) throw new InvalidOperationException("Failed to get the WinH coordinates.");
 
-    var rawPosn = Mouse.GetPosition(this);     
-    var ptsPosn = PointToScreen(rawPosn);    WriteLine($"\t raw:{rawPosn}\t pts:{ptsPosn}  :before");
+    var rawPosn = Mouse.GetPosition(this);
+    var ptsPosn = PointToScreen(rawPosn); WriteLine($"\t raw:{rawPosn}\t pts:{ptsPosn}  :before");
 
     try
     {

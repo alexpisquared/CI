@@ -11,5 +11,7 @@ global using WindowsFormsLib;
 global using System.Linq;
 global using System.Diagnostics;
 global using Ambience.Lib;
+global using System.Windows.Media;
+global using CI.Standard.Lib.Services;
 
 global using static System.Diagnostics.Trace;

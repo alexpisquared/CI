@@ -21,11 +21,13 @@
         <Setter Property="Foreground"  Value="#ff0" />
       </Style>
 
+      <Duration x:Key="WaitDuration">0:3:0</Duration>
+
       <Storyboard x:Key="sbkFrvr" Timeline.DesiredFrameRate="1" >
-        <DoubleAnimation BeginTime="0:0:0" Duration="0:1:0" To="360" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[2].(Angle)" />
+        <DoubleAnimation BeginTime="0:0:0" Duration="{StaticResource WaitDuration}" To="360" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[2].(Angle)" />
       </Storyboard>
       <Storyboard x:Key="sbkStop">
-        <DoubleAnimation BeginTime="0:0:0" Duration="0:1:0" To="0"   Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[2].(Angle)" />
+        <DoubleAnimation BeginTime="0:0:0" Duration="{StaticResource WaitDuration}" To="0"   Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[2].(Angle)" />
       </Storyboard>
       <Style TargetType="Rectangle" x:Key="IsOnStyle">
         <Style.Triggers>
@@ -40,10 +42,10 @@
         </Style.Triggers>
       </Style>
       <Storyboard x:Key="sbk2Frvr" Timeline.DesiredFrameRate="1" >
-        <DoubleAnimation BeginTime="0:0:0" Duration="0:1:0" To="1" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[0].(ScaleX)" />
+        <DoubleAnimation BeginTime="0:0:0" Duration="{StaticResource WaitDuration}" To="1" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[0].(ScaleX)" />
       </Storyboard>
       <Storyboard x:Key="sbk2Stop" >
-        <DoubleAnimation BeginTime="0:0:0" Duration="0:1:0" To="0" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[0].(ScaleX)" />
+        <DoubleAnimation BeginTime="0:0:0" Duration="{StaticResource WaitDuration}" To="0" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[0].(ScaleX)" />
       </Storyboard>
       <Style TargetType="Rectangle" x:Key="IsOnStyle2">
         <Style.Triggers>
