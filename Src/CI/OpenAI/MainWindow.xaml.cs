@@ -5,9 +5,10 @@ public partial class MainWindow : Window
   readonly IConfigurationRoot _config;
   readonly Bpr bpr;
   readonly TextSender _ts = new();
-  CancellationTokenSource? _cts;
   string _prevClpbrd = "";
   bool isTimer_On = false;
+  DateTime started;
+  BackgroundTask? btClock, btAat;
 
   public MainWindow()
   {
@@ -31,41 +32,14 @@ public partial class MainWindow : Window
 
     _ = tbxPrompt.Focus();
 
-    //_ts.FindByProc(_config["Prc"], WinTitle);
-
     EnabledY = true;
-    await BlockingTimer();
+    await Task.Yield();
   }
-  void DeblockingTimer() => Task.Run(async () => await BlockingTimer()); async Task BlockingTimer()
+  async void UpdateClock() { tbkTM.Text = (DateTime.Now - started).ToString("s\\.f"); await Task.Delay(2); }
+  async void OnTimerVoid() => await OnTimerTask();
+  async Task OnTimerTask()
   {
-    try
-    {
-      using PeriodicTimer tmr = new(_waitDuration);
-      _cts = new CancellationTokenSource();
-      while (_cts is not null && await tmr.WaitForNextTickAsync(_cts.Token))
-      {
-        if (IsTimer_On && Application.Current is not null)
-        {
-          if (Application.Current.Dispatcher.CheckAccess()) // if on UI thread
-            await OnTimer("UI");
-          else
-            await Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(async () => { await OnTimer("bg"); }));
-        }
-
-        if (_cts?.Token.IsCancellationRequested == true) // Poll on this property if you have to do other cleanup before throwing.
-        {
-          WriteLine(tbkReport.Text = $"║   PeriodicTimer: -- CancellationRequested => Cancelling timer.");
-          // Clean up here, then...
-          _cts.Token.ThrowIfCancellationRequested();
-        }
-      }
-    }
-    catch (OperationCanceledException ex) { WriteLine(tbkReport.Text = $"║   PeriodicTimer: {ex.Message}"); }
-    catch (Exception ex)             /**/ { WriteLine(tbkReport.Text = ex.Message); }
-    finally { _cts?.Dispose(); _cts = null; }
-  }
-  async Task OnTimer(string thread)
-  {
+    var thread = "timer";
     if (!EnabledY) return;
     EnabledY = false;
 
@@ -79,8 +53,9 @@ public partial class MainWindow : Window
   async Task AllDialogSteps()
   {
     var questn = await ScrapeTAsync();
-    if (tbxPrompt.Text == questn)        /**/ { WriteLine(tbkReport.Text = $"Ignoring the same msg: '{TextSender.SafeLengthTrim(questn)}'."); return; }
-    if (tbkAnswer.Text.Contains(questn)) /**/ { WriteLine(tbkReport.Text = $"Ignoring prev answer: '{TextSender.SafeLengthTrim(questn)}'."); return; }
+    if (tbxPrompt.Text == questn)        /**/ { tbkReport.Foreground = Brushes.Gray; WriteLine(tbkReport.Text = $"Ignoring the same msg: '{TextSender.SafeLengthTrim(questn)}'."); return; }
+
+    if (tbkAnswer.Text.Contains(questn)) /**/ { tbkReport.Foreground = Brushes.Gray; WriteLine(tbkReport.Text = $"Ignoring prev answer: '{TextSender.SafeLengthTrim(questn)}'."); return; }
 
     tbxPrompt.Text = questn;
 
@@ -92,8 +67,9 @@ public partial class MainWindow : Window
     if (IsAutoAnsr)
       await TypeMsgAsync();
     else
-      WriteLine(tbkReport.Text = "Auto type is OFF.");
+      tbkReport.Foreground = Brushes.Gray; WriteLine(tbkReport.Text = "Auto type is OFF.");
   }
+
   async Task<string> ScrapeLastMsgFromteams(IntPtr winh)
   {
     var text = await _ts.GetTargetTextFromWindow(winh, bpr.Tick);
@@ -110,12 +86,12 @@ public partial class MainWindow : Window
     const int minLen = 10;
     try
     {
-      if (!Clipboard.ContainsText() || _prevClpbrd == Clipboard.GetText()) { WriteLine(tbkReport.Text = $"Same   [{DateTime.Now:ss}]"); bpr.Error(); return; }
+      if (!Clipboard.ContainsText() || _prevClpbrd == Clipboard.GetText()) { tbkReport.Foreground = Brushes.Gray; WriteLine(tbkReport.Text = $"Same   [{DateTime.Now:ss}]"); bpr.Error(); return; }
 
       _prevClpbrd = Clipboard.GetText();
-      if (_prevClpbrd.Length < minLen) { WriteLine(tbkReport.Text = $"Too Small"); bpr.Start(); bpr.Error(); return; }
+      if (_prevClpbrd.Length < minLen) { tbkReport.Foreground = Brushes.Gray; WriteLine(tbkReport.Text = $"Too Small"); bpr.Start(); bpr.Error(); return; }
 
-      WriteLine(tbkReport.Text = $"Valid");
+      tbkReport.Foreground = Brushes.Gray; WriteLine(tbkReport.Text = $"Valid");
       tbxPrompt.Text = _prevClpbrd.Trim();
 
       if (IsAutoQrAI) await QueryAiAsync(btnQryAI);
@@ -123,9 +99,9 @@ public partial class MainWindow : Window
 
       bpr.Error();
     }
-    catch (Exception ex) { WriteLine(tbkReport.Text = ex.Message); if (Debugger.IsAttached) Debugger.Break(); }
+    catch (Exception ex) { tbkReport.Foreground = Brushes.Orange; WriteLine(tbkReport.Text = ex.Message); if (Debugger.IsAttached) Debugger.Break(); }
   }
-  public bool IsTimer_On { get => isTimer_On; set { IsWaiting = isTimer_On = value; } }
+  public bool IsTimer_On { get => isTimer_On; set => IsWaiting = isTimer_On = value; }
   public bool IsAutoQrAI { get; set; } = false;
   public bool IsAutoAnsr { get; set; } = false;
   public static readonly DependencyProperty WinTitleProperty = DependencyProperty.Register("WinTitle", typeof(string), typeof(MainWindow)); public string WinTitle { get => (string)GetValue(WinTitleProperty); set => SetValue(WinTitleProperty, value); }
@@ -134,7 +110,7 @@ public partial class MainWindow : Window
 
   async Task<string> ScrapeTAsync()
   {
-    var sw = Stopwatch.StartNew(); bpr.Start(); WriteLine(tbkReport.Text = "Scraping Teams' last msg..."); //menu1.IsEnabled = false;
+    var sw = Stopwatch.StartNew(); bpr.Start(); tbkReport.Foreground = Brushes.Gray; WriteLine(tbkReport.Text = "Scraping Teams' last msg..."); //menu1.IsEnabled = false;
 
     _ = Mouse.Capture(this);
     var current = PointToScreen(Mouse.GetPosition(this));
@@ -150,18 +126,18 @@ public partial class MainWindow : Window
       MouseOperations.SetCursorPosition((int)current.X, (int)current.Y);
       Show();
     }
-    catch (ArgumentOutOfRangeException ex) { WriteLine(tbkReport.Text = ex.Message); if (Debugger.IsAttached) Debugger.Break(); return ex.Message; }
-    catch (IndexOutOfRangeException ex)/**/{ WriteLine(tbkReport.Text = ex.Message); if (Debugger.IsAttached) Debugger.Break(); return ex.Message; }
-    catch (Exception ex)               /**/{ WriteLine(tbkReport.Text = ex.Message); if (Debugger.IsAttached) Debugger.Break(); return ex.Message; }
+    catch (ArgumentOutOfRangeException ex) { tbkReport.Foreground = Brushes.Orange; WriteLine(tbkReport.Text = ex.Message); if (Debugger.IsAttached) Debugger.Break(); return ex.Message; }
+    catch (IndexOutOfRangeException ex)/**/{ tbkReport.Foreground = Brushes.Orange; WriteLine(tbkReport.Text = ex.Message); if (Debugger.IsAttached) Debugger.Break(); return ex.Message; }
+    catch (Exception ex)               /**/{ tbkReport.Foreground = Brushes.Orange; WriteLine(tbkReport.Text = ex.Message); if (Debugger.IsAttached) Debugger.Break(); return ex.Message; }
 
     try
     {
       var text = await ScrapeLastMsgFromteams(winh ?? throw new ArgumentNullException(nameof(winh), $"Window '{WinTitle}' not found"));
       return text;
     }
-    catch (ArgumentOutOfRangeException ex) { WriteLine(tbkReport.Text = ex.Message); if (Debugger.IsAttached) Debugger.Break(); return ex.Message; }
-    catch (IndexOutOfRangeException ex)/**/{ WriteLine(tbkReport.Text = ex.Message); if (Debugger.IsAttached) Debugger.Break(); return ex.Message; }
-    catch (Exception ex)               /**/{ WriteLine(tbkReport.Text = ex.Message); if (Debugger.IsAttached) Debugger.Break(); return ex.Message; }
+    catch (ArgumentOutOfRangeException ex) { tbkReport.Foreground = Brushes.Orange; WriteLine(tbkReport.Text = ex.Message); if (Debugger.IsAttached) Debugger.Break(); return ex.Message; }
+    catch (IndexOutOfRangeException ex)/**/{ tbkReport.Foreground = Brushes.Orange; WriteLine(tbkReport.Text = ex.Message); if (Debugger.IsAttached) Debugger.Break(); return ex.Message; }
+    catch (Exception ex)               /**/{ tbkReport.Foreground = Brushes.Orange; WriteLine(tbkReport.Text = ex.Message); if (Debugger.IsAttached) Debugger.Break(); return ex.Message; }
     finally
     {
       Show();
@@ -172,7 +148,7 @@ public partial class MainWindow : Window
   }
   async Task TypeMsgAsync()
   {
-    var sw = Stopwatch.StartNew(); bpr.Start(); WriteLine(tbkReport.Text = "Typing into Teams..."); tbkAnswer.Background = Brushes.DarkRed;
+    var sw = Stopwatch.StartNew(); bpr.Start(); tbkReport.Foreground = Brushes.Gray; WriteLine(tbkReport.Text = "Typing into Teams..."); tbkAnswer.Background = Brushes.DarkRed;
 
     if (!Mouse.Capture(this)) throw new InvalidOperationException("Failed to get the WinH coordinates.");
 
@@ -194,13 +170,13 @@ public partial class MainWindow : Window
         var failReport = _ts.SendMsg(winh ?? throw new ArgumentNullException(nameof(winh)), $"{tbkAnswer.Text}{{ENTER}}");
         if (failReport.Length > 0)
         {
-          WriteLine(tbkReport.Text = $"FAILED SendKey(): {failReport}");
+          tbkReport.Foreground = Brushes.Gray; WriteLine(tbkReport.Text = $"FAILED SendKey(): {failReport}");
           return;
         }
       }
     }
-    catch (ArgumentOutOfRangeException ex) { WriteLine(tbkReport.Text = ex.Message); }
-    catch (Exception ex) { WriteLine(tbkReport.Text = ex.Message); if (Debugger.IsAttached) Debugger.Break(); }
+    catch (ArgumentOutOfRangeException ex) { tbkReport.Foreground = Brushes.Orange; WriteLine(tbkReport.Text = ex.Message); }
+    catch (Exception ex) { tbkReport.Foreground = Brushes.Orange; WriteLine(tbkReport.Text = ex.Message); if (Debugger.IsAttached) Debugger.Break(); }
     finally
     {
       _ = Mouse.Capture(null);
@@ -210,12 +186,12 @@ public partial class MainWindow : Window
   }
   async Task QueryAiAsync(object s)
   {
-    var sw = Stopwatch.StartNew(); bpr.Start(); WriteLine(tbkReport.Text = "Asking AI ..."); tbkAnswer.Background = Brushes.DarkOliveGreen; ((Control)s).Visibility = Visibility.Hidden;
+    var sw = Stopwatch.StartNew(); bpr.Start(); tbkReport.Foreground = Brushes.Gray; WriteLine(tbkReport.Text = "Asking AI ..."); tbkAnswer.Background = Brushes.DarkOliveGreen; ((Control)s).Visibility = Visibility.Hidden;
     try
     {
       tbkAnswer.Text = "Asking AI ...";
 
-      (bt ??= new(TimeSpan.FromSeconds(.1))).Start(UpdateClock);
+      (btClock ??= new(TimeSpan.FromSeconds(.1))).Start(UpdateClock);
       started = DateTime.Now;
 
       var (ts, finishReason, answer) = await OpenAILib.OpenAI.CallOpenAI(_config, tbkMax.Text, tbxPrompt.Text);
@@ -226,10 +202,11 @@ public partial class MainWindow : Window
       tbkLn.Text = $"{answer.Length}";
       tbkZZ.Text = "·";
     }
+    catch (Exception ex) { tbkReport.Foreground = Brushes.Orange; WriteLine(tbkReport.Text = ex.Message); if (Debugger.IsAttached) Debugger.Break(); }
     finally
     {
       bpr.Finish(); tbkReport.Text += $"  {sw.Elapsed.TotalSeconds:N1}s"; tbkAnswer.Background = Brushes.Transparent; ((Control)s).Visibility = Visibility.Visible;
-      if (bt is not null) await bt.StopAsync();
+      if (btClock is not null) await btClock.StopAsync();
     }
   }
   async void QueryAI(object s, RoutedEventArgs e) => await QueryAiAsync(s);
@@ -238,7 +215,7 @@ public partial class MainWindow : Window
   async void TypeMsg(object s, RoutedEventArgs e) => await TypeMsgAsync();
   async void TabNSee(object s, RoutedEventArgs e)
   {
-    var sw = Stopwatch.StartNew(); bpr.Start(); WriteLine(tbkReport.Text = "TabNSee()...");
+    var sw = Stopwatch.StartNew(); bpr.Start(); tbkReport.Foreground = Brushes.Gray; WriteLine(tbkReport.Text = "TabNSee()...");
 
     try
     {
@@ -255,30 +232,18 @@ public partial class MainWindow : Window
           return;
         }
 
-        WriteLine(tbkReport.Text = $"FAILED TabAndGetText().");
+        tbkReport.Foreground = Brushes.Gray; WriteLine(tbkReport.Text = $"FAILED TabAndGetText().");
       }
     }
-    catch (ArgumentOutOfRangeException ex) { WriteLine(tbkReport.Text = ex.Message); }
-    catch (Exception ex) { WriteLine(tbkReport.Text = ex.Message); if (Debugger.IsAttached) Debugger.Break(); }
+    catch (ArgumentOutOfRangeException ex) { tbkReport.Foreground = Brushes.Orange; WriteLine(tbkReport.Text = ex.Message); }
+    catch (Exception ex) { tbkReport.Foreground = Brushes.Orange; WriteLine(tbkReport.Text = ex.Message); if (Debugger.IsAttached) Debugger.Break(); }
     finally { bpr.Finish(); tbkReport.Text += $"  {sw.Elapsed.TotalSeconds:N1}s"; }
   }
-  async void RunOnce(object s, RoutedEventArgs e) => await OnTimer("clk");
+  async void RunOnce(object s, RoutedEventArgs e) => await OnTimerTask();
   async void ExitApp(object s, RoutedEventArgs e) { await bpr.FinishAsync(); Close(); }
 
-
-  DateTime started;
-  public void UpdateClock() { tbkTM.Text = (DateTime.Now - started).ToString("s\\.f"); }
-  BackgroundTask? bt;
-  void OnClockStart(object sender, RoutedEventArgs e)
-  {
-    bpr.Start();
-    (bt ??= new(TimeSpan.FromSeconds(.1))).Start(UpdateClock);
-    started = DateTime.Now;
-  }
-
-  async void OnClockStop(object sender, RoutedEventArgs e)
-  {
-    bpr.Finish();
-    if (bt is not null) await bt.StopAsync();
-  }
+  async void OnClockStart(object s, RoutedEventArgs e) { await bpr.StartAsync(); (btClock ??= new(TimeSpan.FromSeconds(.1))).Start(UpdateClock); started = DateTime.Now; }
+  async void OnClockStop(object s, RoutedEventArgs e) { bpr.Finish(); if (btClock is not null) await btClock.StopAsync(); btClock = null; }
+  async void OnAutoAnswerTimerStart(object s, RoutedEventArgs e) { await bpr.StartAsync(); (btAat ??= new(TimeSpan.FromSeconds(10))).Start(OnTimerVoid); }
+  async void OnAutoAnswerTimerStop(object s, RoutedEventArgs e) { bpr.Finish(); if (btAat is not null) await btAat.StopAsync(); btAat = null; }
 }// Tell me more about Ukraine.

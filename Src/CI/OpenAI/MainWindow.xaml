@@ -38,7 +38,7 @@
       <!--<Setter Property="Background"     Value="#444" />-->
     </Style>
 
-    <Duration x:Key="WaitDuration">0:0:30</Duration>
+    <Duration x:Key="WaitDuration">0:0:10</Duration>
     <Style TargetType="Rectangle" x:Key="IsOnStyle">
       <Style.Triggers>
         <DataTrigger Binding="{Binding IsWaiting, UpdateSourceTrigger=PropertyChanged}" Value="True">
@@ -55,7 +55,7 @@
       <DoubleAnimation Duration="{StaticResource WaitDuration}" To="1" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[0].(ScaleX)" />
     </Storyboard>
     <Storyboard x:Key="sbk2Stop" >
-      <DoubleAnimation Duration="0:0:0.3" To="0" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[0].(ScaleX)" />
+      <DoubleAnimation Duration="0:0:2.5" To="0" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[0].(ScaleX)" />
     </Storyboard>
     <Style TargetType="Rectangle" x:Key="IsOnStyle2">
       <Style.Triggers>
@@ -102,7 +102,7 @@
         <MenuItem Header="_Tab and Get Text - NOGO" Click="TabNSee" ToolTip="Unfortunately, Unable to tab into the send textbox."/>
         <MenuItem Header="T_ype into Teams" Click="TypeMsg"/>
       </MenuItem>
-      <MenuItem Header="Timer _On"    Width="120" IsCheckable="True" IsChecked="{Binding IsTimer_On}" ToolTip="Timer" />
+      <MenuItem Header="Timer _On"    Width="120" IsCheckable="True" IsChecked="{Binding IsTimer_On}" Checked="OnAutoAnswerTimerStart" Unchecked="OnAutoAnswerTimerStop" ToolTip="Timer" />
       <MenuItem Header="Auto _Query"  Width="120" IsCheckable="True" IsChecked="{Binding IsAutoQrAI}" ToolTip="Send texts right away on appearance in the Clipboard"/>
       <MenuItem Header="Auto Ans_wer" Width="120" IsCheckable="True" IsChecked="{Binding IsAutoAnsr}" ToolTip="Type the answer in to the Teams right away on reply fron AI"/>
       <MenuItem Header="   _Run Once" Width="120" Click="RunOnce" ToolTip="Run full cyccle once"/>

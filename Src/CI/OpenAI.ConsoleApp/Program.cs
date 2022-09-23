@@ -8,7 +8,7 @@ var question = ".NET Core 6.0 is amazing! But why?";// Console.ReadLine();";
 Console.ForegroundColor = ConsoleColor.Green;
 Console.WriteLine(question);
 
-var answer = OpenAILib.OpenAI.CallOpenAI(config, 1250, question);
+var answer = OpenAILib.OpenAI.CallOpenAI(config, "50", question);
 
 Console.ForegroundColor = ConsoleColor.Cyan;
 Console.WriteLine(answer);
