@@ -6,7 +6,7 @@ public partial class MainWindow : Window
   readonly TextSender _ts = new();
   bool isTimer_On = false;
   DateTime started;
-  BackgroundTask? btClock, btAat;
+  BackgroundTask? btStopwatch, btAat;
 
   public MainWindow()
   {
@@ -32,7 +32,7 @@ public partial class MainWindow : Window
     EnabledY = true;
     await Task.Yield();
   }
-  async void UpdateClock() { tbkTM.Text = (DateTime.Now - started).ToString("s\\.f"); await Task.Delay(2); }
+  async void UpdateStopwatch() { tbkTM.Text = (DateTime.Now - started).ToString("s\\.f"); await Task.Delay(2); }
   async void OnTimerVoid() => await OnTimerTask();
   async Task OnTimerTask()
   {
@@ -176,7 +176,7 @@ public partial class MainWindow : Window
     {
       tbkAnswer.Text = "Asking AI ...";
 
-      (btClock ??= new(TimeSpan.FromSeconds(.1))).Start(UpdateClock);
+      (btStopwatch ??= new(TimeSpan.FromSeconds(.1))).Start(UpdateStopwatch);
       started = DateTime.Now;
 
       var (ts, finishReason, answer) = await OpenAILib.OpenAI.CallOpenAI(_config, tbkMax.Text, tbxPrompt.Text);
@@ -191,7 +191,7 @@ public partial class MainWindow : Window
     finally
     {
       bpr.Finish(); tbkReport.Text += $"  {sw.Elapsed.TotalSeconds:N1}s"; tbkAnswer.Background = Brushes.Transparent; ((Control)s).Visibility = Visibility.Visible;
-      if (btClock is not null) await btClock.StopAsync(); btClock = null;
+      if (btStopwatch is not null) await btStopwatch.StopAsync(); btStopwatch = null;
     }
   }
   async void QueryAI(object s, RoutedEventArgs e) => await QueryAiAsync(s);
@@ -227,8 +227,8 @@ public partial class MainWindow : Window
   async void RunOnce(object s, RoutedEventArgs e) => await OnTimerTask();
   async void ExitApp(object s, RoutedEventArgs e) { await bpr.FinishAsync(); Close(); }
 
-  async void OnClockStart(object s, RoutedEventArgs e) { await bpr.StartAsync(); (btClock ??= new(TimeSpan.FromSeconds(.1))).Start(UpdateClock); started = DateTime.Now; }
-  async void OnClockStop(object s, RoutedEventArgs e) { bpr.Finish(); if (btClock is not null) await btClock.StopAsync(); btClock = null; }
+  async void OnStopwatchStart(object s, RoutedEventArgs e) { await bpr.StartAsync(); (btStopwatch ??= new(TimeSpan.FromSeconds(.1))).Start(UpdateStopwatch); started = DateTime.Now; }
+  async void OnStopwatchStop(object s, RoutedEventArgs e) { bpr.Finish(); if (btStopwatch is not null) await btStopwatch.StopAsync(); btStopwatch = null; }
   async void OnAutoAnswerTimerStart(object s, RoutedEventArgs e) { await bpr.StartAsync(); (btAat ??= new((Resources["WaitDuration"] as Duration?)?.TimeSpan ?? TimeSpan.FromSeconds(20))).Start(OnTimerVoid); }
   async void OnAutoAnswerTimerStop(object s, RoutedEventArgs e) { bpr.Finish(); if (btAat is not null) await btAat.StopAsync(); btAat = null; }
 }// Tell me more about Ukraine.
