@@ -1,4 +1,6 @@
-﻿namespace OpenAI;
+﻿using System.Threading;
+
+namespace OpenAI;
 public partial class MainWindow : Window
 {
   readonly IConfigurationRoot _config;
@@ -6,7 +8,7 @@ public partial class MainWindow : Window
   readonly TextSender _ts = new();
   bool isTimer_On = false;
   DateTime started;
-  BackgroundTask? btStopwatch, btAat;
+  BackgroundTask? btStopwatch, btTeamsChecker;
 
   public MainWindow()
   {
@@ -36,23 +38,19 @@ public partial class MainWindow : Window
   async void OnTimerVoid() => await OnTimerTask();
   async Task OnTimerTask()
   {
-    var thread = "timer";
     if (!EnabledY) return;
-    EnabledY = false;
 
-    WriteLine($"\n>>> Starting on  '{thread}' ... ");
-
-    IsWaiting = false;
+    EnabledY = IsWaiting = false;
     await AllDialogSteps();
-    IsWaiting = true;
-    EnabledY = true;
+    EnabledY = IsWaiting = true;
   }
   async Task AllDialogSteps()
   {
+    WriteLine($"\n>>> Starting ... ");
+    
     var questn = await ScrapeTAsync();
-    if (tbxPrompt.Text == questn)        /**/ { tbkReport.Foreground = Brushes.Gray; WriteLine(tbkReport.Text = $"Ignoring the same msg: '{TextSender.SafeLengthTrim(questn)}'."); return; }
-
-    if (tbkAnswer.Text.Contains(questn)) /**/ { tbkReport.Foreground = Brushes.Gray; WriteLine(tbkReport.Text = $"Ignoring prev answer: '{TextSender.SafeLengthTrim(questn)}'."); return; }
+    if (tbxPrompt.Text == questn)        /**/ { tbkReport.Foreground = Brushes.Magenta; WriteLine(tbkReport.Text = $"Ignoring the same msg: '{TextSender.SafeLengthTrim(questn)}'."); return; }
+    if (tbkAnswer.Text.Contains(questn)) /**/ { tbkReport.Foreground = Brushes.Magenta; WriteLine(tbkReport.Text = $"Ignoring prev answer: '{TextSender.SafeLengthTrim(questn)}'."); return; }
 
     tbxPrompt.Text = questn;
 
@@ -227,8 +225,8 @@ public partial class MainWindow : Window
   async void RunOnce(object s, RoutedEventArgs e) => await OnTimerTask();
   async void ExitApp(object s, RoutedEventArgs e) { await bpr.FinishAsync(); Close(); }
 
+  async void OnTeamsCheckerStart(object s, RoutedEventArgs e) { await bpr.StartAsync(); (btTeamsChecker ??= new((Resources["WaitDuration"] as Duration?)?.TimeSpan ?? TimeSpan.FromSeconds(20))).Start(OnTimerVoid); }
+  async void OnTeamsCheckerStop(object s, RoutedEventArgs e) { bpr.Finish(); if (btTeamsChecker is not null) await btTeamsChecker.StopAsync(); btTeamsChecker = null; }
   async void OnStopwatchStart(object s, RoutedEventArgs e) { await bpr.StartAsync(); (btStopwatch ??= new(TimeSpan.FromSeconds(.1))).Start(UpdateStopwatch); started = DateTime.Now; }
   async void OnStopwatchStop(object s, RoutedEventArgs e) { bpr.Finish(); if (btStopwatch is not null) await btStopwatch.StopAsync(); btStopwatch = null; }
-  async void OnAutoAnswerTimerStart(object s, RoutedEventArgs e) { await bpr.StartAsync(); (btAat ??= new((Resources["WaitDuration"] as Duration?)?.TimeSpan ?? TimeSpan.FromSeconds(20))).Start(OnTimerVoid); }
-  async void OnAutoAnswerTimerStop(object s, RoutedEventArgs e) { bpr.Finish(); if (btAat is not null) await btAat.StopAsync(); btAat = null; }
-}// Tell me more about Ukraine.
+}
