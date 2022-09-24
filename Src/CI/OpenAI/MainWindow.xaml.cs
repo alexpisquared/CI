@@ -110,7 +110,7 @@ public partial class MainWindow : Window
 
   async Task<string> ScrapeTAsync()
   {
-    var sw = Stopwatch.StartNew(); bpr.Start(); tbkReport.Foreground = Brushes.Gray; WriteLine(tbkReport.Text = "Scraping Teams' last msg..."); //menu1.IsEnabled = false;
+    var sw = Stopwatch.StartNew(); tbkReport.Foreground = Brushes.Gray; WriteLine(tbkReport.Text = "Scraping Teams' last msg..."); //menu1.IsEnabled = false;
 
     _ = Mouse.Capture(this);
     var current = PointToScreen(Mouse.GetPosition(this));
@@ -141,14 +141,14 @@ public partial class MainWindow : Window
     finally
     {
       Show();
-      bpr.Finish(); tbkReport.Text += $"  {sw.Elapsed.TotalSeconds:N1}s"; //menu1.IsEnabled = true;
+      tbkReport.Text += $"  {sw.Elapsed.TotalSeconds:N1}s"; //menu1.IsEnabled = true;
 
       _ = Mouse.Capture(null);
     }
   }
   async Task TypeMsgAsync()
   {
-    var sw = Stopwatch.StartNew(); bpr.Start(); tbkReport.Foreground = Brushes.Gray; WriteLine(tbkReport.Text = "Typing into Teams..."); tbkAnswer.Background = Brushes.DarkRed;
+    var sw = Stopwatch.StartNew(); tbkReport.Foreground = Brushes.Gray; WriteLine(tbkReport.Text = "Typing into Teams..."); tbkAnswer.Background = Brushes.DarkRed;
 
     if (!Mouse.Capture(this)) throw new InvalidOperationException("Failed to get the WinH coordinates.");
 
@@ -167,12 +167,20 @@ public partial class MainWindow : Window
         await MouseOperations.MouseClickEventAsync(right - 520, bottom - 88);
         MouseOperations.SetCursorPosition((int)ptsPosn.X, (int)ptsPosn.Y);
         Show();
-        var failReport = _ts.SendMsg(winh ?? throw new ArgumentNullException(nameof(winh)), $"{tbkAnswer.Text}{{ENTER}}");
-        if (failReport.Length > 0)
+
+        foreach (var paragrapf in tbkAnswer.Text.Split(new char[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries))
         {
-          tbkReport.Foreground = Brushes.Gray; WriteLine(tbkReport.Text = $"FAILED SendKey(): {failReport}");
-          return;
+          var failReport = _ts.SendMsg(winh ?? throw new ArgumentNullException(nameof(winh)), $"{paragrapf}{{ENTER}}");
+          if (failReport.Length > 0)
+          {
+            tbkReport.Foreground = Brushes.Gray; WriteLine(tbkReport.Text = $"FAILED SendKey(): {failReport}");
+            return;
+          }
+          await bpr.BeepAsync(7000, .333);
+          await Task.Delay(100);
         }
+
+        await bpr.WaveAsync3k8k();
       }
     }
     catch (ArgumentOutOfRangeException ex) { tbkReport.Foreground = Brushes.Orange; WriteLine(tbkReport.Text = ex.Message); }
@@ -181,7 +189,7 @@ public partial class MainWindow : Window
     {
       _ = Mouse.Capture(null);
       Show();
-      bpr.Finish(); tbkReport.Text += $"  {sw.Elapsed.TotalSeconds:N1}s"; tbkAnswer.Background = Brushes.Transparent;
+      tbkReport.Text += $"  {sw.Elapsed.TotalSeconds:N1}s"; tbkAnswer.Background = Brushes.Transparent;
     }
   }
   async Task QueryAiAsync(object s)
@@ -206,7 +214,7 @@ public partial class MainWindow : Window
     finally
     {
       bpr.Finish(); tbkReport.Text += $"  {sw.Elapsed.TotalSeconds:N1}s"; tbkAnswer.Background = Brushes.Transparent; ((Control)s).Visibility = Visibility.Visible;
-      if (btClock is not null) await btClock.StopAsync();
+      if (btClock is not null) await btClock.StopAsync(); btClock = null;
     }
   }
   async void QueryAI(object s, RoutedEventArgs e) => await QueryAiAsync(s);
