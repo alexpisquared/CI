@@ -176,11 +176,11 @@ public partial class MainWindow : Window
             tbkReport.Foreground = Brushes.Gray; WriteLine(tbkReport.Text = $"FAILED SendKey(): {failReport}");
             return;
           }
-          await bpr.BeepAsync(7000, .333);
-          await Task.Delay(100);
+          await bpr.WaveAsync3k8k4();// BeepAsync(6000, .333);
+          await Task.Delay(125);
         }
 
-        await bpr.WaveAsync3k8k();
+        await bpr.WaveAsync7k5k1();
       }
     }
     catch (ArgumentOutOfRangeException ex) { tbkReport.Foreground = Brushes.Orange; WriteLine(tbkReport.Text = ex.Message); }
