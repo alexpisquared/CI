@@ -1,11 +1,9 @@
 ﻿namespace OpenAI;
 public partial class MainWindow : Window
 {
-  readonly TimeSpan _waitDuration;
   readonly IConfigurationRoot _config;
   readonly Bpr bpr;
   readonly TextSender _ts = new();
-  string _prevClpbrd = "";
   bool isTimer_On = false;
   DateTime started;
   BackgroundTask? btClock, btAat;
@@ -16,7 +14,6 @@ public partial class MainWindow : Window
     DataContext = this;
     _config = new ConfigurationBuilder().AddUserSecrets<MainWindow>().Build(); //var secretProvider = _config.Providers.First(); if (secretProvider.TryGet("WhereAmI", out var secretPass))  WriteLine(secretPass);else  WriteLine("Hello, World!");
     bpr = new Bpr();
-    _waitDuration = (Resources["WaitDuration"] as Duration?)?.TimeSpan ?? TimeSpan.FromSeconds(20);
   }
   async void Window_Loaded(object s, RoutedEventArgs e)
   {
@@ -80,26 +77,6 @@ public partial class MainWindow : Window
     for (var i = Math.Min(4, ary.Length + 1) - 1; i >= 1; i--) { WriteLine($"·· {ary.Length - i,5})   {ary[^i]}"); }    //TMI: hundreds of lines!!! for (var i = 0; i < ary.Length; i++) { WriteLine($".. {i,5})   {ary[i]}"); } 
 
     return ary[^1] == "has context menu" && ary.Length > 1 ? ary[^2] : ary[^1];
-  }
-  async void OnCheckClipboardForData()
-  {
-    const int minLen = 10;
-    try
-    {
-      if (!Clipboard.ContainsText() || _prevClpbrd == Clipboard.GetText()) { tbkReport.Foreground = Brushes.Gray; WriteLine(tbkReport.Text = $"Same   [{DateTime.Now:ss}]"); bpr.Error(); return; }
-
-      _prevClpbrd = Clipboard.GetText();
-      if (_prevClpbrd.Length < minLen) { tbkReport.Foreground = Brushes.Gray; WriteLine(tbkReport.Text = $"Too Small"); bpr.Start(); bpr.Error(); return; }
-
-      tbkReport.Foreground = Brushes.Gray; WriteLine(tbkReport.Text = $"Valid");
-      tbxPrompt.Text = _prevClpbrd.Trim();
-
-      if (IsAutoQrAI) await QueryAiAsync(btnQryAI);
-      if (IsAutoAnsr) TypeMsg(btnQryAI, new RoutedEventArgs());
-
-      bpr.Error();
-    }
-    catch (Exception ex) { tbkReport.Foreground = Brushes.Orange; WriteLine(tbkReport.Text = ex.Message); if (Debugger.IsAttached) Debugger.Break(); }
   }
   public bool IsTimer_On { get => isTimer_On; set => IsWaiting = isTimer_On = value; }
   public bool IsAutoQrAI { get; set; } = false;
@@ -218,7 +195,7 @@ public partial class MainWindow : Window
     }
   }
   async void QueryAI(object s, RoutedEventArgs e) => await QueryAiAsync(s);
-  async void SetText(object s, RoutedEventArgs e) { bpr.Start(); _prevClpbrd = tbkAnswer.Text; Clipboard.SetText(tbkAnswer.Text); await Task.Yield(); }
+  async void SetText(object s, RoutedEventArgs e) { bpr.Start(); Clipboard.SetText(tbkAnswer.Text); await Task.Yield(); }
   async void ScrapeT(object s, RoutedEventArgs e) => tbxPrompt.Text = await ScrapeTAsync();
   async void TypeMsg(object s, RoutedEventArgs e) => await TypeMsgAsync();
   async void TabNSee(object s, RoutedEventArgs e)
@@ -252,6 +229,6 @@ public partial class MainWindow : Window
 
   async void OnClockStart(object s, RoutedEventArgs e) { await bpr.StartAsync(); (btClock ??= new(TimeSpan.FromSeconds(.1))).Start(UpdateClock); started = DateTime.Now; }
   async void OnClockStop(object s, RoutedEventArgs e) { bpr.Finish(); if (btClock is not null) await btClock.StopAsync(); btClock = null; }
-  async void OnAutoAnswerTimerStart(object s, RoutedEventArgs e) { await bpr.StartAsync(); (btAat ??= new(TimeSpan.FromSeconds(10))).Start(OnTimerVoid); }
+  async void OnAutoAnswerTimerStart(object s, RoutedEventArgs e) { await bpr.StartAsync(); (btAat ??= new((Resources["WaitDuration"] as Duration?)?.TimeSpan ?? TimeSpan.FromSeconds(20))).Start(OnTimerVoid); }
   async void OnAutoAnswerTimerStop(object s, RoutedEventArgs e) { bpr.Finish(); if (btAat is not null) await btAat.StopAsync(); btAat = null; }
 }// Tell me more about Ukraine.
