@@ -16,9 +16,17 @@ public partial class MainWindow : Window
     DataContext = this;
     _config = new ConfigurationBuilder().AddUserSecrets<MainWindow>().Build(); //var secretProvider = _config.Providers.First(); if (secretProvider.TryGet("WhereAmI", out var secretPass))  WriteLine(secretPass);else  WriteLine("Hello, World!");
     bpr = new Bpr();
+
   }
   async void Window_Loaded(object s, RoutedEventArgs e)
   {
+   //await bpr.WaveAsync(1000, 1100, 1);
+
+   //await bpr.WaveAsync(3000, 3300, 4);
+   //await bpr.WaveAsync(3000, 3300, 3);
+   //await bpr.WaveAsync(3000, 3300, 2);
+   //await bpr.WaveAsync(3000, 3300, 1);
+
     EventManager.RegisterClassHandler(typeof(TextBox), TextBox.GotFocusEvent, new RoutedEventHandler((s, re) => { (s as TextBox ?? new TextBox()).SelectAll(); }));
     MouseLeftButtonDown += (s, e) => { if (e.LeftButton == MouseButtonState.Pressed) DragMove(); };
 
