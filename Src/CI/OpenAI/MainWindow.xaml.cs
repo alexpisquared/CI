@@ -1,6 +1,4 @@
-﻿using System.Threading;
-
-namespace OpenAI;
+﻿namespace OpenAI;
 public partial class MainWindow : Window
 {
   readonly IConfigurationRoot _config;
@@ -16,16 +14,87 @@ public partial class MainWindow : Window
     DataContext = this;
     _config = new ConfigurationBuilder().AddUserSecrets<MainWindow>().Build(); //var secretProvider = _config.Providers.First(); if (secretProvider.TryGet("WhereAmI", out var secretPass))  WriteLine(secretPass);else  WriteLine("Hello, World!");
     bpr = new Bpr();
-
   }
   async void Window_Loaded(object s, RoutedEventArgs e)
   {
-   //await bpr.WaveAsync(1000, 1100, 1);
+    //await bpr.StartAsync();
+    if (DateTime.Now == DateTime.Today)
+    {
+      A:
+      await bpr.GradientAsync(300, 600, 1); // 1.3 s
+      await bpr.GradientAsync(600, 100, 1); // 1.3 s
 
-   //await bpr.WaveAsync(3000, 3300, 4);
-   //await bpr.WaveAsync(3000, 3300, 3);
-   //await bpr.WaveAsync(3000, 3300, 2);
-   //await bpr.WaveAsync(3000, 3300, 1);
+      await bpr.GradientAsync(200, 400, 1); // 
+      await bpr.GradientAsync(200, 400, 2); // 
+      await bpr.GradientAsync(200, 600, 2); // 
+      await bpr.GradientAsync(100, 800, 4); // 
+
+      await bpr.GradientAsync(400, 100, 4); // 1.3 s
+      await bpr.GradientAsync(400, 100, 2); // 1.3 s
+      await bpr.GradientAsync(400, 100, 1); // 1.3 s
+
+
+      await bpr.GradientAsync(200, 1100, 1); // 1.7 s
+      await bpr.GradientAsync(100, 1100, 1); // 2.4 s - too vague at the start.
+      await bpr.GradientAsync(500, 1100, 1); // 800 ms
+      await bpr.GradientAsync(1100, 100, 1); // 2.4 s
+
+      await bpr.GradientAsync(500, 1100, 2); // 400 ms
+      await bpr.GradientAsync(1100, 500, 2); // 400 ms
+      await bpr.GradientAsync(500, 1100, 4); // 400 ms
+      await bpr.GradientAsync(1100, 500, 4); // 400 ms
+
+      await bpr.GradientAsync(300, 1100, 2); // 600 ms
+      await bpr.GradientAsync(1100, 300, 2); // 600 ms
+      await bpr.GradientAsync(300, 1100, 4); // 300 ms  Start
+      await bpr.GradientAsync(1100, 300, 4); // 300 ms  Finish
+
+      await bpr.GradientAsync(100, 1100, 6); // 400 ms
+      await bpr.GradientAsync(1100, 100, 6); // 400 ms
+
+
+
+      await bpr.GradientAsync(100, 1100, 3); // 800 ms
+      await bpr.GradientAsync(1100, 100, 3); // 800 ms
+
+      //await bpr.GradientAsync(100, 2000, 2); // 1.5 s
+      await bpr.GradientAsync(2000, 100, 2); // 1.5 s
+      await bpr.GradientAsync(100, 2000, 5); // 600 ma
+      await bpr.GradientAsync(2000, 100, 5); // 600 ms
+
+      //await bpr.WaveAsync(1000, 1100, 1);
+
+      //await bpr.WaveAsync(3000, 3300, 4);
+      //await bpr.WaveAsync(3000, 3300, 3);
+      //await bpr.WaveAsync(3000, 3300, 2);
+      //await bpr.GradientAsync(300, 1300, 1);
+      await bpr.GradientAsync(1300, 300, 1);
+      //await bpr.GradientAsync(500, 1500, 1);
+
+      await bpr.GradientAsync(900, 1500, 1); // 500 ms
+      await bpr.GradientAsync(1500, 900, 1); // 500 ms
+      await bpr.GradientAsync(900, 1500, 2); // 250 ms
+      await bpr.GradientAsync(1500, 900, 2); // 250 ms
+      await bpr.GradientAsync(800, 1600, 2); // 350 ms
+      await bpr.GradientAsync(1600, 800, 2); // 350 ms
+      await bpr.GradientAsync(800, 1600, 3); // 232 ms
+      await bpr.GradientAsync(1600, 800, 3); // 232 ms
+
+      //await bpr.GradientAsync(100, 1100, 1);
+      await bpr.GradientAsync(1200, 2000, 1);
+      await bpr.GradientAsync(1400, 2000, 1);
+      await bpr.GradientAsync(1600, 2000, 1);
+      await bpr.GradientAsync(1800, 2000, 1);
+      await bpr.GradientAsync(2000, 3000, 1);
+      await bpr.GradientAsync(3000, 4000, 1);
+      await bpr.GradientAsync(4000, 5000, 1);
+      await bpr.GradientAsync(5000, 6000, 1);
+      //await bpr.GradientAsync(6000, 7000, 1);
+      goto A;
+    }
+
+    bpr.AppStart();
+
 
     EventManager.RegisterClassHandler(typeof(TextBox), TextBox.GotFocusEvent, new RoutedEventHandler((s, re) => { (s as TextBox ?? new TextBox()).SelectAll(); }));
     MouseLeftButtonDown += (s, e) => { if (e.LeftButton == MouseButtonState.Pressed) DragMove(); };
@@ -55,7 +124,7 @@ public partial class MainWindow : Window
   async Task AllDialogSteps()
   {
     WriteLine($"\n>>> Starting ... ");
-    
+
     var questn = await ScrapeTAsync();
     if (tbxPrompt.Text == questn)        /**/ { tbkReport.Foreground = Brushes.Magenta; WriteLine(tbkReport.Text = $"Ignoring the same msg: '{TextSender.SafeLengthTrim(questn)}'."); return; }
     if (tbkAnswer.Text.Contains(questn)) /**/ { tbkReport.Foreground = Brushes.Magenta; WriteLine(tbkReport.Text = $"Ignoring prev answer: '{TextSender.SafeLengthTrim(questn)}'."); return; }
@@ -163,7 +232,7 @@ public partial class MainWindow : Window
           await Task.Delay(125);
         }
 
-        await bpr.WaveAsync7k5k1();
+        await bpr.GradientAsync(800, 300, 2); // ~800 ms                   await bpr.WaveAsync7k5k1();
       }
     }
     catch (ArgumentOutOfRangeException ex) { tbkReport.Foreground = Brushes.Orange; WriteLine(tbkReport.Text = ex.Message); }
@@ -231,7 +300,7 @@ public partial class MainWindow : Window
     finally { bpr.Finish(); tbkReport.Text += $"  {sw.Elapsed.TotalSeconds:N1}s"; }
   }
   async void RunOnce(object s, RoutedEventArgs e) => await OnTimerTask();
-  async void ExitApp(object s, RoutedEventArgs e) { await bpr.FinishAsync(); Close(); }
+  async void ExitApp(object s, RoutedEventArgs e) { await bpr.AppFinishAsync(); Close(); }
 
   async void OnTeamsCheckerStart(object s, RoutedEventArgs e) { await bpr.StartAsync(); (btTeamsChecker ??= new((Resources["WaitDuration"] as Duration?)?.TimeSpan ?? TimeSpan.FromSeconds(20))).Start(OnTimerVoid); }
   async void OnTeamsCheckerStop(object s, RoutedEventArgs e) { bpr.Finish(); if (btTeamsChecker is not null) await btTeamsChecker.StopAsync(); btTeamsChecker = null; }
