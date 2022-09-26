@@ -134,10 +134,8 @@
       <TextBlock x:Name="tbkZZ" d:Text="ZZ" />
     </StackPanel>
 
-    <ScrollViewer Grid.Row="3" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
-      <TextBox    Margin="8" TextWrapping="Wrap" Text="Answer will show up here." x:Name="tbkAnswer" VerticalAlignment="Stretch" 
-                  FontSize="16" Foreground="Orange" AcceptsReturn="True" />
-    </ScrollViewer>
+    <TextBox    Grid.Row="3" Margin="0" TextWrapping="Wrap" Text="Answer will show up here." x:Name="tbkAnswer" VerticalAlignment="Stretch" 
+                FontSize="16" Foreground="Orange" AcceptsReturn="True" VerticalScrollBarVisibility="Auto" />
 
     <StackPanel Grid.Row="3" Margin="2" IsEnabled="{Binding EnabledY}" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom">
       <Button   Content="_Type" Click="TypeMsg" ToolTip="Type the answer in to the Teams...!!!MUST be focused in the Send texbox!!!"/>

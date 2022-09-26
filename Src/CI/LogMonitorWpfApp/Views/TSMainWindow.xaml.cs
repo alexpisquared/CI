@@ -1,4 +1,6 @@
-﻿namespace LogMonitorWpfApp;
+﻿using Ambience.Lib;
+
+namespace LogMonitorWpfApp;
 public partial class TSMainWindow : Window
 {
   readonly FileSystemWatcher _watcher;
@@ -53,6 +55,7 @@ public partial class TSMainWindow : Window
     dg1.ItemsSource = _userSettingsAndStateOfFS.FileDataList;
     dg1.Focus();
     StartWatch();
+    _bpr.AppStart();
     await StartPeriodicChecker();
   }
   void OnChckFS(object s, RoutedEventArgs e) { _bpr.Click(); ChckFS(); }
@@ -544,6 +547,7 @@ public partial class TSMainWindow : Window
   protected override async void OnClosed(EventArgs e)
   {
     StopWatch();
+    await _bpr.AppFinishAsync();
     await rsk.OnClosed();
     base.OnClosed(e);
   }
