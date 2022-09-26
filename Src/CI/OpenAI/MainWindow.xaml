@@ -39,18 +39,6 @@
     </Style>
 
     <Duration x:Key="WaitDuration">0:0:8</Duration>
-    <Style TargetType="Rectangle" x:Key="IsOnStyle">
-      <Style.Triggers>
-        <DataTrigger Binding="{Binding IsWaiting, UpdateSourceTrigger=PropertyChanged}" Value="True">
-          <DataTrigger.EnterActions>
-            <BeginStoryboard Storyboard="{StaticResource sbkFrvr}" />
-          </DataTrigger.EnterActions>
-          <DataTrigger.ExitActions>
-            <BeginStoryboard Storyboard="{StaticResource sbkStop}" />
-          </DataTrigger.ExitActions>
-        </DataTrigger>
-      </Style.Triggers>
-    </Style>
     <Storyboard x:Key="sbk2Frvr" >
       <DoubleAnimation Duration="{StaticResource WaitDuration}" To="1" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[0].(ScaleX)" />
     </Storyboard>
