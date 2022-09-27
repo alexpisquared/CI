@@ -5,21 +5,22 @@
     <WindowChrome CaptionHeight="0" ResizeBorderThickness="10" />
   </WindowChrome.WindowChrome>
   <Window.Resources>
-    <Style TargetType="FrameworkElement">
+    <Style TargetType="{x:Type FrameworkElement}">
     </Style>
-    <Style TargetType="Control" x:Key="c0">
-      <Setter Property="Background" Value="#678" />
-      <Setter Property="Foreground" Value="#ddd" />
+    <Style TargetType="{x:Type Control}"          x:Key="c0">
+      <Setter Property="Background"               Value="#678" />
+      <Setter Property="Foreground"               Value="#ddd" />
     </Style>
-    <Style TargetType="ContentControl">
-      <Setter Property="Background" Value="#ff0" />
-      <Setter Property="Foreground" Value="#0f0" />
+    <Style TargetType="{x:Type ContentControl}">
+      <Setter Property="Background"               Value="#ff0" />
+      <Setter Property="Foreground"               Value="#0f0" />
     </Style>
-    <Style TargetType="TextBox" BasedOn="{StaticResource c0}">
-    </Style>
-    <Style TargetType="ListBox" BasedOn="{StaticResource c0}">
-    </Style>
+    <Style TargetType="{x:Type TextBox}" BasedOn="{StaticResource c0}" />
+    <Style TargetType="{x:Type ListBox}" BasedOn="{StaticResource c0}" />
 
+    <Style TargetType="{x:Type Button}" >
+      <Setter Property="BorderThickness"  Value="0" />
+    </Style>
     <Style TargetType="{x:Type TextBlock}" x:Key="CenterAlignStyle" >
       <Setter Property="TextAlignment" Value="Center" />
     </Style>
@@ -75,6 +76,7 @@
             <MenuItem Header="  _0  " Click="OnStop_6" />
             <Button Content=" ReWatch " Click="OnResetW" IsDefault="True" Margin="5" Background="Transparent" Foreground="#00d" ToolTip="Remove deleted from the list"    />
           </MenuItem>
+          <TextBlock x:Name="tbkSelec" Margin="5 8 5 0" Foreground="#08f"  d:Text="Select" MinWidth="268" />
           <MenuItem Header="_Qet"   x:Name="chkQuietMode" ToolTip="Silent mode"                             IsCheckable="True" />
           <MenuItem Header="_Lng"   x:Name="chkLongAudio" ToolTip="Long sound on changes (vs errors only)"  IsCheckable="True" />
           <MenuItem Header="E_xp"   Click="OnExplre"      ToolTip="E_xplore log folder"/>
@@ -83,11 +85,10 @@
           <MenuItem Header="A_pi"   Click="OnMovApi"      ToolTip="Move old files to  ..\Logs.Old" Foreground="#04f" />
           <MenuItem Header="_Ack"   Click="OnAckAck"      ToolTip="Ack + Stay"                     Foreground="#080" />
         </Menu>
-        
-        <Button Content="   Ack   " Click="OnAckAck" IsCancel="True"  Margin="5" Background="Transparent" Foreground="#080" ToolTip="Stop Notifier + Minimize Window" />
 
-        <TextBlock x:Name="tbkSelec" Margin="5 8 5 0" Foreground="#08f"  d:Text="Select" MinWidth="268" />
-        <Button Content="  X  "      Click="OnClose"                  Margin="5" Background="Transparent" Foreground="#f00" ToolTip="Close"                           />
+        <Button Content="Ack" Width="30" Click="OnAckAck" Margin="5" Background="Transparent" Foreground="#080" ToolTip="Stop Notifier + Minimize Window" IsCancel="True"  />
+        <Button Content=" X " Width="30" Click="OnClose"  Margin="5" Background="Transparent" Foreground="#f00" ToolTip="Close" />
+
         <TextBlock                   Margin="5 8 5 0" Foreground="#aa0"  d:Text="Title"  MaxWidth="268" Text="{Binding ElementName=wnd, Path=Title}" />
         <TextBlock x:Name="tbkHeadr" Margin="5 8 5 0" Foreground="#a0a"  d:Text="1 1 0"  Visibility="Collapsed" FontWeight="Bold"/>
         <TextBlock x:Name="tbkTitle" Margin="5 8 5 0" Foreground="#8ff"  d:Text="Title"  Visibility="Collapsed" />
