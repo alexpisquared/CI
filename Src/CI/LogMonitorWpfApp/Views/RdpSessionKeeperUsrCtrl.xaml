@@ -41,7 +41,7 @@
           </DataTrigger>
         </Style.Triggers>
       </Style>
-      <Storyboard x:Key="sbk2Frvr" Timeline.DesiredFrameRate="1" >
+      <Storyboard x:Key="sbk2Frvr">
         <DoubleAnimation BeginTime="0:0:0" Duration="{StaticResource WaitDuration}" To="1" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[0].(ScaleX)" />
       </Storyboard>
       <Storyboard x:Key="sbk2Stop" >

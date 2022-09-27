@@ -56,7 +56,7 @@ public partial class TSMainWindow : Window
     dg1.Focus();
     StartWatch();
     _bpr.AppStart();
-    await StartPeriodicChecker();
+    await StartPeriodicCheckerOfFS();
   }
   void OnChckFS(object s, RoutedEventArgs e) { _bpr.Click(); ChckFS(); }
   void OnExplre(object s, RoutedEventArgs e) { _bpr.Click(); try { _ = new Process { StartInfo = new ProcessStartInfo(@"Explorer.exe", $"\"{tbxPath.Text}\"") { RedirectStandardError = true, UseShellExecute = false } }.Start(); } catch (Exception ex) { _ = MessageBox.Show(ex.ToString()); } }
@@ -199,6 +199,7 @@ public partial class TSMainWindow : Window
 
   void ChckFS(bool skipReporting = false)
   {
+    Write($"C");
     tbkTitle.Text = $"{DateTimeOffset.Now:HH:mm:ss}  ChckFS";
     var report = ReScanFolder_SetCurrentStateToWatchChangesAgainst(tbxPath.Text);
     if (report != _noChanges && !skipReporting)
@@ -428,7 +429,7 @@ public partial class TSMainWindow : Window
       }));
     }
   }
-  async Task StartPeriodicChecker()
+  async Task StartPeriodicCheckerOfFS()
   {
     WriteLine($"\n{DateTime.Now:HH:mm:ss}   Starting Periodic Checkr ...  ");
     _ctsCheckr?.Cancel();
@@ -438,7 +439,6 @@ public partial class TSMainWindow : Window
     {
       while (await timer.WaitForNextTickAsync(_ctsCheckr.Token))
       {
-        Write($"C");
         ChckFS();
       }
     }

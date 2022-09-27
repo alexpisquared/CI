@@ -41,7 +41,10 @@ public partial class RdpSessionKeeperUsrCtrl : UserControl
     tbkMin.Content = $"ITA so far  {_idleTimeoutAnalizer.MinTimeoutMin:N1} min  {(_idleTimeoutAnalizer.RanByTaskScheduler ? "(byTS)" : "(!byTS)")}";
     await Task.Delay(_dbgDelayMs);
 
-    _ = new DispatcherTimer(TimeSpan.FromSeconds(_appset.PeriodSec), DispatcherPriority.Normal, new EventHandler(async (s, e) => await OnTick()), Dispatcher.CurrentDispatcher); //tu:
+    _ = new DispatcherTimer(
+      ((Resources["WaitDuration"] as Duration?)?.TimeSpan ?? TimeSpan.FromSeconds(20))
+      // TimeSpan.FromSeconds(_appset.PeriodSec)
+      , DispatcherPriority.Normal, new EventHandler(async (s, e) => await OnTick()), Dispatcher.CurrentDispatcher); //tu:
 
     if (_idleTimeoutAnalizer.RanByTaskScheduler)
     {
