@@ -86,17 +86,13 @@
         
         <Button Content="   Ack   " Click="OnAckAck" IsCancel="True"  Margin="5" Background="Transparent" Foreground="#080" ToolTip="Stop Notifier + Minimize Window" />
 
-        <TextBlock                   Margin="5 8 5 0" Foreground="#ff0"  d:Text="Title" Text="{Binding ElementName=wnd, Path=Title}" Width="268"/>
-        <TextBlock x:Name="tbkHeadr" Margin="5 8 5 0" Foreground="#a0a"  d:Text="1 1 0" FontWeight="Bold"/>
-        <TextBlock x:Name="tbkTitle" Margin="5 8 5 0" Foreground="#8ff"  d:Text="Title" Visibility="Collapsed" />
-        <Button Content="  X  "      Click="OnClose"                  Margin="5" Background="Transparent" Foreground="#600" ToolTip="Close"                           />
-        <Button Content="  X  "      Click="OnClose"                  Margin="5" Background="Transparent" Foreground="#900" ToolTip="Close"                           />
-        <Button Content="  X  "      Click="OnClose"                  Margin="5" Background="Transparent" Foreground="#c00" ToolTip="Close"                           />
+        <TextBlock x:Name="tbkSelec" Margin="5 8 5 0" Foreground="#08f"  d:Text="Select" MinWidth="268" />
         <Button Content="  X  "      Click="OnClose"                  Margin="5" Background="Transparent" Foreground="#f00" ToolTip="Close"                           />
-        <Button Content="  X  "      Click="OnClose"                  Margin="5" Background="Transparent" Foreground="#f40" ToolTip="Close"                           />
-        <Button Content="  X  "      Click="OnClose"                  Margin="5" Background="Transparent" Foreground="#f80" ToolTip="Close"                           />
-        <TextBlock x:Name="tbkSelec" Margin="15 8 5 0" Foreground="#08f"  d:Text="Title" />
+        <TextBlock                   Margin="5 8 5 0" Foreground="#aa0"  d:Text="Title"  MaxWidth="268" Text="{Binding ElementName=wnd, Path=Title}" />
+        <TextBlock x:Name="tbkHeadr" Margin="5 8 5 0" Foreground="#a0a"  d:Text="1 1 0"  Visibility="Collapsed" FontWeight="Bold"/>
+        <TextBlock x:Name="tbkTitle" Margin="5 8 5 0" Foreground="#8ff"  d:Text="Title"  Visibility="Collapsed" />
       </StackPanel>
+
 
       <DataGrid Grid.Row="2" x:Name="dg1" SelectionChanged="dg1_SelectionChanged" MouseDoubleClick="dg1_MouseDoubleClick" CanUserDeleteRows="True" CanUserAddRows="False" AutoGenerateColumns="False" VerticalGridLinesBrush="Transparent" HorizontalGridLinesBrush="Transparent" RowHeaderStyle="{x:Null}" BorderThickness="0" Background="Transparent" >
         <DataGrid.Columns>
@@ -117,6 +113,8 @@
 
       <GridSplitter Grid.Column="1"     Grid.Row="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="Transparent" Margin="-5 0"/>
       <GridSplitter Grid.ColumnSpan="3" Grid.Row="3" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="Transparent" Margin="0 -5"/>
+
+      <Button Grid.Column="2" Content="  X  "      Click="OnClose"                  Margin="5" Background="Transparent" Foreground="#f00" ToolTip="Close"                          VerticalAlignment="Top" HorizontalAlignment="Right" />
     </Grid>
   </Border>
 </Window>
