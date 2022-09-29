@@ -63,7 +63,8 @@
   </UserControl.Resources>
   <Viewbox>
     <Grid>
-      <TextBlock Text="Log" x:Name="tbkLog" HorizontalAlignment="Center" VerticalAlignment="Bottom" Foreground="#fff" Background="#036" MaxWidth="500" FontSize="5" TextWrapping="Wrap" Padding="2 0 2 1" />
+      <TextBlock Text="Log" x:Name="tbkLog" HorizontalAlignment="Center" VerticalAlignment="Bottom" Foreground="#fff" Background="#036" MaxWidth="500" FontSize="5" TextWrapping="Wrap" Padding="2 0 2 1" 
+                 Visibility="Collapsed" />
 
       <!--<Rectangle Width="800" Height="1" RenderTransformOrigin="0.90,0.5" Style="{StaticResource IsOnStyle}" Fill="#0ff" VerticalAlignment="Top" >
         <Rectangle.RenderTransform>
