@@ -489,7 +489,7 @@ public partial class TSMainWindow : Window
   void dg1_SelectionChanged(object sender, SelectionChangedEventArgs e)
   {
     _bpr.Click();
-    brdr1.Background = new SolidColorBrush(Color.FromRgb(30, 0, 20));
+    //brdr1.Background = new SolidColorBrush(Color.FromRgb(30, 0, 20));
     var si = (FileData)((System.Windows.Controls.Primitives.Selector)sender).SelectedItem;
     if (si is null) return;
 
