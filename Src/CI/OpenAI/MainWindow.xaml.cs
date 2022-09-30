@@ -153,7 +153,7 @@ public partial class MainWindow : Window
     return ary[^1] == "has context menu" && ary.Length > 1 ? ary[^2] : ary[^1];
   }
   public bool IsTimer_On { get => isTimer_On; set => IsWaiting = isTimer_On = value; }
-  public bool IsAutoQrAI { get; set; } = false;
+  public bool IsAutoQrAI { get; set; } = true;
   public bool IsAutoAnsr { get; set; } = false;
   public static readonly DependencyProperty WinTitleProperty = DependencyProperty.Register("WinTitle", typeof(string), typeof(MainWindow)); public string WinTitle { get => (string)GetValue(WinTitleProperty); set => SetValue(WinTitleProperty, value); }
   public static readonly DependencyProperty EnabledYProperty = DependencyProperty.Register("EnabledY", typeof(bool), typeof(MainWindow)); public bool EnabledY { get => (bool)GetValue(EnabledYProperty); set => SetValue(EnabledYProperty, value); }
@@ -299,7 +299,7 @@ public partial class MainWindow : Window
     finally { bpr.Finish(); tbkReport.Text += $"  {sw.Elapsed.TotalSeconds:N1}s"; }
   }
   async void RunOnce(object s, RoutedEventArgs e) => await OnTimerTask();
-  async void ExitApp(object s, RoutedEventArgs e) { await bpr.AppFinishAsync(); Close(); }
+  async void ExitApp(object s, RoutedEventArgs e) { Hide(); await bpr.AppFinishAsync(); Close(); }
 
   async void OnTeamsCheckerStart(object s, RoutedEventArgs e) { await bpr.StartAsync(); (btTeamsChecker ??= new((Resources["WaitDuration"] as Duration?)?.TimeSpan ?? TimeSpan.FromSeconds(20))).Start(OnTimerVoid); }
   async void OnTeamsCheckerStop(object s, RoutedEventArgs e) { bpr.Finish(); if (btTeamsChecker is not null) await btTeamsChecker.StopAsync(); btTeamsChecker = null; }

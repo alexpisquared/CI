@@ -195,7 +195,7 @@ public partial class TSMainWindow : Window
   }
 
   void On0000(object s, RoutedEventArgs e) { _bpr.Click(); try { } catch (Exception ex) { _ = MessageBox.Show(ex.ToString()); } }
-  void OnClose(object s, RoutedEventArgs e) => Close();
+  async void OnClose(object s, RoutedEventArgs e) { Hide(); Close(); await _bpr.AppFinishAsync(); }
 
   void ChckFS(bool skipReporting = false)
   {
@@ -547,7 +547,7 @@ public partial class TSMainWindow : Window
   protected override async void OnClosed(EventArgs e)
   {
     StopWatch();
-    await _bpr.AppFinishAsync();
+    Hide();
     await rsk.OnClosed();
     base.OnClosed(e);
   }
