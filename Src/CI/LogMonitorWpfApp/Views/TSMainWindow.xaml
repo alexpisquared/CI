@@ -98,7 +98,7 @@
       <DataGrid Grid.Row="2" x:Name="dg1" SelectionChanged="dg1_SelectionChanged" MouseDoubleClick="dg1_MouseDoubleClick" CanUserDeleteRows="True" CanUserAddRows="False" AutoGenerateColumns="False" VerticalGridLinesBrush="Transparent" HorizontalGridLinesBrush="Transparent" RowHeaderStyle="{x:Null}" BorderThickness="0" Background="Transparent" >
         <DataGrid.Columns>
           <DataGridTextColumn     Header=" File name" Binding="{Binding PartName, Mode=OneWay}"		              MinWidth="240"  Foreground="#08f" />
-          <DataGridTextColumn     Header="  time  "   Binding="{Binding LastWriteTime, StringFormat=\{0:H\\:mm\}}" Width="Auto" Foreground="#0a0" ElementStyle="{StaticResource RightAlignStyle}" />
+          <DataGridTextColumn     Header="  time  "   Binding="{Binding LastWriteTime, StringFormat=\{0:H\\:mm\}}" Width="Auto" Foreground="#0d0" ElementStyle="{StaticResource RightAlignStyle}" />
           <DataGridTextColumn     Header="  kb  "     Binding="{Binding LengthKb, StringFormat='{}{0:N0}'}"			   Width="Auto" Foreground="#dd0" ElementStyle="{StaticResource RightAlignStyle}" />
           <DataGridTextColumn     Header="status"     Binding="{Binding Status      }"			                       Width="*"		Foreground="#f80" />
           <!--
