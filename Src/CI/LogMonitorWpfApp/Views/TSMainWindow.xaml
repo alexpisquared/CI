@@ -10,6 +10,7 @@
     <Style TargetType="{x:Type Control}"          x:Key="c0">
       <Setter Property="Background"               Value="#678" />
       <Setter Property="Foreground"               Value="#ddd" />
+      <Setter Property="BorderThickness"          Value="0" />
     </Style>
     <Style TargetType="{x:Type ContentControl}">
       <Setter Property="Background"               Value="#ff0" />
