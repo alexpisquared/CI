@@ -1,6 +1,6 @@
 ﻿<Window x:Class="LogMonitorWpfApp.TSMainWindow" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d"
         xmlns:local="clr-namespace:LogMonitorWpfApp"
-        Title="Log Monitor ++ RDP Session Keeper" Height="180" Width="960" Loaded="OnLoaded" Background="Transparent" AllowsTransparency="True" WindowStyle="None" x:Name="wnd" SizeChanged="OnSizeChanged" StateChanged="OnStateChanged">
+        Title="Log Monitor ++ RDP Session Keeper" Height="180" Width="1920" Loaded="OnLoaded" Background="Transparent" AllowsTransparency="True" WindowStyle="None" x:Name="wnd" SizeChanged="OnSizeChanged" StateChanged="OnStateChanged">
   <WindowChrome.WindowChrome>
     <WindowChrome CaptionHeight="0" ResizeBorderThickness="10" />
   </WindowChrome.WindowChrome>
@@ -50,7 +50,7 @@
   <Border CornerRadius="12" Background="#333" BorderBrush="#555" BorderThickness="1" x:Name="brdr1">
     <Grid Margin="5">
       <Grid.ColumnDefinitions>
-        <ColumnDefinition Width="560"/>
+        <ColumnDefinition Width="460"/>
         <ColumnDefinition Width="05"/>
         <ColumnDefinition Width="*"/>
       </Grid.ColumnDefinitions>
@@ -98,8 +98,8 @@
       <DataGrid Grid.Row="2" x:Name="dg1" SelectionChanged="dg1_SelectionChanged" MouseDoubleClick="dg1_MouseDoubleClick" CanUserDeleteRows="True" CanUserAddRows="False" AutoGenerateColumns="False" VerticalGridLinesBrush="Transparent" HorizontalGridLinesBrush="Transparent" RowHeaderStyle="{x:Null}" BorderThickness="0" Background="Transparent" >
         <DataGrid.Columns>
           <DataGridTextColumn     Header=" File name" Binding="{Binding PartName, Mode=OneWay}"		              MinWidth="240"  Foreground="#08f" />
-          <DataGridTextColumn     Header="  time  "   Binding="{Binding LastWriteTime, StringFormat=\{0:H\\:mm\}}" Width="Auto" Foreground="#dd0" ElementStyle="{StaticResource RightAlignStyle}" />
-          <DataGridTextColumn     Header="  kb  "     Binding="{Binding LengthKb, StringFormat='{}{0:N0}'}"			   Width="Auto" Foreground="#0d0" ElementStyle="{StaticResource RightAlignStyle}" />
+          <DataGridTextColumn     Header="  time  "   Binding="{Binding LastWriteTime, StringFormat=\{0:H\\:mm\}}" Width="Auto" Foreground="#0a0" ElementStyle="{StaticResource RightAlignStyle}" />
+          <DataGridTextColumn     Header="  kb  "     Binding="{Binding LengthKb, StringFormat='{}{0:N0}'}"			   Width="Auto" Foreground="#dd0" ElementStyle="{StaticResource RightAlignStyle}" />
           <DataGridTextColumn     Header="status"     Binding="{Binding Status      }"			                       Width="*"		Foreground="#f80" />
           <!--
           <DataGridCheckBoxColumn Header="Gone "     Binding="{Binding IsDeleted   }"			                          />
