@@ -44,7 +44,7 @@ public partial class TSMainWindow : Window
     };
 
 #if !_DEBUG
-    if (Environment.MachineName == "D21-MJ0AWBEV") /**/ { Top = 32;  Left = 0; }
+    if (Environment.MachineName == "D21-MJ0AWBEV") /**/ { Top = 32; Left = 0; }
 
     if (Environment.MachineName == "RAZER1")       /**/ { Top = Left = 0; }
 #endif
@@ -115,7 +115,7 @@ public partial class TSMainWindow : Window
             trg = Path.Combine(Path.GetDirectoryName(trg)!, $"{nm0}.{i}") + Path.GetExtension(trg);
           }
 
-          File.Move(logFileInfo.FullName, trg);
+          try { File.Move(logFileInfo.FullName, trg); } catch (Exception ex) { WriteLine($"{logFileInfo.FullName}   {ex.Message}"); }
         }
       }
 
@@ -263,7 +263,7 @@ public partial class TSMainWindow : Window
   }
   void StartWatch([CallerMemberName] string? cmn = "")
   {
-    WriteLine($"\n{DateTime.Now:HH:mm:ss}   Starting  FS WATCH  by  {cmn} {new string('+', 64)}");
+    WriteLine($"{DateTime.Now:HH:mm:ss}   Starting  FS WATCH  by  {cmn} {new string('+', 64)}");
     _watcher.Changed += OnChanged;
     _watcher.Created += OnCreated;
     _watcher.Deleted += OnDeleted;
