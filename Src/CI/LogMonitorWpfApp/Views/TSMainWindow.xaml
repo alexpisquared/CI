@@ -21,24 +21,28 @@
 
     <Style TargetType="{x:Type Button}" >
       <Setter Property="BorderThickness"  Value="0" />
+      <Setter Property="Background"       Value="Transparent"/>
+      <Setter Property="Height"           Value="32"/>
+      <Setter Property="MinWidth"         Value="32"/>
+      <Setter Property="Margin"           Value="6 0"  />
     </Style>
     <Style TargetType="{x:Type TextBlock}" x:Key="CenterAlignStyle" >
-      <Setter Property="TextAlignment" Value="Center" />
+      <Setter Property="TextAlignment"    Value="Center" />
     </Style>
     <Style TargetType="{x:Type TextBlock}" x:Key="RightAlignStyle" >
-      <Setter Property="TextAlignment" Value="Right"  />
-      <Setter Property="Margin"        Value="6 0"  />
+      <Setter Property="TextAlignment"    Value="Right"  />
+      <Setter Property="Margin"           Value="6 0"  />
     </Style>
 
     <Style TargetType="{x:Type DataGridColumnHeader}" x:Key="ColumnHeaderStyle_Aav0" >
-      <Setter Property="Opacity"        Value=".4"/>
-      <Setter Property="Height"         Value="28"/>
-      <Setter Property="FontWeight"     Value="SemiBold"/>
-      <Setter Property="Background"     Value="Transparent"/>
-      <Setter Property="Foreground"     Value="{DynamicResource InfoForegroundBrush}"/>
+      <Setter Property="Opacity"          Value=".4"/>
+      <Setter Property="Height"           Value="28"/>
+      <Setter Property="FontWeight"       Value="SemiBold"/>
+      <Setter Property="Background"       Value="Transparent"/>
+      <Setter Property="Foreground"       Value="{DynamicResource InfoForegroundBrush}"/>
       <Style.Triggers>
-        <Trigger Property="IsMouseOver" Value="True">
-          <Setter Property="ToolTip"    Value="Click to sort."/>
+        <Trigger Property="IsMouseOver"   Value="True">
+          <Setter Property="ToolTip"      Value="Click to sort."/>
         </Trigger>
       </Style.Triggers>
     </Style>
@@ -75,7 +79,7 @@
             <MenuItem Header="Setngs VSCode" Click="OnSetngs" ToolTip="Edit Settings.JSON with VS Code" />
             <MenuItem Header="  _1  " Click="OnStart6" />
             <MenuItem Header="  _0  " Click="OnStop_6" />
-            <Button Content=" ReWatch " Click="OnResetW" IsDefault="True" Margin="5" Background="Transparent" Foreground="#00d" ToolTip="Remove deleted from the list"    />
+            <Button Content=" ReWatch " Click="OnResetW" IsDefault="True" Background="Transparent" Foreground="#00d" ToolTip="Remove deleted from the list"    />
           </MenuItem>
           <TextBlock x:Name="tbkSelec" Margin="5 8 5 0" Foreground="#08f"  d:Text="Select" MinWidth="268" />
           <MenuItem Header="_Qet"   x:Name="chkQuietMode" ToolTip="Silent mode"                             IsCheckable="True" />
@@ -87,8 +91,8 @@
           <MenuItem Header="_Ack"   Click="OnAckAck"      ToolTip="Ack + Stay"                     Foreground="#080" />
         </Menu>
 
-        <Button Content="Ack" Width="30" Click="OnAckAck" Margin="5" Background="Transparent" Foreground="#080" ToolTip="Stop Notifier + Minimize Window" IsCancel="True"  />
-        <Button Content=" X " Width="30" Click="OnClose"  Margin="5" Background="Transparent" Foreground="#f00" ToolTip="Close" />
+        <Button Content="Ack" Width="30" Click="OnAckAck" Background="Transparent" Foreground="#080" ToolTip="Stop Notifier + Minimize Window" IsCancel="True"  />
+        <Button Content=" X " Width="30" Click="OnClose"  Background="Transparent" Foreground="#f00" ToolTip="Close" />
 
         <TextBlock                   Margin="5 8 5 0" Foreground="#aa0"  d:Text="Title"  MaxWidth="268" Text="{Binding ElementName=wnd, Path=Title}" />
         <TextBlock x:Name="tbkHeadr" Margin="5 8 5 0" Foreground="#a0a"  d:Text="1 1 0"  Visibility="Collapsed" FontWeight="Bold"/>
@@ -116,7 +120,8 @@
       <GridSplitter Grid.Column="1"     Grid.Row="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="Transparent" Margin="-5 0"/>
       <GridSplitter Grid.ColumnSpan="3" Grid.Row="3" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="Transparent" Margin="0 -5"/>
 
-      <Button Grid.Column="2" Content="  X  "      Click="OnClose"                  Margin="5" Background="Transparent" Foreground="#f00" ToolTip="Close"                          VerticalAlignment="Top" HorizontalAlignment="Right" />
+      <Button Grid.Column="2" Content="  ^  " Click="OnMaxSz" Margin="0,0,45,0" Foreground="#04f" ToolTip="Max-ze Window"   VerticalAlignment="Top" HorizontalAlignment="Right" />
+      <Button Grid.Column="2" Content="  X  " Click="OnClose" Margin="0,0,00,0" Foreground="#f00" ToolTip="Close"           VerticalAlignment="Top" HorizontalAlignment="Right" />
     </Grid>
   </Border>
 </Window>

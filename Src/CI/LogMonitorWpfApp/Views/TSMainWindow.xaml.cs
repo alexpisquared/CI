@@ -1,6 +1,4 @@
-﻿using Ambience.Lib;
-
-namespace LogMonitorWpfApp;
+﻿namespace LogMonitorWpfApp;
 public partial class TSMainWindow : Window
 {
   readonly FileSystemWatcher _watcher;
@@ -53,7 +51,7 @@ public partial class TSMainWindow : Window
   {
     Title = $"{DateTime.Now:HH:mm}  No events since  ..  {VersionHelper.CurVerStrYMd}";
     dg1.ItemsSource = _userSettingsAndStateOfFS.FileDataList;
-    dg1.Focus();
+    _ = dg1.Focus();
     StartWatch();
     _bpr.AppStart();
     await StartPeriodicCheckerOfFS();
@@ -518,6 +516,9 @@ public partial class TSMainWindow : Window
     }
     catch (Exception ex) { txtText.Text = ex.Message; }
   }
+
+  void OnMaxSz(object s, RoutedEventArgs e) => WindowState = WindowState == WindowState.Maximized ? WindowState.Normal : WindowState.Maximized;
+
   async void OnStart6(object sender, RoutedEventArgs e) => await StartVisualNotifier();
   void OnStop_6(object sender, RoutedEventArgs e)
   {
