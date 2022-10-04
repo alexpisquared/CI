@@ -18,6 +18,7 @@
       <Setter Property="Background"         Value="Transparent" />
       <Setter Property="Margin"             Value="2" />
       <Setter Property="Width"              Value="64" />
+      <Setter Property="BorderThickness"    Value="0" />
     </Style>
     <Style TargetType="{x:Type MenuItem}"     BasedOn="{StaticResource C}" >
       <Setter Property="Foreground"         Value="#0c0" />
@@ -99,7 +100,7 @@
 
     <TextBlock x:Name="tbkTopRight" Foreground="#fff" d:Text="State ???" HorizontalAlignment="Right" Margin="64 0"/>
 
-    <TextBox    Grid.Row="1" IsEnabled="{Binding EnabledY}" Margin="0" TextWrapping="Wrap" Text="Tell me more about Ukraine." x:Name="tbxPrompt" VerticalAlignment="Stretch" IsTabStop="True" AcceptsReturn="True" Background="Transparent" />
+    <TextBox    Grid.Row="1" IsEnabled="{Binding EnabledY}" Margin="0" TextWrapping="Wrap" Text="Tell me more about Ukraine." x:Name="tbxPrompt" VerticalAlignment="Stretch" IsTabStop="True" AcceptsReturn="True" />
 
     <StackPanel Grid.Row="1" IsEnabled="{Binding EnabledY}" Margin="2" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom">
       <Button   Content="_Scrape" Click="ScrapeT" ToolTip="!!!MUST be focused/clicked in the past messages area!!!"/>
