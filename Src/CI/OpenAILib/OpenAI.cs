@@ -8,7 +8,7 @@ public class OpenAI
     var url = "https://api.openai.com/v1/completions";
     var jsonString = @$"{{  
   ""model"": ""{model}"",
-  ""prompt"": ""{prompt}"",  
+  ""prompt"": ""{JsonEncodedText.Encode(prompt)}"",  
   ""temperature"": {temperature},
   ""max_tokens"": {max_tokens},
   ""top_p"": {topP},

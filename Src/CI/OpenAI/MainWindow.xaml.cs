@@ -255,9 +255,12 @@ public partial class MainWindow : Window
       (btStopwatch ??= new(TimeSpan.FromSeconds(.1))).Start(UpdateStopwatch);
       started = DateTime.Now;
 
-      var (ts, finishReason, answer) = await OpenAILib.OpenAI.CallOpenAI(_config, tbkMax.Text,
-        IsSarcastc ? $"{_sarcazm}{tbxPrompt.Text}" :
-        tbxPrompt.Text);
+      var query = $"{(IsSarcastc ? _sarcazm : "")}" + tbxPrompt.Text
+        //.Replace("'", "\\'")
+        //.Replace("\"", "\\\"")
+        ;
+
+      var (ts, finishReason, answer) = await OpenAILib.OpenAI.CallOpenAI(_config, tbkMax.Text, query);
 
       tbkAnswer.Text = answer.StartsWith("\n") ? answer.Trim('\n') : $"{tbxPrompt.Text}{answer}";
       tbkTM.Text = $"{ts.TotalSeconds:N1}";

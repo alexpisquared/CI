@@ -53,9 +53,9 @@ class MyClass : IAsyncDisposable //todo: https://stackoverflow.com/questions/706
         await Task.Run(() => SomeHeavyJob(cancel), cancel);
       }
     }
-    catch (Exception exc)
+    catch (Exception ex)
     {
-      //Handle the exception but don't propagate it
+      WriteLine($"..//Handle the exception but don't propagate it:\n\t{ex}");       
     }
   }
 
