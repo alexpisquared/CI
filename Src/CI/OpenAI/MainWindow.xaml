@@ -95,6 +95,7 @@
       <MenuItem Header="Timer _On"    Width="120" IsCheckable="True" IsChecked="{Binding IsTimer_On}" Checked="OnTeamsCheckerStart" Unchecked="OnTeamsCheckerStop" ToolTip="Timer" />
       <MenuItem Header="Auto _Query"  Width="120" IsCheckable="True" IsChecked="{Binding IsAutoQrAI}" ToolTip="Send texts right away on appearance in the Clipboard"/>
       <MenuItem Header="Auto Ans_wer" Width="120" IsCheckable="True" IsChecked="{Binding IsAutoAnsr}" ToolTip="Type the answer in to the Teams right away on reply fron AI"/>
+      <MenuItem Header="Sarcast_ic"   Width="120" IsCheckable="True" IsChecked="{Binding IsSarcastc}" ToolTip="qqq"/>
       <MenuItem Header="   _Run Once" Width="120" Click="RunOnce" ToolTip="Run full cyccle once"/>
     </Menu>
 

@@ -1,6 +1,7 @@
 ﻿namespace OpenAI;
 public partial class MainWindow : Window
 {
+  const string _sarcazm = "Marv is a chatbot that reluctantly answers questions with sarcastic responses: ";
   readonly IConfigurationRoot _config;
   readonly Bpr bpr;
   readonly TextSender _ts = new();
@@ -155,6 +156,7 @@ public partial class MainWindow : Window
   public bool IsTimer_On { get => isTimer_On; set => IsWaiting = isTimer_On = value; }
   public bool IsAutoQrAI { get; set; } = true;
   public bool IsAutoAnsr { get; set; } = false;
+  public bool IsSarcastc { get; set; } = true;
   public static readonly DependencyProperty WinTitleProperty = DependencyProperty.Register("WinTitle", typeof(string), typeof(MainWindow)); public string WinTitle { get => (string)GetValue(WinTitleProperty); set => SetValue(WinTitleProperty, value); }
   public static readonly DependencyProperty EnabledYProperty = DependencyProperty.Register("EnabledY", typeof(bool), typeof(MainWindow)); public bool EnabledY { get => (bool)GetValue(EnabledYProperty); set => SetValue(EnabledYProperty, value); }
   public static readonly DependencyProperty IsWaitingProperty = DependencyProperty.Register("IsWaiting", typeof(bool), typeof(MainWindow)); public bool IsWaiting { get => (bool)GetValue(IsWaitingProperty); set => SetValue(IsWaitingProperty, value); }
@@ -253,7 +255,9 @@ public partial class MainWindow : Window
       (btStopwatch ??= new(TimeSpan.FromSeconds(.1))).Start(UpdateStopwatch);
       started = DateTime.Now;
 
-      var (ts, finishReason, answer) = await OpenAILib.OpenAI.CallOpenAI(_config, tbkMax.Text, tbxPrompt.Text);
+      var (ts, finishReason, answer) = await OpenAILib.OpenAI.CallOpenAI(_config, tbkMax.Text,
+        IsSarcastc ? $"{_sarcazm}{tbxPrompt.Text}" :
+        tbxPrompt.Text);
 
       tbkAnswer.Text = answer.StartsWith("\n") ? answer.Trim('\n') : $"{tbxPrompt.Text}{answer}";
       tbkTM.Text = $"{ts.TotalSeconds:N1}";
