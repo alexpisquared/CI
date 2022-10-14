@@ -178,7 +178,7 @@ public partial class MainWindow : Window
 
         var (right, bottom) = _ts.GetRB(winh ?? throw new ArgumentNullException(nameof(winh)));
         await MouseOperations.MouseClickEventAsync(right - 32, bottom - 400);
-        if (!IsWebTeams)
+        //if (!IsWebTeams)
           MouseOperations.SetCursorPosition((int)current.X, (int)current.Y);
         Show();
       }
@@ -225,7 +225,7 @@ public partial class MainWindow : Window
         Hide();
         var (right, bottom) = _ts.GetRB(winh ?? throw new ArgumentNullException(nameof(winh)));
         await MouseOperations.MouseClickEventAsync(right - 520, bottom - 88 + (IsWebTeams ? 0 : 0));
-        if (!IsWebTeams)
+        //if (!IsWebTeams)
           MouseOperations.SetCursorPosition((int)ptsPosn.X, (int)ptsPosn.Y);
         Show();
 
@@ -265,10 +265,7 @@ public partial class MainWindow : Window
       (btStopwatch ??= new(TimeSpan.FromSeconds(.1))).Start(UpdateStopwatch);
       started = DateTime.Now;
 
-      var query = $"{(IsSarcastc ? _sarcazm : "")}" + tbxPrompt.Text
-        //.Replace("'", "\\'")
-        //.Replace("\"", "\\\"")
-        ;
+      var query = $"{(IsSarcastc ? _sarcazm : "")}{tbxPrompt.Text}";
 
       var (ts, finishReason, answer) = await OpenAILib.OpenAI.CallOpenAI(_config, tbkMax.Text, query);
 

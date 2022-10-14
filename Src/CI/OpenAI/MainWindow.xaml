@@ -39,7 +39,7 @@
       <!--<Setter Property="Background"     Value="#444" />-->
     </Style>
 
-    <Duration x:Key="WaitDuration">0:0:8</Duration>
+    <Duration x:Key="WaitDuration">0:0:16</Duration>
     <Storyboard x:Key="sbk2Frvr" >
       <DoubleAnimation Duration="{StaticResource WaitDuration}" To="1" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[0].(ScaleX)" />
     </Storyboard>
