@@ -177,7 +177,7 @@ public partial class MainWindow : Window
         winh = await _ts.GetFirstMatch(IsWebTeams ? "msedge" : _config["Prc"], WinTitle, byEndsWith: IsWebTeams ? null : true);
 
         var (right, bottom) = _ts.GetRB(winh ?? throw new ArgumentNullException(nameof(winh)));
-        await MouseOperations.MouseClickEventAsync(right - 32, bottom - 400);
+        await MouseOperations.MouseClickEventAsync(right - 50, bottom - 400);
         //if (!IsWebTeams)
           MouseOperations.SetCursorPosition((int)current.X, (int)current.Y);
         Show();
