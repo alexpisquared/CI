@@ -90,7 +90,7 @@ public partial class RdpSessionKeeperUsrCtrl : UserControl
   public static readonly DependencyProperty IsOnProperty = DependencyProperty.Register("IsOn", typeof(bool), typeof(RdpSessionKeeperUsrCtrl)); public bool IsOn { get => (bool)GetValue(IsOnProperty); set => SetValue(IsOnProperty, value); }
   string Prefix => $"{DateTimeOffset.Now:HH:mm:ss}+{DateTimeOffset.Now - AppStarted:hh\\:mm\\:ss}  {(_appset.IsAudible ? "A" : "a")}{(_appset.IsPosning ? "P" : "p")}{(_appset.IsInsmnia ? "I" : "i")}  ";
 
-  async Task TogglePosition(string msg)
+  async Task TogglePosition(string msg, bool IsWebTeams = false)
   {
     if (_appset.IsAudible == true)
     {
@@ -109,7 +109,7 @@ public partial class RdpSessionKeeperUsrCtrl : UserControl
       var current = PointToScreen(Mouse.GetPosition(this));
       if (current == _previos) // if idle
       {
-        await BringUpTeamsWindow();
+        await BringUpTeamsWindow(IsWebTeams);
 
         if (current.X < 1000) current.X = 1200; // wierd bug moves far left: force to a designated spot.
         if (_previos.Y < 500) _previos.Y = 500;
@@ -132,7 +132,7 @@ public partial class RdpSessionKeeperUsrCtrl : UserControl
       _ = File.AppendAllTextAsync(TextLog, $"{Prefix}tglPsn({msg}).{_crlf}");
     }
   }
-  async Task BringUpTeamsWindow() //todo: works ...but not here... I think it needs to be manually launched - Not by timer.
+  async Task BringUpTeamsWindow(bool IsWebTeams) //todo: works ...but not here... I think it needs to be manually launched - Not by timer.
   {
     var sw = Stopwatch.StartNew(); WriteLine("Typing into Teams..."); tbkLog.Background = Brushes.DarkRed;
 
@@ -143,7 +143,7 @@ public partial class RdpSessionKeeperUsrCtrl : UserControl
 
     try
     {
-      var winh = await _ts.GetFirstMatch("msteams", "Microsoft Teams", byEndsWith: true);
+      var winh = await _ts.GetFirstMatch(IsWebTeams ? "msedge" : "msteams", "Microsoft Teams", byEndsWith: true);
       if (winh is null)
         tbkLog.Text = $"Window \"Microsoft Teams\" not found";
       else

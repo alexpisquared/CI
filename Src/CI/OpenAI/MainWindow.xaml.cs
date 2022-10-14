@@ -157,6 +157,7 @@ public partial class MainWindow : Window
   public bool IsAutoQrAI { get; set; } = true;
   public bool IsAutoAnsr { get; set; } = false;
   public bool IsSarcastc { get; set; } = true;
+  public bool IsWebTeams { get; set; } = true;
   public static readonly DependencyProperty WinTitleProperty = DependencyProperty.Register("WinTitle", typeof(string), typeof(MainWindow)); public string WinTitle { get => (string)GetValue(WinTitleProperty); set => SetValue(WinTitleProperty, value); }
   public static readonly DependencyProperty EnabledYProperty = DependencyProperty.Register("EnabledY", typeof(bool), typeof(MainWindow)); public bool EnabledY { get => (bool)GetValue(EnabledYProperty); set => SetValue(EnabledYProperty, value); }
   public static readonly DependencyProperty IsWaitingProperty = DependencyProperty.Register("IsWaiting", typeof(bool), typeof(MainWindow)); public bool IsWaiting { get => (bool)GetValue(IsWaitingProperty); set => SetValue(IsWaitingProperty, value); }
@@ -167,30 +168,33 @@ public partial class MainWindow : Window
 
     _ = Mouse.Capture(this);
     var current = PointToScreen(Mouse.GetPosition(this));
-
-    IntPtr? winh;
     try
     {
-      Hide();
-      winh = await _ts.GetFirstMatch(_config["Prc"], WinTitle, byEndsWith: true);
+      IntPtr? winh;
+      try
+      {
+        Hide();
+        winh = await _ts.GetFirstMatch(IsWebTeams ? "msedge" : _config["Prc"], WinTitle, byEndsWith: IsWebTeams ? null : true);
 
-      var (right, bottom) = _ts.GetRB(winh ?? throw new ArgumentNullException(nameof(winh)));
-      await MouseOperations.MouseClickEventAsync(right - 32, bottom - 400);
-      MouseOperations.SetCursorPosition((int)current.X, (int)current.Y);
-      Show();
+        var (right, bottom) = _ts.GetRB(winh ?? throw new ArgumentNullException(nameof(winh)));
+        await MouseOperations.MouseClickEventAsync(right - 32, bottom - 400);
+        if (!IsWebTeams)
+          MouseOperations.SetCursorPosition((int)current.X, (int)current.Y);
+        Show();
+      }
+      catch (ArgumentOutOfRangeException ex) { tbkReport.Foreground = Brushes.Orange; WriteLine(tbkReport.Text = ex.Message); if (Debugger.IsAttached) Debugger.Break(); return ex.Message; }
+      catch (IndexOutOfRangeException ex)/**/{ tbkReport.Foreground = Brushes.Orange; WriteLine(tbkReport.Text = ex.Message); if (Debugger.IsAttached) Debugger.Break(); return ex.Message; }
+      catch (Exception ex)               /**/{ tbkReport.Foreground = Brushes.Orange; WriteLine(tbkReport.Text = ex.Message); if (Debugger.IsAttached) Debugger.Break(); return ex.Message; }
+     
+      try
+      {
+        var text = await ScrapeLastMsgFromteams(winh ?? throw new ArgumentNullException(nameof(winh), $"Window '{WinTitle}' not found"));
+        return text;
+      }
+      catch (ArgumentOutOfRangeException ex) { tbkReport.Foreground = Brushes.Orange; WriteLine(tbkReport.Text = ex.Message); if (Debugger.IsAttached) Debugger.Break(); return ex.Message; }
+      catch (IndexOutOfRangeException ex)/**/{ tbkReport.Foreground = Brushes.Orange; WriteLine(tbkReport.Text = ex.Message); if (Debugger.IsAttached) Debugger.Break(); return ex.Message; }
+      catch (Exception ex)               /**/{ tbkReport.Foreground = Brushes.Orange; WriteLine(tbkReport.Text = ex.Message); if (Debugger.IsAttached) Debugger.Break(); return ex.Message; }
     }
-    catch (ArgumentOutOfRangeException ex) { tbkReport.Foreground = Brushes.Orange; WriteLine(tbkReport.Text = ex.Message); if (Debugger.IsAttached) Debugger.Break(); return ex.Message; }
-    catch (IndexOutOfRangeException ex)/**/{ tbkReport.Foreground = Brushes.Orange; WriteLine(tbkReport.Text = ex.Message); if (Debugger.IsAttached) Debugger.Break(); return ex.Message; }
-    catch (Exception ex)               /**/{ tbkReport.Foreground = Brushes.Orange; WriteLine(tbkReport.Text = ex.Message); if (Debugger.IsAttached) Debugger.Break(); return ex.Message; }
-
-    try
-    {
-      var text = await ScrapeLastMsgFromteams(winh ?? throw new ArgumentNullException(nameof(winh), $"Window '{WinTitle}' not found"));
-      return text;
-    }
-    catch (ArgumentOutOfRangeException ex) { tbkReport.Foreground = Brushes.Orange; WriteLine(tbkReport.Text = ex.Message); if (Debugger.IsAttached) Debugger.Break(); return ex.Message; }
-    catch (IndexOutOfRangeException ex)/**/{ tbkReport.Foreground = Brushes.Orange; WriteLine(tbkReport.Text = ex.Message); if (Debugger.IsAttached) Debugger.Break(); return ex.Message; }
-    catch (Exception ex)               /**/{ tbkReport.Foreground = Brushes.Orange; WriteLine(tbkReport.Text = ex.Message); if (Debugger.IsAttached) Debugger.Break(); return ex.Message; }
     finally
     {
       Show();
@@ -210,15 +214,19 @@ public partial class MainWindow : Window
 
     try
     {
-      var winh = await _ts.GetFirstMatch(_config["Prc"], WinTitle, byEndsWith: true);
+      var winh = await _ts.GetFirstMatch(IsWebTeams ? "msedge" : _config["Prc"], WinTitle, byEndsWith: IsWebTeams ? null : true);
       if (winh is null)
+      {
+        tbkReport.Foreground = Brushes.Pink;
         tbkReport.Text = $"Window '{WinTitle}' not found";
+      }
       else
       {
         Hide();
         var (right, bottom) = _ts.GetRB(winh ?? throw new ArgumentNullException(nameof(winh)));
-        await MouseOperations.MouseClickEventAsync(right - 520, bottom - 88);
-        MouseOperations.SetCursorPosition((int)ptsPosn.X, (int)ptsPosn.Y);
+        await MouseOperations.MouseClickEventAsync(right - 520, bottom - 88 + (IsWebTeams ? 0 : 0));
+        if (!IsWebTeams)
+          MouseOperations.SetCursorPosition((int)ptsPosn.X, (int)ptsPosn.Y);
         Show();
 
         foreach (var paragrapf in tbkAnswer.Text.Split(new char[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries))
@@ -240,6 +248,8 @@ public partial class MainWindow : Window
     catch (Exception ex) { tbkReport.Foreground = Brushes.Orange; WriteLine(tbkReport.Text = ex.Message); if (Debugger.IsAttached) Debugger.Break(); }
     finally
     {
+      //if (IsWebTeams)        MouseOperations.SetCursorPosition((int)ptsPosn.X, (int)ptsPosn.Y);
+
       _ = Mouse.Capture(null);
       Show();
       tbkReport.Text += $"  {sw.Elapsed.TotalSeconds:N1}s"; tbkAnswer.Background = Brushes.Transparent;
@@ -285,7 +295,7 @@ public partial class MainWindow : Window
 
     try
     {
-      var winh = await _ts.GetFirstMatch(_config["Prc"], WinTitle, byEndsWith: true);
+      var winh = await _ts.GetFirstMatch(IsWebTeams ? "msedge" : _config["Prc"], WinTitle, byEndsWith: IsWebTeams ? null : true);
       if (winh is null)
         tbkReport.Text = $"Window '{WinTitle}' not found";
       else
