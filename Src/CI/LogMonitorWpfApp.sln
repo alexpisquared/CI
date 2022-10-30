@@ -29,6 +29,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Externs", "Externs", "{6FBA
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "LogMonitor", "LogMonitor", "{9DE7DD9E-52EA-424F-BB14-57731711CEFF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NameOrigin", "NameOrigin\NameOrigin.csproj", "{2F44B8F1-E73E-4E82-84CD-A68E1B852D79}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -159,6 +161,18 @@ Global
 		{A00C2267-B5CA-4B0E-AAF2-822EBC75B068}.Release|x64.Build.0 = Release|x64
 		{A00C2267-B5CA-4B0E-AAF2-822EBC75B068}.Release|x86.ActiveCfg = Release|x86
 		{A00C2267-B5CA-4B0E-AAF2-822EBC75B068}.Release|x86.Build.0 = Release|x86
+		{2F44B8F1-E73E-4E82-84CD-A68E1B852D79}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2F44B8F1-E73E-4E82-84CD-A68E1B852D79}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2F44B8F1-E73E-4E82-84CD-A68E1B852D79}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{2F44B8F1-E73E-4E82-84CD-A68E1B852D79}.Debug|x64.Build.0 = Debug|Any CPU
+		{2F44B8F1-E73E-4E82-84CD-A68E1B852D79}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{2F44B8F1-E73E-4E82-84CD-A68E1B852D79}.Debug|x86.Build.0 = Debug|Any CPU
+		{2F44B8F1-E73E-4E82-84CD-A68E1B852D79}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2F44B8F1-E73E-4E82-84CD-A68E1B852D79}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2F44B8F1-E73E-4E82-84CD-A68E1B852D79}.Release|x64.ActiveCfg = Release|Any CPU
+		{2F44B8F1-E73E-4E82-84CD-A68E1B852D79}.Release|x64.Build.0 = Release|Any CPU
+		{2F44B8F1-E73E-4E82-84CD-A68E1B852D79}.Release|x86.ActiveCfg = Release|Any CPU
+		{2F44B8F1-E73E-4E82-84CD-A68E1B852D79}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
