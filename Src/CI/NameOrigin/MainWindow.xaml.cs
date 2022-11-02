@@ -1,5 +1,5 @@
 ﻿using System.Windows;
-using NameOrigin.EF4;
+using NameOrigin.Code1stModelGen;
 namespace NameOrigin;
 public partial class MainWindow : Window
 {
