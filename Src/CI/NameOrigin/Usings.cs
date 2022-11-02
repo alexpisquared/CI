@@ -1,0 +1,24 @@
+﻿global using System;
+global using System.Media;
+global using System.Threading;
+global using System.Threading.Tasks;
+global using System.Windows;
+global using System.Windows.Controls;
+global using System.Windows.Input;
+global using System.Windows.Threading;
+global using Microsoft.Extensions.Configuration;
+global using System.Linq;
+global using System.Diagnostics;
+global using System.Windows.Media;
+
+global using static System.Diagnostics.Trace;
+global using System;
+global using System.Collections.Generic;
+global using System.ComponentModel.DataAnnotations;
+global using System;
+global using System.Collections.Generic;
+global using System.Diagnostics;
+global using System.IO;
+global using System.Linq;
+global using Microsoft.EntityFrameworkCore;
+global using Microsoft.Extensions.Configuration;
