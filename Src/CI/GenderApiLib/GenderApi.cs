@@ -10,7 +10,7 @@ public class GenderApi
   public static async Task<(TimeSpan ts, string finishReason, FirstnameRootObject? root)> CallOpenAI(IConfigurationRoot cfg, string firstName)
   {
     var stopwatch = Stopwatch.StartNew();
-    var filename = $@"C:\g\CI\Src\CI\NameOrigin\GenderApiResults\FirstName-{firstName}.json";
+    var filename = $@"C:\g\CI\Src\CI\GenderApiLib\Cache.FirstName\{firstName}.json";
 
     try
     {
@@ -18,7 +18,8 @@ public class GenderApi
       if (jsonPart is null)
         return (stopwatch.Elapsed, "jsonPart is null", null);
 
-      await File.WriteAllTextAsync(filename, jsonPart);
+      if (!File.Exists(filename))
+        await File.WriteAllTextAsync(filename, jsonPart);
 
       var dynOb2 = JsonConvert.DeserializeObject<FirstnameRootObject>(jsonPart);          //dynamic dynObj = JsonConvert.DeserializeObject(jsonPart) ?? "No way!";          //dynamic dynObj = JsonSerializer.Deserialize(json);
 

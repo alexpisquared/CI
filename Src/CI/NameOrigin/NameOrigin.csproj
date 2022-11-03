@@ -24,4 +24,8 @@
     <ProjectReference Include="..\GenderApiLib\GenderApiLib.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="GenderApiResults\" />
+  </ItemGroup>
+
 </Project>
