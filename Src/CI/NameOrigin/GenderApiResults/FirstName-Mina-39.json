@@ -1,0 +1,96 @@
+{
+    "name": "mina",
+    "country_of_origin": [
+        {
+            "country_name": "United States",
+            "country": "US",
+            "probability": 0.12,
+            "continental_region": "Americas",
+            "statistical_region": "Northern America"
+        },
+        {
+            "country_name": "United States Virgin Islands",
+            "country": "VI",
+            "probability": 0.11,
+            "continental_region": "Americas",
+            "statistical_region": "Caribbean"
+        },
+        {
+            "country_name": "Iran",
+            "country": "IR",
+            "probability": 0.1,
+            "continental_region": "Asia",
+            "statistical_region": "Southern Asia"
+        },
+        {
+            "country_name": "Algeria",
+            "country": "DZ",
+            "probability": 0.08,
+            "continental_region": "Africa",
+            "statistical_region": "Northern Africa"
+        },
+        {
+            "country_name": "Egypt",
+            "country": "EG",
+            "probability": 0.07,
+            "continental_region": "Africa",
+            "statistical_region": "Northern Africa"
+        },
+        {
+            "country_name": "France",
+            "country": "FR",
+            "probability": 0.05,
+            "continental_region": "Europe",
+            "statistical_region": "Western Europe"
+        },
+        {
+            "country_name": "Italy",
+            "country": "IT",
+            "probability": 0.03,
+            "continental_region": "Europe",
+            "statistical_region": "Southern Europe"
+        },
+        {
+            "country_name": "Senegal",
+            "country": "SN",
+            "probability": 0.02,
+            "continental_region": "Africa",
+            "statistical_region": "Western Africa"
+        },
+        {
+            "country_name": "Greece",
+            "country": "GR",
+            "probability": 0.02,
+            "continental_region": "Europe",
+            "statistical_region": "Southern Europe"
+        },
+        {
+            "country_name": "Serbia",
+            "country": "RS",
+            "probability": 0.02,
+            "continental_region": "Europe",
+            "statistical_region": "Southern Europe"
+        },
+        {
+            "country_name": "Morocco",
+            "country": "MA",
+            "probability": 0.02,
+            "continental_region": "Africa",
+            "statistical_region": "Northern Africa"
+        },
+        {
+            "country_name": "Germany",
+            "country": "DE",
+            "probability": 0.02,
+            "continental_region": "Europe",
+            "statistical_region": "Western Europe"
+        }
+    ],
+    "name_sanitized": "Mina",
+    "gender": "female",
+    "samples": 18003,
+    "accuracy": 88,
+    "country_of_origin_map_url": "https:\/\/gender-api.com\/en\/map\/26829279\/fff4492de302a483",
+    "credits_used": 4,
+    "duration": "42ms"
+}

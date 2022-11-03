@@ -1,12 +1,10 @@
-﻿<Window x:Class="NameOrigin.MainWindow"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+﻿<Window x:Class="NameOrigin.MainWindow" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d"
         xmlns:local="clr-namespace:NameOrigin"
-        mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
-    <Button Content="EF4" Click="Button_Click"/>
-  </Grid>
+        Title="MainWindow" Height="150" Width="360" Background="#333">
+  <WrapPanel Margin="33">
+    <Button Content="  _Read Json  " Click="OnReadJson"  />
+    <Button Content="  _GenderApi  " Click="OnGenderApi" />
+    <Button Content="  _Create DB  " Click="OnCreateDB" IsEnabled="False"/>
+    <Button Content="     E_xit    " Click="OnClose"    IsCancel="True"/>
+  </WrapPanel>
 </Window>

@@ -48,7 +48,6 @@ https://gender-api.com/get-country-of-origin?name=Jaspal&key=6f57474e12de337b3fe
     "credits_used": 2,
     "duration": "24ms"
 }
-
 {
     "name": "jaspal",
     "country_of_origin": [

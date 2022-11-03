@@ -1,4 +1,4 @@
-﻿namespace NameOrigin.ModelGen;
+﻿namespace NameOrigin.Code1stModelGen;
 
 public class FirstnameRootObject
 {
