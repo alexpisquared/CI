@@ -1,7 +1,10 @@
-﻿using System.Security.Policy;
-using NameOrigin.Code1stModelGen;
+﻿using System.Diagnostics;
+using System.Security.Policy;
+using GenderApiLib.Model;
+using Microsoft.Extensions.Configuration;
+using Newtonsoft.Json;
 
-namespace NameOrigin;
+namespace GenderApiLib;
 public class GenderApi
 {
   public static async Task<(TimeSpan ts, string finishReason, FirstnameRootObject? root)> CallOpenAI(IConfigurationRoot cfg, string firstName)

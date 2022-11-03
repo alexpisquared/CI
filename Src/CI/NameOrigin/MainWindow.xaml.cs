@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using GenderApiLib;
 using NameOrigin.Code1stModelGen;
 namespace NameOrigin;
 public partial class MainWindow : Window
