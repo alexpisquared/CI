@@ -6,6 +6,8 @@ public class FirstnameRootObject
   public Country_Of_Origin[] country_of_origin { get; set; }
   public string name_sanitized { get; set; }
   public string gender { get; set; }
+  public int errno { get; set; }
+  public string errmsg { get; set; }
   public int samples { get; set; }
   public int accuracy { get; set; }
   public string country_of_origin_map_url { get; set; }

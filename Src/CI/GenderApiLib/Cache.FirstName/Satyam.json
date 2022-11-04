@@ -1,0 +1,40 @@
+{
+    "name": "satyam",
+    "country_of_origin": [
+        {
+            "country_name": "India",
+            "country": "IN",
+            "probability": 0.64,
+            "continental_region": "Asia",
+            "statistical_region": "Southern Asia"
+        },
+        {
+            "country_name": "Mauritius",
+            "country": "MU",
+            "probability": 0.24,
+            "continental_region": "Africa",
+            "statistical_region": "Eastern Africa"
+        },
+        {
+            "country_name": "Nepal",
+            "country": "NP",
+            "probability": 0.07,
+            "continental_region": "Asia",
+            "statistical_region": "Southern Asia"
+        },
+        {
+            "country_name": "Myanmar",
+            "country": "MM",
+            "probability": 0.02,
+            "continental_region": "Asia",
+            "statistical_region": "South-eastern Asia"
+        }
+    ],
+    "name_sanitized": "Satyam",
+    "gender": "male",
+    "samples": 1565,
+    "accuracy": 99,
+    "country_of_origin_map_url": "https:\/\/gender-api.com\/en\/map\/27078835\/4b2d25680553ca0c",
+    "credits_used": 2,
+    "duration": "17ms"
+}

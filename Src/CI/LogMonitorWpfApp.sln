@@ -21,7 +21,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OpenAI.ConsoleApp", "OpenAI
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OpenAI", "OpenAI\OpenAI.csproj", "{04530D95-8AA7-4034-9729-2184E440070E}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "OpenAI_", "OpenAI_", "{203BDF85-7AFB-4105-B145-71FAE4CAC4F0}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "HttpClient", "HttpClient", "{203BDF85-7AFB-4105-B145-71FAE4CAC4F0}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WindowsFormsLib", "..\..\..\CI-DPL-IMP\Src\SharedLib\WindowsFormsLib\WindowsFormsLib.csproj", "{A00C2267-B5CA-4B0E-AAF2-822EBC75B068}"
 EndProject
@@ -31,7 +31,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "LogMonitor", "LogMonitor", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NameOrigin", "NameOrigin\NameOrigin.csproj", "{2F44B8F1-E73E-4E82-84CD-A68E1B852D79}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GenderApiLib", "GenderApiLib\GenderApiLib.csproj", "{17F2291A-16C7-4382-995B-5031E8CA4827}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GenderApiLib", "GenderApiLib\GenderApiLib.csproj", "{17F2291A-16C7-4382-995B-5031E8CA4827}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

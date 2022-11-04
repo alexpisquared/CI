@@ -11,9 +11,7 @@ public partial class MainWindow : Window
   void OnReadJson(object sender, RoutedEventArgs e) => JsonReadr.ReadArray();
   async void OnGenderApi(object sender, RoutedEventArgs e)
   {
-    _ = new ConfigurationBuilder().AddUserSecrets<App>().Build()["AppSecrets:MagicNumber"]; //tu: adhoc usersecrets from config
-
-    var (ts, _, root) = await GenderApi.CallOpenAI(new ConfigurationBuilder().AddUserSecrets<App>().Build(), tbNm.Text);
+    var (ts, _, root) = await GenderApi.CallOpenAI(new ConfigurationBuilder().AddUserSecrets<App>().Build(), tbNm.Text); //_ = new ConfigurationBuilder().AddUserSecrets<App>().Build()["AppSecrets:MagicNumber"]; //tu: adhoc usersecrets from config
 
     tbRv.Text = $"{root?.name_sanitized}   {root?.country_of_origin.FirstOrDefault()?.country_name}   {root?.country_of_origin.FirstOrDefault()?.probability} %    {ts.TotalMilliseconds:N0} ms";
   }

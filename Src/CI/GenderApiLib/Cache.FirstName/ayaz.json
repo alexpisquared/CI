@@ -1,0 +1,75 @@
+{
+    "name": "ayaz",
+    "country_of_origin": [
+        {
+            "country_name": "Turkey",
+            "country": "TR",
+            "probability": 0.33,
+            "continental_region": "Asia",
+            "statistical_region": "Western Asia"
+        },
+        {
+            "country_name": "Pakistan",
+            "country": "PK",
+            "probability": 0.2,
+            "continental_region": "Asia",
+            "statistical_region": "Southern Asia"
+        },
+        {
+            "country_name": "Azerbaijan",
+            "country": "AZ",
+            "probability": 0.18,
+            "continental_region": "Asia",
+            "statistical_region": "Western Asia"
+        },
+        {
+            "country_name": "Federated States of Micronesia",
+            "country": "FM",
+            "probability": 0.07,
+            "continental_region": "Oceania",
+            "statistical_region": "Micronesia"
+        },
+        {
+            "country_name": "India",
+            "country": "IN",
+            "probability": 0.05,
+            "continental_region": "Asia",
+            "statistical_region": "Southern Asia"
+        },
+        {
+            "country_name": "Afghanistan",
+            "country": "AF",
+            "probability": 0.02,
+            "continental_region": "Asia",
+            "statistical_region": "Southern Asia"
+        },
+        {
+            "country_name": "Austria",
+            "country": "AT",
+            "probability": 0.02,
+            "continental_region": "Europe",
+            "statistical_region": "Western Europe"
+        },
+        {
+            "country_name": "United Arab Emirates",
+            "country": "AE",
+            "probability": 0.02,
+            "continental_region": "Asia",
+            "statistical_region": "Western Asia"
+        },
+        {
+            "country_name": "United Kingdom",
+            "country": "GB",
+            "probability": 0.02,
+            "continental_region": "Europe",
+            "statistical_region": "Northern Europe"
+        }
+    ],
+    "name_sanitized": "Ayaz",
+    "gender": "male",
+    "samples": 4446,
+    "accuracy": 96,
+    "country_of_origin_map_url": "https:\/\/gender-api.com\/en\/map\/27078836\/3063541d1f5f835d",
+    "credits_used": 3,
+    "duration": "36ms"
+}
