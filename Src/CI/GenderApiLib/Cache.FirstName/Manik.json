@@ -1,0 +1,68 @@
+{
+    "name": "manik",
+    "country_of_origin": [
+        {
+            "country_name": "Bangladesh",
+            "country": "BD",
+            "probability": 0.47,
+            "continental_region": "Asia",
+            "statistical_region": "Southern Asia"
+        },
+        {
+            "country_name": "India",
+            "country": "IN",
+            "probability": 0.35,
+            "continental_region": "Asia",
+            "statistical_region": "Southern Asia"
+        },
+        {
+            "country_name": "Maldives",
+            "country": "MV",
+            "probability": 0.05,
+            "continental_region": "Asia",
+            "statistical_region": "Southern Asia"
+        },
+        {
+            "country_name": "Nepal",
+            "country": "NP",
+            "probability": 0.05,
+            "continental_region": "Asia",
+            "statistical_region": "Southern Asia"
+        },
+        {
+            "country_name": "Indonesia",
+            "country": "ID",
+            "probability": 0.04,
+            "continental_region": "Asia",
+            "statistical_region": "South-eastern Asia"
+        },
+        {
+            "country_name": "Sri Lanka",
+            "country": "LK",
+            "probability": 0.03,
+            "continental_region": "Asia",
+            "statistical_region": "Southern Asia"
+        },
+        {
+            "country_name": "United Arab Emirates",
+            "country": "AE",
+            "probability": 0.02,
+            "continental_region": "Asia",
+            "statistical_region": "Western Asia"
+        },
+        {
+            "country_name": "United States",
+            "country": "US",
+            "probability": 0.02,
+            "continental_region": "Americas",
+            "statistical_region": "Northern America"
+        }
+    ],
+    "name_sanitized": "Manik",
+    "gender": "male",
+    "samples": 1115,
+    "accuracy": 94,
+    "country_of_origin_map_url": "https:\/\/gender-api.com\/en\/map\/27079294\/eb8470127d03a633",
+    "credits_used": 3,
+    "duration": "20ms"
+}
