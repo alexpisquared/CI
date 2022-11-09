@@ -64,10 +64,11 @@
   </Window.Resources>
   <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Margin="10">
     <WrapPanel VerticalAlignment="Center" HorizontalAlignment="Center">
-    <Button Content="  _Read Json  " Click="OnReadJson"  />
-    <Button Content="  _GenderApi  " Click="OnGenderApi" IsDefault="True" />
-    <Button Content="  _Create DB  " Click="OnCreateDB"  IsEnabled="False" />
-    <Button Content="     E_xit    " Click="OnClose"     IsCancel="True" />
+      <Button Content="  Read _Json  " Click="OnReadJson"  />
+      <Button Content="  _GenderApi  " Click="OnGenderApi" IsDefault="True" />
+      <Button Content="  _Rapid Api  " Click="OnRapidApi"  IsDefault="False" />
+      <Button Content="  _Create DB  " Click="OnCreateDB"  IsEnabled="False" />
+      <Button Content="     E_xit    " Click="OnClose"     IsCancel="True" />
     </WrapPanel>
     <TextBox   Text="Oleksa"  x:Name="tbNm" HorizontalAlignment="Center" Width="160"/>
     <TextBlock Text="Results" x:Name="tbRv" HorizontalAlignment="Center" />

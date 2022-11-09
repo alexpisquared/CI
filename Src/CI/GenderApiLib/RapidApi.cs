@@ -1,16 +1,10 @@
-﻿using System.Diagnostics;
-using System.Security.Policy;
-using GenderApiLib.Model;
-using Microsoft.Extensions.Configuration;
-using Newtonsoft.Json;
-
-namespace GenderApiLib;
-public class GenderApi
+﻿namespace GenderApiLib;
+public class RapidApi
 {
   public static async Task<(TimeSpan ts, string finishReason, FirstnameRootObject? root)> CallOpenAI(IConfigurationRoot cfg, string firstName)
   {
     var stopwatch = Stopwatch.StartNew();
-    var filename = $@"C:\g\CI\Src\CI\GenderApiLib\Cache.FirstName\{firstName}.json";
+    var filename = $@"C:\g\CI\Src\CI\GenderApiLib\Cache.LastName\{firstName}.json";
 
     try
     {
@@ -38,16 +32,27 @@ public class GenderApi
     }
   }
 
-  static async Task<string> GetFromWeb(IConfigurationRoot cfg, string firstName)
+  static async Task<string> GetFromWeb(IConfigurationRoot cfg, string lastName)
   {
-    var key = cfg?["GenderApi"] + "6c7ef4601";
-    var url = $"https://gender-api.com/get-country-of-origin?name={firstName}&key={key}";
+    var key = cfg?["RapidApi"] + "d0e4d602b1"; 
+    var url = $"https://binaryfog-last-name-origin-v1.p.rapidapi.com/api/LastName/origin?lastName={lastName}";
 
-    using var httpClient = new HttpClient();
-    using var requestMsg = new HttpRequestMessage(new HttpMethod("POST"), url);
+    var client = new HttpClient();
+    var request = new HttpRequestMessage
+    {
+      Method = HttpMethod.Get,
+      RequestUri = new Uri(url),
+      Headers = { { "X-RapidAPI-Key", key }, { "X-RapidAPI-Host", "binaryfog-last-name-origin-v1.p.rapidapi.com" }, },
+    };
 
-    var response = await httpClient.SendAsync(requestMsg);//.Result;
-    var jsonPart = await response.Content.ReadAsStringAsync();//.Result;
+    string jsonPart = "";
+
+    using (var response = await client.SendAsync(request))
+    {
+      _ = response.EnsureSuccessStatusCode();
+      jsonPart = await response.Content.ReadAsStringAsync();
+    }
+
     return jsonPart;
   }
 }
