@@ -1,0 +1,54 @@
+{
+    "name": "sneh",
+    "country_of_origin": [
+        {
+            "country_name": "India",
+            "country": "IN",
+            "probability": 0.5,
+            "continental_region": "Asia",
+            "statistical_region": "Southern Asia"
+        },
+        {
+            "country_name": "Fiji",
+            "country": "FJ",
+            "probability": 0.33,
+            "continental_region": "Oceania",
+            "statistical_region": "Melanesia"
+        },
+        {
+            "country_name": "South Africa",
+            "country": "ZA",
+            "probability": 0.1,
+            "continental_region": "Africa",
+            "statistical_region": "Southern Africa"
+        },
+        {
+            "country_name": "Nepal",
+            "country": "NP",
+            "probability": 0.05,
+            "continental_region": "Asia",
+            "statistical_region": "Southern Asia"
+        },
+        {
+            "country_name": "Canada",
+            "country": "CA",
+            "probability": 0.02,
+            "continental_region": "Americas",
+            "statistical_region": "Northern America"
+        },
+        {
+            "country_name": "United States",
+            "country": "US",
+            "probability": 0.02,
+            "continental_region": "Americas",
+            "statistical_region": "Northern America"
+        }
+    ],
+    "name_sanitized": "Sneh",
+    "gender": "male",
+    "samples": 341,
+    "accuracy": 51,
+    "country_of_origin_map_url": "https:\/\/gender-api.com\/en\/map\/28444736\/0c9a425dfe2b9a00",
+    "credits_used": 3,
+    "duration": "23ms"
+}
