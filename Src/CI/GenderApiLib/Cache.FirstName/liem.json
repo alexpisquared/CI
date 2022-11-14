@@ -1,0 +1,54 @@
+{
+    "name": "liem",
+    "country_of_origin": [
+        {
+            "country_name": "Vietnam",
+            "country": "VN",
+            "probability": 0.71,
+            "continental_region": "Asia",
+            "statistical_region": "South-eastern Asia"
+        },
+        {
+            "country_name": "Germany",
+            "country": "DE",
+            "probability": 0.17,
+            "continental_region": "Europe",
+            "statistical_region": "Western Europe"
+        },
+        {
+            "country_name": "Indonesia",
+            "country": "ID",
+            "probability": 0.14,
+            "continental_region": "Asia",
+            "statistical_region": "South-eastern Asia"
+        },
+        {
+            "country_name": "United States",
+            "country": "US",
+            "probability": 0.05,
+            "continental_region": "Americas",
+            "statistical_region": "Northern America"
+        },
+        {
+            "country_name": "Singapore",
+            "country": "SG",
+            "probability": 0.02,
+            "continental_region": "Asia",
+            "statistical_region": "South-eastern Asia"
+        },
+        {
+            "country_name": "Israel",
+            "country": "IL",
+            "probability": 0.02,
+            "continental_region": "Asia",
+            "statistical_region": "Western Asia"
+        }
+    ],
+    "name_sanitized": "Liem",
+    "gender": "male",
+    "samples": 431,
+    "accuracy": 93,
+    "country_of_origin_map_url": "https:\/\/gender-api.com\/en\/map\/28575181\/4441ddc42db9bd0c",
+    "credits_used": 3,
+    "duration": "30ms"
+}
