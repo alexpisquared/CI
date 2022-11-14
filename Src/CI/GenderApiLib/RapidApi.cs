@@ -1,15 +1,16 @@
-﻿using System.Text.RegularExpressions;
-
-namespace GenderApiLib;
-public class RapidApi
+﻿namespace GenderApiLib;
+public class RapidApi //todo: unable to get the key!!! seems like only for $$.
 {
   public static async Task<(TimeSpan ts, string finishReason, FirstnameRootObject? root)> CallOpenAI(IConfigurationRoot cfg, string firstName)
   {
-    var stopwatch = Stopwatch.StartNew();
-    var filename = $@"C:\g\CI\Src\CI\GenderApiLib\Cache.LastName\{firstName}.json";
+    Trace.WriteLine($"■ ■ ■ cfg?[\"WhereAmI\"]: '{cfg?["WhereAmI"]}'.");
 
-    if (IsBadName(firstName))
+    var stopwatch = Stopwatch.StartNew();
+
+    if (RapidApiHelpers.IsBadName(firstName))
       return (stopwatch.Elapsed, $"Bad name: '{firstName}'", null);
+
+    var filename = $"""C:\g\CI\Src\CI\GenderApiLib\Cache.LastName\{firstName}.json """;
 
     try
     {
@@ -35,73 +36,6 @@ public class RapidApi
     {
       return (stopwatch.Elapsed, ex.Message, null);
     }
-  }
-
-  static bool IsBadName(string firstName)
-  {
-    var rv = true;
-
-    if (new Regex("^[a-zA-Z]*$").Match(firstName).Success == false) return false;
-
-    var badNames = new string[] {
-    "bmo",
-    "dice",
-    "domain",
-    "hr",
-    "ibm",
-    "info",
-    "it",
-    "madam",
-      "monster",
-    "no",
-      "noreply",
-      "sql",
-      "stack",
-    "the",
-    "sir"};
-    badNames.ToList().ForEach(name =>
-    {
-      if (firstName.Equals(name, StringComparison.OrdinalIgnoreCase))
-        rv = false;
-    });
-
-    if(!rv) return false;
-
-    var badParts = new string[] {
-    "admin",
-    "career",
-    "cgi",
-    "cibc",
-    "contact",
-    "custom",
-    "data",
-    "email",
-    "glass",
-    "human",
-    "linke",
-    "madam",
-    "market",
-    "option",
-    "quest",
-    "recru",
-    "remove",
-    "resou",
-    "sales",
-    "servi",
-    "suppor",
-    "subsc",
-    "team",
-    "tech",
-    "sir"};
-    badParts.ToList().ForEach(name =>
-    {
-      if (firstName.Contains(name, StringComparison.OrdinalIgnoreCase))
-        rv = false;
-    });
-
-    if (!rv) return false;
-
-    return rv;
   }
 
   static async Task<string> GetFromWeb(IConfigurationRoot cfg, string lastName)

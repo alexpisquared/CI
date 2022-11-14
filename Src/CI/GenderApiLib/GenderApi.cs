@@ -6,7 +6,11 @@ public class GenderApi
     Trace.WriteLine($"■ ■ ■ cfg?[\"WhereAmI\"]: '{cfg?["WhereAmI"]}'.");
 
     var stopwatch = Stopwatch.StartNew();
-    var filename = $@"C:\g\CI\Src\CI\GenderApiLib\Cache.FirstName\{firstName}.json";
+
+    if (RapidApiHelpers.IsBadName(firstName))
+      return (stopwatch.Elapsed, $"Bad name: '{firstName}'", null);
+
+    var filename = $"""C:\g\CI\Src\CI\GenderApiLib\Cache.FirstName\{firstName}.json""";
 
     try
     {
