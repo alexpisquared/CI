@@ -5,7 +5,7 @@ public static class RapidApiHelpers
 
     public static bool IsBadName(string firstName)
     {
-        var rv = true;
+        var isBad = false;
 
         if (new Regex("^[a-zA-Z]*$").Match(firstName).Success == false) return false;
 
@@ -28,10 +28,10 @@ public static class RapidApiHelpers
         badNames.ToList().ForEach(name =>
         {
             if (firstName.Equals(name, StringComparison.OrdinalIgnoreCase))
-                rv = false;
+                isBad = true;
         });
 
-        if (!rv) return false;
+        if (isBad) return true;
 
         var badParts = new string[] {
   "admin",
@@ -62,11 +62,11 @@ public static class RapidApiHelpers
         badParts.ToList().ForEach(name =>
         {
             if (firstName.Contains(name, StringComparison.OrdinalIgnoreCase))
-                rv = false;
+                isBad = true;
         });
 
-        if (!rv) return false;
+        if (isBad) return true;
 
-        return rv;
+        return isBad;
     }
 }

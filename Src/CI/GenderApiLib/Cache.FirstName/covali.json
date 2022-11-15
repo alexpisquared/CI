@@ -1,0 +1,26 @@
+{
+    "name": "covali",
+    "country_of_origin": [
+        {
+            "country_name": "Moldova",
+            "country": "MD",
+            "probability": 0.3,
+            "continental_region": "Europe",
+            "statistical_region": "Eastern Europe"
+        },
+        {
+            "country_name": "Romania",
+            "country": "RO",
+            "probability": 0.2,
+            "continental_region": "Europe",
+            "statistical_region": "Eastern Europe"
+        }
+    ],
+    "name_sanitized": "Covali",
+    "gender": "unknown",
+    "samples": 6,
+    "accuracy": 50,
+    "country_of_origin_map_url": "https:\/\/gender-api.com\/en\/map\/28610506\/18468ea1c88f5d3f",
+    "credits_used": 2,
+    "duration": "20ms"
+}
