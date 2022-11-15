@@ -1,0 +1,26 @@
+{
+    "name": "kamna",
+    "country_of_origin": [
+        {
+            "country_name": "India",
+            "country": "IN",
+            "probability": 0.47,
+            "continental_region": "Asia",
+            "statistical_region": "Southern Asia"
+        },
+        {
+            "country_name": "United States",
+            "country": "US",
+            "probability": 0.02,
+            "continental_region": "Americas",
+            "statistical_region": "Northern America"
+        }
+    ],
+    "name_sanitized": "Kamna",
+    "gender": "female",
+    "samples": 100,
+    "accuracy": 97,
+    "country_of_origin_map_url": "https:\/\/gender-api.com\/en\/map\/28742721\/cf3718567f7c6907",
+    "credits_used": 2,
+    "duration": "13ms"
+}
