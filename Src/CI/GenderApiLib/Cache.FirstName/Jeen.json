@@ -1,0 +1,61 @@
+{
+    "name": "jeen",
+    "country_of_origin": [
+        {
+            "country_name": "Thailand",
+            "country": "TH",
+            "probability": 0.14,
+            "continental_region": "Asia",
+            "statistical_region": "South-eastern Asia"
+        },
+        {
+            "country_name": "India",
+            "country": "IN",
+            "probability": 0.08,
+            "continental_region": "Asia",
+            "statistical_region": "Southern Asia"
+        },
+        {
+            "country_name": "Netherlands",
+            "country": "NL",
+            "probability": 0.05,
+            "continental_region": "Europe",
+            "statistical_region": "Western Europe"
+        },
+        {
+            "country_name": "France",
+            "country": "FR",
+            "probability": 0.03,
+            "continental_region": "Europe",
+            "statistical_region": "Western Europe"
+        },
+        {
+            "country_name": "Spain",
+            "country": "ES",
+            "probability": 0.03,
+            "continental_region": "Europe",
+            "statistical_region": "Southern Europe"
+        },
+        {
+            "country_name": "Saudi Arabia",
+            "country": "SA",
+            "probability": 0.02,
+            "continental_region": "Asia",
+            "statistical_region": "Western Asia"
+        },
+        {
+            "country_name": "United States",
+            "country": "US",
+            "probability": 0.02,
+            "continental_region": "Americas",
+            "statistical_region": "Northern America"
+        }
+    ],
+    "name_sanitized": "Jeen",
+    "gender": "male",
+    "samples": 170,
+    "accuracy": 51,
+    "country_of_origin_map_url": "https:\/\/gender-api.com\/en\/map\/28877047\/c666b7d527f33e25",
+    "credits_used": 3,
+    "duration": "17ms"
+}

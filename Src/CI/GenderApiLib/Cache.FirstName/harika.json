@@ -1,0 +1,68 @@
+{
+    "name": "harika",
+    "country_of_origin": [
+        {
+            "country_name": "India",
+            "country": "IN",
+            "probability": 0.69,
+            "continental_region": "Asia",
+            "statistical_region": "Southern Asia"
+        },
+        {
+            "country_name": "Turkey",
+            "country": "TR",
+            "probability": 0.41,
+            "continental_region": "Asia",
+            "statistical_region": "Western Asia"
+        },
+        {
+            "country_name": "Bulgaria",
+            "country": "BG",
+            "probability": 0.08,
+            "continental_region": "Europe",
+            "statistical_region": "Eastern Europe"
+        },
+        {
+            "country_name": "Norway",
+            "country": "NO",
+            "probability": 0.05,
+            "continental_region": "Europe",
+            "statistical_region": "Northern Europe"
+        },
+        {
+            "country_name": "Singapore",
+            "country": "SG",
+            "probability": 0.04,
+            "continental_region": "Asia",
+            "statistical_region": "South-eastern Asia"
+        },
+        {
+            "country_name": "Germany",
+            "country": "DE",
+            "probability": 0.04,
+            "continental_region": "Europe",
+            "statistical_region": "Western Europe"
+        },
+        {
+            "country_name": "Austria",
+            "country": "AT",
+            "probability": 0.03,
+            "continental_region": "Europe",
+            "statistical_region": "Western Europe"
+        },
+        {
+            "country_name": "United States",
+            "country": "US",
+            "probability": 0.02,
+            "continental_region": "Americas",
+            "statistical_region": "Northern America"
+        }
+    ],
+    "name_sanitized": "Harika",
+    "gender": "female",
+    "samples": 812,
+    "accuracy": 95,
+    "country_of_origin_map_url": "https:\/\/gender-api.com\/en\/map\/28877326\/5479f21b5616c948",
+    "credits_used": 3,
+    "duration": "16ms"
+}

@@ -1,0 +1,82 @@
+{
+    "name": "zaheer",
+    "country_of_origin": [
+        {
+            "country_name": "Pakistan",
+            "country": "PK",
+            "probability": 0.41,
+            "continental_region": "Asia",
+            "statistical_region": "Southern Asia"
+        },
+        {
+            "country_name": "India",
+            "country": "IN",
+            "probability": 0.11,
+            "continental_region": "Asia",
+            "statistical_region": "Southern Asia"
+        },
+        {
+            "country_name": "Guyana",
+            "country": "GY",
+            "probability": 0.07,
+            "continental_region": "Americas",
+            "statistical_region": "South America"
+        },
+        {
+            "country_name": "Mauritius",
+            "country": "MU",
+            "probability": 0.06,
+            "continental_region": "Africa",
+            "statistical_region": "Eastern Africa"
+        },
+        {
+            "country_name": "United Arab Emirates",
+            "country": "AE",
+            "probability": 0.05,
+            "continental_region": "Asia",
+            "statistical_region": "Western Asia"
+        },
+        {
+            "country_name": "South Africa",
+            "country": "ZA",
+            "probability": 0.04,
+            "continental_region": "Africa",
+            "statistical_region": "Southern Africa"
+        },
+        {
+            "country_name": "United Kingdom",
+            "country": "GB",
+            "probability": 0.04,
+            "continental_region": "Europe",
+            "statistical_region": "Northern Europe"
+        },
+        {
+            "country_name": "Trinidad and Tobago",
+            "country": "TT",
+            "probability": 0.03,
+            "continental_region": "Americas",
+            "statistical_region": "Caribbean"
+        },
+        {
+            "country_name": "Saudi Arabia",
+            "country": "SA",
+            "probability": 0.03,
+            "continental_region": "Asia",
+            "statistical_region": "Western Asia"
+        },
+        {
+            "country_name": "Bahrain",
+            "country": "BH",
+            "probability": 0.02,
+            "continental_region": "Asia",
+            "statistical_region": "Western Asia"
+        }
+    ],
+    "name_sanitized": "Zaheer",
+    "gender": "male",
+    "samples": 1723,
+    "accuracy": 99,
+    "country_of_origin_map_url": "https:\/\/gender-api.com\/en\/map\/28876933\/14862c1f2eb9a8c0",
+    "credits_used": 3,
+    "duration": "24ms"
+}
