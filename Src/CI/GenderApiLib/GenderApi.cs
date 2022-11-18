@@ -1,7 +1,7 @@
 ﻿namespace GenderApiLib;
 public class GenderApi
 {
-  public static async Task<(TimeSpan ts, string exMsg, FirstnameRootObject? root)> CallOpenAI(IConfigurationRoot cfg, string firstName)
+  public static async Task<(TimeSpan ts, string exMsg, FirstnameRootObject? root)> CallOpenAI(IConfigurationRoot cfg, string firstName, bool cacheOnly = false)
   {
     Trace.WriteLine($"■ ■ ■ cfg?[\"WhereAmI\"]: '{cfg?["WhereAmI"]}'.");
 
@@ -11,10 +11,12 @@ public class GenderApi
       return (stopwatch.Elapsed, $"Bad name: '{firstName}'", null);
 
     var filename = $"""C:\g\CI\Src\CI\GenderApiLib\Cache.FirstName\{firstName}.json""";
+    var noCache = $"""C:\g\CI\Src\CI\GenderApiLib\Cache.FirstName\_NoCache_.json""";
 
     try
     {
-      var jsonPart = File.Exists(filename) ? await File.ReadAllTextAsync(filename) : await GetFromWeb(cfg, firstName);
+      var jsonPart = File.Exists(filename) ? await File.ReadAllTextAsync(filename) :
+                                 cacheOnly ? await File.ReadAllTextAsync(noCache) : await GetFromWeb(cfg, firstName);
       if (jsonPart is null)
         return (stopwatch.Elapsed, "jsonPart is null", null);
 
@@ -23,7 +25,7 @@ public class GenderApi
 
       var root = JsonConvert.DeserializeObject<FirstnameRootObject>(jsonPart);          //dynamic dynObj = JsonConvert.DeserializeObject(jsonPart) ?? "No way!";          //dynamic dynObj = JsonSerializer.Deserialize(json);
 
-      if (string.IsNullOrEmpty(root?.errmsg) && !File.Exists(filename) )
+      if (!cacheOnly && string.IsNullOrEmpty(root?.errmsg) && !File.Exists(filename))
         await File.WriteAllTextAsync(filename, jsonPart);
 
       try

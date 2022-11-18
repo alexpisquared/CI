@@ -1,0 +1,47 @@
+{
+    "name": "anshul",
+    "country_of_origin": [
+        {
+            "country_name": "India",
+            "country": "IN",
+            "probability": 0.98,
+            "continental_region": "Asia",
+            "statistical_region": "Southern Asia"
+        },
+        {
+            "country_name": "Nepal",
+            "country": "NP",
+            "probability": 0.03,
+            "continental_region": "Asia",
+            "statistical_region": "Southern Asia"
+        },
+        {
+            "country_name": "Singapore",
+            "country": "SG",
+            "probability": 0.03,
+            "continental_region": "Asia",
+            "statistical_region": "South-eastern Asia"
+        },
+        {
+            "country_name": "New Zealand",
+            "country": "NZ",
+            "probability": 0.02,
+            "continental_region": "Oceania",
+            "statistical_region": "AustraliaandNew Zealand"
+        },
+        {
+            "country_name": "United States",
+            "country": "US",
+            "probability": 0.02,
+            "continental_region": "Americas",
+            "statistical_region": "Northern America"
+        }
+    ],
+    "name_sanitized": "Anshul",
+    "gender": "male",
+    "samples": 2711,
+    "accuracy": 95,
+    "country_of_origin_map_url": "https:\/\/gender-api.com\/en\/map\/29095697\/1a9fa90a995f09cc",
+    "credits_used": 2,
+    "duration": "23ms"
+}
