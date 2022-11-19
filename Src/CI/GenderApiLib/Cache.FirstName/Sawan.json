@@ -1,0 +1,68 @@
+{
+    "name": "sawan",
+    "country_of_origin": [
+        {
+            "country_name": "India",
+            "country": "IN",
+            "probability": 0.51,
+            "continental_region": "Asia",
+            "statistical_region": "Southern Asia"
+        },
+        {
+            "country_name": "Nepal",
+            "country": "NP",
+            "probability": 0.22,
+            "continental_region": "Asia",
+            "statistical_region": "Southern Asia"
+        },
+        {
+            "country_name": "Mauritius",
+            "country": "MU",
+            "probability": 0.13,
+            "continental_region": "Africa",
+            "statistical_region": "Eastern Africa"
+        },
+        {
+            "country_name": "Pakistan",
+            "country": "PK",
+            "probability": 0.06,
+            "continental_region": "Asia",
+            "statistical_region": "Southern Asia"
+        },
+        {
+            "country_name": "Thailand",
+            "country": "TH",
+            "probability": 0.06,
+            "continental_region": "Asia",
+            "statistical_region": "South-eastern Asia"
+        },
+        {
+            "country_name": "Kuwait",
+            "country": "KW",
+            "probability": 0.03,
+            "continental_region": "Asia",
+            "statistical_region": "Western Asia"
+        },
+        {
+            "country_name": "Norway",
+            "country": "NO",
+            "probability": 0.02,
+            "continental_region": "Europe",
+            "statistical_region": "Northern Europe"
+        },
+        {
+            "country_name": "Bangladesh",
+            "country": "BD",
+            "probability": 0.02,
+            "continental_region": "Asia",
+            "statistical_region": "Southern Asia"
+        }
+    ],
+    "name_sanitized": "Sawan",
+    "gender": "male",
+    "samples": 496,
+    "accuracy": 95,
+    "country_of_origin_map_url": "https:\/\/gender-api.com\/en\/map\/29215662\/f3a323d124fa9a67",
+    "credits_used": 3,
+    "duration": "21ms"
+}
