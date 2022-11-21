@@ -1,0 +1,131 @@
+{
+    "name": "dee",
+    "country_of_origin": [
+        {
+            "country_name": "United Kingdom",
+            "country": "GB",
+            "probability": 0.15,
+            "continental_region": "Europe",
+            "statistical_region": "Northern Europe"
+        },
+        {
+            "country_name": "United States",
+            "country": "US",
+            "probability": 0.14,
+            "continental_region": "Americas",
+            "statistical_region": "Northern America"
+        },
+        {
+            "country_name": "Fiji",
+            "country": "FJ",
+            "probability": 0.05,
+            "continental_region": "Oceania",
+            "statistical_region": "Melanesia"
+        },
+        {
+            "country_name": "United States Virgin Islands",
+            "country": "VI",
+            "probability": 0.04,
+            "continental_region": "Americas",
+            "statistical_region": "Caribbean"
+        },
+        {
+            "country_name": "South Africa",
+            "country": "ZA",
+            "probability": 0.04,
+            "continental_region": "Africa",
+            "statistical_region": "Southern Africa"
+        },
+        {
+            "country_name": "Guam",
+            "country": "GU",
+            "probability": 0.03,
+            "continental_region": "Oceania",
+            "statistical_region": "Micronesia"
+        },
+        {
+            "country_name": "Laos",
+            "country": "LA",
+            "probability": 0.03,
+            "continental_region": "Asia",
+            "statistical_region": "South-eastern Asia"
+        },
+        {
+            "country_name": "Ireland",
+            "country": "IE",
+            "probability": 0.03,
+            "continental_region": "Europe",
+            "statistical_region": "Northern Europe"
+        },
+        {
+            "country_name": "Nigeria",
+            "country": "NG",
+            "probability": 0.03,
+            "continental_region": "Africa",
+            "statistical_region": "Western Africa"
+        },
+        {
+            "country_name": "Indonesia",
+            "country": "ID",
+            "probability": 0.03,
+            "continental_region": "Asia",
+            "statistical_region": "South-eastern Asia"
+        },
+        {
+            "country_name": "Lesotho",
+            "country": "LS",
+            "probability": 0.02,
+            "continental_region": "Africa",
+            "statistical_region": "Southern Africa"
+        },
+        {
+            "country_name": "Brunei",
+            "country": "BN",
+            "probability": 0.02,
+            "continental_region": "Asia",
+            "statistical_region": "South-eastern Asia"
+        },
+        {
+            "country_name": "Kenya",
+            "country": "KE",
+            "probability": 0.02,
+            "continental_region": "Africa",
+            "statistical_region": "Eastern Africa"
+        },
+        {
+            "country_name": "Thailand",
+            "country": "TH",
+            "probability": 0.02,
+            "continental_region": "Asia",
+            "statistical_region": "South-eastern Asia"
+        },
+        {
+            "country_name": "Barbados",
+            "country": "BB",
+            "probability": 0.02,
+            "continental_region": "Americas",
+            "statistical_region": "Caribbean"
+        },
+        {
+            "country_name": "Guernsey and Jersey",
+            "country": "JE",
+            "probability": 0.02,
+            "continental_region": "Europe",
+            "statistical_region": "Northern Europe"
+        },
+        {
+            "country_name": "New Zealand",
+            "country": "NZ",
+            "probability": 0.02,
+            "continental_region": "Oceania",
+            "statistical_region": "AustraliaandNew Zealand"
+        }
+    ],
+    "name_sanitized": "Dee",
+    "gender": "female",
+    "samples": 8876,
+    "accuracy": 62,
+    "country_of_origin_map_url": "https:\/\/gender-api.com\/en\/map\/29508610\/f90df80bb690df6c",
+    "credits_used": 5,
+    "duration": "48ms"
+}

@@ -1,0 +1,54 @@
+{
+    "name": "piyush",
+    "country_of_origin": [
+        {
+            "country_name": "India",
+            "country": "IN",
+            "probability": 0.77,
+            "continental_region": "Asia",
+            "statistical_region": "Southern Asia"
+        },
+        {
+            "country_name": "Nepal",
+            "country": "NP",
+            "probability": 0.08,
+            "continental_region": "Asia",
+            "statistical_region": "Southern Asia"
+        },
+        {
+            "country_name": "Benin",
+            "country": "BJ",
+            "probability": 0.02,
+            "continental_region": "Africa",
+            "statistical_region": "Western Africa"
+        },
+        {
+            "country_name": "New Zealand",
+            "country": "NZ",
+            "probability": 0.02,
+            "continental_region": "Oceania",
+            "statistical_region": "AustraliaandNew Zealand"
+        },
+        {
+            "country_name": "Oman",
+            "country": "OM",
+            "probability": 0.02,
+            "continental_region": "Asia",
+            "statistical_region": "Western Asia"
+        },
+        {
+            "country_name": "United Arab Emirates",
+            "country": "AE",
+            "probability": 0.02,
+            "continental_region": "Asia",
+            "statistical_region": "Western Asia"
+        }
+    ],
+    "name_sanitized": "Piyush",
+    "gender": "male",
+    "samples": 6513,
+    "accuracy": 100,
+    "country_of_origin_map_url": "https:\/\/gender-api.com\/en\/map\/29508345\/bbba00dccf3f4258",
+    "credits_used": 3,
+    "duration": "32ms"
+}

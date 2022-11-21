@@ -1,0 +1,26 @@
+{
+    "name": "shareeka",
+    "country_of_origin": [
+        {
+            "country_name": "South Africa",
+            "country": "ZA",
+            "probability": 0.25,
+            "continental_region": "Africa",
+            "statistical_region": "Southern Africa"
+        },
+        {
+            "country_name": "United States",
+            "country": "US",
+            "probability": 0.25,
+            "continental_region": "Americas",
+            "statistical_region": "Northern America"
+        }
+    ],
+    "name_sanitized": "Shareeka",
+    "gender": "female",
+    "samples": 8,
+    "accuracy": 100,
+    "country_of_origin_map_url": "https:\/\/gender-api.com\/en\/map\/29508344\/a6a0f3ddd2c28d76",
+    "credits_used": 2,
+    "duration": "15ms"
+}
