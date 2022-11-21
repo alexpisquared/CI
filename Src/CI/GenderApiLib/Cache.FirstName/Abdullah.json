@@ -1,0 +1,103 @@
+{
+    "name": "abdullah",
+    "country_of_origin": [
+        {
+            "country_name": "Turkey",
+            "country": "TR",
+            "probability": 0.26,
+            "continental_region": "Asia",
+            "statistical_region": "Western Asia"
+        },
+        {
+            "country_name": "Saudi Arabia",
+            "country": "SA",
+            "probability": 0.14,
+            "continental_region": "Asia",
+            "statistical_region": "Western Asia"
+        },
+        {
+            "country_name": "Kuwait",
+            "country": "KW",
+            "probability": 0.07,
+            "continental_region": "Asia",
+            "statistical_region": "Western Asia"
+        },
+        {
+            "country_name": "Federated States of Micronesia",
+            "country": "FM",
+            "probability": 0.04,
+            "continental_region": "Oceania",
+            "statistical_region": "Micronesia"
+        },
+        {
+            "country_name": "Yemen",
+            "country": "YE",
+            "probability": 0.04,
+            "continental_region": "Asia",
+            "statistical_region": "Western Asia"
+        },
+        {
+            "country_name": "Oman",
+            "country": "OM",
+            "probability": 0.04,
+            "continental_region": "Asia",
+            "statistical_region": "Western Asia"
+        },
+        {
+            "country_name": "United States",
+            "country": "US",
+            "probability": 0.04,
+            "continental_region": "Americas",
+            "statistical_region": "Northern America"
+        },
+        {
+            "country_name": "Afghanistan",
+            "country": "AF",
+            "probability": 0.03,
+            "continental_region": "Asia",
+            "statistical_region": "Southern Asia"
+        },
+        {
+            "country_name": "Jordan",
+            "country": "JO",
+            "probability": 0.03,
+            "continental_region": "Asia",
+            "statistical_region": "Western Asia"
+        },
+        {
+            "country_name": "Bangladesh",
+            "country": "BD",
+            "probability": 0.03,
+            "continental_region": "Asia",
+            "statistical_region": "Southern Asia"
+        },
+        {
+            "country_name": "Pakistan",
+            "country": "PK",
+            "probability": 0.03,
+            "continental_region": "Asia",
+            "statistical_region": "Southern Asia"
+        },
+        {
+            "country_name": "Qatar",
+            "country": "QA",
+            "probability": 0.02,
+            "continental_region": "Asia",
+            "statistical_region": "Western Asia"
+        },
+        {
+            "country_name": "United Arab Emirates",
+            "country": "AE",
+            "probability": 0.02,
+            "continental_region": "Asia",
+            "statistical_region": "Western Asia"
+        }
+    ],
+    "name_sanitized": "Abdullah",
+    "gender": "male",
+    "samples": 45635,
+    "accuracy": 98,
+    "country_of_origin_map_url": "https:\/\/gender-api.com\/en\/map\/29450968\/d6fe30d153e860f0",
+    "credits_used": 4,
+    "duration": "45ms"
+}

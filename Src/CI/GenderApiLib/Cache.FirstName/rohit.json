@@ -1,0 +1,47 @@
+{
+    "name": "rohit",
+    "country_of_origin": [
+        {
+            "country_name": "India",
+            "country": "IN",
+            "probability": 0.63,
+            "continental_region": "Asia",
+            "statistical_region": "Southern Asia"
+        },
+        {
+            "country_name": "Palau",
+            "country": "PW",
+            "probability": 0.09,
+            "continental_region": "Oceania",
+            "statistical_region": "Micronesia"
+        },
+        {
+            "country_name": "Nepal",
+            "country": "NP",
+            "probability": 0.08,
+            "continental_region": "Asia",
+            "statistical_region": "Southern Asia"
+        },
+        {
+            "country_name": "Suriname",
+            "country": "SR",
+            "probability": 0.02,
+            "continental_region": "Americas",
+            "statistical_region": "South America"
+        },
+        {
+            "country_name": "United Arab Emirates",
+            "country": "AE",
+            "probability": 0.02,
+            "continental_region": "Asia",
+            "statistical_region": "Western Asia"
+        }
+    ],
+    "name_sanitized": "Rohit",
+    "gender": "male",
+    "samples": 21758,
+    "accuracy": 100,
+    "country_of_origin_map_url": "https:\/\/gender-api.com\/en\/map\/29450953\/23973bf0bcd4b077",
+    "credits_used": 2,
+    "duration": "39ms"
+}
