@@ -1,0 +1,96 @@
+{
+    "name": "mabel",
+    "country_of_origin": [
+        {
+            "country_name": "Palau",
+            "country": "PW",
+            "probability": 0.33,
+            "continental_region": "Oceania",
+            "statistical_region": "Micronesia"
+        },
+        {
+            "country_name": "Spain",
+            "country": "ES",
+            "probability": 0.14,
+            "continental_region": "Europe",
+            "statistical_region": "Southern Europe"
+        },
+        {
+            "country_name": "Argentina",
+            "country": "AR",
+            "probability": 0.05,
+            "continental_region": "Americas",
+            "statistical_region": "South America"
+        },
+        {
+            "country_name": "Ghana",
+            "country": "GH",
+            "probability": 0.04,
+            "continental_region": "Africa",
+            "statistical_region": "Western Africa"
+        },
+        {
+            "country_name": "Nigeria",
+            "country": "NG",
+            "probability": 0.04,
+            "continental_region": "Africa",
+            "statistical_region": "Western Africa"
+        },
+        {
+            "country_name": "United States",
+            "country": "US",
+            "probability": 0.04,
+            "continental_region": "Americas",
+            "statistical_region": "Northern America"
+        },
+        {
+            "country_name": "Cuba",
+            "country": "CU",
+            "probability": 0.02,
+            "continental_region": "Americas",
+            "statistical_region": "Caribbean"
+        },
+        {
+            "country_name": "Paraguay",
+            "country": "PY",
+            "probability": 0.02,
+            "continental_region": "Americas",
+            "statistical_region": "South America"
+        },
+        {
+            "country_name": "Uruguay",
+            "country": "UY",
+            "probability": 0.02,
+            "continental_region": "Americas",
+            "statistical_region": "South America"
+        },
+        {
+            "country_name": "Dominican Republic",
+            "country": "DO",
+            "probability": 0.02,
+            "continental_region": "Americas",
+            "statistical_region": "Caribbean"
+        },
+        {
+            "country_name": "Chile",
+            "country": "CL",
+            "probability": 0.02,
+            "continental_region": "Americas",
+            "statistical_region": "South America"
+        },
+        {
+            "country_name": "Colombia",
+            "country": "CO",
+            "probability": 0.02,
+            "continental_region": "Americas",
+            "statistical_region": "South America"
+        }
+    ],
+    "name_sanitized": "Mabel",
+    "gender": "female",
+    "samples": 4039,
+    "accuracy": 98,
+    "country_of_origin_map_url": "https:\/\/gender-api.com\/en\/map\/29591156\/34638a3f639dd93f",
+    "credits_used": 4,
+    "duration": "50ms"
+}

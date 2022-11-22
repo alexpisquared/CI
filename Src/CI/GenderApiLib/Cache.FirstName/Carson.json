@@ -1,0 +1,75 @@
+{
+    "name": "carson",
+    "country_of_origin": [
+        {
+            "country_name": "United States",
+            "country": "US",
+            "probability": 0.56,
+            "continental_region": "Americas",
+            "statistical_region": "Northern America"
+        },
+        {
+            "country_name": "Bahamas",
+            "country": "BS",
+            "probability": 0.21,
+            "continental_region": "Americas",
+            "statistical_region": "Caribbean"
+        },
+        {
+            "country_name": "Hong Kong",
+            "country": "HK",
+            "probability": 0.11,
+            "continental_region": "Asia",
+            "statistical_region": "Eastern Asia"
+        },
+        {
+            "country_name": "Canada",
+            "country": "CA",
+            "probability": 0.06,
+            "continental_region": "Americas",
+            "statistical_region": "Northern America"
+        },
+        {
+            "country_name": "China",
+            "country": "CN",
+            "probability": 0.04,
+            "continental_region": "Asia",
+            "statistical_region": "Eastern Asia"
+        },
+        {
+            "country_name": "New Zealand",
+            "country": "NZ",
+            "probability": 0.02,
+            "continental_region": "Oceania",
+            "statistical_region": "AustraliaandNew Zealand"
+        },
+        {
+            "country_name": "Taiwan",
+            "country": "TW",
+            "probability": 0.02,
+            "continental_region": "Asia",
+            "statistical_region": "Eastern Asia"
+        },
+        {
+            "country_name": "Australia",
+            "country": "AU",
+            "probability": 0.02,
+            "continental_region": "Oceania",
+            "statistical_region": "AustraliaandNew Zealand"
+        },
+        {
+            "country_name": "Malaysia",
+            "country": "MY",
+            "probability": 0.02,
+            "continental_region": "Asia",
+            "statistical_region": "South-eastern Asia"
+        }
+    ],
+    "name_sanitized": "Carson",
+    "gender": "male",
+    "samples": 6541,
+    "accuracy": 97,
+    "country_of_origin_map_url": "https:\/\/gender-api.com\/en\/map\/29591154\/ae11faa81f27aaca",
+    "credits_used": 3,
+    "duration": "34ms"
+}
