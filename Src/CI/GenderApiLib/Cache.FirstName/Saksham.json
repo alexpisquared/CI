@@ -1,0 +1,26 @@
+{
+    "name": "saksham",
+    "country_of_origin": [
+        {
+            "country_name": "India",
+            "country": "IN",
+            "probability": 0.69,
+            "continental_region": "Asia",
+            "statistical_region": "Southern Asia"
+        },
+        {
+            "country_name": "Nepal",
+            "country": "NP",
+            "probability": 0.18,
+            "continental_region": "Asia",
+            "statistical_region": "Southern Asia"
+        }
+    ],
+    "name_sanitized": "Saksham",
+    "gender": "male",
+    "samples": 441,
+    "accuracy": 100,
+    "country_of_origin_map_url": "https:\/\/gender-api.com\/en\/map\/29928716\/70d873f4017dfd8e",
+    "credits_used": 2,
+    "duration": "16ms"
+}
