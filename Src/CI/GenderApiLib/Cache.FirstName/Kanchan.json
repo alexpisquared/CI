@@ -1,0 +1,33 @@
+{
+    "name": "kanchan",
+    "country_of_origin": [
+        {
+            "country_name": "India",
+            "country": "IN",
+            "probability": 0.6,
+            "continental_region": "Asia",
+            "statistical_region": "Southern Asia"
+        },
+        {
+            "country_name": "Nepal",
+            "country": "NP",
+            "probability": 0.35,
+            "continental_region": "Asia",
+            "statistical_region": "Southern Asia"
+        },
+        {
+            "country_name": "Bangladesh",
+            "country": "BD",
+            "probability": 0.05,
+            "continental_region": "Asia",
+            "statistical_region": "Southern Asia"
+        }
+    ],
+    "name_sanitized": "Kanchan",
+    "gender": "female",
+    "samples": 1300,
+    "accuracy": 77,
+    "country_of_origin_map_url": "https:\/\/gender-api.com\/en\/map\/29907049\/a0d67c2ea3360a57",
+    "credits_used": 2,
+    "duration": "20ms"
+}

@@ -1,0 +1,19 @@
+{
+    "name": "vishvjeet",
+    "country_of_origin": [
+        {
+            "country_name": "India",
+            "country": "IN",
+            "probability": 0.5,
+            "continental_region": "Asia",
+            "statistical_region": "Southern Asia"
+        }
+    ],
+    "name_sanitized": "Vishvjeet",
+    "gender": "male",
+    "samples": 14,
+    "accuracy": 100,
+    "country_of_origin_map_url": "https:\/\/gender-api.com\/en\/map\/29907054\/713b702c9bf05cb4",
+    "credits_used": 2,
+    "duration": "14ms"
+}

@@ -1,0 +1,89 @@
+{
+    "name": "priya",
+    "country_of_origin": [
+        {
+            "country_name": "India",
+            "country": "IN",
+            "probability": 0.48,
+            "continental_region": "Asia",
+            "statistical_region": "Southern Asia"
+        },
+        {
+            "country_name": "Guyana",
+            "country": "GY",
+            "probability": 0.07,
+            "continental_region": "Americas",
+            "statistical_region": "South America"
+        },
+        {
+            "country_name": "Suriname",
+            "country": "SR",
+            "probability": 0.07,
+            "continental_region": "Americas",
+            "statistical_region": "South America"
+        },
+        {
+            "country_name": "Eritrea",
+            "country": "ER",
+            "probability": 0.06,
+            "continental_region": "Africa",
+            "statistical_region": "Eastern Africa"
+        },
+        {
+            "country_name": "Fiji",
+            "country": "FJ",
+            "probability": 0.06,
+            "continental_region": "Oceania",
+            "statistical_region": "Melanesia"
+        },
+        {
+            "country_name": "Mauritius",
+            "country": "MU",
+            "probability": 0.04,
+            "continental_region": "Africa",
+            "statistical_region": "Eastern Africa"
+        },
+        {
+            "country_name": "United States",
+            "country": "US",
+            "probability": 0.03,
+            "continental_region": "Americas",
+            "statistical_region": "Northern America"
+        },
+        {
+            "country_name": "Trinidad and Tobago",
+            "country": "TT",
+            "probability": 0.02,
+            "continental_region": "Americas",
+            "statistical_region": "Caribbean"
+        },
+        {
+            "country_name": "Nepal",
+            "country": "NP",
+            "probability": 0.02,
+            "continental_region": "Asia",
+            "statistical_region": "Southern Asia"
+        },
+        {
+            "country_name": "Sri Lanka",
+            "country": "LK",
+            "probability": 0.02,
+            "continental_region": "Asia",
+            "statistical_region": "Southern Asia"
+        },
+        {
+            "country_name": "United Kingdom",
+            "country": "GB",
+            "probability": 0.02,
+            "continental_region": "Europe",
+            "statistical_region": "Northern Europe"
+        }
+    ],
+    "name_sanitized": "Priya",
+    "gender": "female",
+    "samples": 10567,
+    "accuracy": 96,
+    "country_of_origin_map_url": "https:\/\/gender-api.com\/en\/map\/29907847\/757a9f398bf91b0e",
+    "credits_used": 4,
+    "duration": "40ms"
+}

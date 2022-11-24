@@ -1,0 +1,26 @@
+{
+    "name": "manjusha",
+    "country_of_origin": [
+        {
+            "country_name": "India",
+            "country": "IN",
+            "probability": 0.47,
+            "continental_region": "Asia",
+            "statistical_region": "Southern Asia"
+        },
+        {
+            "country_name": "United States",
+            "country": "US",
+            "probability": 0.02,
+            "continental_region": "Americas",
+            "statistical_region": "Northern America"
+        }
+    ],
+    "name_sanitized": "Manjusha",
+    "gender": "female",
+    "samples": 263,
+    "accuracy": 99,
+    "country_of_origin_map_url": "https:\/\/gender-api.com\/en\/map\/29905648\/06cac343f372530e",
+    "credits_used": 2,
+    "duration": "14ms"
+}

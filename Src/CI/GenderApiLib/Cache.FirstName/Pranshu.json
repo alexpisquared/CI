@@ -1,0 +1,33 @@
+{
+    "name": "pranshu",
+    "country_of_origin": [
+        {
+            "country_name": "India",
+            "country": "IN",
+            "probability": 0.76,
+            "continental_region": "Asia",
+            "statistical_region": "Southern Asia"
+        },
+        {
+            "country_name": "New Zealand",
+            "country": "NZ",
+            "probability": 0.11,
+            "continental_region": "Oceania",
+            "statistical_region": "AustraliaandNew Zealand"
+        },
+        {
+            "country_name": "Singapore",
+            "country": "SG",
+            "probability": 0.05,
+            "continental_region": "Asia",
+            "statistical_region": "South-eastern Asia"
+        }
+    ],
+    "name_sanitized": "Pranshu",
+    "gender": "male",
+    "samples": 299,
+    "accuracy": 96,
+    "country_of_origin_map_url": "https:\/\/gender-api.com\/en\/map\/29907350\/8abbfa835d134dba",
+    "credits_used": 2,
+    "duration": "16ms"
+}
