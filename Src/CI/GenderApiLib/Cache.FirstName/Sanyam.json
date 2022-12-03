@@ -1,0 +1,19 @@
+{
+    "name": "sanyam",
+    "country_of_origin": [
+        {
+            "country_name": "India",
+            "country": "IN",
+            "probability": 0.48,
+            "continental_region": "Asia",
+            "statistical_region": "Southern Asia"
+        }
+    ],
+    "name_sanitized": "Sanyam",
+    "gender": "male",
+    "samples": 239,
+    "accuracy": 98,
+    "country_of_origin_map_url": "https:\/\/gender-api.com\/en\/map\/31001804\/a6080eebf2988ddb",
+    "credits_used": 2,
+    "duration": "17ms"
+}

@@ -1,0 +1,166 @@
+{
+    "name": "simi",
+    "country_of_origin": [
+        {
+            "country_name": "Switzerland",
+            "country": "CH",
+            "probability": 0.15,
+            "continental_region": "Europe",
+            "statistical_region": "Western Europe"
+        },
+        {
+            "country_name": "India",
+            "country": "IN",
+            "probability": 0.11,
+            "continental_region": "Asia",
+            "statistical_region": "Southern Asia"
+        },
+        {
+            "country_name": "Fiji",
+            "country": "FJ",
+            "probability": 0.09,
+            "continental_region": "Oceania",
+            "statistical_region": "Melanesia"
+        },
+        {
+            "country_name": "United States",
+            "country": "US",
+            "probability": 0.09,
+            "continental_region": "Americas",
+            "statistical_region": "Northern America"
+        },
+        {
+            "country_name": "Romania",
+            "country": "RO",
+            "probability": 0.07,
+            "continental_region": "Europe",
+            "statistical_region": "Eastern Europe"
+        },
+        {
+            "country_name": "Mauritius",
+            "country": "MU",
+            "probability": 0.07,
+            "continental_region": "Africa",
+            "statistical_region": "Eastern Africa"
+        },
+        {
+            "country_name": "Trinidad and Tobago",
+            "country": "TT",
+            "probability": 0.06,
+            "continental_region": "Americas",
+            "statistical_region": "Caribbean"
+        },
+        {
+            "country_name": "Nigeria",
+            "country": "NG",
+            "probability": 0.05,
+            "continental_region": "Africa",
+            "statistical_region": "Western Africa"
+        },
+        {
+            "country_name": "Germany",
+            "country": "DE",
+            "probability": 0.05,
+            "continental_region": "Europe",
+            "statistical_region": "Western Europe"
+        },
+        {
+            "country_name": "Slovakia",
+            "country": "SK",
+            "probability": 0.05,
+            "continental_region": "Europe",
+            "statistical_region": "Eastern Europe"
+        },
+        {
+            "country_name": "Czech Republic",
+            "country": "CZ",
+            "probability": 0.04,
+            "continental_region": "Europe",
+            "statistical_region": "Eastern Europe"
+        },
+        {
+            "country_name": "Bahrain",
+            "country": "BH",
+            "probability": 0.04,
+            "continental_region": "Asia",
+            "statistical_region": "Western Asia"
+        },
+        {
+            "country_name": "Austria",
+            "country": "AT",
+            "probability": 0.04,
+            "continental_region": "Europe",
+            "statistical_region": "Western Europe"
+        },
+        {
+            "country_name": "United Arab Emirates",
+            "country": "AE",
+            "probability": 0.03,
+            "continental_region": "Asia",
+            "statistical_region": "Western Asia"
+        },
+        {
+            "country_name": "Italy",
+            "country": "IT",
+            "probability": 0.03,
+            "continental_region": "Europe",
+            "statistical_region": "Southern Europe"
+        },
+        {
+            "country_name": "United Kingdom",
+            "country": "GB",
+            "probability": 0.03,
+            "continental_region": "Europe",
+            "statistical_region": "Northern Europe"
+        },
+        {
+            "country_name": "Zambia",
+            "country": "ZM",
+            "probability": 0.02,
+            "continental_region": "Africa",
+            "statistical_region": "Eastern Africa"
+        },
+        {
+            "country_name": "Lithuania",
+            "country": "LT",
+            "probability": 0.02,
+            "continental_region": "Europe",
+            "statistical_region": "Northern Europe"
+        },
+        {
+            "country_name": "Albania",
+            "country": "AL",
+            "probability": 0.02,
+            "continental_region": "Europe",
+            "statistical_region": "Southern Europe"
+        },
+        {
+            "country_name": "Slovenia",
+            "country": "SI",
+            "probability": 0.02,
+            "continental_region": "Europe",
+            "statistical_region": "Southern Europe"
+        },
+        {
+            "country_name": "Bangladesh",
+            "country": "BD",
+            "probability": 0.02,
+            "continental_region": "Asia",
+            "statistical_region": "Southern Asia"
+        },
+        {
+            "country_name": "Pakistan",
+            "country": "PK",
+            "probability": 0.02,
+            "continental_region": "Asia",
+            "statistical_region": "Southern Asia"
+        }
+    ],
+    "name_sanitized": "Simi",
+    "gender": "female",
+    "samples": 1370,
+    "accuracy": 70,
+    "country_of_origin_map_url": "https:\/\/gender-api.com\/en\/map\/31001661\/b8770273120af13b",
+    "credits_used": 6,
+    "duration": "31ms"
+}

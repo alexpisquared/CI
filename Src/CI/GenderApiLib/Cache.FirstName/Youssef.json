@@ -1,0 +1,82 @@
+{
+    "name": "youssef",
+    "country_of_origin": [
+        {
+            "country_name": "Morocco",
+            "country": "MA",
+            "probability": 0.43,
+            "continental_region": "Africa",
+            "statistical_region": "Northern Africa"
+        },
+        {
+            "country_name": "Western Sahara",
+            "country": "EH",
+            "probability": 0.12,
+            "continental_region": "Africa",
+            "statistical_region": "Northern Africa"
+        },
+        {
+            "country_name": "Lebanon",
+            "country": "LB",
+            "probability": 0.05,
+            "continental_region": "Asia",
+            "statistical_region": "Western Asia"
+        },
+        {
+            "country_name": "Tunisia",
+            "country": "TN",
+            "probability": 0.05,
+            "continental_region": "Africa",
+            "statistical_region": "Northern Africa"
+        },
+        {
+            "country_name": "France",
+            "country": "FR",
+            "probability": 0.05,
+            "continental_region": "Europe",
+            "statistical_region": "Western Europe"
+        },
+        {
+            "country_name": "Malta",
+            "country": "MT",
+            "probability": 0.04,
+            "continental_region": "Europe",
+            "statistical_region": "Southern Europe"
+        },
+        {
+            "country_name": "Egypt",
+            "country": "EG",
+            "probability": 0.03,
+            "continental_region": "Africa",
+            "statistical_region": "Northern Africa"
+        },
+        {
+            "country_name": "Spain",
+            "country": "ES",
+            "probability": 0.03,
+            "continental_region": "Europe",
+            "statistical_region": "Southern Europe"
+        },
+        {
+            "country_name": "Belgium",
+            "country": "BE",
+            "probability": 0.02,
+            "continental_region": "Europe",
+            "statistical_region": "Western Europe"
+        },
+        {
+            "country_name": "Italy",
+            "country": "IT",
+            "probability": 0.02,
+            "continental_region": "Europe",
+            "statistical_region": "Southern Europe"
+        }
+    ],
+    "name_sanitized": "Youssef",
+    "gender": "male",
+    "samples": 30051,
+    "accuracy": 97,
+    "country_of_origin_map_url": "https:\/\/gender-api.com\/en\/map\/30994244\/52bd60628a5b726c",
+    "credits_used": 3,
+    "duration": "43ms"
+}

@@ -1,0 +1,61 @@
+{
+    "name": "venkatesh",
+    "country_of_origin": [
+        {
+            "country_name": "India",
+            "country": "IN",
+            "probability": 0.85,
+            "continental_region": "Asia",
+            "statistical_region": "Southern Asia"
+        },
+        {
+            "country_name": "Singapore",
+            "country": "SG",
+            "probability": 0.05,
+            "continental_region": "Asia",
+            "statistical_region": "South-eastern Asia"
+        },
+        {
+            "country_name": "United Arab Emirates",
+            "country": "AE",
+            "probability": 0.04,
+            "continental_region": "Asia",
+            "statistical_region": "Western Asia"
+        },
+        {
+            "country_name": "Rwanda",
+            "country": "RW",
+            "probability": 0.02,
+            "continental_region": "Africa",
+            "statistical_region": "Eastern Africa"
+        },
+        {
+            "country_name": "New Zealand",
+            "country": "NZ",
+            "probability": 0.02,
+            "continental_region": "Oceania",
+            "statistical_region": "AustraliaandNew Zealand"
+        },
+        {
+            "country_name": "Oman",
+            "country": "OM",
+            "probability": 0.02,
+            "continental_region": "Asia",
+            "statistical_region": "Western Asia"
+        },
+        {
+            "country_name": "United States",
+            "country": "US",
+            "probability": 0.02,
+            "continental_region": "Americas",
+            "statistical_region": "Northern America"
+        }
+    ],
+    "name_sanitized": "Venkatesh",
+    "gender": "male",
+    "samples": 4564,
+    "accuracy": 100,
+    "country_of_origin_map_url": "https:\/\/gender-api.com\/en\/map\/30998410\/0e20682f767d89d7",
+    "credits_used": 3,
+    "duration": "22ms"
+}

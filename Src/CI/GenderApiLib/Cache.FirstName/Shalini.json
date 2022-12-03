@@ -1,0 +1,75 @@
+{
+    "name": "shalini",
+    "country_of_origin": [
+        {
+            "country_name": "India",
+            "country": "IN",
+            "probability": 0.49,
+            "continental_region": "Asia",
+            "statistical_region": "Southern Asia"
+        },
+        {
+            "country_name": "Mauritius",
+            "country": "MU",
+            "probability": 0.1,
+            "continental_region": "Africa",
+            "statistical_region": "Eastern Africa"
+        },
+        {
+            "country_name": "Guyana",
+            "country": "GY",
+            "probability": 0.09,
+            "continental_region": "Americas",
+            "statistical_region": "South America"
+        },
+        {
+            "country_name": "Fiji",
+            "country": "FJ",
+            "probability": 0.07,
+            "continental_region": "Oceania",
+            "statistical_region": "Melanesia"
+        },
+        {
+            "country_name": "Trinidad and Tobago",
+            "country": "TT",
+            "probability": 0.06,
+            "continental_region": "Americas",
+            "statistical_region": "Caribbean"
+        },
+        {
+            "country_name": "Sri Lanka",
+            "country": "LK",
+            "probability": 0.06,
+            "continental_region": "Asia",
+            "statistical_region": "Southern Asia"
+        },
+        {
+            "country_name": "Malaysia",
+            "country": "MY",
+            "probability": 0.03,
+            "continental_region": "Asia",
+            "statistical_region": "South-eastern Asia"
+        },
+        {
+            "country_name": "Singapore",
+            "country": "SG",
+            "probability": 0.02,
+            "continental_region": "Asia",
+            "statistical_region": "South-eastern Asia"
+        },
+        {
+            "country_name": "United States",
+            "country": "US",
+            "probability": 0.02,
+            "continental_region": "Americas",
+            "statistical_region": "Northern America"
+        }
+    ],
+    "name_sanitized": "Shalini",
+    "gender": "female",
+    "samples": 2703,
+    "accuracy": 99,
+    "country_of_origin_map_url": "https:\/\/gender-api.com\/en\/map\/31001747\/342f4105b4f946d5",
+    "credits_used": 3,
+    "duration": "24ms"
+}

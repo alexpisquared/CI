@@ -1,0 +1,82 @@
+{
+    "name": "carly",
+    "country_of_origin": [
+        {
+            "country_name": "United States",
+            "country": "US",
+            "probability": 0.27,
+            "continental_region": "Americas",
+            "statistical_region": "Northern America"
+        },
+        {
+            "country_name": "United Kingdom",
+            "country": "GB",
+            "probability": 0.15,
+            "continental_region": "Europe",
+            "statistical_region": "Northern Europe"
+        },
+        {
+            "country_name": "Isle of Man",
+            "country": "IM",
+            "probability": 0.13,
+            "continental_region": "Europe",
+            "statistical_region": "Northern Europe"
+        },
+        {
+            "country_name": "Australia",
+            "country": "AU",
+            "probability": 0.06,
+            "continental_region": "Oceania",
+            "statistical_region": "AustraliaandNew Zealand"
+        },
+        {
+            "country_name": "Canada",
+            "country": "CA",
+            "probability": 0.06,
+            "continental_region": "Americas",
+            "statistical_region": "Northern America"
+        },
+        {
+            "country_name": "Guernsey and Jersey",
+            "country": "JE",
+            "probability": 0.05,
+            "continental_region": "Europe",
+            "statistical_region": "Northern Europe"
+        },
+        {
+            "country_name": "Bahamas",
+            "country": "BS",
+            "probability": 0.04,
+            "continental_region": "Americas",
+            "statistical_region": "Caribbean"
+        },
+        {
+            "country_name": "New Zealand",
+            "country": "NZ",
+            "probability": 0.03,
+            "continental_region": "Oceania",
+            "statistical_region": "AustraliaandNew Zealand"
+        },
+        {
+            "country_name": "Ireland",
+            "country": "IE",
+            "probability": 0.02,
+            "continental_region": "Europe",
+            "statistical_region": "Northern Europe"
+        },
+        {
+            "country_name": "South Africa",
+            "country": "ZA",
+            "probability": 0.02,
+            "continental_region": "Africa",
+            "statistical_region": "Southern Africa"
+        }
+    ],
+    "name_sanitized": "Carly",
+    "gender": "female",
+    "samples": 4186,
+    "accuracy": 95,
+    "country_of_origin_map_url": "https:\/\/gender-api.com\/en\/map\/30996065\/2ce92f6babf0fc7a",
+    "credits_used": 3,
+    "duration": "31ms"
+}

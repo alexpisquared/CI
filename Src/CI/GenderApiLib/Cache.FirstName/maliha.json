@@ -1,0 +1,82 @@
+{
+    "name": "maliha",
+    "country_of_origin": [
+        {
+            "country_name": "Pakistan",
+            "country": "PK",
+            "probability": 0.35,
+            "continental_region": "Asia",
+            "statistical_region": "Southern Asia"
+        },
+        {
+            "country_name": "Bangladesh",
+            "country": "BD",
+            "probability": 0.23,
+            "continental_region": "Asia",
+            "statistical_region": "Southern Asia"
+        },
+        {
+            "country_name": "Afghanistan",
+            "country": "AF",
+            "probability": 0.06,
+            "continental_region": "Asia",
+            "statistical_region": "Southern Asia"
+        },
+        {
+            "country_name": "Tanzania",
+            "country": "TZ",
+            "probability": 0.05,
+            "continental_region": "Africa",
+            "statistical_region": "Eastern Africa"
+        },
+        {
+            "country_name": "United States",
+            "country": "US",
+            "probability": 0.05,
+            "continental_region": "Americas",
+            "statistical_region": "Northern America"
+        },
+        {
+            "country_name": "India",
+            "country": "IN",
+            "probability": 0.05,
+            "continental_region": "Asia",
+            "statistical_region": "Southern Asia"
+        },
+        {
+            "country_name": "United Kingdom",
+            "country": "GB",
+            "probability": 0.04,
+            "continental_region": "Europe",
+            "statistical_region": "Northern Europe"
+        },
+        {
+            "country_name": "United Arab Emirates",
+            "country": "AE",
+            "probability": 0.03,
+            "continental_region": "Asia",
+            "statistical_region": "Western Asia"
+        },
+        {
+            "country_name": "Algeria",
+            "country": "DZ",
+            "probability": 0.03,
+            "continental_region": "Africa",
+            "statistical_region": "Northern Africa"
+        },
+        {
+            "country_name": "Qatar",
+            "country": "QA",
+            "probability": 0.02,
+            "continental_region": "Asia",
+            "statistical_region": "Western Asia"
+        }
+    ],
+    "name_sanitized": "Maliha",
+    "gender": "female",
+    "samples": 278,
+    "accuracy": 96,
+    "country_of_origin_map_url": "https:\/\/gender-api.com\/en\/map\/30997722\/98611f5852d3f076",
+    "credits_used": 3,
+    "duration": "23ms"
+}

@@ -1,0 +1,145 @@
+{
+    "name": "emi",
+    "country_of_origin": [
+        {
+            "country_name": "Spain",
+            "country": "ES",
+            "probability": 0.11,
+            "continental_region": "Europe",
+            "statistical_region": "Southern Europe"
+        },
+        {
+            "country_name": "France",
+            "country": "FR",
+            "probability": 0.08,
+            "continental_region": "Europe",
+            "statistical_region": "Western Europe"
+        },
+        {
+            "country_name": "Japan",
+            "country": "JP",
+            "probability": 0.07,
+            "continental_region": "Asia",
+            "statistical_region": "Eastern Asia"
+        },
+        {
+            "country_name": "Italy",
+            "country": "IT",
+            "probability": 0.06,
+            "continental_region": "Europe",
+            "statistical_region": "Southern Europe"
+        },
+        {
+            "country_name": "Bulgaria",
+            "country": "BG",
+            "probability": 0.05,
+            "continental_region": "Europe",
+            "statistical_region": "Eastern Europe"
+        },
+        {
+            "country_name": "Albania",
+            "country": "AL",
+            "probability": 0.04,
+            "continental_region": "Europe",
+            "statistical_region": "Southern Europe"
+        },
+        {
+            "country_name": "Argentina",
+            "country": "AR",
+            "probability": 0.04,
+            "continental_region": "Americas",
+            "statistical_region": "South America"
+        },
+        {
+            "country_name": "Brunei",
+            "country": "BN",
+            "probability": 0.03,
+            "continental_region": "Asia",
+            "statistical_region": "South-eastern Asia"
+        },
+        {
+            "country_name": "Poland",
+            "country": "PL",
+            "probability": 0.03,
+            "continental_region": "Europe",
+            "statistical_region": "Eastern Europe"
+        },
+        {
+            "country_name": "Indonesia",
+            "country": "ID",
+            "probability": 0.03,
+            "continental_region": "Asia",
+            "statistical_region": "South-eastern Asia"
+        },
+        {
+            "country_name": "United States",
+            "country": "US",
+            "probability": 0.03,
+            "continental_region": "Americas",
+            "statistical_region": "Northern America"
+        },
+        {
+            "country_name": "Republic of Macedonia",
+            "country": "MK",
+            "probability": 0.03,
+            "continental_region": "Europe",
+            "statistical_region": "Southern Europe"
+        },
+        {
+            "country_name": "Hungary",
+            "country": "HU",
+            "probability": 0.02,
+            "continental_region": "Europe",
+            "statistical_region": "Eastern Europe"
+        },
+        {
+            "country_name": "Romania",
+            "country": "RO",
+            "probability": 0.02,
+            "continental_region": "Europe",
+            "statistical_region": "Eastern Europe"
+        },
+        {
+            "country_name": "Morocco",
+            "country": "MA",
+            "probability": 0.02,
+            "continental_region": "Africa",
+            "statistical_region": "Northern Africa"
+        },
+        {
+            "country_name": "Uruguay",
+            "country": "UY",
+            "probability": 0.02,
+            "continental_region": "Americas",
+            "statistical_region": "South America"
+        },
+        {
+            "country_name": "Germany",
+            "country": "DE",
+            "probability": 0.02,
+            "continental_region": "Europe",
+            "statistical_region": "Western Europe"
+        },
+        {
+            "country_name": "Fiji",
+            "country": "FJ",
+            "probability": 0.02,
+            "continental_region": "Oceania",
+            "statistical_region": "Melanesia"
+        },
+        {
+            "country_name": "Nigeria",
+            "country": "NG",
+            "probability": 0.02,
+            "continental_region": "Africa",
+            "statistical_region": "Western Africa"
+        }
+    ],
+    "name_sanitized": "Emi",
+    "gender": "female",
+    "samples": 5405,
+    "accuracy": 73,
+    "country_of_origin_map_url": "https:\/\/gender-api.com\/en\/map\/30991626\/32b3a14350f6a15b",
+    "credits_used": 5,
+    "duration": "46ms"
+}

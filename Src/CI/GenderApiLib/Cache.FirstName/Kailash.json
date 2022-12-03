@@ -1,0 +1,40 @@
+{
+    "name": "kailash",
+    "country_of_origin": [
+        {
+            "country_name": "India",
+            "country": "IN",
+            "probability": 0.58,
+            "continental_region": "Asia",
+            "statistical_region": "Southern Asia"
+        },
+        {
+            "country_name": "Nepal",
+            "country": "NP",
+            "probability": 0.22,
+            "continental_region": "Asia",
+            "statistical_region": "Southern Asia"
+        },
+        {
+            "country_name": "Mauritius",
+            "country": "MU",
+            "probability": 0.13,
+            "continental_region": "Africa",
+            "statistical_region": "Eastern Africa"
+        },
+        {
+            "country_name": "United Arab Emirates",
+            "country": "AE",
+            "probability": 0.02,
+            "continental_region": "Asia",
+            "statistical_region": "Western Asia"
+        }
+    ],
+    "name_sanitized": "Kailash",
+    "gender": "male",
+    "samples": 2245,
+    "accuracy": 99,
+    "country_of_origin_map_url": "https:\/\/gender-api.com\/en\/map\/30984621\/5c54bb1700312895",
+    "credits_used": 2,
+    "duration": "23ms"
+}

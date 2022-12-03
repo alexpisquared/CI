@@ -1,0 +1,26 @@
+{
+    "name": "sehaj",
+    "country_of_origin": [
+        {
+            "country_name": "United States",
+            "country": "US",
+            "probability": 0.44,
+            "continental_region": "Americas",
+            "statistical_region": "Northern America"
+        },
+        {
+            "country_name": "India",
+            "country": "IN",
+            "probability": 0.05,
+            "continental_region": "Asia",
+            "statistical_region": "Southern Asia"
+        }
+    ],
+    "name_sanitized": "Sehaj",
+    "gender": "female",
+    "samples": 333,
+    "accuracy": 56,
+    "country_of_origin_map_url": "https:\/\/gender-api.com\/en\/map\/31001769\/6510952d90f24f6d",
+    "credits_used": 2,
+    "duration": "19ms"
+}

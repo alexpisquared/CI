@@ -1,0 +1,89 @@
+{
+    "name": "cam",
+    "country_of_origin": [
+        {
+            "country_name": "United States",
+            "country": "US",
+            "probability": 0.13,
+            "continental_region": "Americas",
+            "statistical_region": "Northern America"
+        },
+        {
+            "country_name": "France",
+            "country": "FR",
+            "probability": 0.12,
+            "continental_region": "Europe",
+            "statistical_region": "Western Europe"
+        },
+        {
+            "country_name": "Cambodia",
+            "country": "KH",
+            "probability": 0.11,
+            "continental_region": "Asia",
+            "statistical_region": "South-eastern Asia"
+        },
+        {
+            "country_name": "Canada",
+            "country": "CA",
+            "probability": 0.1,
+            "continental_region": "Americas",
+            "statistical_region": "Northern America"
+        },
+        {
+            "country_name": "Vietnam",
+            "country": "VN",
+            "probability": 0.1,
+            "continental_region": "Asia",
+            "statistical_region": "South-eastern Asia"
+        },
+        {
+            "country_name": "Australia",
+            "country": "AU",
+            "probability": 0.08,
+            "continental_region": "Oceania",
+            "statistical_region": "AustraliaandNew Zealand"
+        },
+        {
+            "country_name": "United Kingdom",
+            "country": "GB",
+            "probability": 0.08,
+            "continental_region": "Europe",
+            "statistical_region": "Northern Europe"
+        },
+        {
+            "country_name": "New Zealand",
+            "country": "NZ",
+            "probability": 0.06,
+            "continental_region": "Oceania",
+            "statistical_region": "AustraliaandNew Zealand"
+        },
+        {
+            "country_name": "Somalia",
+            "country": "SO",
+            "probability": 0.04,
+            "continental_region": "Africa",
+            "statistical_region": "Eastern Africa"
+        },
+        {
+            "country_name": "Saint Helena Ascension and Tristan da Cunha",
+            "country": "SH",
+            "probability": 0.03,
+            "continental_region": "Africa",
+            "statistical_region": "Western Africa"
+        },
+        {
+            "country_name": "Italy",
+            "country": "IT",
+            "probability": 0.02,
+            "continental_region": "Europe",
+            "statistical_region": "Southern Europe"
+        }
+    ],
+    "name_sanitized": "Cam",
+    "gender": "male",
+    "samples": 2556,
+    "accuracy": 50,
+    "country_of_origin_map_url": "https:\/\/gender-api.com\/en\/map\/31000506\/b144b8c2b59c68bf",
+    "credits_used": 4,
+    "duration": "39ms"
+}

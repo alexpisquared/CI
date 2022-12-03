@@ -1,0 +1,33 @@
+{
+    "name": "vishnu",
+    "country_of_origin": [
+        {
+            "country_name": "India",
+            "country": "IN",
+            "probability": 0.5,
+            "continental_region": "Asia",
+            "statistical_region": "Southern Asia"
+        },
+        {
+            "country_name": "Palau",
+            "country": "PW",
+            "probability": 0.37,
+            "continental_region": "Oceania",
+            "statistical_region": "Micronesia"
+        },
+        {
+            "country_name": "United Arab Emirates",
+            "country": "AE",
+            "probability": 0.02,
+            "continental_region": "Asia",
+            "statistical_region": "Western Asia"
+        }
+    ],
+    "name_sanitized": "Vishnu",
+    "gender": "male",
+    "samples": 7668,
+    "accuracy": 97,
+    "country_of_origin_map_url": "https:\/\/gender-api.com\/en\/map\/31001855\/ee416c2a6bafc005",
+    "credits_used": 2,
+    "duration": "34ms"
+}

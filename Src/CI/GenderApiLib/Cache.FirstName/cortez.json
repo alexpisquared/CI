@@ -1,0 +1,40 @@
+{
+    "name": "cortez",
+    "country_of_origin": [
+        {
+            "country_name": "United States",
+            "country": "US",
+            "probability": 0.81,
+            "continental_region": "Americas",
+            "statistical_region": "Northern America"
+        },
+        {
+            "country_name": "Djibouti",
+            "country": "DJ",
+            "probability": 0.25,
+            "continental_region": "Africa",
+            "statistical_region": "Eastern Africa"
+        },
+        {
+            "country_name": "Canada",
+            "country": "CA",
+            "probability": 0.03,
+            "continental_region": "Americas",
+            "statistical_region": "Northern America"
+        },
+        {
+            "country_name": "Japan",
+            "country": "JP",
+            "probability": 0.02,
+            "continental_region": "Asia",
+            "statistical_region": "Eastern Asia"
+        }
+    ],
+    "name_sanitized": "Cortez",
+    "gender": "male",
+    "samples": 4142,
+    "accuracy": 100,
+    "country_of_origin_map_url": "https:\/\/gender-api.com\/en\/map\/31001846\/d69c5500fc1ceb29",
+    "credits_used": 2,
+    "duration": "23ms"
+}

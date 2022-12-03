@@ -1,0 +1,40 @@
+{
+    "name": "manish",
+    "country_of_origin": [
+        {
+            "country_name": "India",
+            "country": "IN",
+            "probability": 0.6,
+            "continental_region": "Asia",
+            "statistical_region": "Southern Asia"
+        },
+        {
+            "country_name": "Nepal",
+            "country": "NP",
+            "probability": 0.15,
+            "continental_region": "Asia",
+            "statistical_region": "Southern Asia"
+        },
+        {
+            "country_name": "Northern Mariana Islands",
+            "country": "MP",
+            "probability": 0.07,
+            "continental_region": "Oceania",
+            "statistical_region": "Micronesia"
+        },
+        {
+            "country_name": "Mauritius",
+            "country": "MU",
+            "probability": 0.03,
+            "continental_region": "Africa",
+            "statistical_region": "Eastern Africa"
+        }
+    ],
+    "name_sanitized": "Manish",
+    "gender": "male",
+    "samples": 19543,
+    "accuracy": 100,
+    "country_of_origin_map_url": "https:\/\/gender-api.com\/en\/map\/30973392\/746a7891be2e5cf2",
+    "credits_used": 2,
+    "duration": "36ms"
+}

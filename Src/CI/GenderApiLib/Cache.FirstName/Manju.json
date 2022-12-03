@@ -1,0 +1,61 @@
+{
+    "name": "manju",
+    "country_of_origin": [
+        {
+            "country_name": "India",
+            "country": "IN",
+            "probability": 0.6,
+            "continental_region": "Asia",
+            "statistical_region": "Southern Asia"
+        },
+        {
+            "country_name": "Nepal",
+            "country": "NP",
+            "probability": 0.16,
+            "continental_region": "Asia",
+            "statistical_region": "Southern Asia"
+        },
+        {
+            "country_name": "Sri Lanka",
+            "country": "LK",
+            "probability": 0.11,
+            "continental_region": "Asia",
+            "statistical_region": "Southern Asia"
+        },
+        {
+            "country_name": "Bahrain",
+            "country": "BH",
+            "probability": 0.03,
+            "continental_region": "Asia",
+            "statistical_region": "Western Asia"
+        },
+        {
+            "country_name": "United Arab Emirates",
+            "country": "AE",
+            "probability": 0.03,
+            "continental_region": "Asia",
+            "statistical_region": "Western Asia"
+        },
+        {
+            "country_name": "Oman",
+            "country": "OM",
+            "probability": 0.02,
+            "continental_region": "Asia",
+            "statistical_region": "Western Asia"
+        },
+        {
+            "country_name": "Singapore",
+            "country": "SG",
+            "probability": 0.02,
+            "continental_region": "Asia",
+            "statistical_region": "South-eastern Asia"
+        }
+    ],
+    "name_sanitized": "Manju",
+    "gender": "female",
+    "samples": 2848,
+    "accuracy": 54,
+    "country_of_origin_map_url": "https:\/\/gender-api.com\/en\/map\/30999969\/99ec21b96c6979a8",
+    "credits_used": 3,
+    "duration": "24ms"
+}

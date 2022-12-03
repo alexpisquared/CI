@@ -1,0 +1,103 @@
+{
+    "name": "dardan",
+    "country_of_origin": [
+        {
+            "country_name": "Albania",
+            "country": "AL",
+            "probability": 0.4,
+            "continental_region": "Europe",
+            "statistical_region": "Southern Europe"
+        },
+        {
+            "country_name": "Serbia",
+            "country": "RS",
+            "probability": 0.19,
+            "continental_region": "Europe",
+            "statistical_region": "Southern Europe"
+        },
+        {
+            "country_name": "Switzerland",
+            "country": "CH",
+            "probability": 0.09,
+            "continental_region": "Europe",
+            "statistical_region": "Western Europe"
+        },
+        {
+            "country_name": "Republic of Macedonia",
+            "country": "MK",
+            "probability": 0.08,
+            "continental_region": "Europe",
+            "statistical_region": "Southern Europe"
+        },
+        {
+            "country_name": "Germany",
+            "country": "DE",
+            "probability": 0.05,
+            "continental_region": "Europe",
+            "statistical_region": "Western Europe"
+        },
+        {
+            "country_name": "Croatia",
+            "country": "HR",
+            "probability": 0.04,
+            "continental_region": "Europe",
+            "statistical_region": "Southern Europe"
+        },
+        {
+            "country_name": "Italy",
+            "country": "IT",
+            "probability": 0.03,
+            "continental_region": "Europe",
+            "statistical_region": "Southern Europe"
+        },
+        {
+            "country_name": "Montenegro",
+            "country": "ME",
+            "probability": 0.02,
+            "continental_region": "Europe",
+            "statistical_region": "Southern Europe"
+        },
+        {
+            "country_name": "Bosnia and Herzegovina",
+            "country": "BA",
+            "probability": 0.02,
+            "continental_region": "Europe",
+            "statistical_region": "Southern Europe"
+        },
+        {
+            "country_name": "Norway",
+            "country": "NO",
+            "probability": 0.02,
+            "continental_region": "Europe",
+            "statistical_region": "Northern Europe"
+        },
+        {
+            "country_name": "Austria",
+            "country": "AT",
+            "probability": 0.02,
+            "continental_region": "Europe",
+            "statistical_region": "Western Europe"
+        },
+        {
+            "country_name": "Belgium",
+            "country": "BE",
+            "probability": 0.02,
+            "continental_region": "Europe",
+            "statistical_region": "Western Europe"
+        },
+        {
+            "country_name": "Sweden",
+            "country": "SE",
+            "probability": 0.02,
+            "continental_region": "Europe",
+            "statistical_region": "Northern Europe"
+        }
+    ],
+    "name_sanitized": "Dardan",
+    "gender": "male",
+    "samples": 699,
+    "accuracy": 95,
+    "country_of_origin_map_url": "https:\/\/gender-api.com\/en\/map\/31001756\/a290e4e9ac3f50d9",
+    "credits_used": 4,
+    "duration": "20ms"
+}

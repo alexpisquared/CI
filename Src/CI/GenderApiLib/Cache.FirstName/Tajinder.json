@@ -1,0 +1,33 @@
+{
+    "name": "tajinder",
+    "country_of_origin": [
+        {
+            "country_name": "India",
+            "country": "IN",
+            "probability": 0.37,
+            "continental_region": "Asia",
+            "statistical_region": "Southern Asia"
+        },
+        {
+            "country_name": "United Kingdom",
+            "country": "GB",
+            "probability": 0.04,
+            "continental_region": "Europe",
+            "statistical_region": "Northern Europe"
+        },
+        {
+            "country_name": "Canada",
+            "country": "CA",
+            "probability": 0.02,
+            "continental_region": "Americas",
+            "statistical_region": "Northern America"
+        }
+    ],
+    "name_sanitized": "Tajinder",
+    "gender": "male",
+    "samples": 256,
+    "accuracy": 88,
+    "country_of_origin_map_url": "https:\/\/gender-api.com\/en\/map\/30986682\/4250661631bc7a5d",
+    "credits_used": 2,
+    "duration": "20ms"
+}

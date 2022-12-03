@@ -1,0 +1,75 @@
+{
+    "name": "shayne",
+    "country_of_origin": [
+        {
+            "country_name": "United States",
+            "country": "US",
+            "probability": 0.48,
+            "continental_region": "Americas",
+            "statistical_region": "Northern America"
+        },
+        {
+            "country_name": "Antigua and Barbuda",
+            "country": "AG",
+            "probability": 0.2,
+            "continental_region": "Americas",
+            "statistical_region": "Caribbean"
+        },
+        {
+            "country_name": "Australia",
+            "country": "AU",
+            "probability": 0.06,
+            "continental_region": "Oceania",
+            "statistical_region": "AustraliaandNew Zealand"
+        },
+        {
+            "country_name": "Martinique",
+            "country": "MQ",
+            "probability": 0.05,
+            "continental_region": "Americas",
+            "statistical_region": "Caribbean"
+        },
+        {
+            "country_name": "New Zealand",
+            "country": "NZ",
+            "probability": 0.05,
+            "continental_region": "Oceania",
+            "statistical_region": "AustraliaandNew Zealand"
+        },
+        {
+            "country_name": "Philippines",
+            "country": "PH",
+            "probability": 0.04,
+            "continental_region": "Asia",
+            "statistical_region": "South-eastern Asia"
+        },
+        {
+            "country_name": "Canada",
+            "country": "CA",
+            "probability": 0.04,
+            "continental_region": "Americas",
+            "statistical_region": "Northern America"
+        },
+        {
+            "country_name": "Mauritius",
+            "country": "MU",
+            "probability": 0.02,
+            "continental_region": "Africa",
+            "statistical_region": "Eastern Africa"
+        },
+        {
+            "country_name": "United Kingdom",
+            "country": "GB",
+            "probability": 0.02,
+            "continental_region": "Europe",
+            "statistical_region": "Northern Europe"
+        }
+    ],
+    "name_sanitized": "Shayne",
+    "gender": "female",
+    "samples": 5584,
+    "accuracy": 74,
+    "country_of_origin_map_url": "https:\/\/gender-api.com\/en\/map\/30995586\/8158a855e0eee786",
+    "credits_used": 3,
+    "duration": "27ms"
+}

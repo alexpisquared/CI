@@ -1,0 +1,103 @@
+{
+    "name": "sikander",
+    "country_of_origin": [
+        {
+            "country_name": "Pakistan",
+            "country": "PK",
+            "probability": 0.54,
+            "continental_region": "Asia",
+            "statistical_region": "Southern Asia"
+        },
+        {
+            "country_name": "India",
+            "country": "IN",
+            "probability": 0.22,
+            "continental_region": "Asia",
+            "statistical_region": "Southern Asia"
+        },
+        {
+            "country_name": "Malawi",
+            "country": "MW",
+            "probability": 0.1,
+            "continental_region": "Africa",
+            "statistical_region": "Eastern Africa"
+        },
+        {
+            "country_name": "United Arab Emirates",
+            "country": "AE",
+            "probability": 0.06,
+            "continental_region": "Asia",
+            "statistical_region": "Western Asia"
+        },
+        {
+            "country_name": "United Kingdom",
+            "country": "GB",
+            "probability": 0.06,
+            "continental_region": "Europe",
+            "statistical_region": "Northern Europe"
+        },
+        {
+            "country_name": "Zambia",
+            "country": "ZM",
+            "probability": 0.05,
+            "continental_region": "Africa",
+            "statistical_region": "Eastern Africa"
+        },
+        {
+            "country_name": "Oman",
+            "country": "OM",
+            "probability": 0.03,
+            "continental_region": "Asia",
+            "statistical_region": "Western Asia"
+        },
+        {
+            "country_name": "Kuwait",
+            "country": "KW",
+            "probability": 0.03,
+            "continental_region": "Asia",
+            "statistical_region": "Western Asia"
+        },
+        {
+            "country_name": "Bangladesh",
+            "country": "BD",
+            "probability": 0.03,
+            "continental_region": "Asia",
+            "statistical_region": "Southern Asia"
+        },
+        {
+            "country_name": "Congo",
+            "country": "CG",
+            "probability": 0.02,
+            "continental_region": "Africa",
+            "statistical_region": "Middle Africa"
+        },
+        {
+            "country_name": "Canada",
+            "country": "CA",
+            "probability": 0.02,
+            "continental_region": "Americas",
+            "statistical_region": "Northern America"
+        },
+        {
+            "country_name": "Saudi Arabia",
+            "country": "SA",
+            "probability": 0.02,
+            "continental_region": "Asia",
+            "statistical_region": "Western Asia"
+        },
+        {
+            "country_name": "United States",
+            "country": "US",
+            "probability": 0.02,
+            "continental_region": "Americas",
+            "statistical_region": "Northern America"
+        }
+    ],
+    "name_sanitized": "Sikander",
+    "gender": "male",
+    "samples": 584,
+    "accuracy": 100,
+    "country_of_origin_map_url": "https:\/\/gender-api.com\/en\/map\/31001689\/df3fc720d7b39718",
+    "credits_used": 4,
+    "duration": "24ms"
+}

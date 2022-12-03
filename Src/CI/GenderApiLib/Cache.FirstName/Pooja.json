@@ -1,0 +1,54 @@
+{
+    "name": "pooja",
+    "country_of_origin": [
+        {
+            "country_name": "India",
+            "country": "IN",
+            "probability": 0.6,
+            "continental_region": "Asia",
+            "statistical_region": "Southern Asia"
+        },
+        {
+            "country_name": "Mauritius",
+            "country": "MU",
+            "probability": 0.1,
+            "continental_region": "Africa",
+            "statistical_region": "Eastern Africa"
+        },
+        {
+            "country_name": "Suriname",
+            "country": "SR",
+            "probability": 0.08,
+            "continental_region": "Americas",
+            "statistical_region": "South America"
+        },
+        {
+            "country_name": "Nepal",
+            "country": "NP",
+            "probability": 0.07,
+            "continental_region": "Asia",
+            "statistical_region": "Southern Asia"
+        },
+        {
+            "country_name": "Fiji",
+            "country": "FJ",
+            "probability": 0.03,
+            "continental_region": "Oceania",
+            "statistical_region": "Melanesia"
+        },
+        {
+            "country_name": "United Arab Emirates",
+            "country": "AE",
+            "probability": 0.02,
+            "continental_region": "Asia",
+            "statistical_region": "Western Asia"
+        }
+    ],
+    "name_sanitized": "Pooja",
+    "gender": "female",
+    "samples": 9821,
+    "accuracy": 98,
+    "country_of_origin_map_url": "https:\/\/gender-api.com\/en\/map\/30985003\/d0e16d1012804dc5",
+    "credits_used": 3,
+    "duration": "33ms"
+}
