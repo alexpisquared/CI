@@ -1,0 +1,40 @@
+{
+    "name": "ashutosh",
+    "country_of_origin": [
+        {
+            "country_name": "India",
+            "country": "IN",
+            "probability": 0.81,
+            "continental_region": "Asia",
+            "statistical_region": "Southern Asia"
+        },
+        {
+            "country_name": "Nepal",
+            "country": "NP",
+            "probability": 0.1,
+            "continental_region": "Asia",
+            "statistical_region": "Southern Asia"
+        },
+        {
+            "country_name": "Bangladesh",
+            "country": "BD",
+            "probability": 0.03,
+            "continental_region": "Asia",
+            "statistical_region": "Southern Asia"
+        },
+        {
+            "country_name": "Bahrain",
+            "country": "BH",
+            "probability": 0.02,
+            "continental_region": "Asia",
+            "statistical_region": "Western Asia"
+        }
+    ],
+    "name_sanitized": "Ashutosh",
+    "gender": "male",
+    "samples": 5643,
+    "accuracy": 100,
+    "country_of_origin_map_url": "https:\/\/gender-api.com\/en\/map\/31252329\/82f6dba161fab44b",
+    "credits_used": 2,
+    "duration": "28ms"
+}

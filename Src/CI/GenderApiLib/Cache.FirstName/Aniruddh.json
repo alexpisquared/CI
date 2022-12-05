@@ -1,0 +1,33 @@
+{
+    "name": "aniruddh",
+    "country_of_origin": [
+        {
+            "country_name": "India",
+            "country": "IN",
+            "probability": 0.75,
+            "continental_region": "Asia",
+            "statistical_region": "Southern Asia"
+        },
+        {
+            "country_name": "Canada",
+            "country": "CA",
+            "probability": 0.03,
+            "continental_region": "Americas",
+            "statistical_region": "Northern America"
+        },
+        {
+            "country_name": "United States",
+            "country": "US",
+            "probability": 0.02,
+            "continental_region": "Americas",
+            "statistical_region": "Northern America"
+        }
+    ],
+    "name_sanitized": "Aniruddh",
+    "gender": "male",
+    "samples": 300,
+    "accuracy": 100,
+    "country_of_origin_map_url": "https:\/\/gender-api.com\/en\/map\/31252347\/28ea8072bd39fad8",
+    "credits_used": 2,
+    "duration": "17ms"
+}

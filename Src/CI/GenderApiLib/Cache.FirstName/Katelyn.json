@@ -1,0 +1,89 @@
+{
+    "name": "katelyn",
+    "country_of_origin": [
+        {
+            "country_name": "United States",
+            "country": "US",
+            "probability": 0.49,
+            "continental_region": "Americas",
+            "statistical_region": "Northern America"
+        },
+        {
+            "country_name": "Canada",
+            "country": "CA",
+            "probability": 0.16,
+            "continental_region": "Americas",
+            "statistical_region": "Northern America"
+        },
+        {
+            "country_name": "New Zealand",
+            "country": "NZ",
+            "probability": 0.11,
+            "continental_region": "Oceania",
+            "statistical_region": "AustraliaandNew Zealand"
+        },
+        {
+            "country_name": "Australia",
+            "country": "AU",
+            "probability": 0.1,
+            "continental_region": "Oceania",
+            "statistical_region": "AustraliaandNew Zealand"
+        },
+        {
+            "country_name": "Ireland",
+            "country": "IE",
+            "probability": 0.06,
+            "continental_region": "Europe",
+            "statistical_region": "Northern Europe"
+        },
+        {
+            "country_name": "Hong Kong",
+            "country": "HK",
+            "probability": 0.04,
+            "continental_region": "Asia",
+            "statistical_region": "Eastern Asia"
+        },
+        {
+            "country_name": "United Kingdom",
+            "country": "GB",
+            "probability": 0.03,
+            "continental_region": "Europe",
+            "statistical_region": "Northern Europe"
+        },
+        {
+            "country_name": "Uganda",
+            "country": "UG",
+            "probability": 0.02,
+            "continental_region": "Africa",
+            "statistical_region": "Eastern Africa"
+        },
+        {
+            "country_name": "Norway",
+            "country": "NO",
+            "probability": 0.02,
+            "continental_region": "Europe",
+            "statistical_region": "Northern Europe"
+        },
+        {
+            "country_name": "Mexico",
+            "country": "MX",
+            "probability": 0.02,
+            "continental_region": "Americas",
+            "statistical_region": "Central America"
+        },
+        {
+            "country_name": "Philippines",
+            "country": "PH",
+            "probability": 0.02,
+            "continental_region": "Asia",
+            "statistical_region": "South-eastern Asia"
+        }
+    ],
+    "name_sanitized": "Katelyn",
+    "gender": "female",
+    "samples": 2276,
+    "accuracy": 99,
+    "country_of_origin_map_url": "https:\/\/gender-api.com\/en\/map\/31252363\/166f49762d4c4036",
+    "credits_used": 4,
+    "duration": "25ms"
+}
