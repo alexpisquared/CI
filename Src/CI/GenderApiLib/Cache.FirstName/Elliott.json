@@ -1,0 +1,82 @@
+{
+    "name": "elliott",
+    "country_of_origin": [
+        {
+            "country_name": "United States",
+            "country": "US",
+            "probability": 0.57,
+            "continental_region": "Americas",
+            "statistical_region": "Northern America"
+        },
+        {
+            "country_name": "Bahamas",
+            "country": "BS",
+            "probability": 0.09,
+            "continental_region": "Americas",
+            "statistical_region": "Caribbean"
+        },
+        {
+            "country_name": "Lesotho",
+            "country": "LS",
+            "probability": 0.08,
+            "continental_region": "Africa",
+            "statistical_region": "Southern Africa"
+        },
+        {
+            "country_name": "Papua New Guinea",
+            "country": "PG",
+            "probability": 0.07,
+            "continental_region": "Oceania",
+            "statistical_region": "Melanesia"
+        },
+        {
+            "country_name": "United Kingdom",
+            "country": "GB",
+            "probability": 0.06,
+            "continental_region": "Europe",
+            "statistical_region": "Northern Europe"
+        },
+        {
+            "country_name": "Australia",
+            "country": "AU",
+            "probability": 0.04,
+            "continental_region": "Oceania",
+            "statistical_region": "AustraliaandNew Zealand"
+        },
+        {
+            "country_name": "Saint Helena Ascension and Tristan da Cunha",
+            "country": "SH",
+            "probability": 0.03,
+            "continental_region": "Africa",
+            "statistical_region": "Western Africa"
+        },
+        {
+            "country_name": "Canada",
+            "country": "CA",
+            "probability": 0.03,
+            "continental_region": "Americas",
+            "statistical_region": "Northern America"
+        },
+        {
+            "country_name": "Puerto Rico",
+            "country": "PR",
+            "probability": 0.02,
+            "continental_region": "Americas",
+            "statistical_region": "Caribbean"
+        },
+        {
+            "country_name": "New Zealand",
+            "country": "NZ",
+            "probability": 0.02,
+            "continental_region": "Oceania",
+            "statistical_region": "AustraliaandNew Zealand"
+        }
+    ],
+    "name_sanitized": "Elliott",
+    "gender": "female",
+    "samples": 11507,
+    "accuracy": 80,
+    "country_of_origin_map_url": "https:\/\/gender-api.com\/en\/map\/32035537\/efc0ffe6c2c07e15",
+    "credits_used": 3,
+    "duration": "30ms"
+}

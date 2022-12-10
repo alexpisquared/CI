@@ -1,5 +1,5 @@
 ﻿namespace OpenAI;
-public class BackgroundTask //tu: timer - Scheduling repeating tasks with .NET 6’s NEW Timer - dhttps://www.youtube.com/watch?v=J4JL4zR_l-0
+public class BackgroundTask //tu: timer - Scheduling repeating tasks with .NET 6’s NEW Timer - https://www.youtube.com/watch?v=J4JL4zR_l-0
 {
   readonly CancellationTokenSource _cts = new();
   readonly PeriodicTimer _timer;
@@ -27,44 +27,5 @@ public class BackgroundTask //tu: timer - Scheduling repeating tasks with .NET 6
       }
     }
     catch (OperationCanceledException) { }
-  }
-}
-
-class MyClass : IAsyncDisposable //todo: https://stackoverflow.com/questions/70688080/how-to-use-periodictimer-inside-of-constructor
-{
-  readonly CancellationTokenSource _cts = new();
-  readonly PeriodicTimer _timer;
-  readonly Task _timerTask;
-
-  public MyClass()
-  {
-    _timer = new PeriodicTimer(TimeSpan.FromSeconds(1));
-    _timerTask = HandleTimerAsync(_timer, _cts.Token);
-  }
-
-  public void Cancel() => _cts.Cancel();
-
-  async Task HandleTimerAsync(PeriodicTimer timer, CancellationToken cancel = default)
-  {
-    try
-    {
-      while (await timer.WaitForNextTickAsync(cancel))
-      {
-        await Task.Run(() => SomeHeavyJob(cancel), cancel);
-      }
-    }
-    catch (Exception ex)
-    {
-      WriteLine($"..//Handle the exception but don't propagate it:\n\t{ex}");       
-    }
-  }
-
-  void SomeHeavyJob(CancellationToken cancel) => throw new NotImplementedException();
-
-  public async ValueTask DisposeAsync()
-  {
-    _timer.Dispose();
-    await _timerTask;
-    GC.SuppressFinalize(this);
   }
 }

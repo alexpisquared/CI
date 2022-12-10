@@ -1,0 +1,47 @@
+{
+    "name": "shubhangi",
+    "country_of_origin": [
+        {
+            "country_name": "India",
+            "country": "IN",
+            "probability": 1.03,
+            "continental_region": "Asia",
+            "statistical_region": "Southern Asia"
+        },
+        {
+            "country_name": "Nepal",
+            "country": "NP",
+            "probability": 0.14,
+            "continental_region": "Asia",
+            "statistical_region": "Southern Asia"
+        },
+        {
+            "country_name": "United Arab Emirates",
+            "country": "AE",
+            "probability": 0.11,
+            "continental_region": "Asia",
+            "statistical_region": "Western Asia"
+        },
+        {
+            "country_name": "Australia",
+            "country": "AU",
+            "probability": 0.03,
+            "continental_region": "Oceania",
+            "statistical_region": "AustraliaandNew Zealand"
+        },
+        {
+            "country_name": "Hungary",
+            "country": "HU",
+            "probability": 0.02,
+            "continental_region": "Europe",
+            "statistical_region": "Eastern Europe"
+        }
+    ],
+    "name_sanitized": "Shubhangi",
+    "gender": "female",
+    "samples": 601,
+    "accuracy": 99,
+    "country_of_origin_map_url": "https:\/\/gender-api.com\/en\/map\/32035542\/0c1027f04d4eaf80",
+    "credits_used": 2,
+    "duration": "18ms"
+}

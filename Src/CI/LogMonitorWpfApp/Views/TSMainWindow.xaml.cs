@@ -102,7 +102,7 @@ public partial class TSMainWindow : Window
     {
       var trgOldFolder = Directory.CreateDirectory($"{tbxPath.Text}.Old");
 
-      foreach (var srcLogFolder in new[] { tbxPath.Text, @"Z:\Dev\AlexPi\Misc\Logs" })
+      foreach (var srcLogFolder in new[] { tbxPath.Text, @"C:\Temp\Logs" })
       {
         foreach (var logFileInfo in new DirectoryInfo(srcLogFolder).GetFiles().Where(fi => fi.LastWriteTime < DateTime.Today)) // var process = new Process { StartInfo = new ProcessStartInfo(@"CMD", $@"CMD /C MOVE {srcLogFolder}\*.* {srcLogFolder.Replace("Logs", "Logs.Old")} ") { RedirectStandardError = true, UseShellExecute = false } };      if (process.Start())        process.WaitForExit();
         {
@@ -138,7 +138,7 @@ public partial class TSMainWindow : Window
     {
       var trgOldFolder = Directory.CreateDirectory($"{tbxPath.Text}.Old");
 
-      foreach (var srcLogFolder in new[] { tbxPath.Text, @"Z:\Dev\AlexPi\Misc\Logs" })
+      foreach (var srcLogFolder in new[] { tbxPath.Text, @"C:\Temp\Logs" })
       {
         foreach (var logFileInfo in new DirectoryInfo(srcLogFolder).GetFiles().Where(fi => fi.Name.Contains(".api.", StringComparison.OrdinalIgnoreCase)))
         {

@@ -1,28 +1,25 @@
 ﻿using System.Runtime.InteropServices;
 
-namespace LogMonitorWpfApp.RdpSession;
+namespace TacticalSupport.RdpSession;
 
 internal class Insomniac // ~ does not let to sleep.
 {
   readonly string _crlf = $" ", TextLog = @$"RdpFacility.{Environment.MachineName}.Log.txt";
   bool _isOn;
 
-  internal void SetInso(bool isOn) { if (isOn) RequestActive(); else RequestRelease(); }
+  internal void TurnOnOff(bool isOn) { if (isOn) RequestActive(); else RequestRelease(); }
 
   internal void RequestActive(string crlf = " ")
   {
+    _ = SetThreadExecutionState(EXECUTION_STATE.ES_DISPLAY_REQUIRED | EXECUTION_STATE.ES_CONTINUOUS);    //File.AppendAllText(App.TextLog, $"{DateTimeOffset.Now:HH:mm:ss} {(DateTimeOffset.Now - App.Started):hh\\:mm\\:ss}  Dr - On {crlf}");    File.AppendAllText(TextLog, $"Dr-On{crlf}");
     _isOn = true;
-    _ = SetThreadExecutionState(EXECUTION_STATE.ES_DISPLAY_REQUIRED | EXECUTION_STATE.ES_CONTINUOUS);
-    //File.AppendAllText(App.TextLog, $"{DateTimeOffset.Now:HH:mm:ss} {(DateTimeOffset.Now - App.Started):hh\\:mm\\:ss}  Dr - On {crlf}");
-    File.AppendAllText(TextLog, $"Dr-On{crlf}");
   }
   internal void RequestRelease(string crlf = " ")
   {
     if (!_isOn) return;
 
-    _ = SetThreadExecutionState(EXECUTION_STATE.ES_CONTINUOUS);
-    //File.AppendAllText(App.TextLog, $"{DateTimeOffset.Now:HH:mm:ss} {(DateTimeOffset.Now - App.Started):hh\\:mm\\:ss}  Dr - Off {crlf}");
-    File.AppendAllText(TextLog, $"Dr-Off{crlf}");
+    _ = SetThreadExecutionState(EXECUTION_STATE.ES_CONTINUOUS);    //File.AppendAllText(App.TextLog, $"{DateTimeOffset.Now:HH:mm:ss} {(DateTimeOffset.Now - App.Started):hh\\:mm\\:ss}  Dr - Off {crlf}");    File.AppendAllText(TextLog, $"Dr-Off{crlf}");
+    _isOn = false;
   }
 
   [Flags]

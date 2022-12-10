@@ -71,7 +71,7 @@
 
         <Menu Margin="0 0" Background="Transparent" Foreground="#c0c" >
           <MenuItem Header="° ° °" Padding="0 8 0 0" FontSize="20" Background="Transparent">
-            <TextBox x:Name="tbxPath" Text="Z:\..." MinWidth="160" BorderThickness="0"/>
+            <TextBox x:Name="tbxPath" Text="C:\..." MinWidth="160" BorderThickness="0"/>
             <MenuItem Header="Chck FS" Click="OnChckFS" />
             <MenuItem Header="Watch On" Click="OnWtchOn" />
             <MenuItem Header="Watch No" Click="OnWtchNo" />

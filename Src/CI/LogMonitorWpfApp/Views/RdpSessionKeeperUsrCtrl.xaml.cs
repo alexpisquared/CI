@@ -70,7 +70,7 @@ public partial class RdpSessionKeeperUsrCtrl : UserControl
     {
       var ibh = IsBizHours;
       //chkInso1.IsChecked = ibh;
-      _insomniac.SetInso(ibh);
+      _insomniac.TurnOnOff(ibh);
       //Background = new SolidColorBrush(ibh ? Colors.DarkCyan : Colors.DarkRed);
 
       tbkHrs.Content = $"{_from} - {_till + _hrsAdded}:59  currently {(ibh ? "On" : "Off")}";
@@ -167,7 +167,7 @@ public partial class RdpSessionKeeperUsrCtrl : UserControl
   }
 
   async void OnAudible(object s, RoutedEventArgs e) { _appset.IsAudible = ((MenuItem)s).IsChecked == true; if (_isLoaded) { await _appset.StoreAsync(); } }
-  async void OnInsmnia(object s, RoutedEventArgs e) { _appset.IsInsmnia = ((MenuItem)s).IsChecked == true; if (_isLoaded) { await _appset.StoreAsync(); _insomniac.SetInso(((MenuItem)s).IsChecked == true); } }
+  async void OnInsmnia(object s, RoutedEventArgs e) { _appset.IsInsmnia = ((MenuItem)s).IsChecked == true; if (_isLoaded) { await _appset.StoreAsync(); _insomniac.TurnOnOff(((MenuItem)s).IsChecked == true); } }
   async void OnPosning(object s, RoutedEventArgs e) { _appset.IsPosning = ((MenuItem)s).IsChecked == true; if (_isLoaded) { await _appset.StoreAsync(); } }
   async void OnMindBiz(object s, RoutedEventArgs e) { _appset.IsMindBiz = ((MenuItem)s).IsChecked == true; if (_isLoaded) { await _appset.StoreAsync(); } }
   async void OnPlus2hr(object s, RoutedEventArgs e) { _hrsAdded += 2; await OnTick(true); await Bpr.ClickAsync(); }

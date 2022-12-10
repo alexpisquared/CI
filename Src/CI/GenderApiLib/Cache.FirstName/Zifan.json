@@ -1,0 +1,40 @@
+{
+    "name": "zifan",
+    "country_of_origin": [
+        {
+            "country_name": "China",
+            "country": "CN",
+            "probability": 0.18,
+            "continental_region": "Asia",
+            "statistical_region": "Eastern Asia"
+        },
+        {
+            "country_name": "United States",
+            "country": "US",
+            "probability": 0.14,
+            "continental_region": "Americas",
+            "statistical_region": "Northern America"
+        },
+        {
+            "country_name": "Sri Lanka",
+            "country": "LK",
+            "probability": 0.09,
+            "continental_region": "Asia",
+            "statistical_region": "Southern Asia"
+        },
+        {
+            "country_name": "France",
+            "country": "FR",
+            "probability": 0.09,
+            "continental_region": "Europe",
+            "statistical_region": "Western Europe"
+        }
+    ],
+    "name_sanitized": "Zifan",
+    "gender": "male",
+    "samples": 16,
+    "accuracy": 94,
+    "country_of_origin_map_url": "https:\/\/gender-api.com\/en\/map\/32035543\/d6efdf9e7a7c6270",
+    "credits_used": 2,
+    "duration": "19ms"
+}
