@@ -1,0 +1,40 @@
+{
+    "name": "haruka",
+    "country_of_origin": [
+        {
+            "country_name": "Japan",
+            "country": "JP",
+            "probability": 0.82,
+            "continental_region": "Asia",
+            "statistical_region": "Eastern Asia"
+        },
+        {
+            "country_name": "United States",
+            "country": "US",
+            "probability": 0.06,
+            "continental_region": "Americas",
+            "statistical_region": "Northern America"
+        },
+        {
+            "country_name": "South Korea",
+            "country": "KR",
+            "probability": 0.02,
+            "continental_region": "Asia",
+            "statistical_region": "Eastern Asia"
+        },
+        {
+            "country_name": "Italy",
+            "country": "IT",
+            "probability": 0.02,
+            "continental_region": "Europe",
+            "statistical_region": "Southern Europe"
+        }
+    ],
+    "name_sanitized": "Haruka",
+    "gender": "female",
+    "samples": 478,
+    "accuracy": 82,
+    "country_of_origin_map_url": "https:\/\/gender-api.com\/en\/map\/35722583\/0c44c5a969ffc2bf",
+    "credits_used": 2,
+    "duration": "18ms"
+}
