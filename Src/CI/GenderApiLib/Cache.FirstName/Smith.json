@@ -1,0 +1,117 @@
+{
+    "name": "smith",
+    "country_of_origin": [
+        {
+            "country_name": "Nigeria",
+            "country": "NG",
+            "probability": 0.17,
+            "continental_region": "Africa",
+            "statistical_region": "Western Africa"
+        },
+        {
+            "country_name": "Bhutan",
+            "country": "BT",
+            "probability": 0.09,
+            "continental_region": "Asia",
+            "statistical_region": "Southern Asia"
+        },
+        {
+            "country_name": "United Kingdom",
+            "country": "GB",
+            "probability": 0.07,
+            "continental_region": "Europe",
+            "statistical_region": "Northern Europe"
+        },
+        {
+            "country_name": "Haiti",
+            "country": "HT",
+            "probability": 0.05,
+            "continental_region": "Americas",
+            "statistical_region": "Caribbean"
+        },
+        {
+            "country_name": "Ghana",
+            "country": "GH",
+            "probability": 0.05,
+            "continental_region": "Africa",
+            "statistical_region": "Western Africa"
+        },
+        {
+            "country_name": "United States",
+            "country": "US",
+            "probability": 0.04,
+            "continental_region": "Americas",
+            "statistical_region": "Northern America"
+        },
+        {
+            "country_name": "France",
+            "country": "FR",
+            "probability": 0.03,
+            "continental_region": "Europe",
+            "statistical_region": "Western Europe"
+        },
+        {
+            "country_name": "Burundi",
+            "country": "BI",
+            "probability": 0.02,
+            "continental_region": "Africa",
+            "statistical_region": "Eastern Africa"
+        },
+        {
+            "country_name": "Liberia",
+            "country": "LR",
+            "probability": 0.02,
+            "continental_region": "Africa",
+            "statistical_region": "Western Africa"
+        },
+        {
+            "country_name": "Malawi",
+            "country": "MW",
+            "probability": 0.02,
+            "continental_region": "Africa",
+            "statistical_region": "Eastern Africa"
+        },
+        {
+            "country_name": "Malaysia",
+            "country": "MY",
+            "probability": 0.02,
+            "continental_region": "Asia",
+            "statistical_region": "South-eastern Asia"
+        },
+        {
+            "country_name": "Thailand",
+            "country": "TH",
+            "probability": 0.02,
+            "continental_region": "Asia",
+            "statistical_region": "South-eastern Asia"
+        },
+        {
+            "country_name": "South Africa",
+            "country": "ZA",
+            "probability": 0.02,
+            "continental_region": "Africa",
+            "statistical_region": "Southern Africa"
+        },
+        {
+            "country_name": "China",
+            "country": "CN",
+            "probability": 0.02,
+            "continental_region": "Asia",
+            "statistical_region": "Eastern Asia"
+        },
+        {
+            "country_name": "India",
+            "country": "IN",
+            "probability": 0.02,
+            "continental_region": "Asia",
+            "statistical_region": "Southern Asia"
+        }
+    ],
+    "name_sanitized": "Smith",
+    "gender": "male",
+    "samples": 4698,
+    "accuracy": 83,
+    "country_of_origin_map_url": "https:\/\/gender-api.com\/en\/map\/37652472\/36c9a1132e6be111",
+    "credits_used": 2,
+    "duration": "38ms"
+}

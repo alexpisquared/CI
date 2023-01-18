@@ -1,4 +1,5 @@
 ﻿namespace OpenAI;
+
 [Obsolete("Use this: C:\\g\\AAV.Shared\\Src\\Net.CI\\StandardLib\\Services\\BackgroundTask.cs")]
 public class BackgroundTask //tu: Nick Chapsas - Scheduling repeating tasks with .NET 6’s NEW Timer - https://www.youtube.com/watch?v=J4JL4zR_l-0
 {
