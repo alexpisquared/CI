@@ -12,8 +12,8 @@
 
   <ItemGroup>
     <PackageReference Include="Colorful.Console" Version="1.2.15" />
-    <PackageReference Include="System.DirectoryServices" Version="5.0.0" />
-    <PackageReference Include="System.DirectoryServices.AccountManagement" Version="5.0.0" />
+    <PackageReference Include="System.DirectoryServices" Version="11.0.0" />
+    <PackageReference Include="System.DirectoryServices.AccountManagement" Version="11.0.0" />
   </ItemGroup>
 
 </Project>
